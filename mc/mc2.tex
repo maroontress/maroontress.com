@@ -1,0 +1,770 @@
+
+
+  
+    
+  
+
+  
+    
+
+    \section{乱数の度数分布}
+
+    \subsection{設計}
+    ここで課題の内容を確認します。課題は「Cの標準ライブラリーを用いて実際に乱数を発生し、その度数分布を調べよ。また、この一様乱数の平均、分散についても考察せよ。」です。では、どのようにプログラムを作成したらよいでしょうか。
+
+    一つのアプローチは、上のたくさんある要求を全部ミックスしたような、ごちゃごちゃして作った本人さえ正しく動くかどうかもわからないような、たった一つのプログラムを作ることです。
+
+    もう少しかしこいアプローチは、要求を分解することです。つまり、乱数を発生させるプログラム、度数分布を調べるプログラム、平均を調べるプログラム、分散を調べるプログラムの4つにわけてみる、ということです。そうすることで、それぞれは簡単で、間違いの混入しにくいプログラムとなるでしょう。
+
+    今回の実験では後者のアプローチをとります。そのためには、組み合わせて動作できるように、それぞれのプログラムの具体的な仕様（動作イメージ）を決めておく必要があります。
+
+    \subsubsection{randコマンド}
+
+    まず最初に、乱数を発生するプログラムを考えることから始めます。ここではそれをrandコマンドという名前で呼ぶことにします。randコマンドは、指定回数の乱数$x$（ただし$x$は0以上1未満）を標準出力に書き出す、という動作をするものとします。つまり、例えば指定回数が5回だったら、次のような動作をするものであると（頭の中で）イメージします。（下記の内容を入力しようとした人に注意。まだ作ってないコマンドを実行することはできません。上記の説明をよく読んでください。）
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 5}} {\sl Enter}\\
+	  {\tt 0.513870}\\
+	  {\tt 0.175741}\\
+	  {\tt 0.308652}\\
+	  {\tt 0.534534}\\
+	  {\tt 0.947628}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    \subsubsection{countコマンド}
+
+    次に度数分布を調べるプログラムにとりかかります。このプログラムはcountコマンドと呼ぶことにします。countコマンドは、値$x$を標準入力からなくなるまで読み込んで、指定された範囲に$x$の値があればカウンタの値を増加させていきます。そして入力が全部なくなったら、カウンタの値を表示して終了します。例えば、指定範囲が0.1以上0.2未満である$x$の個数を求めるとして、次のような動作をするものであるとイメージします。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 5 | ./count 0.1 0.2}} {\sl Enter}\\
+	  {\tt 1}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    5個の乱数のうち、0.1以上0.2未満のものは1つだけだったことを示しています。この例では、前述したrandコマンドの出力結果を、countコマンドの入力として渡した場合を想定しています。
+
+    \subsubsection{averageコマンドとvarianceコマンド}
+
+    最後に平均、分散を求めるコマンドを考えます。これらをそれぞれaverage、varianceコマンドと呼ぶことにします。これらのコマンドは、値$x$を標準入力から読み込んで、それぞれそのときの平均、分散を出力し、読み込むものがなくなったら終了するものとします。イメージ的には、次のような動作をするものと考えます。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 5 | ./average}} {\sl Enter}\\
+	  {\tt 1 0.513870} {\bf ...1番目の乱数の平均}\\
+	  {\tt 2 0.344806} {\bf ...1番目と2番目の乱数の平均}\\
+	  {\tt 3 0.332754} {\bf ...1番目から3番目までの乱数の平均}\\
+	  {\tt 4 0.383199} {\bf ...1番目から4番目までの乱数の平均}\\
+	  {\tt 5 0.496085} {\bf ...1番目から5番目までの乱数の平均}\\
+	  {\tt foo[bar]\% \underline{./rand 5 | ./variance}} {\sl Enter}\\
+	  {\tt 1 0.000000} {\bf ...1番目の乱数の分散}\\
+	  {\tt 2 0.028583} {\bf ...1番目と2番目の乱数の分散}\\
+	  {\tt 3 0.019346} {\bf ...1番目から3番目までの乱数の分散}\\
+	  {\tt 4 0.022143} {\bf ...1番目から4番目までの乱数の分散}\\
+	  {\tt 5 0.068687} {\bf ...1番目から5番目までの乱数の分散}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    やはりこの例でも、前述したrandコマンドの出力結果を、両方のコマンドの入力として渡した場合を想定しています。
+
+    \subsubsection{データ型（Summation型）}
+
+    平均を計算するプログラムは、次のような疑似コードで表現できます。
+
+\begin{verbatim}
+    `総和' = 0;
+    `加えた回数' = 0;
+
+    while (`値' を入力から読み込むのに成功した?)
+    {
+        `値' を `総和' に加える;
+        `加えた回数' を1つ増やす;
+
+        `加えた回数' と平均（`総和' / `加えた回数'）を出力する;
+    }
+\end{verbatim}
+
+    `総和', `加えた回数', `値' をそれぞれ{\tt s}, {\tt n}, {\tt x}と表記することにすれば、上記のコードはC言語では次のようになります。
+
+\begin{verbatim}
+    s = 0;
+    n = 0;
+
+    while (x を入力から読み込むのに成功した?)
+    {
+        s += x;
+        ++n;
+
+        n と (s / n) を出力する;
+    }
+\end{verbatim}
+
+    これでもいいのですが、これからわかるように、{\tt s}と{\tt n}が実際には独立した変数ではないことがわかります。つまり、{\tt s}と{\tt n}は同時に初期化され、{\tt s}に値が加えられると{\tt x}が1つ増えるという関係があります。したがって、これらの変数を抽象的な1変数で表現した方が、扱いやすくなります。その変数を{\tt Summation}型の{\tt sum}として、上記のコードを疑似コードで書き直してみます。
+
+\begin{verbatim}
+    sumを初期化;
+
+    while (x を入力から読み込むのに成功した?)
+    {
+        sumにxを加える。
+
+        `sumの加えた回数' と `sumの平均' を出力する;
+    }
+\end{verbatim}
+
+    {\tt sum}に対する作用 `初期化', `加える' をそれぞれ関数{\tt ClearSummation()}, {\tt AddSummaion()}という形で表現し、{\tt sum}から取り出せる値 `加えた回数', `平均' をそれぞれ関数{\tt CountOfSummation()}, {\tt AverageOfSummation()}という形で表現すれば、上記のコードは次のようになります。
+
+\begin{verbatim}
+    ClearSummation(&sum);
+
+    while (x を入力から読み込むのに成功した?)
+    {
+        AddSummaion(&sum, x);
+
+        CountOfSummation(&sum) と AverageOfSummation(&sum) を出力する;
+    }
+\end{verbatim}
+
+    今回の実験では、これらの{\tt Summation}型のデータ型の宣言や、{\tt Summation}型を操作する関数を初めから用意してありますので、実際にこれらを作成する必要はありません。利用する上で、どのように{\tt Summation}型を実装してあるのか興味のある人は、付属のソースSummation.cとSummation.hを読んでみてください。
+
+    \subsection{tcshの起動}
+
+    それでは方針が決まったところで、実際に作業を始めます。
+
+    ここの計算機センターでは標準でシェルがcsh（Cシェル）になっています。しかし、この実験のように対話的にシェルを使用する場合はtcsh（TCシェル）の方が劇的に使いやすくなっています。そこで、ktermで次のように入力してtcshを実行します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{exec tcsh}} {\sl Enter}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    （下線部分をドラッグしてマークしたあと、ktermにフォーカスをおいて、マウスの第2ボタンでペーストすることもできます。）
+
+    見ためには何も違いはありませんが、行の編集、入力履歴の再利用やファイル名の補完の機能などが追加されています。以降ではこれらの機能を随時紹介しながら作業を進めて行きます。
+
+    ここでは触れませんが、ログインする度にいちいち上記のような入力をしなくてもいいように、「ログインシェル」を変更することもできます。詳しくは参考文献をみてください。
+
+
+    \subsection{作業用ディレクトリの作成}
+
+    次のようにpwdコマンドを入力して、現在自分がどこのディレクトリにいるか（カレントディレクトリ）を確認してください。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{pwd}} {\sl Enter}（カレントディレクトリを表示する）\\
+	  {\tt /home/appi/foo} {\bf ...カレントディレクトリが表示されます。人によって異なります。}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    もしカレントディレクトリがホームディレクトリと違っていたら、cdコマンドでホームディレクトリに移動します。（ホームディレクトリがどこか知らない人は、移動後にpwdコマンドで表示させ、覚えてください。）
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{cd}} {\sl Enter}（ホームディレクトリに移動する）\\
+	  {\tt foo[bar]\% \underline{pwd}} {\sl Enter}（確認のため）\\
+	  {\tt /home/appi/foo} {\bf ...あなたのホームディレクトリになります。人によって異なります。}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    このホームディレクトリですべての作業を行うと、ファイルが散らばって面倒です。一般的には、一つのプログラムを作成するために、一つの作業用ディレクトリを準備します。そこで乱数の度数分布のプログラムを作成するためのディレクトリを次のように作ります。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{mkdir rand-distribution}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    次にこのディレクトリに移ります。そのためには次のように入力しなければなりません。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{cd rand-distribution}} {\sl Enter} {\bf ...実際に入力する前に下記を参照すること（以下同様）。}\\
+	
+      
+    \end{term}
+
+    このとき「{\tt rand-distribution}」を全部タイプするのは面倒です。ここでtcshのファイル名補完機能を用いると、タイプ量を減らすことができます。次のように途中までタイプした後、{\sl Tab }を入力（Tabと表記されたキーを押す）してみます。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{cd r}} {\sl Tab}\\
+	
+      
+    \end{term}
+
+    すると次のように展開されます。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% cd rand-distribution/}
+	
+      
+    \end{term}
+
+    あとは{\sl Enter }を入力するだけで、タイプミスもなく簡単に入力できます（最後のスラッシュ `/' はあってもなくてもいいので、消す必要はありません）。基本的にtcshを使用している場合、面倒だと思ったら{\sl Tab }を入力してみるといいでしょう。
+
+    もし{\sl Tab }を入力したときに「ピッ」と音がして何も展開されない場合は、名前が{\tt r}で始まるファイルやディレクトリが他にいくつかあるはずです。その場合は次のように{\sl Control}-dを入力して、{\tt r}で始まるものを表示します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{cd r}} {\sl Control}-d\\
+	  {\tt rand-distribution/  result}\\
+	  {\tt foo[bar]\% cd r}\\
+	
+      
+    \end{term}
+
+    この例では、「{\tt result}」というファイルがホームディレクトリにあった場合を想定しています。このような場合、次のように「{\tt ra}」までタイプしてから{\sl Tab }を入力すれば、
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{cd r}} {\sl Control}-d\\
+	  {\tt rand-distribution/  result}\\
+	  {\tt foo[bar]\% cd r\underline{a}} {\sl Tab}\\
+	
+      
+    \end{term}
+
+    次のように展開されてうまくいきます。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% cd rand-distribution/}
+	
+      
+    \end{term}
+
+    どちらにしろ、最後に念のためpwdコマンドでカレントディレクトリを確認します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{pwd}} {\sl Enter}\\
+	  {\tt /home/appi/foo/rand-distribution}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    \subsection{ソースの雛型のコピー}
+
+    プログラムをゼロから作成するのは面倒なことです。この実験ではプログラムを何も準備してこなかった人のために、その雛型を用意してあります。その雛型を変更することで、比較的容易にプログラムを作成できるかもしれません。
+
+    ファイルのコピーにはcpコマンドを用います。次のように入力してファイルを自分のホームディレクトリにコピーします。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{cp \symbol{126}i07500/skel/rand-distribution/* .}} {\sl Enter}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    このときもtcshのファイル名補完機能を用いると、タイプ量を減らすことができます。次のように途中までタイプした後、{\sl Tab}を入力します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{cp \symbol{126}i07500/s}} {\sl Tab}\\
+	
+      
+    \end{term}
+
+    すると次のように展開されます。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% cp \symbol{126}i07500/skel/}\\
+	
+      
+    \end{term}
+
+    さらに途中まで入力し、
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% cp \symbol{126}i07500/skel/\underline{r}} {\sl Tab}\\
+	
+      
+    \end{term}
+
+    もう一段展開します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% cp \symbol{126}i07500/skel/rand-distribution/}\\
+	
+      
+    \end{term}
+
+    あとは「{\tt * .}」だけを入力します。
+
+    ファイルをコピーしたら、念のためlsコマンドで確認してみてください。
+
+    \subsection{ソースの編集}
+
+    それでは実際にプログラムを編集します。プログラムを編集するにはエディタと呼ばれるものを使います。今回の実験ではMule（多言語版Emacs）という名前のものを使います。
+
+    \subsubsection{Muleの起動}
+
+    次のように入力してMuleを実行してください（最後に{\tt \&}を付けることに注意してください）。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{mule \&}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    もし最後の{\tt \&}を付けずに{\sl Enter }入力した場合は、そのktermにフォーカスがある状態で、{\sl Control}-zを入力します。すると次のようにシェルのプロンプトが表示されます。
+
+    \begin{term}
+      
+	
+	  {\tt \symbol{94}Z}\\
+	  {\tt Suspended}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    そこでさらに続けて次のように入力してください。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{bg}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    どちらにしてもNetscapeのときと同様に、ウィンドウマネージャが次のような枠を表示して、どこにMuleを配置するか聞いてくるので、適当な場所にマウスで移動させ、クリックして決定します。
+
+    \begin{center}\imgsrc{relocate.eps}\end{center}
+
+    決定すると、次のようにMuleが起動します。
+
+    \begin{center}\imgsrc{mule.eps}\end{center}
+
+    \subsubsection{Muleの外観}
+
+    Muleのウィンドウの一番上の部分には、マウスで操作できるメニューバーがあります。中央の領域は、バッファと呼ばれる編集対象の内容を表示、編集する編集領域です。下部に表示されている領域（反転表示されたモード行と最下部のエコー領域）は次のようなことを表しています。
+
+    \begin{center}\imgsrc{mule-mode-echo.eps}\end{center}
+
+    今回の実験で、このうち重要なのはバッファの名前と、エコー領域だけです。それぞれについての詳細を知りたい人は参考文献を読んでください。
+
+    \subsubsection{Muleのコマンド}
+
+    Muleにコマンドを入力するには、バッファにフォーカスがある状態で、特有な表記のコマンドを入力します。例えばMuleを終了させるコマンドは{\tt C-x C-c}と表記されますが、これは次のことを意味しています。
+
+    \begin{enumerate}
+      \item {\sl Control}-xを入力する。
+      \item 続けて{\sl Control}-cを入力する。
+    \end{enumerate}
+
+    {\tt C-x}と{\tt C-c}の間にスペースは入れません。なお、実際には{\sl Control}-xと{\sl Control}-cの間にコントロールキーを離して押し直す必要はなく、押し続けたままでx、cと押しても同じことになります。
+
+      また、{\tt M-x}と表記されたコマンドは、{\sl Meta}-xを入力（メタキーを押しながらxを入力）することを意味しています。もしキーボードにメタキーがない場合は、代わりに次のようにして{\tt M-x}を入力することもできます。
+
+    \begin{enumerate}
+      \item {\sl Escape}を入力する（Escと表記されたキーを押す）。
+      \item 続けてxを入力する。
+    \end{enumerate}
+
+    \subsubsection{C-g ``コマンドの中断'' --- 最初に知っておくべきコマンド}
+
+    キーを押し間違えてなにか間違ったコマンドを入力してしまい、Muleがおかしくなってしまったときは、とにかく{\tt C-g}を入力します。これを入力すると、エコー領域に
+      
+      \begin{term}
+	
+	  
+	    {\tt Quit}\\
+	  
+	
+      \end{term}
+      
+      と表示されて元の状態に戻ります。もしこのコマンドを入力してもMuleがおかしいままなら、教員やTAに相談してください。
+
+    \subsubsection{C-x C-f ``バッファを新しく作成してファイルを読み込む''}
+
+    前置きが長くなりましたが、それでは実際にファイル{\tt rand.c}を編集してみます。現在、バッファの名前は{\tt *scratch*}と表示されているはずです。そこで{\tt C-x C-f}を入力します。するとエコー領域に
+
+      \begin{term}
+	
+	  
+	    {\tt Find file: \symbol{126}/rand-distribution/\imgsrc{focus-in-cursor.eps}}\\
+	  
+	
+      \end{term}
+      
+      と表示され、カーソルがエコー領域に移動します。
+
+    あとは{\tt rand.c}とタイプすればいいのですが、Muleはtcshのようにファイル名補完機能をもっています。そこで
+
+      \begin{term}
+	
+	  
+	    {\tt Find file: \symbol{126}/rand-distribution/\underline{r}} {\sl Tab}\\
+	  
+	
+      \end{term}
+
+      と入力してみると、
+      
+      \begin{term}
+	
+	  
+	    {\tt Find file: \symbol{126}/rand-distribution/rand.c\imgsrc{focus-in-cursor.eps}}\\
+	  
+	
+      \end{term}
+
+      と展開されます。あとは{\sl Enter}を入力するだけです。
+
+    ファイル{\tt rand.c}が読み込まれると、バッファの名前が{\tt *scratch*}から{\tt rand.c}になるなどモード行の表示が変化し、カーソルは編集領域に戻ります。
+
+    \subsubsection{バッファの編集}
+
+    バッファの内容を編集するには、変更したい箇所にカーソルを移動させ、キーボードから入力します。カーソルを上下左右に移動させるには、対応する方向の矢印キーを押す（矢印キーが使えない場合は{\tt C-p}, {\tt C-n}, {\tt C-b}, {\tt C-f}がそれぞれ上下左右に対応します）か、その箇所をマウスでクリックします。
+
+    文字を消去するには{\tt C-d}か{\sl Delete}を入力します。{\tt C-d}はカーソルの右側の一文字を消去します。{\sl Delete}は左側の一文字を消去します。
+
+    Muleは間違いなく世界一高機能なエディタであり、今回説明する機能以外にも、覚えきれないほどの数々の便利な機能が用意されています（それゆえ複雑で巨大なものになっているという欠点もあります）。今後もワークステーションを利用したり、プログラムを作成する人は参考文献を読んで実践的な機能を修得することをお勧めします。
+
+    \subsubsection{C-x C-s ``バッファの内容をファイルに書き込む''}
+    
+    バッファの内容をファィルに書き込むには、{\tt C-x C-s}を入力します。書き込まれるとエコー領域に
+
+      \begin{term}
+	
+	  
+	    {\tt Wrote \symbol{126}/rand-distribution/rand.c}\\
+	  
+	
+      \end{term}
+
+      と表示されます。バッファの内容を変更しても、このコマンドを入力しなければ、ファイルの内容に変更が反映されないことに注意してください。
+
+    \subsubsection{C-x C-c ``Muleの終了''}
+
+    Muleを終わらせるには、{\tt C-x C-c}を入力します。今回の実験では、基本的に実験終了までMuleを実行したままの方が便利です。
+
+    \subsubsection{残りのファイルの編集}
+
+    {\tt rand.c}だけではなく、残りのファイル（{\tt count.c}, {\tt average.c}, {\tt variance.c}など）も編集します。
+
+    \subsection{実行ファイルの構築}
+
+    作成したプログラムをコンパイルします。今回の実験ではgccというCコンパイラを使います。
+
+    作成した4つのプログラムのうちの一つ、例えばrandコマンドを作成するにためは、ktermで次のように入力します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{gcc -o rand rand.c}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    入力後、ファイル{\tt rand.c}がコンパイルされて、実行ファイル{\tt rand}を得ることができます。しかし、普通は上記のような方法をとりません。
+
+    プログラムの開発では、「編集しコンパイルする」という作業が一回で済むことはまれです。コンパイルでエラーがでたり、あるいはコンパイルはエラー無しで通っても実行した結果が意図通りでないことが多いので、編集とコンパイルは何度も繰り返されるのが普通です。本来の用途とは少し異なりますが、ここではタイプを減らすためにmakeコマンドを使います。
+
+    makeコマンドは、カレントディレクトリにある{\tt Makefile}というファイルの内容にしたがって、プログラムを作成するコマンドを自動的に実行してくれます。今回は時間の関係で{\tt Makefile}の内容については説明しませんが、それほど難しいものではないので計算機でプログラムを作ることに興味のある人は参考文献を読んでみてください。
+
+    実際にmakeで構築するには、ktermで次のように入力します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{make}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    プログラムに間違いがなければ次のように出力され、自動的に4つの実行ファイル{\tt rand}、{\tt count}、{\tt average}、{\tt variance}が構築されます。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% make}\\
+	  {\tt gcc -Wall -O2 -pipe -D\_\_USE\_FIXED\_PROTOTYPES\_\_ -c rand.c}\\
+	  {\tt gcc -o rand rand.o -lm}\\
+	  {\tt gcc -Wall -O2 -pipe -D\_\_USE\_FIXED\_PROTOTYPES\_\_ -c count.c}\\
+	  {\tt gcc -o count count.o -lm}\\
+	  {\tt gcc -Wall -O2 -pipe -D\_\_USE\_FIXED\_PROTOTYPES\_\_ -c average.c}\\
+	  {\tt gcc -Wall -O2 -pipe -D\_\_USE\_FIXED\_PROTOTYPES\_\_ -c Summation.c}\\
+	  {\tt gcc -o average average.o Summation.o -lm}\\
+	  {\tt gcc -Wall -O2 -pipe -D\_\_USE\_FIXED\_PROTOTYPES\_\_ -c variance.c}\\
+	  {\tt gcc -o variance variance.o Summation.o -lm}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+間違いや（コンパイラにとって）怪しい部分が検出されると、次のように表示されます。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% make}\\
+	  {\tt gcc -Wall -O2 -pipe -c }ファイル名\\
+	  ファイル名{\tt : In function `}関数の名前{\tt ':}\\
+	  ファイル名{\tt :}行{\tt : warning: }警告の内容\\
+	  ファイル名{\tt :}行{\tt : }エラーの内容\\
+	  .\\
+	  .\\
+	  .\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    このような場合はエラーや警告の内容を調べ、Muleで修正し、もう一度makeしてみます。
+
+    正常に構築できたようであれば、次に進みます。
+
+    \subsection{プログラムの実行テスト}
+
+    \subsubsection{randコマンドのテスト}
+
+    ktermで次のように入力します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 5}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    正常にプログラムができていれば、次のように乱数が5つ表示されます（乱数の値は異なるかもしれません）。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% ./rand 5}\\
+	  {\tt 0.513870}\\
+	  {\tt 0.175741}\\
+	  {\tt 0.308652}\\
+	  {\tt 0.534534}\\
+	  {\tt 0.947628}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    正常に動作しなかったり、値がめちゃくちゃだったりした場合は、Muleで修正して再びmakeします。
+
+    \subsubsection{countコマンドのテスト}
+    次のように入力し、正しい値が表示されるかチェックします。
+    
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 5 | ./count 0.1 0.2}} {\sl Enter}\\
+	
+      
+    \end{term}
+    
+    また範囲をいくつか変えて確認してみてください。
+
+    \subsubsection{averageコマンドとvarianceコマンドのテスト}
+
+    averageコマンドに関しては、次のように入力し、正しい値が表示されるかチェックします。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 5 | ./average}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    varianceコマンドについては、最初の3つくらいで確認してみてください（手で検算するには大変です）。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 3 | ./variance}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    \subsection{度数分布グラフの作成}
+
+    例として10000個の（0以上1未満の）乱数の度数分布を考えてみます。もし、そのうち0以上0.1未満の範囲にある乱数の個数はと尋ねられたら、たぶん1000個くらいだろうと答えることができます。おそらく0.1以上0.2未満の乱数の個数も、0.2以上0.3未満の個数も、そして同様に0.9以上1.0未満の個数もそうなるでしょう。そこでこれらのことを実際に試してみます。そのためには次のようにコマンドを入力すればよいことがわかると思います。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 10000 | ./count 0.0 0.1}} {\sl Enter}\\
+	  {\tt 975} {\bf ...10000個の乱数のうち0.0以上0.1未満のものは975個だった}\\
+	  {\tt foo[bar]\% \underline{./rand 10000 | ./count 0.1 0.2}} {\sl Enter}\\
+	  {\tt 1010} {\bf ...10000個の乱数のうち0.1以上0.2未満のものは1010個だった}\\
+	  {\tt .}\\
+	  {\tt .}\\
+	  {\tt .}\\
+	
+      
+    \end{term}
+
+    もちろん、これらの値を紙に写してグラフ用紙にプロットして、度数分布グラフを描くこともできます。今回は、グラフを作成するためのシェルスクリプト{\tt bargraph.sh}を用意してありますので、これを利用します。
+
+    \subsubsection{グラフの表示}
+
+    ktermで次のように入力すればグラフを作成することができます。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% }\underline{{\tt sh bargraph.sh }試行回数} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    もし試行回数が10000回ならば、次のように入力します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{sh bargraph.sh 10000}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    入力後、シェルスクリプトからxgraphというグラフ表示用のアプリケーションが呼び出されます。ウィンドウマネージャが次のような枠を表示して、どこにxgraphを配置するか聞いてくるので、適当な場所にマウスで移動させ、クリックして決定します。
+
+    \begin{center}\imgsrc{relocate.eps}\end{center}
+
+    決定すると次のようなxgraphのウィンドウが現れます。
+
+    \begin{center}\imgsrc{xgraph.eps}\end{center}
+
+    \subsubsection{グラフの印刷}
+
+    グラフを印刷するには、xgraphのウィンドウの左上にある領域\imgsrc{xgraph-button-hardcopy.eps}をクリックします。すると次のようなウィンドウが現れます。
+
+    \begin{center}\imgsrc{xgraph-hardcopy.eps}\end{center}
+
+    今回の実験では、そのままウィンドウ下部の領域\imgsrc{xgraph-button-hardcopy-ok.eps}をクリックしてください。しばらくすると計算機室のプリンタに出力されます。
+
+    \subsubsection{xgraphの終了}
+
+    xgraphのウィンドウの左上にある領域\imgsrc{xgraph-button-close.eps}をクリックすると、xgraphは終了します。
+
+    \subsection{平均と分散のグラフの作成}
+
+    \subsubsection{平均のグラフの作成}
+
+    乱数の平均値が試行回数$n$が増加するにしたがってどのように収束するか、グラフにプロットしてみます。これについてもシェルスクリプト{\tt graph.sh}が用意してあります。試行回数が10000回ならば、ktermで次のように入力します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 10000 | ./average | sh graph.sh -0 average}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    度数分布グラフのときと同様に次のようなウィンドウが現れます（最後の「{\tt -0 average}」は、ウィンドウの右上にあるレジェンドの指定になります）。
+
+    \begin{center}\imgsrc{average.eps}\end{center}
+
+    平均値が収束している様子を確認したら、印刷して終了します。
+
+    また、試行回数10000回目での乱数の平均を数値で知りたい場合は、次のように入力することで知ることができます。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 10000 | ./average | tail}} {\sl Enter}\\
+	  {\tt 9991 0.502505}\\
+	  {\tt 9992 0.502488}\\
+	  {\tt 9993 0.502467}\\
+	  {\tt 9994 0.502435}\\
+	  {\tt 9995 0.502442}\\
+	  {\tt 9996 0.502450}\\
+	  {\tt 9997 0.502454}\\
+	  {\tt 9998 0.502437}\\
+	  {\tt 9999 0.502477}\\
+	  {\tt 10000 0.502515}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+    \subsubsection{分散のグラフの作成}
+
+    同様に、乱数の分散についても同様なグラフを作成します。ktermで次のように入力します。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 10000 | ./variance | sh graph.sh -0 variance}} {\sl Enter}\\
+	
+      
+    \end{term}
+
+    分散が収束している様子を確認したら、印刷して終了します。
+
+    また、試行回数10000回目での乱数の分散を数値で知りたい場合は、次のように入力することで知ることができます。
+
+    \begin{term}
+      
+	
+	  {\tt foo[bar]\% \underline{./rand 10000 | ./variance | tail}} {\sl Enter}\\
+	  {\tt 9991 0.083176}\\
+	  {\tt 9992 0.083171}\\
+	  {\tt 9993 0.083167}\\
+	  {\tt 9994 0.083169}\\
+	  {\tt 9995 0.083161}\\
+	  {\tt 9996 0.083153}\\
+	  {\tt 9997 0.083145}\\
+	  {\tt 9998 0.083140}\\
+	  {\tt 9999 0.083147}\\
+	  {\tt 10000 0.083154}\\
+	  {\tt foo[bar]\% }\\
+	
+      
+    \end{term}
+
+
+  
+

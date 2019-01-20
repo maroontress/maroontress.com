@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE package SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd">
+<package name="foo">
+  <desc>
+    <p>中級編のサンプルを提供します。初級編のサンプルと簡単なサンプルは<hyperlink namespace="com_example">こちら</hyperlink>、上級編のサンプルは<hyperlink namespace="bar">こちら</hyperlink>です。</p>
+    <p>このパッケージのクラスはすべて名前空間展開を利用しています。</p>
+
+    <!--
+    <p><hyperlink namespace="foo.Bool">foo_Boolクラス</hyperlink></p>
+    <p><hyperlink namespace="foo.Bool" label="target">foo_Boolクラスの"target"</hyperlink></p>
+    <p><hyperlink namespace="foo">fooパッケージ</hyperlink></p>
+    <p><hyperlink namespace="foo" label="target">fooパッケージの"target"</hyperlink></p>
+    <p><hyperlink>このパッケージ（foo）そのもの</hyperlink></p>
+    <p><hyperlink label="target">このパッケージの"target"</hyperlink></p>
+    -->
+  </desc>
+</package>

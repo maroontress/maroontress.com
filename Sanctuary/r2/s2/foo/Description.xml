@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd">
+<class package="foo" name="Description">
+  <namespace/>
+
+  <struct tag="@">
+    <member type="int" name="value">
+      <desc>
+        <brief>構造体のメンバのドキュメントの書き方を説明します。</brief>
+        <p>このメンバの説明を記述します。</p>
+
+        <section>メンバの説明中のセクション</section>
+        <p>セクションはこのように展開されます。</p>
+      </desc>
+    </member>
+
+    <methodmember name="method">
+      <param type="int" name="in">
+	<desc>
+          <brief>関数の引数のドキュメントの書き方を説明します。</brief>
+          <p>この引数の説明を記述します。</p>
+
+          <section>引数の説明中のセクション</section>
+          <p>セクションはこのように展開されます。</p>
+        </desc>
+      </param>
+      <return type="int">
+	<desc>
+          <brief>関数の戻り値のドキュメントの書き方を説明します。</brief>
+          <p>この戻り値の説明を記述します。</p>
+
+          <section>戻り値の説明中のセクション</section>
+          <p>セクションはこのように展開されます。</p>
+        </desc>
+      </return>
+      <desc>
+        <brief>構造体の関数ポインタ型メンバのドキュメントの書き方を説明します。</brief>
+        <p>この関数ポインタ型メンバの説明を記述します。</p>
+
+        <section>関数ポインタ型メンバの説明中のセクション</section>
+        <p>セクションはこのように展開されます。</p>
+      </desc>
+    </methodmember>
+
+    <desc>
+      <brief>構造体のドキュメントの書き方を説明します。</brief>
+      <p>この構造体の説明を記述します。</p>
+
+      <section>構造体の説明中のセクション</section>
+      <p>セクションはこのように展開されます。</p>
+    </desc>
+  </struct>
+
+  <method name="method">
+    <param type="int" name="in">
+      <desc>
+        <brief>関数の引数のドキュメントの書き方を説明します。</brief>
+        <p>この引数の説明を記述します。</p>
+
+        <section>引数の説明中のセクション</section>
+        <p>セクションはこのように展開されます。</p>
+      </desc>
+    </param>
+    <return type="int">
+      <desc>
+        <brief>関数の戻り値のドキュメントの書き方を説明します。</brief>
+        <p>この戻り値の説明を記述します。</p>
+
+        <section>戻り値の説明中のセクション</section>
+        <p>セクションはこのように展開されます。</p>
+      </desc>
+    </return>
+    <desc>
+      <brief>関数のドキュメントの書き方を説明します。</brief>
+      <p>この関数の説明を記述します。</p>
+
+      <section>関数の説明中のセクション</section>
+      <p>セクションはこのように展開されます。</p>
+    </desc>
+  </method>
+
+  <desc>
+    <brief>Descriptionクラスはドキュメントの書き方を提供します。</brief>
+    <p><hypertarget label="target">このクラスの説明</hypertarget>を記述します。</p>
+
+    <section>クラスの説明中のセクション</section>
+    <p>セクションはこのように展開されます。</p>
+
+    <section>文字の装飾</section>
+    <p>強調したい語句は<em>このように</em>なります。</p>
+    <p>タイプライタ体は<code>keyword</code>のようになります。</p>
+    <p>引数やパラメータは<arg>argument</arg>のようになります。</p>
+    <p>マイナス記号は<math>-1</math>のようになります。</p>
+
+    <section>ハイパーリンク</section>
+    <p>URLへのリンクは<a href="http://www.example.com/">http://www.example.com/</a>のようになります。</p>
+    <p>同一クラス内へのリンクは<hyperlink label="target">このように</hyperlink>なります。</p>
+    <p>他のクラスへのリンクは<hyperlink namespace="com_example.Integer">com_example_Integerクラス</hyperlink>のように、パッケージの文書へのリンクは<hyperlink namespace="com_example">com_exampleパッケージ</hyperlink>のようになります。</p>
+
+    <section>リスト</section>
+    <p>リストは次のように展開されます。</p>
+    <ul>
+      <li>リストの項目1</li>
+      <li>リストの項目2</li>
+    </ul>
+
+    <see>参照先の項目を記述します。</see>
+
+    <note>注意すべき項目を記述します。</note>
+  </desc>
+</class>

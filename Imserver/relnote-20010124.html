@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>リリースノート 2001-01-24</title>
+  </head>
+
+  <body>
+    <h1>リリースノート 2001-01-24</h1>
+
+    <ul>
+      <li>変換状態における処理のコード（convert.c）を共通化した。</li>
+      <li>ICの状態領域のAreaNeeded属性とArea属性に暫定的に対応した。</li>
+      <li>On-The-RootとOver-The-Spotに対応するコードを追加した（補助クライアントを同時に使用することで暫定的に対応）。</li>
+      <li>前編集領域または状態領域のフォントセット属性が変更された場合、新しく指定されたフォントセット名が現在のものと同じ場合は何もしないようにした（性能改善のため）。</li>
+      <li>XIM_RESET_ICを受け取ったときに前編集文字列を消去するタイミングを、リプライ前からリプライ後に変更した。</li>
+    </ul>
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jun  2 23:53:20 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Sat Nov 23 21:05:23 JST 2002
+<!-- hhmts end -->
+  </body>
+</html>

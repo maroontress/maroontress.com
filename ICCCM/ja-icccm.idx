@@ -1,0 +1,770 @@
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{2}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{2}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{2}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{2}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{2}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{2}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{2}
+\indexentry{PropertyNotify@{\romanshape  {n}\selectfont  PropertyNotify}}{2}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{2}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{2}
+\indexentry{GetSelectionOwner@{\romanshape  {n}\selectfont  GetSelectionOwner}}{2}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{2}
+\indexentry{SelectionClear@{\romanshape  {n}\selectfont  SelectionClear}}{2}
+\indexentry{GetSelectionOwner@{\romanshape  {n}\selectfont  GetSelectionOwner}}{2}
+\indexentry{GetSelectionOwner@{\romanshape  {n}\selectfont  GetSelectionOwner}}{2}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{2}
+\indexentry{PRIMARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PRIMARY}}{3}
+\indexentry{PRIMARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PRIMARY}}{3}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{3}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{3}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{3}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{3}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{3}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{3}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{3}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{3}
+\indexentry{SendEvent@{\romanshape  {n}\selectfont  SendEvent}}{3}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{3}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{3}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{3}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{3}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{4}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{4}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{4}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{4}
+\indexentry{SendEvent@{\romanshape  {n}\selectfont  SendEvent}}{4}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{4}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{4}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{4}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{4}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{4}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{4}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{4}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{4}
+\indexentry{Selection\discretionary {-}{}{}Request@{\romanshape  {n}\selectfont  Selection\discretionary {-}{}{}Request}}{4}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{4}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{4}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{5}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{5}
+\indexentry{PropertyNotify@{\romanshape  {n}\selectfont  PropertyNotify}}{5}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{5}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{5}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{5}
+\indexentry{SelectionClear@{\romanshape  {n}\selectfont  SelectionClear}}{5}
+\indexentry{SelectionClear@{\romanshape  {n}\selectfont  SelectionClear}}{5}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{5}
+\indexentry{xterm@{\romanseries  {b}\selectfont  xterm}}{5}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{6}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{6}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{6}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{6}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{6}
+\indexentry{SelectionClear@{\romanshape  {n}\selectfont  SelectionClear}}{6}
+\indexentry{SelectionClear@{\romanshape  {n}\selectfont  SelectionClear}}{6}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{6}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{6}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{6}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{6}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{6}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{6}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{6}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{6}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{7}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{7}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{7}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{7}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{7}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{7}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{7}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{7}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{7}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{7}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{7}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{7}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{7}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{7}
+\indexentry{GetProperty@{\romanshape  {n}\selectfont  GetProperty}}{7}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{7}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{7}
+\indexentry{GetProperty@{\romanshape  {n}\selectfont  GetProperty}}{8}
+\indexentry{AnyPropertyType@{\romanfamily  {pcr}\selectfont  AnyPropertyType}}{8}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{8}
+\indexentry{GetProperty@{\romanshape  {n}\selectfont  GetProperty}}{8}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{8}
+\indexentry{AnyPropertyType@{\romanfamily  {pcr}\selectfont  AnyPropertyType}}{8}
+\indexentry{GetProperty@{\romanshape  {n}\selectfont  GetProperty}}{8}
+\indexentry{True@{\romanfamily  {pcr}\selectfont  True}}{8}
+\indexentry{GetProperty@{\romanshape  {n}\selectfont  GetProperty}}{8}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{8}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{8}
+\indexentry{DeleteProperty@{\romanshape  {n}\selectfont  DeleteProperty}}{8}
+\indexentry{GetProperty@{\romanshape  {n}\selectfont  GetProperty}}{8}
+\indexentry{True@{\romanfamily  {pcr}\selectfont  True}}{8}
+\indexentry{ChangeProperty@{\romanshape  {n}\selectfont  ChangeProperty}}{8}
+\indexentry{INCR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INCR}}{9}
+\indexentry{SetSelectionOwner@{\romanshape  {n}\selectfont  SetSelectionOwner}}{9}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{9}
+\indexentry{ChangeProperty@{\romanshape  {n}\selectfont  ChangeProperty}}{9}
+\indexentry{Append@{\romanfamily  {pcr}\selectfont  Append}}{9}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{9}
+\indexentry{GetProperty@{\romanshape  {n}\selectfont  GetProperty}}{9}
+\indexentry{PRIMARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PRIMARY}}{9}
+\indexentry{SECONDARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  SECONDARY}}{9}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{9}
+\indexentry{PRIMARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PRIMARY}}{10}
+\indexentry{SECONDARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  SECONDARY}}{10}
+\indexentry{PRIMARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PRIMARY}}{10}
+\indexentry{SECONDARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  SECONDARY}}{10}
+\indexentry{PRIMARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PRIMARY}}{10}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{10}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{10}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{10}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{10}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{10}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{10}
+\indexentry{SelectionClear@{\romanshape  {n}\selectfont  SelectionClear}}{11}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{11}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{11}
+\indexentry{TIMESTAMP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TIMESTAMP}}{11}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{11}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{11}
+\indexentry{CLIPBOARD@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIPBOARD}}{11}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{11}
+\indexentry{ADOBE\_PORTABLE\_DOCUMENT\_FORMAT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ADOBE\_PORTABLE\_DOCUMENT\_FORMAT}}{12}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{12}
+\indexentry{APPLE\_PICT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  APPLE\_PICT}}{12}
+\indexentry{APPLE\_PICT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  APPLE\_PICT}}{12}
+\indexentry{BACKGROUND@{\romanfamily  {phv}\fontseries  {mc}\selectfont  BACKGROUND}}{12}
+\indexentry{PIXEL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXEL}}{12}
+\indexentry{BITMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  BITMAP}}{12}
+\indexentry{BITMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  BITMAP}}{12}
+\indexentry{CHARACTER\_POSITION@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CHARACTER\_POSITION}}{12}
+\indexentry{SPAN@{\romanfamily  {phv}\fontseries  {mc}\selectfont  SPAN}}{12}
+\indexentry{CLASS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLASS}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{CLIENT\_WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CLIENT\_WINDOW}}{12}
+\indexentry{WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WINDOW}}{12}
+\indexentry{COLORMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COLORMAP}}{12}
+\indexentry{COLORMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COLORMAP}}{12}
+\indexentry{COLUMN\_NUMBER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COLUMN\_NUMBER}}{12}
+\indexentry{SPAN@{\romanfamily  {phv}\fontseries  {mc}\selectfont  SPAN}}{12}
+\indexentry{COMPOUND\_TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COMPOUND\_TEXT}}{12}
+\indexentry{COMPOUND\_TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COMPOUND\_TEXT}}{12}
+\indexentry{DELETE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DELETE}}{12}
+\indexentry{NULL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  NULL}}{12}
+\indexentry{DRAWABLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DRAWABLE}}{12}
+\indexentry{DRAWABLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DRAWABLE}}{12}
+\indexentry{ENCAPSULATED\_POSTSCRIPT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ENCAPSULATED\_POSTSCRIPT}}{12}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{12}
+\indexentry{ENCAPSULATED\_POSTSCRIPT\_INTERCHANGE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ENCAPSULATED\_POSTSCRIPT\_INTERCHANGE}}{12}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{12}
+\indexentry{FILE\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  FILE\_NAME}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{FOREGROUND@{\romanfamily  {phv}\fontseries  {mc}\selectfont  FOREGROUND}}{12}
+\indexentry{PIXEL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXEL}}{12}
+\indexentry{HOST\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  HOST\_NAME}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{INSERT\_PROPERTY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INSERT\_PROPERTY}}{12}
+\indexentry{NULL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  NULL}}{12}
+\indexentry{INSERT\_SELECTION@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INSERT\_SELECTION}}{12}
+\indexentry{NULL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  NULL}}{12}
+\indexentry{LENGTH@{\romanfamily  {phv}\fontseries  {mc}\selectfont  LENGTH}}{12}
+\indexentry{INTEGER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INTEGER}}{12}
+\indexentry{LINE\_NUMBER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  LINE\_NUMBER}}{12}
+\indexentry{SPAN@{\romanfamily  {phv}\fontseries  {mc}\selectfont  SPAN}}{12}
+\indexentry{LIST\_LENGTH@{\romanfamily  {phv}\fontseries  {mc}\selectfont  LIST\_LENGTH}}{12}
+\indexentry{INTEGER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INTEGER}}{12}
+\indexentry{MODULE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MODULE}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{12}
+\indexentry{ATOM\_PAIR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ATOM\_PAIR}}{12}
+\indexentry{NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  NAME}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{ODIF@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ODIF}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{OWNER\_OS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  OWNER\_OS}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{PIXMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXMAP}}{12}
+\indexentry{PIXMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXMAP}}{12}
+\indexentry{POSTSCRIPT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  POSTSCRIPT}}{12}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{12}
+\indexentry{PROCEDURE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PROCEDURE}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{PROCESS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PROCESS}}{12}
+\indexentry{INTEGER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INTEGER}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{12}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{12}
+\indexentry{TARGETS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TARGETS}}{12}
+\indexentry{ATOM@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ATOM}}{12}
+\indexentry{TASK@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TASK}}{12}
+\indexentry{INTEGER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INTEGER}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{TIMESTAMP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TIMESTAMP}}{12}
+\indexentry{INTEGER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INTEGER}}{12}
+\indexentry{USER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  USER}}{12}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{12}
+\indexentry{ENCAPSULATED\_POSTSCRIPT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ENCAPSULATED\_POSTSCRIPT}}{12}
+\indexentry{ENCAPSULATED\_POSTSCRIPT\_INTERCHANGE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ENCAPSULATED\_POSTSCRIPT\_INTERCHANGE}}{12}
+\indexentry{\_ADOBE\_EPS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  \_ADOBE\_EPS}}{12}
+\indexentry{\_ADOBE\_EPSI@{\romanfamily  {phv}\fontseries  {mc}\selectfont  \_ADOBE\_EPSI}}{12}
+\indexentry{\_ADOBE\_@{\romanfamily  {phv}\fontseries  {mc}\selectfont  \_ADOBE\_}}{12}
+\indexentry{LENGTH@{\romanfamily  {phv}\fontseries  {mc}\selectfont  LENGTH}}{12}
+\indexentry{LENGTH@{\romanfamily  {phv}\fontseries  {mc}\selectfont  LENGTH}}{12}
+\indexentry{PIXMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXMAP}}{12}
+\indexentry{PIXMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXMAP}}{12}
+\indexentry{DRAWABLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DRAWABLE}}{12}
+\indexentry{DRAWABLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DRAWABLE}}{12}
+\indexentry{TARGETS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TARGETS}}{13}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{13}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{13}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{13}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{13}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{13}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{13}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{13}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{13}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{13}
+\indexentry{SelectionRequest@{\romanshape  {n}\selectfont  SelectionRequest}}{13}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{13}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{13}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{13}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{13}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{13}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{13}
+\indexentry{DELETE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DELETE}}{13}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{13}
+\indexentry{DELETE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DELETE}}{13}
+\indexentry{TIMESTAMP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TIMESTAMP}}{13}
+\indexentry{GetSelectionOwner@{\romanshape  {n}\selectfont  GetSelectionOwner}}{13}
+\indexentry{TIMESTAMP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TIMESTAMP}}{13}
+\indexentry{DELETE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DELETE}}{14}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{14}
+\indexentry{NULL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  NULL}}{14}
+\indexentry{NULL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  NULL}}{14}
+\indexentry{InternAtom@{\romanshape  {n}\selectfont  InternAtom}}{14}
+\indexentry{NULL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  NULL}}{14}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{14}
+\indexentry{PRIMARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PRIMARY}}{14}
+\indexentry{SECONDARY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  SECONDARY}}{14}
+\indexentry{DELETE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DELETE}}{14}
+\indexentry{NULL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  NULL}}{14}
+\indexentry{INSERT\_SELECTION@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INSERT\_SELECTION}}{14}
+\indexentry{ATOM\_PAIR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ATOM\_PAIR}}{14}
+\indexentry{INSERT\_SELECTION@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INSERT\_SELECTION}}{14}
+\indexentry{INSERT\_PROPERTY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INSERT\_PROPERTY}}{15}
+\indexentry{INSERT\_SELECTION@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INSERT\_SELECTION}}{15}
+\indexentry{ConvertSelection@{\romanshape  {n}\selectfont  ConvertSelection}}{15}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{15}
+\indexentry{INCR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INCR}}{15}
+\indexentry{APPLE\_PICT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  APPLE\_PICT}}{15}
+\indexentry{ATOM@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ATOM}}{15}
+\indexentry{ATOM\_PAIR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ATOM\_PAIR}}{15}
+\indexentry{BITMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  BITMAP}}{15}
+\indexentry{C\_STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  C\_STRING}}{15}
+\indexentry{COLORMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COLORMAP}}{15}
+\indexentry{COMPOUND\_TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COMPOUND\_TEXT}}{15}
+\indexentry{DRAWABLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DRAWABLE}}{15}
+\indexentry{INCR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INCR}}{15}
+\indexentry{INTEGER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INTEGER}}{15}
+\indexentry{PIXEL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXEL}}{15}
+\indexentry{PIXMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXMAP}}{15}
+\indexentry{SPAN@{\romanfamily  {phv}\fontseries  {mc}\selectfont  SPAN}}{15}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{15}
+\indexentry{WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WINDOW}}{15}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{16}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{16}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{16}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{16}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{16}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{16}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{16}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{16}
+\indexentry{COMPOUND\_TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COMPOUND\_TEXT}}{16}
+\indexentry{C\_STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  C\_STRING}}{16}
+\indexentry{C\_STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  C\_STRING}}{16}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{16}
+\indexentry{COMPOUND\_TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COMPOUND\_TEXT}}{16}
+\indexentry{C\_STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  C\_STRING}}{16}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{16}
+\indexentry{COMPOUND\_TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COMPOUND\_TEXT}}{16}
+\indexentry{INCR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INCR}}{17}
+\indexentry{INCR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INCR}}{17}
+\indexentry{INCR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INCR}}{17}
+\indexentry{PropertyNotify@{\romanshape  {n}\selectfont  PropertyNotify}}{17}
+\indexentry{Deleted@{\romanfamily  {pcr}\selectfont  Deleted}}{17}
+\indexentry{Property\discretionary {-}{}{}Notify@{\romanshape  {n}\selectfont  Property\discretionary {-}{}{}Notify}}{17}
+\indexentry{Deleted@{\romanfamily  {pcr}\selectfont  Deleted}}{17}
+\indexentry{SelectionNotify@{\romanshape  {n}\selectfont  SelectionNotify}}{17}
+\indexentry{True@{\romanfamily  {pcr}\selectfont  True}}{17}
+\indexentry{GetProperty@{\romanshape  {n}\selectfont  GetProperty}}{17}
+\indexentry{NewValue@{\romanfamily  {pcr}\selectfont  NewValue}}{17}
+\indexentry{PropertyNotify@{\romanshape  {n}\selectfont  PropertyNotify}}{17}
+\indexentry{PropertyNotify@{\romanshape  {n}\selectfont  PropertyNotify}}{17}
+\indexentry{PIXMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXMAP}}{17}
+\indexentry{BITMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  BITMAP}}{17}
+\indexentry{DRAWABLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  DRAWABLE}}{17}
+\indexentry{WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WINDOW}}{17}
+\indexentry{GetGeometry@{\romanshape  {n}\selectfont  GetGeometry}}{17}
+\indexentry{INCREMENTAL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INCREMENTAL}}{17}
+\indexentry{MULTIPLE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MULTIPLE}}{18}
+\indexentry{FOREGROUND@{\romanfamily  {phv}\fontseries  {mc}\selectfont  FOREGROUND}}{18}
+\indexentry{PIXEL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXEL}}{18}
+\indexentry{BACKGROUND@{\romanfamily  {phv}\fontseries  {mc}\selectfont  BACKGROUND}}{18}
+\indexentry{PIXEL@{\romanfamily  {phv}\fontseries  {mc}\selectfont  PIXEL}}{18}
+\indexentry{COLORMAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  COLORMAP}}{18}
+\indexentry{SPAN@{\romanfamily  {phv}\fontseries  {mc}\selectfont  SPAN}}{18}
+\indexentry{LINE\_NUMBER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  LINE\_NUMBER}}{18}
+\indexentry{CHARACTER\_POSITION@{\romanfamily  {phv}\fontseries  {mc}\selectfont  CHARACTER\_POSITION}}{18}
+\indexentry{GetSelectionOwner@{\romanshape  {n}\selectfont  GetSelectionOwner}}{18}
+\indexentry{WM\_S2@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_S2}}{19}
+\indexentry{WM\_S2@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_S2}}{19}
+\indexentry{SubstructureRedirect@{\romanshape  {n}\selectfont  SubstructureRedirect}}{19}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{19}
+\indexentry{GetSelectionOwner@{\romanshape  {n}\selectfont  GetSelectionOwner}}{19}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{19}
+\indexentry{GetSelectionOwner@{\romanshape  {n}\selectfont  GetSelectionOwner}}{19}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{19}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{19}
+\indexentry{SendEvent@{\romanshape  {n}\selectfont  SendEvent}}{19}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{19}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{19}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{19}
+\indexentry{MANAGER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MANAGER}}{19}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{19}
+\indexentry{MANAGER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  MANAGER}}{19}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{19}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{22}
+\indexentry{Replace@{\romanfamily  {pcr}\selectfont  Replace}}{23}
+\indexentry{Replace@{\romanfamily  {pcr}\selectfont  Replace}}{23}
+\indexentry{ChangeProperty@{\romanshape  {n}\selectfont  ChangeProperty}}{23}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{23}
+\indexentry{WM\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NAME}}{24}
+\indexentry{WM\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NAME}}{24}
+\indexentry{WM\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NAME}}{24}
+\indexentry{WM\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NAME}}{24}
+\indexentry{WM\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NAME}}{24}
+\indexentry{WM\_ICON\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_NAME}}{24}
+\indexentry{WM\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NAME}}{24}
+\indexentry{WM\_ICON\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_NAME}}{24}
+\indexentry{WM\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NAME}}{24}
+\indexentry{WM\_NORMAL\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NORMAL\_HINTS}}{24}
+\indexentry{WM\_SIZE\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_SIZE\_HINTS}}{24}
+\indexentry{NorthWest@{\romanfamily  {pcr}\selectfont  NorthWest}}{25}
+\indexentry{WM\_SIZE\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_SIZE\_HINTS}}{25}
+\indexentry{USPosition@{\romanfamily  {pcr}\selectfont  USPosition}}{25}
+\indexentry{USSize@{\romanfamily  {pcr}\selectfont  USSize}}{25}
+\indexentry{PPosition@{\romanfamily  {pcr}\selectfont  PPosition}}{25}
+\indexentry{PSize@{\romanfamily  {pcr}\selectfont  PSize}}{25}
+\indexentry{PMinSize@{\romanfamily  {pcr}\selectfont  PMinSize}}{25}
+\indexentry{PMaxSize@{\romanfamily  {pcr}\selectfont  PMaxSize}}{25}
+\indexentry{PResizeInc@{\romanfamily  {pcr}\selectfont  PResizeInc}}{25}
+\indexentry{PAspect@{\romanfamily  {pcr}\selectfont  PAspect}}{25}
+\indexentry{PBaseSize@{\romanfamily  {pcr}\selectfont  PBaseSize}}{25}
+\indexentry{PWinGravity@{\romanfamily  {pcr}\selectfont  PWinGravity}}{25}
+\indexentry{USPosition@{\romanfamily  {pcr}\selectfont  USPosition}}{25}
+\indexentry{USSize@{\romanfamily  {pcr}\selectfont  USSize}}{25}
+\indexentry{PPosition@{\romanfamily  {pcr}\selectfont  PPosition}}{25}
+\indexentry{PSize@{\romanfamily  {pcr}\selectfont  PSize}}{25}
+\indexentry{Unmap@{\romanfamily  {pcr}\selectfont  Unmap}}{25}
+\indexentry{NorthWest@{\romanfamily  {pcr}\selectfont  NorthWest}}{25}
+\indexentry{North@{\romanfamily  {pcr}\selectfont  North}}{25}
+\indexentry{NorthEast@{\romanfamily  {pcr}\selectfont  NorthEast}}{25}
+\indexentry{West@{\romanfamily  {pcr}\selectfont  West}}{25}
+\indexentry{Center@{\romanfamily  {pcr}\selectfont  Center}}{25}
+\indexentry{East@{\romanfamily  {pcr}\selectfont  East}}{25}
+\indexentry{SouthWest@{\romanfamily  {pcr}\selectfont  SouthWest}}{25}
+\indexentry{South@{\romanfamily  {pcr}\selectfont  South}}{25}
+\indexentry{SouthEast@{\romanfamily  {pcr}\selectfont  SouthEast}}{25}
+\indexentry{Static@{\romanfamily  {pcr}\selectfont  Static}}{25}
+\indexentry{NorthWest@{\romanfamily  {pcr}\selectfont  NorthWest}}{25}
+\indexentry{NorthEast@{\romanfamily  {pcr}\selectfont  NorthEast}}{25}
+\indexentry{SouthWest@{\romanfamily  {pcr}\selectfont  SouthWest}}{25}
+\indexentry{SouthEast@{\romanfamily  {pcr}\selectfont  SouthEast}}{25}
+\indexentry{North@{\romanfamily  {pcr}\selectfont  North}}{25}
+\indexentry{South@{\romanfamily  {pcr}\selectfont  South}}{25}
+\indexentry{East@{\romanfamily  {pcr}\selectfont  East}}{25}
+\indexentry{West@{\romanfamily  {pcr}\selectfont  West}}{25}
+\indexentry{Center@{\romanfamily  {pcr}\selectfont  Center}}{25}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{26}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{26}
+\indexentry{WM\_NORMAL\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NORMAL\_HINTS}}{26}
+\indexentry{WM\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NAME}}{26}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{26}
+\indexentry{InputHint@{\romanfamily  {pcr}\selectfont  InputHint}}{26}
+\indexentry{StateHint@{\romanfamily  {pcr}\selectfont  StateHint}}{26}
+\indexentry{IconPixmapHint@{\romanfamily  {pcr}\selectfont  IconPixmapHint}}{26}
+\indexentry{IconWindowHint@{\romanfamily  {pcr}\selectfont  IconWindowHint}}{26}
+\indexentry{IconPositionHint@{\romanfamily  {pcr}\selectfont  IconPositionHint}}{26}
+\indexentry{IconMaskHint@{\romanfamily  {pcr}\selectfont  IconMaskHint}}{26}
+\indexentry{WindowGroupHint@{\romanfamily  {pcr}\selectfont  WindowGroupHint}}{26}
+\indexentry{MessageHint@{\romanfamily  {pcr}\selectfont  MessageHint}}{26}
+\indexentry{UrgencyHint@{\romanfamily  {pcr}\selectfont  UrgencyHint}}{26}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{27}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{27}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{27}
+\indexentry{True@{\romanfamily  {pcr}\selectfont  True}}{27}
+\indexentry{NormalState@{\romanfamily  {pcr}\selectfont  NormalState}}{27}
+\indexentry{IconicState@{\romanfamily  {pcr}\selectfont  IconicState}}{27}
+\indexentry{WM\_ICON\_SIZE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_SIZE}}{27}
+\indexentry{MessageHint@{\romanfamily  {pcr}\selectfont  MessageHint}}{28}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{28}
+\indexentry{UrgencyHint@{\romanfamily  {pcr}\selectfont  UrgencyHint}}{28}
+\indexentry{UrgencyHint@{\romanfamily  {pcr}\selectfont  UrgencyHint}}{28}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{28}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{29}
+\indexentry{WM\_CLASS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_CLASS}}{29}
+\indexentry{-name@{\romanfamily  {pcr}\selectfont  -name}}{29}
+\indexentry{RESOURCE\_NAME@{\romanfamily  {pcr}\selectfont  RESOURCE\_NAME}}{29}
+\indexentry{argv[0]@{\romanfamily  {pcr}\selectfont  argv[0]}}{29}
+\indexentry{WM\_CLASS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_CLASS}}{29}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{29}
+\indexentry{WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WINDOW}}{29}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{29}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{29}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{29}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{30}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{30}
+\indexentry{ATOM@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ATOM}}{30}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{30}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{30}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{30}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{30}
+\indexentry{WM\_SAVE\_YOURSELF@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_SAVE\_YOURSELF}}{30}
+\indexentry{WM\_DELETE\_WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_DELETE\_WINDOW}}{30}
+\indexentry{WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WINDOW}}{30}
+\indexentry{WM\_COLORMAP\_WINDOWS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_COLORMAP\_WINDOWS}}{30}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{30}
+\indexentry{WM\_CLIENT\_MACHINE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_CLIENT\_MACHINE}}{30}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{31}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{31}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{31}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{31}
+\indexentry{xprop@{\romanseries  {b}\selectfont  xprop}}{31}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{31}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{31}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{31}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{31}
+\indexentry{WithdrawnState@{\romanfamily  {pcr}\selectfont  WithdrawnState}}{31}
+\indexentry{NormalState@{\romanfamily  {pcr}\selectfont  NormalState}}{31}
+\indexentry{IconicState@{\romanfamily  {pcr}\selectfont  IconicState}}{31}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{31}
+\indexentry{NormalState@{\romanfamily  {pcr}\selectfont  NormalState}}{31}
+\indexentry{IconicState@{\romanfamily  {pcr}\selectfont  IconicState}}{31}
+\indexentry{WithdrawnState@{\romanfamily  {pcr}\selectfont  WithdrawnState}}{31}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{31}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{32}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{32}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{32}
+\indexentry{WM\_ICON\_SIZE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_SIZE}}{32}
+\indexentry{NormalState@{\romanfamily  {pcr}\selectfont  NormalState}}{32}
+\indexentry{IconicState@{\romanfamily  {pcr}\selectfont  IconicState}}{32}
+\indexentry{WM\_ICON\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_NAME}}{32}
+\indexentry{WithdrawnState@{\romanfamily  {pcr}\selectfont  WithdrawnState}}{32}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{33}
+\indexentry{NormalState@{\romanfamily  {pcr}\selectfont  NormalState}}{33}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{33}
+\indexentry{IconicState@{\romanfamily  {pcr}\selectfont  IconicState}}{33}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{33}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{33}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{33}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{33}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{33}
+\indexentry{MapNotify@{\romanshape  {n}\selectfont  MapNotify}}{33}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{33}
+\indexentry{SendEvent@{\romanshape  {n}\selectfont  SendEvent}}{33}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{33}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{33}
+\indexentry{SubstructureRedirect@{\romanshape  {n}\selectfont  SubstructureRedirect}}{33}
+\indexentry{SubstructureNotify@{\romanshape  {n}\selectfont  SubstructureNotify}}{33}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{33}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{33}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{34}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{34}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{34}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{34}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{34}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{34}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{34}
+\indexentry{WM\_CHANGE\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_CHANGE\_STATE}}{34}
+\indexentry{IconicState@{\romanfamily  {pcr}\selectfont  IconicState}}{34}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{34}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{34}
+\indexentry{SendEvent@{\romanshape  {n}\selectfont  SendEvent}}{34}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{34}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{34}
+\indexentry{ReparentNotify@{\romanshape  {n}\selectfont  ReparentNotify}}{34}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{34}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{34}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{34}
+\indexentry{VisibilityChange@{\romanshape  {n}\selectfont  VisibilityChange}}{35}
+\indexentry{VisibilityNotify@{\romanshape  {n}\selectfont  VisibilityNotify}}{35}
+\indexentry{FullyObscured@{\romanfamily  {pcr}\selectfont  FullyObscured}}{35}
+\indexentry{VisibilityNotify@{\romanshape  {n}\selectfont  VisibilityNotify}}{35}
+\indexentry{FullyObscured@{\romanfamily  {pcr}\selectfont  FullyObscured}}{35}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{35}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{35}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{35}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{35}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{36}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{36}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{36}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{36}
+\indexentry{TranslateCoordinates@{\romanshape  {n}\selectfont  TranslateCoordinates}}{36}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{36}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{36}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{36}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{36}
+\indexentry{KeyPress@{\romanshape  {n}\selectfont  KeyPress}}{36}
+\indexentry{KeyRelease@{\romanshape  {n}\selectfont  KeyRelease}}{36}
+\indexentry{ButtonPress@{\romanshape  {n}\selectfont  ButtonPress}}{36}
+\indexentry{ButtonRelease@{\romanshape  {n}\selectfont  ButtonRelease}}{36}
+\indexentry{MotionNotify@{\romanshape  {n}\selectfont  MotionNotify}}{36}
+\indexentry{EnterNotify@{\romanshape  {n}\selectfont  EnterNotify}}{36}
+\indexentry{LeaveNotify@{\romanshape  {n}\selectfont  LeaveNotify}}{36}
+\indexentry{TranslateCoordinates@{\romanshape  {n}\selectfont  TranslateCoordinates}}{36}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{37}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{37}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{37}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{37}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{37}
+\indexentry{SendEvent@{\romanshape  {n}\selectfont  SendEvent}}{37}
+\indexentry{ConfigureRequest@{\romanshape  {n}\selectfont  ConfigureRequest}}{37}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{37}
+\indexentry{SubstructureRedirect@{\romanshape  {n}\selectfont  SubstructureRedirect}}{37}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{37}
+\indexentry{ConfigureRequest@{\romanshape  {n}\selectfont  ConfigureRequest}}{37}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{37}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{37}
+\indexentry{ChangeWindowAttributes@{\romanshape  {n}\selectfont  ChangeWindowAttributes}}{37}
+\indexentry{xload@{\romanseries  {b}\selectfont  xload}}{38}
+\indexentry{PointerRoot@{\romanfamily  {pcr}\selectfont  PointerRoot}}{38}
+\indexentry{PointerRoot@{\romanfamily  {pcr}\selectfont  PointerRoot}}{39}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{39}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{39}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{39}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{39}
+\indexentry{True@{\romanfamily  {pcr}\selectfont  True}}{39}
+\indexentry{True@{\romanfamily  {pcr}\selectfont  True}}{39}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{39}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{39}
+\indexentry{True@{\romanfamily  {pcr}\selectfont  True}}{39}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{39}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{39}
+\indexentry{FocusIn@{\romanshape  {n}\selectfont  FocusIn}}{39}
+\indexentry{FocusIn@{\romanshape  {n}\selectfont  FocusIn}}{39}
+\indexentry{EnterNotify@{\romanshape  {n}\selectfont  EnterNotify}}{39}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{39}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{39}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{40}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{40}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{40}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{40}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{40}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{40}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{40}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{40}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{40}
+\indexentry{Parent@{\romanfamily  {pcr}\selectfont  Parent}}{40}
+\indexentry{PointerRoot@{\romanfamily  {pcr}\selectfont  PointerRoot}}{40}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{40}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{40}
+\indexentry{PointerRoot@{\romanfamily  {pcr}\selectfont  PointerRoot}}{40}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{40}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{41}
+\indexentry{Parent@{\romanfamily  {pcr}\selectfont  Parent}}{41}
+\indexentry{WM\_COLORMAP\_WINDOWS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_COLORMAP\_WINDOWS}}{41}
+\indexentry{CopyFromParent@{\romanfamily  {pcr}\selectfont  CopyFromParent}}{41}
+\indexentry{BlackPixel@{\romanfamily  {pcr}\selectfont  BlackPixel}}{41}
+\indexentry{WhitePixel@{\romanfamily  {pcr}\selectfont  WhitePixel}}{41}
+\indexentry{WM\_COLORMAP\_WINDOWS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_COLORMAP\_WINDOWS}}{41}
+\indexentry{WM\_COLORMAP\_WINDOWS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_COLORMAP\_WINDOWS}}{41}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{42}
+\indexentry{WM\_COLORMAP\_WINDOWS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_COLORMAP\_WINDOWS}}{42}
+\indexentry{VisibilityChange@{\romanshape  {n}\selectfont  VisibilityChange}}{42}
+\indexentry{InstallColormap@{\romanshape  {n}\selectfont  InstallColormap}}{42}
+\indexentry{SendEvent@{\romanshape  {n}\selectfont  SendEvent}}{42}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{42}
+\indexentry{ColormapChange@{\romanshape  {n}\selectfont  ColormapChange}}{42}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{42}
+\indexentry{WM\_COLORMAP\_NOTIFY@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_COLORMAP\_NOTIFY}}{42}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{43}
+\indexentry{SendEvent@{\romanshape  {n}\selectfont  SendEvent}}{43}
+\indexentry{InstallColormap@{\romanshape  {n}\selectfont  InstallColormap}}{43}
+\indexentry{InstallColormap@{\romanshape  {n}\selectfont  InstallColormap}}{43}
+\indexentry{WM\_ICON\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_NAME}}{43}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{43}
+\indexentry{WM\_ICON\_SIZE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_SIZE}}{43}
+\indexentry{WM\_ICON\_SIZE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_SIZE}}{44}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{44}
+\indexentry{WM\_ICON\_SIZE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_SIZE}}{44}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{44}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{44}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{44}
+\indexentry{WM\_ICON\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_NAME}}{44}
+\indexentry{InputOutput@{\romanfamily  {pcr}\selectfont  InputOutput}}{44}
+\indexentry{WM\_ICON\_SIZE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_SIZE}}{44}
+\indexentry{ResizeRedirect@{\romanshape  {n}\selectfont  ResizeRedirect}}{44}
+\indexentry{Exposure@{\romanshape  {n}\selectfont  Exposure}}{44}
+\indexentry{WM\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NAME}}{44}
+\indexentry{WM\_ICON\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_NAME}}{44}
+\indexentry{WM\_NORMAL\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NORMAL\_HINTS}}{44}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{44}
+\indexentry{WM\_CLASS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_CLASS}}{44}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{44}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{44}
+\indexentry{WM\_COLORMAP\_WINDOWS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_COLORMAP\_WINDOWS}}{44}
+\indexentry{WM\_COMMAND@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_COMMAND}}{44}
+\indexentry{WM\_CLIENT\_MACHINE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_CLIENT\_MACHINE}}{44}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{45}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{45}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{45}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{45}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{45}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{45}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{45}
+\indexentry{QueryTree@{\romanshape  {n}\selectfont  QueryTree}}{46}
+\indexentry{CreateWindow@{\romanshape  {n}\selectfont  CreateWindow}}{46}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{46}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{46}
+\indexentry{GetGeometry@{\romanshape  {n}\selectfont  GetGeometry}}{46}
+\indexentry{ParentRelative@{\romanfamily  {pcr}\selectfont  ParentRelative}}{46}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{46}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{47}
+\indexentry{ReparentNotify@{\romanshape  {n}\selectfont  ReparentNotify}}{47}
+\indexentry{MapWindow@{\romanshape  {n}\selectfont  MapWindow}}{47}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{47}
+\indexentry{CirculateWindow@{\romanshape  {n}\selectfont  CirculateWindow}}{47}
+\indexentry{MapWindow@{\romanshape  {n}\selectfont  MapWindow}}{47}
+\indexentry{PolyLine@{\romanshape  {n}\selectfont  PolyLine}}{47}
+\indexentry{Expose@{\romanshape  {n}\selectfont  Expose}}{47}
+\indexentry{ConfigureWindow@{\romanshape  {n}\selectfont  ConfigureWindow}}{47}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{47}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{47}
+\indexentry{Always@{\romanfamily  {pcr}\selectfont  Always}}{47}
+\indexentry{MapWindow@{\romanshape  {n}\selectfont  MapWindow}}{48}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{48}
+\indexentry{VisibilityChange@{\romanshape  {n}\selectfont  VisibilityChange}}{48}
+\indexentry{VisibilityNotify@{\romanshape  {n}\selectfont  VisibilityNotify}}{48}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{48}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{48}
+\indexentry{VisibilityNotify@{\romanshape  {n}\selectfont  VisibilityNotify}}{48}
+\indexentry{ResizeRequest@{\romanshape  {n}\selectfont  ResizeRequest}}{48}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{48}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{49}
+\indexentry{ConfigureNotify@{\romanshape  {n}\selectfont  ConfigureNotify}}{49}
+\indexentry{SendEvent@{\romanshape  {n}\selectfont  SendEvent}}{49}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{49}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{49}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{49}
+\indexentry{StructureNotify@{\romanshape  {n}\selectfont  StructureNotify}}{49}
+\indexentry{UnmapNotify@{\romanshape  {n}\selectfont  UnmapNotify}}{49}
+\indexentry{MapNotify@{\romanshape  {n}\selectfont  MapNotify}}{49}
+\indexentry{ColormapChange@{\romanshape  {n}\selectfont  ColormapChange}}{49}
+\indexentry{WM\_COLORMAP\_WINDOWS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_COLORMAP\_WINDOWS}}{50}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{50}
+\indexentry{ColormapNotify@{\romanshape  {n}\selectfont  ColormapNotify}}{50}
+\indexentry{FocusChange@{\romanshape  {n}\selectfont  FocusChange}}{50}
+\indexentry{FocusIn@{\romanshape  {n}\selectfont  FocusIn}}{50}
+\indexentry{FocusOut@{\romanshape  {n}\selectfont  FocusOut}}{50}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{50}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{50}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{50}
+\indexentry{True@{\romanfamily  {pcr}\selectfont  True}}{50}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{50}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{50}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{50}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{50}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{50}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{50}
+\indexentry{PointerRoot@{\romanfamily  {pcr}\selectfont  PointerRoot}}{50}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{50}
+\indexentry{Parent@{\romanfamily  {pcr}\selectfont  Parent}}{50}
+\indexentry{PointerRoot@{\romanfamily  {pcr}\selectfont  PointerRoot}}{50}
+\indexentry{None@{\romanfamily  {pcr}\selectfont  None}}{50}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{50}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{50}
+\indexentry{FocusIn@{\romanshape  {n}\selectfont  FocusIn}}{50}
+\indexentry{FocusIn@{\romanshape  {n}\selectfont  FocusIn}}{50}
+\indexentry{EnterNotify@{\romanshape  {n}\selectfont  EnterNotify}}{50}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{50}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{50}
+\indexentry{Parent@{\romanfamily  {pcr}\selectfont  Parent}}{50}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{51}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{51}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{51}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{51}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{51}
+\indexentry{SendEvent@{\romanshape  {n}\selectfont  SendEvent}}{51}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{51}
+\indexentry{WM\_DELETE\_WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_DELETE\_WINDOW}}{51}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{51}
+\indexentry{WM\_DELETE\_WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_DELETE\_WINDOW}}{51}
+\indexentry{ClientMessage@{\romanshape  {n}\selectfont  ClientMessage}}{51}
+\indexentry{WM\_DELETE\_WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_DELETE\_WINDOW}}{51}
+\indexentry{WM\_DELETE\_WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_DELETE\_WINDOW}}{52}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{52}
+\indexentry{WM\_DELETE\_WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_DELETE\_WINDOW}}{52}
+\indexentry{DeleteWindow@{\romanshape  {n}\selectfont  DeleteWindow}}{52}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{52}
+\indexentry{WM\_WINDOW\_DELETE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_WINDOW\_DELETE}}{52}
+\indexentry{SubstructureRedirect@{\romanshape  {n}\selectfont  SubstructureRedirect}}{52}
+\indexentry{ResizeRedirect@{\romanshape  {n}\selectfont  ResizeRedirect}}{52}
+\indexentry{SubstructureRedirect@{\romanshape  {n}\selectfont  SubstructureRedirect}}{52}
+\indexentry{ResizeRedirect@{\romanshape  {n}\selectfont  ResizeRedirect}}{52}
+\indexentry{ResizeRedirect@{\romanshape  {n}\selectfont  ResizeRedirect}}{52}
+\indexentry{ResizeRequest@{\romanshape  {n}\selectfont  ResizeRequest}}{52}
+\indexentry{ResizeRequest@{\romanshape  {n}\selectfont  ResizeRequest}}{52}
+\indexentry{WM\_S$n$@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_S$n$}}{53}
+\indexentry{VERSION@{\romanfamily  {phv}\fontseries  {mc}\selectfont  VERSION}}{53}
+\indexentry{INTEGER@{\romanfamily  {phv}\fontseries  {mc}\selectfont  INTEGER}}{53}
+\indexentry{WM\_CLASS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_CLASS}}{53}
+\indexentry{STRING@{\romanfamily  {phv}\fontseries  {mc}\selectfont  STRING}}{53}
+\indexentry{WM\_CLIENT\_MACHINE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_CLIENT\_MACHINE}}{53}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{53}
+\indexentry{WM\_COLORMAP\_WINDOWS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_COLORMAP\_WINDOWS}}{53}
+\indexentry{WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WINDOW}}{53}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{53}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{53}
+\indexentry{WM\_ICON\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_NAME}}{53}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{53}
+\indexentry{WM\_ICON\_SIZE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_SIZE}}{53}
+\indexentry{WM\_ICON\_SIZE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_ICON\_SIZE}}{53}
+\indexentry{WM\_NAME@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NAME}}{53}
+\indexentry{TEXT@{\romanfamily  {phv}\fontseries  {mc}\selectfont  TEXT}}{53}
+\indexentry{WM\_NORMAL\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_NORMAL\_HINTS}}{53}
+\indexentry{WM\_SIZE\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_SIZE\_HINTS}}{53}
+\indexentry{WM\_PROTOCOLS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_PROTOCOLS}}{53}
+\indexentry{ATOM@{\romanfamily  {phv}\fontseries  {mc}\selectfont  ATOM}}{53}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{53}
+\indexentry{WM\_STATE@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_STATE}}{53}
+\indexentry{WM\_TRANSIENT\_FOR@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TRANSIENT\_FOR}}{53}
+\indexentry{WINDOW@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WINDOW}}{53}
+\indexentry{WM\_S$n$@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_S$n$}}{53}
+\indexentry{GetSelectionOwner@{\romanshape  {n}\selectfont  GetSelectionOwner}}{53}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{55}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{55}
+\indexentry{True@{\romanfamily  {pcr}\selectfont  True}}{55}
+\indexentry{WM\_TAKE\_FOCUS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_TAKE\_FOCUS}}{55}
+\indexentry{WM\_HINTS@{\romanfamily  {phv}\fontseries  {mc}\selectfont  WM\_HINTS}}{55}
+\indexentry{False@{\romanfamily  {pcr}\selectfont  False}}{55}
+\indexentry{CurrentTime@{\romanfamily  {pcr}\selectfont  CurrentTime}}{55}
+\indexentry{SetInputFocus@{\romanshape  {n}\selectfont  SetInputFocus}}{55}
+\indexentry{WarpPointer@{\romanshape  {n}\selectfont  WarpPointer}}{56}
+\indexentry{Synchronous@{\romanfamily  {pcr}\selectfont  Synchronous}}{57}
+\indexentry{AllowEvents@{\romanshape  {n}\selectfont  AllowEvents}}{57}
+\indexentry{ReplayPointer/Keyboard@{\romanfamily  {pcr}\selectfont  ReplayPointer/Keyboard}}{57}
+\indexentry{RGB\_COLOR\_MAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  RGB\_COLOR\_MAP}}{57}
+\indexentry{RGB\_COLOR\_MAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  RGB\_COLOR\_MAP}}{57}
+\indexentry{KillClient@{\romanshape  {n}\selectfont  KillClient}}{57}
+\indexentry{RGB\_COLOR\_MAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  RGB\_COLOR\_MAP}}{57}
+\indexentry{FreeColormap@{\romanshape  {n}\selectfont  FreeColormap}}{57}
+\indexentry{kill\_id@{\romanfamily  {phv}\fontseries  {mc}\selectfont  kill\_id}}{58}
+\indexentry{RGB\_COLOR\_MAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  RGB\_COLOR\_MAP}}{58}
+\indexentry{kill\_id@{\romanfamily  {phv}\fontseries  {mc}\selectfont  kill\_id}}{58}
+\indexentry{RGB\_COLOR\_MAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  RGB\_COLOR\_MAP}}{58}
+\indexentry{RGB\_COLOR\_MAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  RGB\_COLOR\_MAP}}{58}
+\indexentry{RGB\_COLOR\_MAP@{\romanfamily  {phv}\fontseries  {mc}\selectfont  RGB\_COLOR\_MAP}}{58}

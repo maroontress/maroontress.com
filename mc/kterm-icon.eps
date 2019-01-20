@@ -1,0 +1,121 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%Title: /usr/home/syl/work/appiexp/public_html/kterm-icon.eps
+%%Creator: XV Version 3.10a  Rev: 12/29/94  -  by John Bradley
+%%BoundingBox: 283 413 312 428
+%%Pages: 1
+%%DocumentFonts:
+%%EndComments
+%%EndProlog
+
+%%Page: 1 1
+
+% remember original state
+/origstate save def
+
+% build a temporary dictionary
+20 dict begin
+
+% define space for color conversions
+/grays 39 string def  % space for gray scale line
+/npixls 0 def
+/rgbindx 0 def
+
+% lower left corner
+283 413 translate
+
+% size of image (on paper, in 1/72inch coords)
+29.23200 14.97600 scale
+
+% define the colormap
+/cmap 2 string def
+
+
+% load up the colormap
+currentfile cmap readhexstring
+63 d9 
+pop pop   % lose return values from readhexstring
+
+
+% rlecmapimage expects to have 'w h bits matrix' on stack
+/rlecmapimage {
+  /buffer 1 string def
+  /rgbval 3 string def
+  /block  384 string def
+
+  % proc to read a block from file, and return RGB data
+  { currentfile buffer readhexstring pop
+    /bcount exch 0 get store
+    bcount 128 ge
+    {  % it's a non-run block
+      0 1 bcount 128 sub
+      { currentfile buffer readhexstring pop pop
+
+        % look up value in gray map
+        /rgbval cmap buffer 0 get 1 getinterval store
+
+        % and put it in position i in block
+        block exch rgbval putinterval
+      } for
+      block  0  bcount 127 sub  getinterval
+    }
+
+    { % else it's a run block
+      currentfile buffer readhexstring pop pop
+
+      % look up value in graymap
+      /rgbval cmap buffer 0 get 1 getinterval store
+
+      0 1 bcount { block exch rgbval putinterval } for
+
+      block 0 bcount 1 add getinterval
+    } ifelse
+  } % end of proc
+  image
+} bind def
+
+
+39 20 8			% dimensions of data
+[39 0 0 -20 0 20]		% mapping matrix
+rlecmapimage
+
+2601
+2601
+010122000101
+010122000101
+010122000101
+010122000101
+0101020001010300010117000101
+0101020001010300010117000101
+010102000101810001820100010101010002010100820100010101810001820100018101
+0003000101
+010102000301010001010100010181000182010001010181000182010001820100018101
+0002000101
+010102000201020001010100040181000181010081000182010001820100018101000200
+0101
+010102000301010001010100010103000101010001018100018201000181010002000101
+
+010102000101810001820100018101008100018201000182010001810100810001820100
+018201000181010002000101
+010102000101010001018100018101008100010101010001010100010181000182010001
+81010002000101
+010122000101
+010122000101
+010122000101
+010122000101
+2601
+2601
+
+%
+% Compression made this file 42.44% of the uncompressed size.
+%
+
+
+showpage
+
+% stop using temporary dictionary
+end
+
+% restore original state
+origstate restore
+
+%%Trailer

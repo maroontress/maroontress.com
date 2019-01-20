@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Mad Angler</title>
+    <link rel="stylesheet" type="text/css" href="look.css">
+  </head>
+  <body>
+    <table class="header" cellpadding="0" cellspacing="2" border="0">
+      <tbody>
+	<tr>
+	  <td class="headerLeft">Maroontress Fast Software</td>
+	  <td class="headerRight">Mad Angler</td>
+	</tr>
+      </tbody>
+    </table>
+    <table class="guide" cellpadding="0" cellspacing="2" border="0">
+      <tbody>
+	<tr>
+	  <td class="guideMenu">
+	    <table width="160" cellpadding="0" cellspacing="0" border="0">
+	      <tbody>
+                <tr><td class="selected">Top</td></tr>
+                <tr><td class="unselected"><a class="menu" href="download.html">Download</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="tutorial.html">Tutorial</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="manual.html">Manual</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="reference.html">Reference</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="relnotes.html">Release&nbsp;Notes</a></td></tr>
+	      </tbody>
+	    </table>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 160x90L Mad Angler */
+google_ad_slot = "5426136155";
+google_ad_width = 160;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 160x600 Mad Angler */
+google_ad_slot = "4451171887";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+	  </td>
+	  <td class="guideSubMenu">
+	    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+	      <tbody>
+		<tr>
+		  <td class="guideText">
+		    <table align="right">
+		      <tbody>
+			<tr>
+			  <td>
+<script type="text/javascript"><!--
+  amazon_ad_tag = "sanchappikeio-22";
+  amazon_ad_width = "180";
+  amazon_ad_height = "150";
+  amazon_ad_logo = "hide";
+  amazon_ad_link_target = "new";
+  amazon_ad_border = "hide";
+  amazon_color_border = "FFFFFF";//--></script>
+<script type="text/javascript" src="http://www.assoc-amazon.jp/s/ads.js">
+</script>
+			  </td>
+			</tr>
+		      </tbody>
+		    </table>
+    <p class="title">Mad Angler</p>
+
+    <p>Mad AnglerはAJAXな管理コンソールをもつCIツールです。</p>
+
+    <!-- -->
+    <p class="section">概要</p>
+
+    <p>次のような特徴があります。</p>
+
+    <dl class="box">
+      <dt>ビルドツールに依存しません</dt>
+      <dd>ビルドは疑似端末をもったssh経由のリモートコマンドで実行します。ビルドの成功、失敗の判定はビルドログの最終行が<tt>OK</tt>かどうかで決まります。したがって、ビルドに限らずリモートコマンドの内容次第で様々なことがテスト可能です。</dd>
+
+      <dt>バージョン管理システムに依存しません</dt>
+      <dd>リモートコマンドがリポジトリからソースコードをチェックアウトすることを想定しているため、バージョン管理システムに依存しません。バージョン管理システムに、コミットをフックしてスクリプトを実行できる機能と、リビジョンを指定してチェックアウトできる機能があれば、コミットをトリガとしてビルドを自動で確認することができるようになります。</dd>
+
+      <dt>ビルドの指示はREST形式のウェブAPIです</dt>
+      <dd>バージョン管理システムと連係させて使用する場合は、コミットをフックするスクリプトで「コミットされたリビジョン」をパラメータに含むURLをアクセスするように設定します。すると、コミットに連動してビルドが走り、そのログを保存するようになります。</dd>
+
+      <dt>1つのリビジョンを複数のプラットフォームでビルドして確認できます</dt>
+      <dd>ビルド結果はプラットフォーム毎に分けて記録されます。</dd>
+
+      <dt>管理コンソールはGWTで書かれたウェブアプリケーションです</dt>
+      <dd>ウェブブラウザでビルドのステータスやログを確認できます。また、プロジェクトの作成や設定もウェブブラウザから行えます。</dd>
+    </dl>
+
+    <hr>
+    <!-- -->
+    <p class="section">ワークフロー</p>
+
+    <p>想定しているワークフローは次のような図になります。</p>
+    <img src="images/workflow.png"><br>
+
+    <p>開発チームのメンバーがリポジトリに変更をコミットすると、リポジトリはCGIリクエストを使用して、コミットされたリビジョンをMad Anglerに通知します。Mad Anglerはコミットされたリビジョンをデータベースに記録してCGIのセッションを終了し、バックグラウンドでSSHプロトコルを使用して、ビルド用ホストでビルドスクリプトをリモート実行します。リモート実行には疑似端末が割り当てられ、Mad Anglerはすべての出力をログに記録します。</p>
+    <p>ビルド用ホストでは、ビルドスクリプトが指定のリビジョンのソースコードをリポジトリからチェックアウトし、ソースコードをビルドします。ビルドが終了するとリモート実行は終了します。Mad Anglerはログの内容からビルド結果を決定し、データベースに記録します。同時に、開発チームのメーリングリストにビルド結果のレポートをメールで通知します。</p>
+    <p>加えて、メンバーはいつでもウェブブラウザで、Mad Anglerに記録されたプロジェクトのビルド状況を確認したり、Mad Anglerのプロジェクト設定を変更することができます。</p>
+
+    <hr>
+    <!-- -->
+    <p class="section">ビルドするリビジョンの決定アルゴリズム</p>
+    <p>Mad Anglerは1つのプロジェクトにつき、同時にビルドするリビジョンを1つに制限しています。通常、Mad Anglerは時系列順にリビジョンをビルドしていきますが、Mad Anglerがビルド中にさらなるコミットが複数発生した場合は、できるだけ最新のリビジョンからビルドしようとします。</p>
+    <p>「次にビルドするリビジョン」を決定するアルゴリズム<sup><a href="#1">★1</a></sup>は、次のようになります。</p>
+
+    <p class="subsection">ビルドが終了したリビジョンが最新ではない場合</p>
+    <table>
+      <tbody>
+	<tr>
+	  <td valign="top">
+	    <img src="images/build-algorithm1.png"/>
+	  </td>
+	  <td valign="top">
+	    <p>リビジョン<i>A</i>のビルドが終了した時点で、最新のリビジョンが<i>A</i>でなかった場合は、次に最新のリビジョンをビルドします。リビジョン<i>A</i>をビルドしている間に、新しくリビジョンがコミットされると、この状況になります。</p>
+	    <p>最新のリビジョンとリビジョン<i>A</i>の間のリビジョンはひとまずスキップされます。スキップされたリビジョンのビルド結果は不明になります。</p>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+
+    <p class="subsection">ビルドが終了したリビジョンが最新だった場合</p>
+    <table>
+      <tbody>
+	<tr>
+	  <td valign="top">
+	    <img src="images/build-algorithm2.png"/>
+	  </td>
+	  <td valign="top">
+	    <p>リビジョン<i>A</i>のビルドが終了した時点で、最新のリビジョンが<i>A</i>であった場合、「ビルド結果が成功である最新のリビジョン」を探索します。リビジョン<i>A</i>から順にリビジョンをさかのぼります。注目しているリビジョンのビルド結果に従い、次のように処理を分岐します。</p>
+	    <dl class="box">
+	      <dt>成功</dt>
+	      <dd>探索を終了します。</dd>
+
+	      <dt>失敗</dt>
+	      <dd>注目しているリビジョンを次（1つ前）に進めます。</dd>
+
+	      <dt>不明</dt>
+	      <dd>注目しているリビジョンをビルドします。</dd>
+	    </dl>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+
+    <div class="footnote">
+      <p><a name="1">★1</a> バージョン管理システムが分散型の場合はブランチを考慮する必要があるため、このアルゴリズムでは問題があります。次にビルドするべきリビジョンをうまく決定するには、プロジェクトで使用されているバージョン管理システムのことをMad Anglerがもっと知っている必要があります。とりあえず将来のリリースでは、時系列順にすべてのリビジョンをビルドするアルゴリズムも選択できるようなる予定です。</p>
+    </div>
+
+    <hr>
+<!-- Created: Wed Apr 30 07:57:18 JST 2008 -->
+<!-- hhmts start -->
+Last modified: Fri May  9 06:52:08 JST 2008
+<!-- hhmts end -->
+		  </td>
+		</tr>
+	      </tbody>
+	    </table>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+    <table class="header" cellpadding="0" cellspacing="2" border="0">
+      <tbody>
+	<tr>
+	  <td class="headerRight"><address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address></td>
+	</tr>
+      </tbody>
+    </table>
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-636163-1";
+      urchinTracker();
+    </script>
+  </body>
+</html>

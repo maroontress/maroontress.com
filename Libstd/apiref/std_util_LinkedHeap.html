@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>LinkedHeap - std_util_LinkedHeap</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_util_LinkedHeap"/>
+    <h3>package std_util</h3>
+    <h1>extensible class LinkedHeap</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<b>std_util_LinkedHeap</b><br>
+<br>
+#define std_util_LinkedHeap_IMPORT<br>
+#include &lt;std/util/LinkedHeap.h&gt;<br>
+#include &lt;std/util/impl/LinkedHeap.h&gt;<br>
+    <dl><dd>
+リンクによるヒープです。
+<p>ヒープは生成するときに指定された比較関数で要素を順序付けます。ヒープのルートの要素は常に最小の要素になります。</p>
+<p>ヒープは要素となるオブジェクトについて一切関与しません。</p>
+  </dd></dl>
+    <hr>
+<h2>Field Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_LinkedHeap.root"><b>root</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ルートのノードです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_LinkedHeap.last"><b>last</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最後のノード（LN）です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_LinkedHeap.nodes"><b>nodes</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ヒープに含まれるノードの数です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int (*)(void *, void *)</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_LinkedHeap.compare"><b>compare</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要素を比較する関数のポインタです。</td>
+</tr>
+    </table>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ヒープのノードとなる構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_LinkedHeap_Node.next"><b>next</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双方向リストの「次」のノードの参照です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_LinkedHeap_Node.prev"><b>prev</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双方向リストの「前」のノードの参照です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_LinkedHeap_Node.parent"><b>parent</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ツリーの「親」のノードの参照です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_LinkedHeap_Node.left"><b>left</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ツリーの「左の子」のノードの参照です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_LinkedHeap_Node.right"><b>right</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ツリーの「右の子」のノードの参照です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_LinkedHeap_Node.value"><b>value</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ノードの要素の参照です。</td>
+</tr>
+      </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a></font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedHeap_create"><b>LinkedHeap_<wbr>create</b></a>(int (*<i>compare</i>)(void *, void *))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ヒープを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedHeap_free"><b>LinkedHeap_<wbr>free</b></a>(<a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ヒープを解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedHeap_getSize"><b>LinkedHeap_<wbr>getSize</b></a>(<a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要素の個数を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedHeap_put"><b>LinkedHeap_<wbr>put</b></a>(<a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a>&nbsp;<i>this</i>, void *&nbsp;<i>element</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要素を追加します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void *</font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedHeap_getFirst"><b>LinkedHeap_<wbr>getFirst</b></a>(<a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ルートの要素をヒープから取り除き、それを返します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedHeap_forEach"><b>LinkedHeap_<wbr>forEach</b></a>(<a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a>&nbsp;<i>this</i>, void (*<i>callback</i>)(void *))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ヒープに含まれる要素を引数として、指定されたコールバック関数を呼び出します。</td>
+</tr>
+    </table>
+<h2>Field Detail</h2>
+<p><a name="struct std_util_impl_LinkedHeap.root"></a><font size="+1"><b>root</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> * <b>root</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+ルートのノードです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_impl_LinkedHeap.last"></a><font size="+1"><b>last</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> * <b>last</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+最後のノード（LN）です。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_impl_LinkedHeap.nodes"></a><font size="+1"><b>nodes</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>nodes</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+ヒープに含まれるノードの数です。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_impl_LinkedHeap.compare"></a><font size="+1"><b>compare</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int (* <b>compare</b>)(void *, void *)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+要素を比較する関数のポインタです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+    <h2>Struct Detail</h2>
+<p><a name="struct std_util_LinkedHeap_Node"></a>
+<font size="+1"><b>struct LinkedHeap_Node</b></font></p>
+<dl><dd>
+ヒープのノードとなる構造体です。
+<p><span class="em">この構造体のメンバはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    
+<hr>
+<p><a name="struct std_util_LinkedHeap_Node.next"></a><font size="+1"><b>next</b></font></p>
+<p><a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> * <b>next</b></p>
+<dl>
+<dd>
+双方向リストの「次」のノードの参照です。
+<p>最後のノードでは<span class="code">NULL</span>になります。</p>
+      </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_LinkedHeap_Node.prev"></a><font size="+1"><b>prev</b></font></p>
+<p><a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> * <b>prev</b></p>
+<dl>
+<dd>
+双方向リストの「前」のノードの参照です。
+<p>先頭のノードでは<span class="code">NULL</span>になります。</p>
+      </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_LinkedHeap_Node.parent"></a><font size="+1"><b>parent</b></font></p>
+<p><a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> * <b>parent</b></p>
+<dl>
+<dd>
+ツリーの「親」のノードの参照です。
+<p>ルートのノードでは<span class="code">NULL</span>になります。</p>
+      </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_LinkedHeap_Node.left"></a><font size="+1"><b>left</b></font></p>
+<p><a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> * <b>left</b></p>
+<dl>
+<dd>
+ツリーの「左の子」のノードの参照です。
+<p>左の子が存在しないノードでは<span class="code">NULL</span>になります。</p>
+      </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_LinkedHeap_Node.right"></a><font size="+1"><b>right</b></font></p>
+<p><a href="std_util_LinkedHeap.html#struct std_util_LinkedHeap_Node">struct LinkedHeap_<wbr>Node</a> * <b>right</b></p>
+<dl>
+<dd>
+ツリーの「右の子」のノードの参照です。
+<p>右の子が存在しないノードでは<span class="code">NULL</span>になります。</p>
+      </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_LinkedHeap_Node.value"></a><font size="+1"><b>value</b></font></p>
+<p>void * <b>value</b></p>
+<dl>
+<dd>
+ノードの要素の参照です。
+      </dd>
+</dl>
+</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_util_LinkedHeap_create"></a><font size="+1"><b>LinkedHeap_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a> <b>LinkedHeap_create</b>(</td>
+    <td nowrap>int (*<i>compare</i>)(void *, void *))</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ヒープを生成します。
+<p><span class="arg">compare</span>には第1引数と第2引数の要素の大小を比較する関数を指定します。第1引数と第2引数が等しい場合は0、第1引数が小さい場合は負の整数、第2引数が小さい場合は正の整数を返す必要があります。</p>
+<p>戻り値が参照するオブジェクトは<a href="std_util_LinkedHeap.html#std_util_LinkedHeap_free">LinkedHeap_<wbr>free</a>()で解放しなければなりません。</p>
+<p>生成に失敗した場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>compare</i> - 要素を比較する関数のポインタ<br>
+
+</dd></dl>
+<dl>Returns:<dd>ヒープのインスタンス、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_LinkedHeap_free"></a><font size="+1"><b>LinkedHeap_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>LinkedHeap_free</b>(</td>
+    <td nowrap><a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ヒープを解放します。
+<p>含まれていた要素とは関連がなくなります。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_LinkedHeap_getSize"></a><font size="+1"><b>LinkedHeap_<wbr>getSize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>LinkedHeap_getSize</b>(</td>
+    <td nowrap><a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+要素の個数を取得します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>要素の個数</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_LinkedHeap_put"></a><font size="+1"><b>LinkedHeap_<wbr>put</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>LinkedHeap_put</b>(</td>
+    <td nowrap><a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>void *&nbsp;<i>element</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+要素を追加します。
+<p><span class="arg">element</span>をヒープに追加します。</p>
+<p>成功した場合は0を、失敗した場合は&minus;1を返します。失敗した場合、ヒープの状態は不変で有効です。</p>
+<p>ヒープは<span class="arg">element</span>が参照するオブジェクトにアクセスしません。その有効性はアプリケーションが保証してください。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>element</i> - 要素の参照<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_LinkedHeap_getFirst"></a><font size="+1"><b>LinkedHeap_<wbr>getFirst</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void * <b>LinkedHeap_getFirst</b>(</td>
+    <td nowrap><a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ルートの要素をヒープから取り除き、それを返します。
+<p>ヒープが空の場合は<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>要素の参照、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_LinkedHeap_forEach"></a><font size="+1"><b>LinkedHeap_<wbr>forEach</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>LinkedHeap_forEach</b>(</td>
+    <td nowrap><a href="std_util_LinkedHeap.html#union std_util_LinkedHeap">union LinkedHeap</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>void (*<i>callback</i>)(void *))</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ヒープに含まれる要素を引数として、指定されたコールバック関数を呼び出します。
+<p>ヒープに含まれるそれぞれの要素を引数として<span class="arg">callback</span>を呼び出します。<span class="arg">callback</span>を呼び出す回数はヒープに含まれる要素の個数と同じになります。すべての要素が1回ずつ呼び出されることは保証されますが、要素と呼び出しの順序は不定です。</p>
+<p><span class="arg">callback</span>からヒープにアクセスすることはできません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>callback</i> - 要素を引数として呼び出されるコールバック関数<br>
+
+</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

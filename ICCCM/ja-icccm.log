@@ -1,0 +1,337 @@
+This is pTeX, Version p2.1.8, based on TeX, Version 3.14159 (EUC) (Web2C 7.2) (format=platex 1998.11.26)  22 NOV 1999 03:07
+**ja-icccm.tex
+(ja-icccm.tex
+pLaTeX2e <1998/02/17>+0 (based on LaTeX2e <1997/12/01> patch level 1)
+(/usr/local/share/texmf/tex/platex/base/jbook.cls
+Document Class: jbook 1998/04/07 v1.1m Standard pLaTeX class
+\c@@paper=\count81
+(/usr/local/share/texmf/tex/platex/base/jbk10.clo
+File: jbk10.clo 1998/04/07 v1.1m Standard pLaTeX file (size option)
+)
+\c@part=\count82
+\c@chapter=\count83
+\c@section=\count84
+\c@subsection=\count85
+\c@subsubsection=\count86
+\c@paragraph=\count87
+\c@subparagraph=\count88
+\c@figure=\count89
+\c@table=\count90
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\symmincho=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `mincho' in version `bold'
+(Font)                  JY1/mc/m/n --> JY1/gt/m/n on input line 665.
+LaTeX Info: Redefining \mathrm on input line 667.
+LaTeX Info: Redefining \mathbf on input line 668.
+\toclineskip=\dimen118
+\@lnumwidth=\dimen119
+\bibindent=\dimen120
+\heisei=\count91
+)
+(/usr/local/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 1997/09/09 v1.0f Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1994/10/16 v1.08 sin cos tan (DPC)
+)
+(/usr/local/share/texmf/tex/latex/graphics/graphics.cfg)
+Package graphics Info: Driver file: dvips.def on input line 84.
+
+(/usr/local/share/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1997/09/09 v3.0e Driver-dependant file (DPC,SPQR)
+))
+(/usr/local/share/texmf/tex/latex/graphics/color.sty
+Package: color 1997/09/09 v1.0f Standard LaTeX Color (DPC)
+
+(/usr/local/share/texmf/tex/latex/graphics/color.cfg)
+Package color Info: Driver file: dvips.def on input line 129.
+
+(/usr/local/share/texmf/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 1997/09/09 v3.0e Driver-dependant file (DPC,SPQR)
+))
+(/usr/local/share/texmf/tex/latex/psnfss/mathptmx.sty
+Package: mathptmx 1998/07/01 PSNFSS v.7.1 Times + math package from fontinst, i
+mproved : S Rahtz
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 27.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/ztmcm/m/n on input line 27.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ztmcm/m/n on input line 27.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 28.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/ztmcm/m/it on input line 28.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/ztmcm/m/it on input line 28.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 29.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/ztmcm/m/n on input line 29.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/ztmcm/m/n on input line 29.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 30.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/ztmcm/m/n on input line 30.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/ztmcm/m/n on input line 30.
+\symbold=\mathgroup5
+\symitalic=\mathgroup6
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 33.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/ptm/m/it on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/ptm/m/it on input line 34.
+)
+(/usr/local/share/texmf/tex/latex/psnfss/palatino.sty
+Package: palatino 1998/07/01 PSNFSS v.7.1 Palatino font as default roman : S Ra
+htz
+)
+(/usr/local/share/texmf/tex/latex/base/makeidx.sty
+Package: makeidx 1995/04/19 v1.0j Standard LaTeX package
+)
+(/usr/local/share/texmf/tex/platex/base/ascmac.sty
+(/usr/local/share/texmf/tex/platex/base/tascmac.sty
+\@savetbaselineshift=\dimen121
+\@saveybaselineshift=\dimen122
+\scb@x=\box41
+\scscb@x=\box42
+\@bw=\dimen123
+\@nbox=\box43
+\@nbody=\box44
+\@scw=\dimen124
+\@itemh=\dimen125
+\@iboxstr=\toks15
+\@iboxpos=\toks16
+\@bwsp=\box45
+\@@bwsp=\box46
+\@bcal=\count92
+\shaderule=\dimen126
+))
+\indwidth=\skip43
+\@indexfile=\write3
+\openout3 = `ja-icccm.idx'.
+
+
+Writing index file ja-icccm.idx
+(ja-icccm.aux)
+\openout1 = `ja-icccm.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+ (I search kanjifont definition file: . . )
+(I search font definition file: . . . . . . . )
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 67.
+
+(/usr/local/share/texmf/tex/latex/psnfss/ppl/ot1ppl.fd
+File: ot1ppl.fd 1998/07/06 Fontinst v1.800 font definitions for OT1/ppl.
+)
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <17.28> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 77.
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <17.28> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 77.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 77.
+ [1
+
+
+] (copyright.tex
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 5.
+
+(/usr/local/share/texmf/tex/latex/psnfss/ppl/omsppl.fd
+File: omsppl.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 5.
+ [2])
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <20.74> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 90.
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <20.74> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 90.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <20.74> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 90.
+ (ja-icccm.toc
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 1.
+LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 2.
+
+
+(/usr/local/share/texmf/tex/latex/psnfss/ot1ztmcm.fd
+File: ot1ztmcm.fd 1998/07/07 Fontinst v1.800 font definitions for OT1/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 2.
+
+
+(/usr/local/share/texmf/tex/latex/psnfss/omlztmcm.fd
+File: omlztmcm.fd 1998/07/07 Fontinst v1.800 font definitions for OML/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 2.
+
+
+(/usr/local/share/texmf/tex/latex/psnfss/omsztmcm.fd
+File: omsztmcm.fd 1998/07/07 Fontinst v1.800 font definitions for OMS/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 2.
+
+
+(/usr/local/share/texmf/tex/latex/psnfss/omxztmcm.fd
+File: omxztmcm.fd 1998/07/07 Fontinst v1.800 font definitions for OMX/ztmcm.
+)
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 2.
+
+(/usr/local/share/texmf/tex/latex/psnfss/ptm/ot1ptm.fd
+File: ot1ptm.fd 1998/07/06 Fontinst v1.800 font definitions for OT1/ptm.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+ [3
+
+
+] [4])
+\tf@toc=\write4
+\openout4 = `ja-icccm.toc'.
+
+ [5]
+(ja-icccm-chap2.tex
+Ви 2 ѕП
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 52.
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 52.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 52.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 59.
+(/usr/local/share/texmf/tex/latex/psnfss/pcr/ot1pcr.fd
+File: ot1pcr.fd 1998/07/06 Fontinst v1.800 font definitions for OT1/pcr.
+) [1
+
+
+]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 81.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 81.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 125.
+
+
+(/usr/local/share/texmf/tex/latex/psnfss/phv/ot1phv.fd
+File: ot1phv.fd 1998/07/06 Fontinst v1.800 font definitions for OT1/phv.
+) [2] [3] [4] [5]
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 309.
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 309.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 309.
+
+[6
+
+] [7
+
+] [8
+
+] [9] [10] [11] (TargetAtoms.tex
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 4.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 4.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <9> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 6.
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <9> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 6.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 6.
+) [12
+
+] [13] [14] (PropertyType.tex)
+[15] [16] [17] [18] (ManagerSelection.tex)) (ja-icccm-chap4.tex [19] [20
+
+]
+Ви 4 ѕП
+[21]
+
+LaTeX Font Warning: Font shape `JY1/gt/m/it' undefined
+(Font)              using `JY1/gt/m/n' instead on input line 94.
+
+
+LaTeX Font Warning: Font shape `JT1/gt/m/it' undefined
+(Font)              using `JT1/gt/m/n' instead on input line 94.
+
+[22
+
+] [23] [24] (WM_NORMAL_HINTS.tex) [25
+
+] (WM_HINTS.tex) [26] (InitialState.tex) [27] [28] [29] (WM_PROTOCOLS.tex) [30]
+ (WM_STATE.tex) [31
+
+] (WM_ICON_SIZE.tex) [32] (UnmapNotify.tex
+LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <9> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 11.
+) [33] (WM_CHANGE_STATE.tex) [34
+
+] [35
+
+] [36]
+(ConfigureRequest.tex) [37] (ChangeWindowAttributes.tex) [38
+
+] (FocusModels.tex
+LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <9> not available
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 6.
+) [39] [40] [41] (WM_COLORMAP_NOTIFY.tex) [42] [43] [44] [45] [46]
+LaTeX Font Info:    Try loading font information for OML+ppl on input line 1920
+.
+
+(/usr/local/share/texmf/tex/latex/psnfss/ppl/omlppl.fd
+File: omlppl.fd 
+)
+LaTeX Font Info:    Font shape `OML/ppl/m/n' in size <10> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 1920.
+
+ [47] [48]
+(ConfigureNotify.tex) [49] [50] (ClientMessage.tex) (SendEvent.tex) [51]
+[52] (VERSION.tex) (PropertiesSummary.tex)) (ja-icccm-chap6.tex [53] [54
+
+]
+Ви 6 ѕП
+[55] [56] [57] [58] [59]) (ja-icccm.ind [60] [61
+
+] [62] [63]) (ja-icccm.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 1180 strings out of 10672
+ 14664 string characters out of 69919
+ 65979 words of memory out of 263001
+ 4219 multiletter control sequences out of 10000+0
+ 42640 words of font info for 123 fonts, out of 200000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 28i,13n,21p,240b,394s stack positions out of 300i,100n,500p,30000b,4000s
+
+Output written on ja-icccm.dvi (68 pages, 369040 bytes).

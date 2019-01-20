@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd">
+<class package="foo" name="FunctionMember">
+  <namespace/>
+
+  <struct tag="@"> 
+    <method name="func">
+      <param type="int" name="in">
+	<desc>入力値</desc>
+      </param>
+
+      <return type="int">
+	<desc>出力値</desc>
+      </return>
+
+      <desc><brief>入力に対応する出力を返します。</brief></desc>
+    </method>
+
+    <desc><brief>関数ポインタ型のメンバをもつ構造体です。</brief></desc>
+  </struct>
+
+  <desc><brief>関数ポインタ型のメンバをもつ構造体の例を提供します。</brief></desc>
+</class>

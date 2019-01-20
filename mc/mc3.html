@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title>モンテカルロシミュレーション Buffonの針</title>
+  </head>
+
+  <body>
+    <table width="100%">
+      <tbody>
+        <tr>
+	  <td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 728x90 White */
+google_ad_slot = "8441152606";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+    <h1>モンテカルロシミュレーション</h1>
+
+    <h2>3. Buffonの針</h2>
+
+    <h3><a name="design">3.1. 設計</a></h3>
+
+    <p>また課題を確認しておきます。課題は「Buffonの針の問題から円周率を計算するプログラムを作成し、ワークステーション上で実行せよ。試行回数の増加とともにその値はどのように変化するか。」です。</p>
+
+    <p>乱数の発生については、先程作成したrandコマンドがそのまま使えます。あとは乱数を読み込んで円周率を出力するプログラムを作ることになります。今回はそれをbuffonコマンドと呼ぶことにします。Buffonの針では、テキストにある通り、二つ乱数を発生させることが一回針を投げる行為に対応しています（このシミュレーションでは一回針を投げることが1ステップに相当します）。</p>
+
+    <p>乱数以外に必要になる人為的なパラメータは、テキストにあるように、<I>a</I>と<I>L</I>になります（小文字のエルは字体によっては読みにくいので、以下大文字で表記します）。したがって次のような動作イメージをもってプログラムを作成します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% </tt><u><tt>./rand 10 | ./buffon </tt><I>a</I>の値 <I>L</I>の値</u> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>例えば、それぞれ<!{><i>a</i> = 1.0<!}><!#a=1.0#>、<!{><i>L</i> = 0.5<!}><!#L=0.5#>と選んだ場合は次のようにするわけです。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% </tt><u><tt>./rand 10 | ./buffon 1.0 0.5</tt></u> <i>Enter</i><br>
+	  .<br>
+	  .<br>
+	  .<br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>上の例では、randコマンドが10個乱数を発生させていますが、buffonコマンドは1ステップで2つの乱数をとるので、5ステップだけ実行されるわけです。</p>
+
+    <p>方針は以上です。あとは少し細かい点についてテキストを補足しておきます。まず、針の中心の座標<I>y</I>のとり方ですが、「<!{>-<i>a</i> ≦ <i>y</i> ＜ <i>a</i><!}><!#-a \leq y < a#>」ととった方が簡単です。そのかわり、針が平行線と交わっているかどうかは<!{><i>y</i><sub>1</sub><!}><!#y\sub{1}#>と<!{><i>y</i><sub>2</sub><!}><!#y\sub{2}#>の符号が異符号か同符号かで判断します（テキストでは「<!{><i>y</i><sub>1</sub> - 2<i>a</i><!}><!#y\sub{1} - 2a#>」と「<!{><i>y</i><sub>2</sub> - 2<i>a</i><!}><!#y\sub{2} - 2a#>」の符号を比較するように書いてあります）。また、<I>θ</I>については、「<!{>0 ≦ θ ＜ 2π<!}><!#0 \leq \theta < 2\pi#>」ととってください。</p>
+
+    <h3><a name="work">3.2. 作業用ディレクトリの作成</a></h3>
+
+    <p>次のようにpwdコマンドを入力して、現在自分がホームディレクトリにいることを確認してください。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>pwd</u></tt> <i>Enter</i><br>
+	  <tt>/home/appi/foo</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>もし違っていたらcdコマンドでホームディレクトリに移動します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>cd</u></tt> <i>Enter</i><br>
+	  <tt>foo[bar]% <u>pwd</u></tt> <i>Enter</i>（確認のため）<br>
+	  <tt>/home/appi/foo</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>乱数の度数分布のときと同じように、Buffonの針のプログラムを作成するための作業用ディレクトリを次のように作ります。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>mkdir buffon</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>次にこのディレクトリに移ります（繰り返しになりますが、このときもtcshのファイル名補完機能を用いればタイプ量を減らすことができます）。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>cd buffon</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>最後に念のためpwdコマンドでカレントディレクトリを確認します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>pwd</u></tt> <i>Enter</i><br>
+	  <tt>/home/appi/foo/buffon</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <h3><a name="copy">3.3. ソースの雛型のコピー</a></h3>
+
+    <p>乱数の度数分布のときと同様に、Buffonの針でも雛型を用意してあります。</p>
+
+    <p>以前と同様に、次のようにcpコマンドを用いて、ファイルを自分のホームディレクトリにコピーします。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>cp ~yoshiko/skel/buffon/* .</u></tt> <i>Enter</i><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>ファイルをコピーしたら、念のためlsコマンドで確認してみてください。</p>
+
+    <h3><a name="edit">3.4. ソースの編集</a></h3>
+
+    <p>乱数の度数分布で起動したMuleが、まだ動いている場合はそのまま使用しても構いません。終了してしまった場合はもう一度Muleを起動してください。</p>
+
+    <p><tt>buffon.c</tt>を編集して、プログラムを完成させます。</p>
+
+    <h3><a name="build">3.5. 実行ファイルの構築</a></h3>
+
+    <p>Buffonの針でもMakefileを用意してあるので、ファイル<tt>buffon.c</tt>をコンパイルするには、ktermで次のように入力します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>make</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>プログラムに間違いがなければ次のように出力され、自動的に実行ファイル<tt>buffon</tt>が構築されます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% make</tt><br>
+	  <tt>gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c buffon.c</tt><br>
+	  <tt>gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c Trial.c</tt><br>
+	  <tt>gcc -o buffon buffon.o Trial.o -lm</tt><br>
+	  <tt>ln -s ../rand-distribution/rand rand</tt><br>
+	  <tt>ln -s ../rand-distribution/graph.sh graph.sh</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>エラーや警告が出た場合は、内容を調べて修正し、もう一度makeしてみます。</p>
+
+    <p>正常に構築できたようであれば、次に進みます。</p>
+
+    <h3><a name="exec">3.6. プログラムの実行テスト</a></h3>
+
+    <p>実行する前に、パラメータ<I>a</I>、<I>L</I>を決定しなければなりません。例えば、それぞれ<!{><i>a</i> = 1.0<!}><!#a=1.0#>、<!{><i>L</i> = 0.5<!}><!#L=0.5#>に選んだ場合は、ktermで次のように入力します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./rand 10 | ./buffon 1.0 0.5</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>randコマンドは10個の乱数を発生させますが、buffonコマンドは1ステップあたりに2つの乱数をとるので、次のように5ステップだけ実行されます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% ./rand 10 | ./buffon 1.0 0.5</tt><br>
+	  <tt>1 1.600000</tt><br>
+	  <tt>2 3.200000</tt><br>
+	  <tt>3 4.800000</tt><br>
+	  <tt>4 3.200000</tt><br>
+	  <tt>5 2.666667</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>正常に動作しなかったり、値がめちゃくちゃだったりした場合は、Muleで修正して再びmakeします。</p>
+
+    <h3><a name="graph">3.7. グラフの作成</a></h3>
+
+    <p>試行回数<I>n</I>が増加するにしたがって、どのように円周率が収束するかグラフにプロットしてみます。これについてもシェルスクリプト<tt>graph.sh</tt>が用意してあります。試行回数が10000回で、それぞれ<!{><i>a</i> = 1.0<!}><!#a=1.0#>、<!{><i>L</i> = 0.5<!}><!#L=0.5#>に選んだならば、ktermで次のように入力します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./rand 20000 | ./buffon 1.0 0.5 | sh graph.sh -0 buffon</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>randコマンドに与える引数は、試行回数の2倍でなければならないことに注意してください。入力するとxgraphのウィンドウが現れますので、収束している様子を確認したら、印刷して終了します。</p>
+
+    <p>また、試行回数10000回目での円周率を数値で知りたい場合は、次のように入力することで知ることができます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./rand 20000 | ./buffon 1.0 0.5 | tail</u></tt> <i>Enter</i><br>
+	  <tt>9991 3.124018</tt><br>
+	  <tt>9992 3.123720</tt><br>
+	  <tt>9993 3.123423</tt><br>
+	  <tt>9994 3.123125</tt><br>
+	  <tt>9995 3.122828</tt><br>
+	  <tt>9996 3.123140</tt><br>
+	  <tt>9997 3.123452</tt><br>
+	  <tt>9998 3.123765</tt><br>
+	  <tt>9999 3.123467</tt><br>
+	  <tt>10000 3.123780</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+          </td>
+          <td valign="top">
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 160x600 White */
+google_ad_slot = "3143269512";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<iframe src="http://rcm-jp.amazon.co.jp/e/cm?t=sanchappikeio-22&o=9&p=14&l=st1&mode=books-jp&search=%25E3%2583%25A2%25E3%2583%25B3%25E3%2583%2586%25E3%2582%25AB%25E3%2583%25AB%25E3%2583%25AD&fc1=&=1&lc1=&lt1=&f=ifr&bg1=" marginwidth="0" marginheight="0" width="160" height="600" border="0" frameborder="0" style="border:none;" scrolling="no"></iframe>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+<!-- Created: Mon Sep 14 05:03:54 JST 1998 -->
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-636163-1";
+urchinTracker();
+</script>
+  </body>
+</html>

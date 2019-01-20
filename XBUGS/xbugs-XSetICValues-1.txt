@@ -1,0 +1,318 @@
+Message-ID: <3ED4633C.8070001@jp.sony.com>
+Date: Wed, 28 May 2003 16:20:28 +0900
+From: Tomohisa Tanaka <Tomohisa.Tanaka@jp.sony.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.3) Gecko/20030312
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:  xbugs@x.org
+Subject: Xlib: XSetICValues() returns non-NULL in some cases even if no error
+ occurred.
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+
+      VERSION:
+
+R6.6
+
+      CLIENT MACHINE and OPERATING SYSTEM:
+
+FreeBSD 4.7
+
+      DISPLAY TYPE:
+
+XFree86
+
+      WINDOW MANAGER:
+
+qvwm
+
+      COMPILER:
+
+gcc version 2.95.4
+
+      AREA:
+
+Xlib
+
+      SYNOPSIS:
+
+XSetICValues() returns non-NULL in some cases even if no error
+occurred.
+
+      DESCRIPTION:
+
+The Xlib specifications describe the function XSetICValues() as
+follows.
+
+     The XSetICValues function returns NULL if no error occurred;
+     otherwise, it returns the name of the first argument that could
+     not be set.
+
+However, the function XSetICValues() has two problems (1) and (2)
+described below.
+
+(1) When the function XSetICValues() sets the "inner resource"
+argument such as a callback, it is possible that the Xlib does not
+communicate with the XIM server actually.  In this case,
+XSetICValues() returns "the name of the first argument" instead of
+NULL even if no error occurred.
+
+(2) When the function XSetICValues() sets the argument which must be
+set only with the function XCreateIC() (such as XNInputStyle) or the
+read-only argument (such as XNFilterEvents), it returns "the name of
+the first argument", instead of "the name of the first argument that
+could not be set."
+
+In the function _XimProtoSetICValues() in xc/lib/X11/imDefIc.c, the
+variable `tmp_name' is declared and is set to "the name of the first
+argument" if the argument was given; otherwise, it is set to NULL (at
+the line 687, shown below).
+
+At the line 721, the variable `name' is set to the value which the
+function _XimEncodeICATTRIBUTE() returned.  If `name' is not equal to
+NULL, the returned value is the name of the first argument that could
+not be set, and the for loop breaks (at the line 725).
+
+Otherwise, if `name' is equal to NULL, the variable `ret_len' shows
+the size of encoded data, and the variable `total' shows the whole
+size (at the line 728).  And if the variable `arg_ret' is equal to
+NULL, which means that all the arguments have been encoded, the for
+loop breaks (at the line 730).
+
+After the for loop breaks, _XimProtoSetICValues() returns `tmp_name'
+if `total' is equal to zero (at the line 751).  But in the case that
+error occurred (and the for loop broke at the line 725), `tmp_name'
+remains set to "the name of the first argument", and so
+_XimProtoSetICValues() doesn't return the name of the first argument
+that could not be set.  And, when all the arguments are "inner
+resources", the for loop immediately breaks at line the 730 with
+`total' remaining to be zero and `tmp_name' remains set to the name of
+the first argument.  As a result, _XimProtoSetICValues() doesn't
+return NULL even if no error occurred.
+
+    661  Private char *
+    662  _XimProtoSetICValues(xic, arg)
+    663      XIC                  xic;
+    664      XIMArg              *arg;
+    665  {
+...
+    686      char                *name;
+    687      char                *tmp_name = (arg) ? arg->name : NULL;
+...
+    717      total = 0;
+...
+    719      for (;;) {
+    720          data = &buf[buf_size];
+    721          if ((name = _XimEncodeICATTRIBUTE(ic, ic->private.proto.ic_resources,
+    722                          ic->private.proto.ic_num_resources, arg, &arg_ret,
+    723                          data, data_len, &ret_len, (XPointer)&ic_values,
+    724                          &flag, XIM_SETICVALUES))) {
+    725              break;
+    726          }
+    727
+    728          total += ret_len;
+    729          if (!(arg = arg_ret)) {
+    730              break;
+    731          }
+...
+    747      }
+...
+    750      if (!total) {
+    751          return tmp_name;
+    752      }
+
+      REPEAT BY:
+
+To repeat, you need an XIM server.  You must have the server running,
+and set the environment variable XMODIFIERS appropriately.
+
+% cat Imakefile
+DEPLIBS         = $(DEPXONLYLIB)
+LOCAL_LIBRARIES = $(XONLYLIB)
+SRCS            = xseticvalues.c
+OBJS            = $(SRCS:.c=.o)
+
+ComplexProgramTarget(xseticvalues)
+% cat xseticvalues.c
+#include <X11/Xlib.h>
+#include <X11/Xlocale.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <err.h>
+
+#define FONTSET "-*-fixed-medium-r-normal--*-*-*-*-*-*-*-*"
+#define XICCallback XIMCallback
+#define XICProc XIMProc
+
+int
+main(void)
+{
+     Display *dpy;
+     Window w;
+     XIM im;
+     XIMStyle style;
+     XIMStyles *supported;
+     XIC ic;
+     XVaNestedList preedit, status, list;
+     XICCallback null;
+     XFontSet fs;
+     int n_missing_sets;
+     char **missing_set, *alternate_font;
+     XPoint Origin = {0, 0};
+     char *s;
+
+     if ((dpy = XOpenDisplay("")) == NULL) {
+         errx(1, "cannot open display.");
+     }
+     if (setlocale(LC_ALL, "") == NULL) {
+         errx(1, "cannot set locale.");
+     }
+     if (XSupportsLocale() == False) {
+         errx(1, "locale not supported.");
+     }
+     if (XSetLocaleModifiers("") == NULL) {
+         errx(1, "cannot set locale modifiers.");
+     }
+     if ((fs = XCreateFontSet(dpy, FONTSET, &missing_set, &n_missing_sets,
+                              &alternate_font)) == NULL) {
+         errx(1, "cannot create font set.");
+     }
+     if ((im = XOpenIM(dpy, NULL, NULL, NULL)) == NULL) {
+         errx(1, "cannot open input method.");
+     }
+     if (XGetIMValues(im, XNQueryInputStyle, &supported, NULL) != NULL) {
+         errx(1, "XNQueryInputStyle not supported.");
+     }
+     if (supported->count_styles < 1) {
+         errx(1, "no style available.");
+     }
+     style = supported->supported_styles[0];
+     printf("style: 0x%x\n", (unsigned int)style);
+     XFree(supported);
+
+     null.client_data = NULL;
+     null.callback = (XICProc)NULL;
+     preedit = XVaCreateNestedList(0,
+                                   XNFontSet, fs,
+                                   XNSpotLocation, &Origin,
+                                   XNPreeditStartCallback, &null,
+                                   XNPreeditDoneCallback, &null,
+                                   XNPreeditDrawCallback, &null,
+                                   XNPreeditCaretCallback, &null,
+                                   NULL);
+     status = XVaCreateNestedList(0,
+                                  XNFontSet, fs,
+                                  XNStatusStartCallback, &null,
+                                  XNStatusDoneCallback, &null,
+                                  XNStatusDrawCallback, &null,
+                                  NULL);
+     w = DefaultRootWindow(dpy);
+     if ((ic = XCreateIC(im,
+                         XNInputStyle, style,
+                         XNClientWindow, w,
+                         XNPreeditAttributes, preedit,
+                         XNStatusAttributes, status,
+                         NULL)) == NULL) {
+         errx(1, "cannot create input context.");
+     }
+
+     printf("test 1: XSetICValues() should return NULL.\n");
+     if ((s = XSetICValues(ic,
+                           XNPreeditAttributes, preedit,
+                           NULL)) != NULL) {
+         printf("XSetICValues() failed. (%s)\n", s);
+     }
+     printf("%s\n", (s == NULL) ? "ok" : "ng");
+
+     printf("test 2: XSetICValues() should fail and return \"inputStyle\".\n");
+     if ((s = XSetICValues(ic,
+                           XNPreeditAttributes, preedit,
+                           XNInputStyle, style, /* <- ERROR */
+                           NULL)) != NULL) {
+         /* s should be "inputStyle". */
+         printf("XSetICValues() failed. (%s)\n", s);
+     }
+     printf("%s\n", (s != NULL && strcmp(s, XNInputStyle) == 0) ? "ok" : "ng");
+
+     printf("test 3: XSetICValues() should return NULL.\n");
+     if ((s = XSetICValues(ic,
+                           /* EMPTY */
+                           NULL)) != NULL) {
+         printf("XSetICValues() failed. (%s)\n", s);
+     }
+     printf("%s\n", (s == NULL) ? "ok" : "ng");
+
+     printf("test 4: XSetICValues() should return NULL.\n");
+     list = XVaCreateNestedList(0,
+                                XNPreeditStateNotifyCallback, &null,
+                                NULL);
+     if ((s = XSetICValues(ic,
+                           XNPreeditAttributes, list,
+                           NULL)) != NULL) {
+         printf("XSetICValues() failed. (%s)\n", s);
+     }
+     printf("%s\n", (s == NULL) ? "ok" : "ng");
+
+     XFree(preedit);
+     XFree(status);
+     XFree(list);
+     exit(0);
+     return 0;
+}
+% xmkmf -a ; make
+...
+% ./xseticvalues
+style: 0x102
+test 1: XSetICValues() should return NULL.
+XSetICValues() failed. (preeditAttributes)
+ng
+test 2: XSetICValues() should fail and return "inputStyle".
+XSetICValues() failed. (preeditAttributes)
+ng
+test 3: XSetICValues() should return NULL.
+ok
+test 4: XSetICValues() should return NULL.
+XSetICValues() failed. (preeditAttributes)
+ng
+%
+
+Note: all 4 tests should print "ok".  The result of "test 1" depends
+on the value of supported->supported_styles[0].  And so it becomes
+"ok" when your XIM server gives 0x0104 (which means XIMPreeditPosition
+| XIMStatusArea) as the first XIM style.
+
+      SAMPLE FIX:
+
+diff -c -r xc.orig/lib/X11/imDefIc.c xc/lib/X11/imDefIc.c
+*** xc.orig/lib/X11/imDefIc.c   Mon Apr 28 03:47:27 2003
+--- xc/lib/X11/imDefIc.c        Sun May 11 05:39:07 2003
+***************
+*** 1,4 ****
+--- 1,5 ----
+   /* $Xorg: imDefIc.c,v 1.5 2000/08/17 19:45:11 cpqbld Exp $ */
++ /* SAMPLE FIX: 2003/05/11 */
+   /******************************************************************
+
+              Copyright 1991, 1992 by Sun Microsystems, Inc.
+***************
+*** 748,754 ****
+       _XimSetCurrentICValues(ic, &ic_values);
+
+       if (!total) {
+!         return tmp_name;
+       }
+
+       buf_s = (CARD16 *)&buf[XIM_HEADER_SIZE];
+--- 749,755 ----
+       _XimSetCurrentICValues(ic, &ic_values);
+
+       if (!total) {
+!         return name;
+       }
+
+       buf_s = (CARD16 *)&buf[XIM_HEADER_SIZE];
+
+--
+Tomohisa Tanaka
+Media Technology Development Division
+Platform Technology Center, Sony Corporation

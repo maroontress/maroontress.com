@@ -1,0 +1,2 @@
+#!/bin/sh
+nkf -e | sed -f html2tex.sed

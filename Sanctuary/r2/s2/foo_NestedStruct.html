@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>NestedStruct - foo_NestedStruct</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package foo</h3>
+    <h1>class NestedStruct</h1>
+#define foo_NestedStruct_IMPORT<br>
+#include &lt;foo/NestedStruct.h&gt;<br>
+    <dl><dd>ネストする構造体の例を提供します。</dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="foo_NestedStruct.html#struct @1">struct @1</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;匿名の構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#struct @1.i"><b>i</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;何かの整数値です。</td>
+</tr>
+      </tr>
+    </table><br>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="foo_NestedStruct.html#struct foo_NestedStruct_Inner">struct NestedStruct_<wbr>Inner</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;構造体のメンバとして定義される構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#struct foo_NestedStruct_Inner.i"><b>i</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;何かの整数値です。</td>
+</tr>
+      </tr>
+    </table><br>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="foo_NestedStruct.html#struct foo_NestedStruct_Outer">struct NestedStruct_<wbr>Outer</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;メンバとして構造体を定義する構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="foo_NestedStruct.html#struct @1">struct @1</a></font>
+  </td>
+  <td valign="top"><a href="#struct foo_NestedStruct_Outer.s1"><b>s1</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型が「匿名の構造体」のメンバです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="foo_NestedStruct.html#struct foo_NestedStruct_Inner">struct NestedStruct_<wbr>Inner</a></font>
+  </td>
+  <td valign="top"><a href="#struct foo_NestedStruct_Outer.s2"><b>s2</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型が「foo_<wbr>NestedStruct_<wbr>Inner構造体」のメンバです。</td>
+</tr>
+      </tr>
+    </table><br>
+    <h2>Struct Detail</h2>
+<p><a name="struct @1"></a>
+<font size="+1"><b>struct @1</b></font></p>
+<dl><dd>
+          匿名の構造体です。
+	  <p>匿名の構造体には、便宜上、仮の名前が付けられます。仮の名前は@に続くユニークなID（整数値）となります。</p>
+          <p><span class="em">匿名の構造体の説明をここに記述します。</span></p>
+        
+<hr>
+<p><a name="struct @1.i"></a><font size="+1"><b>i</b></font></p>
+<p>int <b>i</b></p>
+<dl>
+<dd>何かの整数値です。</dd>
+</dl>
+</dd></dl>
+<hr>
+<p><a name="struct foo_NestedStruct_Inner"></a>
+<font size="+1"><b>struct NestedStruct_Inner</b></font></p>
+<dl><dd>
+          構造体のメンバとして定義される構造体です。
+          <p>この構造体はトップレベルで定義された場合と同様に扱えます。</p>
+          <p><span class="em">構造体Innerの説明をここに記述します。</span></p>
+        
+<hr>
+<p><a name="struct foo_NestedStruct_Inner.i"></a><font size="+1"><b>i</b></font></p>
+<p>int <b>i</b></p>
+<dl>
+<dd>何かの整数値です。</dd>
+</dl>
+</dd></dl>
+<hr>
+<p><a name="struct foo_NestedStruct_Outer"></a>
+<font size="+1"><b>struct NestedStruct_Outer</b></font></p>
+<dl><dd>メンバとして構造体を定義する構造体です。
+<hr>
+<p><a name="struct foo_NestedStruct_Outer.s1"></a><font size="+1"><b>s1</b></font></p>
+<p><a href="foo_NestedStruct.html#struct @1">struct @1</a> <b>s1</b></p>
+<dl>
+<dd>
+        型が「匿名の構造体」のメンバです。
+        <p><span class="em">メンバs1の説明をここに記述します。</span></p>
+      </dd>
+</dl>
+<hr>
+<p><a name="struct foo_NestedStruct_Outer.s2"></a><font size="+1"><b>s2</b></font></p>
+<p><a href="foo_NestedStruct.html#struct foo_NestedStruct_Inner">struct NestedStruct_<wbr>Inner</a> <b>s2</b></p>
+<dl>
+<dd>
+        型が「foo_<wbr>NestedStruct_<wbr>Inner構造体」のメンバです。
+        <p><span class="em">メンバs2の説明をここに記述します。</span></p>
+      </dd>
+</dl>
+</dd></dl>
+<hr>
+  </body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Error - std_lang_Error</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package std_lang</h3>
+    <h1>class Error</h1>
+#define std_lang_Error_IMPORT<br>
+#include &lt;std/lang/Error.h&gt;<br>
+    <dl><dd>
+エラーを扱うためのクラスです。
+  </dd></dl>
+    <hr>
+    <h2>Macro Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td><a href="#std_lang_Error_DECLARE"><b>Error_DECLARE</b></a>(<i>name</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;親のないエラーを宣言します。</td>
+</tr>
+<tr>
+  <td><a href="#std_lang_Error_DECLARE_EXTENDS"><b>Error_DECLARE_EXTENDS</b></a>(<i>name</i>, <i>parent</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;親を指定してエラーを宣言します。</td>
+</tr>
+    </table>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="std_lang_Error.html#struct std_lang_Error">struct Error</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;エラーのクラスとなる構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *const *</font>
+  </td>
+  <td valign="top"><a href="#struct std_lang_Error.parent"><b>parent</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;このエラーの親となるエラーです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const char *</font>
+  </td>
+  <td valign="top"><a href="#struct std_lang_Error.name"><b>name</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;このエラーを表す文字列です。</td>
+</tr>
+      </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const char *</font>
+  </td>
+  <td valign="top"><a href="#std_lang_Error_toString"><b>Error_<wbr>toString</b></a>(const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *&nbsp;<i>e</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;エラーを表す文字列を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *</font>
+  </td>
+  <td valign="top"><a href="#std_lang_Error_getParent"><b>Error_<wbr>getParent</b></a>(const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *&nbsp;<i>e</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;親となるエラーを取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_lang_Error_hasAncestor"><b>Error_<wbr>hasAncestor</b></a>(const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *&nbsp;<i>e</i>, const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *&nbsp;<i>ancestor</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;特定の祖先をもつエラーであるかどうかを取得します。</td>
+</tr>
+    </table>
+    <h2>Macro Detail</h2>
+<p><a name="std_lang_Error_DECLARE"></a><font size="+1"><b>Error_DECLARE</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>Error_DECLARE</b>(<i>name</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+親のないエラーを宣言します。
+<p>ファイルスコープ（関数の外側）で次のように使用することで、エラーを宣言できます。</p>
+<pre>
+<a href="std_lang_Error.html#std_lang_Error_DECLARE">Error_<wbr>DECLARE</a>(Foo_<wbr>IO_<wbr>ERROR);
+</pre>
+<p>この例では、const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *const型の<span class="code">Foo_<wbr>IO_<wbr>ERROR</span>を宣言します。</p>
+    </dd>
+<dl>Parameters:<dd>
+<i>name</i> - エラーの完全な識別子<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="std_lang_Error_DECLARE_EXTENDS"></a><font size="+1"><b>Error_DECLARE_EXTENDS</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>Error_DECLARE_EXTENDS</b>(<i>name</i>, <i>parent</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+親を指定してエラーを宣言します。
+<p>ファイルスコープ（関数の外側）で次のように使用することで、エラーを宣言できます。</p>
+<pre>
+<a href="std_lang_Error.html#std_lang_Error_DECLARE_EXTENDS">Error_<wbr>DECLARE_<wbr>EXTENDS</a>(Bar_<wbr>FILE_<wbr>NOT_<wbr>FOUND, Foo_<wbr>IO_<wbr>ERROR);
+</pre>
+<p>この例では、親が<span class="code">Foo_<wbr>IO_<wbr>ERROR</span>である、const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *const型の<span class="code">Bar_<wbr>FILE_<wbr>NOT_<wbr>FOUND</span>を宣言します。</p>
+    </dd>
+<dl>Parameters:<dd>
+<i>name</i> - エラーの完全な識別子<br>
+
+<i>parent</i> - 親となるエラー<br>
+
+</dd></dl>
+</dl>
+<hr>
+    <h2>Struct Detail</h2>
+<p><a name="struct std_lang_Error"></a>
+<font size="+1"><b>struct Error</b></font></p>
+<dl><dd>
+エラーのクラスとなる構造体です。
+    
+<hr>
+<p><a name="struct std_lang_Error.parent"></a><font size="+1"><b>parent</b></font></p>
+<p>const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *const * <b>parent</b></p>
+<dl>
+<dd>
+このエラーの親となるエラーです。
+<p>親が存在しない場合は<span class="code">NULL</span>になります。</p>
+      </dd>
+</dl>
+<hr>
+<p><a name="struct std_lang_Error.name"></a><font size="+1"><b>name</b></font></p>
+<p>const char * <b>name</b></p>
+<dl>
+<dd>
+このエラーを表す文字列です。
+      </dd>
+</dl>
+</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_lang_Error_toString"></a><font size="+1"><b>Error_<wbr>toString</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const char * <b>Error_toString</b>(</td>
+    <td nowrap>const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *&nbsp;<i>e</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+エラーを表す文字列を取得します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>e</i> - エラー<br>
+
+</dd></dl>
+<dl>Returns:<dd>エラーを表す文字列</dd></dl>
+</dl>
+<hr>
+<p><a name="std_lang_Error_getParent"></a><font size="+1"><b>Error_<wbr>getParent</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> * <b>Error_getParent</b>(</td>
+    <td nowrap>const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *&nbsp;<i>e</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+親となるエラーを取得します。
+<p>親が存在しない場合は<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>e</i> - エラー<br>
+
+</dd></dl>
+<dl>Returns:<dd>親となるエラー、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_lang_Error_hasAncestor"></a><font size="+1"><b>Error_<wbr>hasAncestor</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>Error_hasAncestor</b>(</td>
+    <td nowrap>const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *&nbsp;<i>e</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const <a href="std_lang_Error.html#struct std_lang_Error">struct Error</a> *&nbsp;<i>ancestor</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+特定の祖先をもつエラーであるかどうかを取得します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>e</i> - エラー<br>
+
+<i>ancestor</i> - 祖先となるエラー<br>
+
+</dd></dl>
+<dl>Returns:<dd><span class="arg">ancestor</span>が<span class="arg">e</span>または<span class="arg">e</span>の祖先であれば非0、そうでなければ0</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

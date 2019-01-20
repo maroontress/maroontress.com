@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd">
+<class package="foo" name="Printer">
+  <namespace/>
+
+  <method name="print">
+    <param type="const char *" name="format">
+      <desc>フォーマット（printf(3)を参照してください）</desc>
+    </param>
+
+    <variableparam/>
+
+    <return type="int">
+      <desc>出力したバイト数</desc>
+    </return>
+
+    <desc>
+      <brief>指定したフォーマットに整形した文字列を出力します。</brief>
+      <p>いわゆるprintf()ライクな関数です。</p>
+    </desc>
+  </method>
+
+  <desc><brief>variableparam要素の使用例を提供します。</brief></desc>
+</class>

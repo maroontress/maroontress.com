@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title>モンテカルロシミュレーション 酔歩問題（時間が余った場合）</title>
+  </head>
+
+  <body>
+    <table width="100%">
+      <tbody>
+        <tr>
+	  <td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 728x90 White */
+google_ad_slot = "8441152606";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+    <h1>モンテカルロシミュレーション</h1>
+
+    <h2>5. 酔歩問題（時間が余った場合）</h2>
+
+    <h3><a name="design">5.1. 設計</a></h3>
+
+    <p>時間が余った場合は、酔歩問題を考えてみましょう。課題は「（実験書の）3.3の酔歩問題のシミュレーションプログラムを作成し、ワークステーション上で実行せよ。<!{><i>N</i> = 100<!}><!#N=100#>として、時刻<!{><i>n</i> = 10, 20, ..., 100<!}><!#n=10,\,20,\,...,\,100#>の時の酔っぱらいの位置<I>x</I>への到達確率をシミュレーションから求めよ。位置<I>x</I>への到達頻度分布をヒストグラムとして整理すること。また、各ステップでの変位の平均、分散も合わせて出力し、時間の関数としてプロットせよ。また<I>N</I>についていくつかの場合について試みよ。」です。</p>
+
+    <p>この酔歩問題のプログラムをwalkコマンドと呼ぶことにしましょう。実験書の手順を参考にすれば、次のような疑似コードが書けます。（今までと異なり、乱数の発生については処理速度向上のため、randコマンドの出力を読み込むのではなく、関数rand()を直接利用します。）</p>
+
+<pre>
+    for (N回繰り返す)
+    {
+        x に 0 を代入する;
+
+        for (n回繰り返す)
+        {
+            0以上1未満の乱数を発生させて r に代入する;
+
+            if (r < 0.5)
+            {
+                x から1を引く;
+            }
+            else
+            {
+                x に1を加える;
+            }
+        }
+
+        /* x はこのとき `n歩後の男の位置' である。*/
+        x を出力する;
+    }
+</pre>
+
+    <p>人為的なパラメータは、試行回数<I>N</I>と、一回の試行で動く歩数<I>n</I>です。これらは、walkコマンドへの引数として与えることにします。残るは、位置<I>x</I>に到達した回数<!{><i>N<sub>x</sub></i><!}><!#N\sub{x}#>を数える作業です。この作業は、プログラムを作成しなくても、後で説明するようにsortコマンドとuniqコマンドで処理することができます。</p>
+
+    <p>また、変位の平均と分散を時間の関数としてプロットする作業は、先程作成したaverageコマンドとvarianceコマンドを使用します。</p>
+
+    <h3><a name="work">5.2. 作業用ディレクトリの作成</a></h3>
+
+    <p>次のようにpwdコマンドを入力して、現在自分がホームディレクトリにいることを確認してください。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>pwd</u></tt> <i>Enter</i><br>
+	  <tt>/home/appi/foo</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>もし違っていたらcdコマンドでホームディレクトリに移動します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>cd</u></tt> <i>Enter</i><br>
+	  <tt>foo[bar]% <u>pwd</u></tt> <i>Enter</i>（確認のため）<br>
+	  <tt>/home/appi/foo</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>酔歩問題のプログラムを作成するための作業用ディレクトリを次のように作ります。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>mkdir random-walk</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>次にこのディレクトリに移ります（繰り返しになりますが、このときもtcshのファイル名補完機能を用いればタイプ量を減らすことができます）。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>cd random-walk</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>最後に念のためpwdコマンドでカレントディレクトリを確認します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>pwd</u></tt> <i>Enter</i><br>
+	  <tt>/home/appi/foo/random-walk</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <h3><a name="copy">5.3. ソースの雛型のコピー</a></h3>
+
+    <p>酔歩問題でも雛型を用意してあります。</p>
+
+    <p>以前と同様に、次のようにcpコマンドを用いて、ファイルを自分のホームディレクトリにコピーします。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>cp ~yoshiko/skel/random-walk/* .</u></tt> <i>Enter</i><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>ファイルをコピーしたら、念のためlsコマンドで確認してみてください。</p>
+
+    <h3><a name="edit">5.4. ソースの編集</a></h3>
+
+    <p>乱数の度数分布で起動したMuleが、まだ動いている場合はそのまま使用しても構いません。終了してしまった場合はもう一度Muleを起動してください。</p>
+
+    <p>ファイル<tt>walk.c</tt>を編集して、プログラムを完成させます。</p>
+
+    <h3><a name="build">5.5. 実行ファイルの構築</a></h3>
+
+    <p>酔歩問題でもMakefileを用意してあります。ファイル<tt>walk.c</tt>をコンパイルするには、ktermで次のように入力します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>make</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>プログラムに間違いがなければ次のように出力され、自動的に実行ファイル<tt>walk</tt>が構築されます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% make</tt><br>
+	  <tt>gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c walk.c</tt><br>
+	  <tt>gcc -o walk walk.o -lm</tt><br>
+	  <tt>ln -s ../rand-distribution/average .</tt><br>
+	  <tt>ln -s ../rand-distribution/variance .</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>エラーや警告が出た場合は、内容を調べて修正し、もう一度makeしてみます。</p>
+
+    <p>正常に構築できたようであれば、次に進みます。</p>
+
+    <h3><a name="exec">5.6. プログラムの実行テスト</a></h3>
+
+    <h4>5.6.1. walkコマンド</h4>
+
+    <p>実行する前に、パラメータ<I>N</I>, <I>n</I>を決定しなければなりません。とりあえずそれぞれ<!{><i>N</i> = 10<!}><!#N=10#>、<!{><i>n</i> = 4<!}><!#n=4#>に選んでテストすることにします。ktermで次のように入力します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./walk 10 4</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>次のように、酔歩4歩のシミュレーションが10回試行されます（値は異なるかもしれません）。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% ./walk 10 4</tt><br>
+	  <tt>0</tt><br>
+	  <tt>0</tt><br>
+	  <tt>-4</tt><br>
+	  <tt>0</tt><br>
+	  <tt>4</tt><br>
+	  <tt>0</tt><br>
+	  <tt>0</tt><br>
+	  <tt>4</tt><br>
+	  <tt>4</tt><br>
+	  <tt>-2</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>4歩の酔歩の場合、最終的な位置は<I>-</I>4, <I>-</I>2, 0, 2, 4のいずれかです。正常に動作しなかったり、値がめちゃくちゃだったりした場合は、Muleで修正して再びmakeします。</p>
+
+    <h4>5.6.2. sortコマンド</h4>
+
+    <p>今度は、最終的な位置<I>-</I>4, <I>-</I>2, 0, 2, 4が、それぞれ何回ずつ現れるのか数えなければなりません。最初に数えやすくするために、walkコマンドの出力をsortコマンドで並び換えます。次のように入力してみます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./walk 10 4 | sort -n</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>ここで、sortコマンドへの引数<tt>-n</tt>は、入力文字列を数とみなして比較するように指示するものです。結果は、次のように表示されます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% ./walk 10 4 | sort -n</tt><br>
+	  <tt>-4</tt><br>
+	  <tt>-2</tt><br>
+	  <tt>0</tt><br>
+	  <tt>0</tt><br>
+	  <tt>0</tt><br>
+	  <tt>0</tt><br>
+	  <tt>0</tt><br>
+	  <tt>4</tt><br>
+	  <tt>4</tt><br>
+	  <tt>4</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <h4>5.6.2. uniqコマンド</h4>
+
+    <p>さらに、それぞれの値の出現回数を数えるには、uniqコマンドを使用します。uniqコマンドの本来の用途は、「連続して重複する行をひとつの行にまとめる」ことです。したがって、次のように入力すると、</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./walk 10 4 | sort -n | uniq</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>次のように重複した行がひとつになります。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% ./walk 10 4 | sort -n | uniq</tt><br>
+	  <tt>-4</tt><br>
+	  <tt>-2</tt><br>
+	  <tt>0</tt><br>
+	  <tt>4</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>しかし、これでは役に立ちません。uniqコマンドには、引数<tt>-c</tt>を与えることによって、「行が入力中で続けて出現した回数」を各行の先頭に（空白をひとつあけて）表示する機能があります。そこで、次のように入力します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./walk 10 4 | sort -n | uniq -c</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>次のように出現回数が行の先頭に付加されます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% ./walk 10 4 | sort -n | uniq -c</tt><br>
+	  <tt>1 -4</tt><br>
+	  <tt>1 -2</tt><br>
+	  <tt>5 0</tt><br>
+	  <tt>3 4</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>最終的な位置<I>-</I>4, <I>-</I>2, 0, 2, 4が、それぞれ1, 1, 5, 0, 3回出現したことがわかります。これをグラフに表示すれば、ヒストグラムが作成できます。</p>
+
+    <h3><a name="bargraph">5.7. 到達頻度分布のグラフの作成</a></h3>
+
+    <p>結局、例えば<!{><i>N</i> = 100<!}><!#N=100#>として、次のように実行することで、時刻<!{><i>n</i> = 10, 20, ..., 100<!}><!#n=10,\,20,\,...,\,100#>の時の位置<I>x</I>への到達頻度分布を得ることができます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./walk 100 <I>n</I>の値 | sort -n | uniq -c</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>しかし、これについてもシェルスクリプト<tt>histogram.csh</tt>を用意してありますので、次のように入力することで、ヒストグラムを表示できます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./histogram.csh <I>N</I>の値 <I>n</I>の値 [ <I>n</I>の値 ... ] </u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>例として、<!{><i>N</i> = 100<!}><!#N=100#>、<!{><i>n</i> = 10, 50, 100<!}><!#n=10,\,50,\,100#>の時のヒストグラムを作成するには、次のように入力します。</p>
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./histogram.csh 100 10 50 100</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>実際には自分でパラメータを適当に選び、ヒストグラムを作成してください。ヒストグラムはxgraphのウィンドウに現れますので、印刷して終了します。</p>
+
+    <h3><a name="graph">5.8. 変位の平均と分散のグラフの作成</a></h3>
+
+    <p>もう一度話を戻しますが、「酔歩4歩のシミュレーション」を10回試行して、得られた10個の（4歩後の）変位の平均を求めてみましょう。次のように入力してみます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./walk 10 4 | ./average</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>すると次のように表示されます（値は異なるかもしれません）。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% ./walk 10 4 | ./average</tt><br>
+	  <tt>1 0.000000</tt><br>
+	  <tt>2 0.000000</tt><br>
+	  <tt>3 -1.333333</tt><br>
+	  <tt>4 -1.000000</tt><br>
+	  <tt>5 0.000000</tt><br>
+	  <tt>6 0.000000</tt><br>
+	  <tt>7 0.000000</tt><br>
+	  <tt>8 0.500000</tt><br>
+	  <tt>9 0.888889</tt><br>
+	  <tt>10 0.600000</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>必要な値は「10個の変位の平均」なので、次のように入力して最終行だけを取り出します。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./walk 10 4 | ./average | tail -1</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>すると次のように表示されます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% ./walk 10 4 | ./average | tail -1</tt><br>
+	  <tt>10 0.600000</tt><br>
+	  <tt>foo[bar]% </tt><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>あとは、ある<I>N</I>について、いくつかの<I>n</I>で上記の操作を繰り返し、得られた平均を<I>n</I>についてプロットすれば、必要なグラフが手に入ります。もちろん、分散に関しても同様です（averageコマンドをvarianceコマンドに入れ換えることで、分散も求めることができます）。</p>
+
+    <p>しかし、手作業で同じようなことを繰り返すのも面倒です。今回もシェルスクリプト<tt>graph.csh</tt>を用意してありますので、それを用いてグラフを作成します。次のように入力することで、平均と分散のグラフを出力できます。</p>
+
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./graph.csh <I>N</I>の値 <I>n</I>の値 [ <I>n</I>の値 ... ] </u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>例として、<!{><i>N</i> = 100<!}><!#N=100#>、<!{><i>n</i> = 10, 20, 30, 40, 50<!}><!#n=10,\,20,\,30,\,40,\,50#>の時の平均と分散のグラフを作成するには、次のように入力します。</p>
+    <table border width="100%">
+      <tr>
+	<td nowrap>
+	  <tt>foo[bar]% <u>./graph.csh 100 10 20 30 40 50</u></tt> <i>Enter</i><br>
+	</td>
+      </tr>
+    </table>
+
+    <p>実際には自分でパラメータを適当に選び、グラフを作成してください。グラフはxgraphのウィンドウに現れますので、印刷して終了します。</p>
+
+          </td>
+          <td valign="top">
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 160x600 White */
+google_ad_slot = "3143269512";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<iframe src="http://rcm-jp.amazon.co.jp/e/cm?t=sanchappikeio-22&o=9&p=14&l=st1&mode=books-jp&search=%25E3%2583%25A2%25E3%2583%25B3%25E3%2583%2586%25E3%2582%25AB%25E3%2583%25AB%25E3%2583%25AD&fc1=&=1&lc1=&lt1=&f=ifr&bg1=" marginwidth="0" marginheight="0" width="160" height="600" border="0" frameborder="0" style="border:none;" scrolling="no"></iframe>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Created: Mon Sep 14 05:03:54 JST 1998 -->
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-636163-1";
+urchinTracker();
+</script>
+  </body>
+</html>

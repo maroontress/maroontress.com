@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Parameter - com_maroontress_libcgi_mime_Parameter</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_maroontress_libcgi_mime</h3>
+    <h1>class Parameter</h1>
+#define com_maroontress_libcgi_mime_Parameter_IMPORT<br>
+#include &lt;com/maroontress/libcgi/mime/Parameter.h&gt;<br>
+    <dl><dd>
+コンテンツタイプのパラメータです。
+  </dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータの実体となる構造体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_mime_Parameter_create"><b>Parameter_<wbr>create</b></a>(const char *&nbsp;<i>name</i>, const char *&nbsp;<i>value</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_mime_Parameter_free"><b>Parameter_<wbr>free</b></a>(<a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a> *&nbsp;<i>param</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータを解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;struct std_<wbr>lang_<wbr>String *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_mime_Parameter_getName"><b>Parameter_<wbr>getName</b></a>(<a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a> *&nbsp;<i>param</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータの名前を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;struct std_<wbr>lang_<wbr>String *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_mime_Parameter_getValue"><b>Parameter_<wbr>getValue</b></a>(<a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a> *&nbsp;<i>param</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータの値を取得します。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct com_maroontress_libcgi_mime_Parameter"></a>
+<font size="+1"><b>struct Parameter</b></font></p>
+<dl><dd>パラメータの実体となる構造体です。</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="com_maroontress_libcgi_mime_Parameter_create"></a><font size="+1"><b>Parameter_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a> * <b>Parameter_create</b>(</td>
+    <td nowrap>const char *&nbsp;<i>name</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>value</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パラメータを生成します。
+<p>値がないパラメータの場合は<span class="arg">value</span>に<span class="code">NULL</span>を指定します。</p>
+<p>戻り値が参照するオブジェクトは<a href="com_maroontress_libcgi_mime_Parameter.html#com_maroontress_libcgi_mime_Parameter_free">Parameter_<wbr>free</a>()で解放しなければなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>name</i> - パラメータの名前<br>
+
+<i>value</i> - パラメータの値、または<span class="code">NULL</span><br>
+
+</dd></dl>
+<dl>Returns:<dd>パラメータ</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_mime_Parameter_free"></a><font size="+1"><b>Parameter_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Parameter_free</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a> *&nbsp;<i>param</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パラメータを解放します。
+<p><span class="arg">param</span>が<span class="code">NULL</span>のときはなにもしません。呼び出し後は<span class="arg">param</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>param</i> - パラメータのインスタンス<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_mime_Parameter_getName"></a><font size="+1"><b>Parameter_<wbr>getName</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>struct std_<wbr>lang_<wbr>String *</td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Parameter_getName</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a> *&nbsp;<i>param</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パラメータの名前を取得します。
+<p>戻り値が参照するオブジェクトは<span class="arg">param</span>を解放するまで有効です。戻り値が参照するオブジェクトを解放してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>param</i> - パラメータのインスタンス<br>
+
+</dd></dl>
+<dl>Returns:<dd>パラメータの名前</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_mime_Parameter_getValue"></a><font size="+1"><b>Parameter_<wbr>getValue</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>struct std_<wbr>lang_<wbr>String *</td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Parameter_getValue</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a> *&nbsp;<i>param</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パラメータの値を取得します。
+<p>戻り値が参照するオブジェクトは<span class="arg">param</span>を解放するまで有効です。戻り値が参照するオブジェクトを解放してはなりません。</p>
+<p>値がない場合は<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>param</i> - パラメータのインスタンス<br>
+
+</dd></dl>
+<dl>Returns:<dd>パラメータの値、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

@@ -1,0 +1,251 @@
+Received: from mail.netlab.nec.co.jp (mail.netlab.nec.co.jp [172.16.3.22])
+     by pop1.netlab.nec.co.jp (8.9.3/3.7W) with ESMTP id OAA20444
+     for <tomohisa@pop1.netlab.nec.co.jp>; Thu, 17 May 2001 14:33:03 +0900 (JST)
+Received: from netlab.nec.co.jp (splpe877.netlab.nec.co.jp [172.16.4.121])
+     by mail.netlab.nec.co.jp (8.9.3/3.7W-MAIL.NETLAB) with ESMTP id OAA13970;
+     Thu, 17 May 2001 14:32:59 +0900 (JST)
+Message-ID: <3B036246.2B8D3073@netlab.nec.co.jp>
+Date: Thu, 17 May 2001 14:31:50 +0900
+From: Tomohisa Tanaka <tomohisa@netlab.nec.co.jp>
+X-Mailer: Mozilla 4.75 [ja] (Win98; U)
+X-Accept-Language: en,pdf
+MIME-Version: 1.0
+To: xbugs@opengroup.org
+CC: tomohisa@netlab.nec.co.jp
+Subject: Xlib: XwcTextPropertyToTextList() stores an incomplete list.
+Content-Type: text/plain; charset=iso-2022-jp
+Content-Transfer-Encoding: 7bit
+X-Mozilla-Status: 8001
+X-Mozilla-Status2: 00000000
+X-UIDL: 217e28d09f07835e5917a4c4fcbed59c
+
+     VERSION:
+
+R6.3, public-patch-3
+
+     CLIENT MACHINE and OPERATING SYSTEM:
+
+FreeBSD 2.2.8-RELEASE
+
+     DISPLAY TYPE:
+
+XF86_SVGA
+
+     WINDOW MANAGER:
+
+qvwm
+
+     COMPILER:
+
+gcc 2.7.2.1
+
+     AREA:
+
+Xlib
+
+     SYNOPSIS:
+
+The function `XwcTextPropertyToTextList()' stores an incomplete list.
+
+     DESCRIPTION:
+
+When XwcTextPropertyToTextList() returns Success and `count_return'
+argument (which returns the number of strings ) is set greater than 1,
+the `list_return' argument is set to an incomplete list. (see REPEAT
+BY.)
+
+The reason is:
+In the function _XTextPropertyToTextList() in xc/lib/X11/lcPrTxt.c,
+when the variable `is_wide_char' is equal to True, the variable
+`buf_len' is set to an incorrect length.
+
+And this problem is also true with R6.4 (public-patch-3), R6.5.1, or
+R6.6.
+
+     REPEAT BY:
+
+% cat Imakefile
+DEPLIBS         = $(DEPXONLYLIB)
+LOCAL_LIBRARIES = $(XONLYLIB)
+LINTLIBS        = $(LINTXLIB)
+SRCS            = textproperty.c
+OBJS            = $(SRCS:.c=.o)
+
+ComplexProgramTarget(textproperty)
+% cat textproperty.c
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xlocale.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int
+main(int ac, char **av)
+{
+    Display *disp;
+    XTextProperty t;
+    Window root;
+    Atom atom;
+    int n, num;
+    wchar_t **wcs_list;
+    char **mbs_list;
+
+    if ((disp = XOpenDisplay("")) == NULL) {
+        fprintf(stderr, "%s: Cannot open display.\n", av[0]);
+        exit(1);
+    }
+    if (setlocale(LC_ALL, "") == NULL) {
+        fprintf(stderr, "%s: cannot set locale.\n", av[0]);
+        exit(1);
+    }
+    if (XSupportsLocale() == False) {
+        fprintf(stderr, "%s: locale not supported.\n", av[0]);
+        exit(1);
+    }
+    root = DefaultRootWindow(disp);
+    atom = XInternAtom(disp, "TEST", False);
+    if (XStringListToTextProperty(av, ac, &t) < 0) {
+        fprintf(stderr, "%s: XStringListToTextProperty() failed\n", av[0]);
+        exit(1);
+    }
+    XSetTextProperty(disp, root, &t, atom);
+    XFree(t.value);
+
+    printf("XwcTextPropertyToTextList()\n");
+    if (XGetTextProperty(disp, root, &t, atom) == 0) {
+        fprintf(stderr, "%s: XGetTextProperty() failed\n", av[0]);
+        exit(1);
+    }
+    if (XwcTextPropertyToTextList(disp, &t, &wcs_list, &num) != Success) {
+        fprintf(stderr, "%s: XwcTextPropertyToTextList() failed\n", av[0]);
+        exit(1);
+    }
+    XFree(t.value);
+    for (n = 0; n < num; ++n) {
+        wchar_t *p;
+        printf("[%d] ", n);
+        for (p = wcs_list[n]; *p; ++p) {
+            printf("%c", (int)*p);
+        }
+        printf("\n");
+    }
+    XwcFreeStringList(wcs_list);
+
+    printf("XmbTextPropertyToTextList()\n");
+    if (XGetTextProperty(disp, root, &t, atom) == 0) {
+        fprintf(stderr, "%s: XGetTextProperty() failed\n", av[0]);
+        exit(1);
+    }
+    if (XmbTextPropertyToTextList(disp, &t, &mbs_list, &num) != Success) {
+        fprintf(stderr, "%s: XmbTextPropertyToTextList() failed\n", av[0]);
+        exit(1);
+    }
+    XFree(t.value);
+    for (n = 0; n < num; ++n) {
+        char *p;
+        printf("[%d] ", n);
+        for (p = mbs_list[n]; *p; ++p) {
+            printf("%c", (int)*p);
+        }
+        printf("\n");
+    }
+    XFreeStringList(mbs_list);
+
+    exit(0);
+    return 0;
+}
+% xmkmf
+imake -DUseInstalled -I/usr/X11R6/lib/X11/config
+% make
+...
+% ./textproperty one two three four
+XwcTextPropertyToTextList()
+[0] ./textproperty
+[1] one
+[2] two
+[3] th
+[4]
+XmbTextPropertyToTextList()
+[0] ./textproperty
+[1] one
+[2] two
+[3] three
+[4] four
+% ./textproperty one two three four five
+XwcTextPropertyToTextList()
+[0] ./textproperty
+[1] one
+[2] two
+[3] three
+[4]
+[5]
+XmbTextPropertyToTextList()
+[0] ./textproperty
+[1] one
+[2] two
+[3] three
+[4] four
+[5] five
+
+     SAMPLE FIX:
+
+diff -c xc.orig/lib/X11/lcPrTxt.c xc/lib/X11/lcPrTxt.c
+*** xc.orig/lib/X11/lcPrTxt.c   Sat Jan  6 01:24:04 1996
+--- xc/lib/X11/lcPrTxt.c        Tue May 15 21:04:23 2001
+***************
+*** 145,156 ****
+        return XConverterNotFound;
+
+      if (is_wide_char) {
+!       buf_len = text_prop->nitems + 1;
+!       buf = (XPointer) Xmalloc(buf_len * sizeof(wchar_t));
+      } else {
+        buf_len = text_prop->nitems * XLC_PUBLIC(lcd, mb_cur_max) + 1;
+-       buf = (XPointer) Xmalloc(buf_len);
+      }
+      if (buf == NULL)
+        return XNoMemory;
+      to = buf;
+--- 145,155 ----
+        return XConverterNotFound;
+
+      if (is_wide_char) {
+!       buf_len = (text_prop->nitems + 1) * sizeof(wchar_t);
+      } else {
+        buf_len = text_prop->nitems * XLC_PUBLIC(lcd, mb_cur_max) + 1;
+      }
++     buf = (XPointer) Xmalloc(buf_len);
+      if (buf == NULL)
+        return XNoMemory;
+      to = buf;
+***************
+*** 200,210 ****
+
+      _XlcCloseConverter(conv);
+
+!     if (is_wide_char)
+        *((wchar_t *) to) = (wchar_t) 0;
+!     else
+        *((char *) to) = '\0';
+!     to_left--;
+
+      *list_ret = alloc_list(is_wide_char, *count_ret, buf_len - to_left);
+      if (*list_ret)
+--- 199,211 ----
+
+      _XlcCloseConverter(conv);
+
+!     if (is_wide_char) {
+        *((wchar_t *) to) = (wchar_t) 0;
+!       to_left -= sizeof(wchar_t);
+!     } else {
+        *((char *) to) = '\0';
+!       to_left--;
+!     }
+
+      *list_ret = alloc_list(is_wide_char, *count_ret, buf_len - to_left);
+      if (*list_ret)
+--
+NEC Networks Development Laboratories
+Tomohisa Tanaka
+tomohisa@netlab.nec.co.jp

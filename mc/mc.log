@@ -1,0 +1,62 @@
+This is PTeX, C Version 2.99 j1.7e p1.0.9F (preloaded format=jlplain 98.3.21)  4 NOV 1998 23:02
+**&jlatex mc.tex
+(mc.tex
+LaTeX Version 2.09 <24 May 1989>
+(/usr/local/share/tex/ainputs/jarticle.sty
+Document Style `jarticle' <18 Dec 88>.
+(/usr/local/share/tex/ainputs/jart11.sty)
+\c@part=\count78
+\c@section=\count79
+\c@subsection=\count80
+\c@subsubsection=\count81
+\c@paragraph=\count82
+\c@subparagraph=\count83
+\c@figure=\count84
+\c@table=\count85
+)
+(/usr/local/share/tex/ainputs/a4j.sty) (epsf.sty
+This is `epsf.tex' v2.7 <25 October 1996>
+\epsffilein=\read0
+\epsfframemargin=\dimen99
+\epsfframethickness=\dimen100
+\epsfrsize=\dimen101
+\epsftmp=\dimen102
+\epsftsize=\dimen103
+\epsfxsize=\dimen104
+\epsfysize=\dimen105
+\pspoints=\dimen106
+) (/usr/local/share/tex/ainputs/ascmac.sty
+\scb@x=\box25
+\scscb@x=\box26
+\@bw=\dimen107
+\@nbox=\box27
+\@nbody=\box28
+\@scw=\dimen108
+\@itemh=\dimen109
+\@iboxstr=\toks11
+\@iboxpos=\toks12
+\@bwsp=\box29
+\@@bwsp=\box30
+\@bcal=\count86
+\shaderule=\dimen110
+) (mc.aux) [0
+
+] (mc.toc [1])
+\tf@toc=\write3
+ [2]
+(mc1.tex [1
+
+] [2] [3] [4] [5]) (mc2.tex [6] [7] [8] [9] [10] [11] [12] [13]
+[14] [15] [16] [17] [18] [19] [20]) (mc3.tex [21] [22] [23]) (mc4.tex [24]
+[25] [26] [27] [28]) (mc5.tex [29] [30] [31] [32] [33]) (mc6.tex [34]) (bib.tex
+) [35] (mc.aux) 
+Here is how much of TeX's memory you used:
+ 355 strings out of 4314
+ 3063 string characters out of 62098
+ 41613 words of memory out of 262141
+ 2313 multiletter control sequences out of 9500
+ 25208 words of font info for 95 fonts, out of 72000 for 255
+ 14 hyphenation exceptions out of 607
+ 15i,8n,18p,599b,372s stack positions out of 300i,40n,60p,4096b,4000s
+
+Output written on mc.dvi (38 pages, 139000 bytes).

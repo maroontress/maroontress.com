@@ -1,0 +1,31 @@
+%\begin{table}[p]
+
+\begin{center}\small
+\setlength{\indwidth}{2em}
+\begin{tabular}{|l|p{138mm}|}
+\hline
+{\bf 引数}                     & {\bf 値} \\
+\hline
+\mem{destination}              & スクリーン0のルートウィンドウ、またはマネージャがスクリーン特有の資源を管理しているならば、
+                                 適正なスクリーンのルートウィンドウ\\
+\mem{propagate}                & \sym{False}\\
+\mem{event-mask}               & \eventmask{StructureNotify}\\
+\mem{event}                    & \event{ClientMessage}\\
+\ind\mem{type}                 & \atom{MANAGER}\\
+\ind\mem{format}               & 32\\
+\ind\mem{data}[0]\footnotemark & タイムスタンプ\\
+\ind\mem{data}[1]              & マネージャセレクションのアトム\\
+\ind\mem{data}[2]              & セレクションを所有しているウィンドウ\\
+\ind\mem{data}[3]              & マネージャセレクション特有のデータ\\
+\ind\mem{data}[4]              & マネージャセレクション特有のデータ\\
+\hline
+\end{tabular}
+\end{center}
+
+\footnotetext{\mem{data}[$n$]という表記法を、
+ClientMessageの\mem{format}フィールドに従って、
+その\mem{data}フィールドにあるLISTofINT8, LISTofINT16, あるいはLISTofINT32の
+$n$番目の要素を指すために使用する。このリストは0から始まっている。}
+
+%\caption{マネージャのClientMessageイベント。}
+%\end{table}

@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>XML - com_maroontress_libcgi_db_XML</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_maroontress_libcgi_db</h3>
+    <h1>class XML</h1>
+#define com_maroontress_libcgi_db_XML_IMPORT<br>
+#include &lt;com/maroontress/libcgi/db/XML.h&gt;<br>
+    <dl><dd>
+XML出力のための機能を提供します。
+  </dd></dl>
+    <hr>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;char *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_XML_createEscaped"><b>XML_<wbr>createEscaped</b></a>(const char *&nbsp;<i>s</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XML向けにエスケープされた文字列を生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_XML_writeEscapedToTub"><b>XML_<wbr>writeEscapedToTub</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>util_<wbr>Tub</a> *&nbsp;<i>tub</i>, const char *&nbsp;<i>s</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブに文字列をXML向けにエスケープしながら出力します。</td>
+</tr>
+    </table>
+<h2>Method Detail</h2>
+<p><a name="com_maroontress_libcgi_db_XML_createEscaped"></a><font size="+1"><b>XML_<wbr>createEscaped</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>char * <b>XML_createEscaped</b>(</td>
+    <td nowrap>const char *&nbsp;<i>s</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+XML向けにエスケープされた文字列を生成します。
+<p>エスケープされる文字は「<span class="code">&gt;</span>」「<span class="code">&lt;</span>」「<span class="code">&amp;</span>」「<span class="code">&quot;</span>」の4種類です。</p>
+<p>戻り値が参照するオブジェクトは<span class="code">free(3)</span>で解放しなければなりません。</p>
+<p>生成に失敗したときは<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>s</i> - 文字列<br>
+
+</dd></dl>
+<dl>Returns:<dd>生成したエスケープされた文字列、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_XML_writeEscapedToTub"></a><font size="+1"><b>XML_<wbr>writeEscapedToTub</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>XML_writeEscapedToTub</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>util_<wbr>Tub</a> *&nbsp;<i>tub</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>s</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブに文字列をXML向けにエスケープしながら出力します。
+<p>エスケープされる文字は「<span class="code">&gt;</span>」「<span class="code">&lt;</span>」「<span class="code">&amp;</span>」「<span class="code">&quot;</span>」の4種類です。</p>
+<p>出力に失敗したときは&minus;1を返します。その場合、途中までのデータが<span class="arg">tub</span>に書かれたかもしれません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブ<br>
+
+<i>s</i> - 文字列<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

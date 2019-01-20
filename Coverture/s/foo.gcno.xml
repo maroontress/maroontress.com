@@ -1,0 +1,72 @@
+<gcno>
+<note file='foo.gcno' version='0x33303470' stamp='0xc9f2cdb1' lastModified='1223158844000'>
+<sourceList>
+</sourceList>
+<functionGraph id='4' checksum='0xcce5ddaa' functionName='foo' sourceFile='foo.c' lineNumber='8' complexity='2' complexityWithFake='7' allBlocks='10'>
+<block id='0' flags='0x0' callSite='false' callReturn='false' nonLocalReturn='false'>
+<arc destination='1' fake='false' onTree='true' fallThrough='true' callNonReturn='false' nonLocalReturn='false' unconditional='true'/>
+</block>
+<block id='1' flags='0x0' callSite='false' callReturn='false' nonLocalReturn='false'>
+<arc destination='2' fake='false' onTree='false' fallThrough='true' callNonReturn='false' nonLocalReturn='false' unconditional='false'/>
+<arc destination='3' fake='false' onTree='false' fallThrough='false' callNonReturn='false' nonLocalReturn='false' unconditional='false'/>
+<lines fileName='foo.c'>
+<line number='8' />
+<line number='9' />
+<line number='11' />
+</lines>
+</block>
+<block id='2' flags='0x0' callSite='true' callReturn='false' nonLocalReturn='false'>
+<arc destination='11' fake='true' onTree='true' fallThrough='false' callNonReturn='true' nonLocalReturn='false' unconditional='false'/>
+<lines fileName='foo.c'>
+<line number='12' />
+</lines>
+</block>
+<block id='3' flags='0x0' callSite='true' callReturn='false' nonLocalReturn='false'>
+<arc destination='11' fake='true' onTree='true' fallThrough='false' callNonReturn='true' nonLocalReturn='false' unconditional='false'/>
+<arc destination='4' fake='false' onTree='true' fallThrough='true' callNonReturn='false' nonLocalReturn='false' unconditional='true'/>
+<lines fileName='foo.c'>
+<line number='14' />
+</lines>
+</block>
+<block id='4' flags='0x0' callSite='false' callReturn='true' nonLocalReturn='false'>
+<arc destination='5' fake='false' onTree='false' fallThrough='true' callNonReturn='false' nonLocalReturn='false' unconditional='false'/>
+<arc destination='7' fake='false' onTree='false' fallThrough='false' callNonReturn='false' nonLocalReturn='false' unconditional='false'/>
+</block>
+<block id='5' flags='0x0' callSite='true' callReturn='false' nonLocalReturn='false'>
+<arc destination='11' fake='true' onTree='true' fallThrough='false' callNonReturn='true' nonLocalReturn='false' unconditional='false'/>
+<arc destination='6' fake='false' onTree='true' fallThrough='true' callNonReturn='false' nonLocalReturn='false' unconditional='true'/>
+<lines fileName='foo.c'>
+<line number='15' />
+</lines>
+</block>
+<block id='6' flags='0x0' callSite='false' callReturn='true' nonLocalReturn='false'>
+<arc destination='10' fake='false' onTree='false' fallThrough='false' callNonReturn='false' nonLocalReturn='false' unconditional='true'/>
+<lines fileName='foo.c'>
+<line number='16' />
+</lines>
+</block>
+<block id='7' flags='0x0' callSite='true' callReturn='false' nonLocalReturn='false'>
+<arc destination='11' fake='true' onTree='true' fallThrough='false' callNonReturn='true' nonLocalReturn='false' unconditional='false'/>
+<arc destination='8' fake='false' onTree='false' fallThrough='true' callNonReturn='false' nonLocalReturn='false' unconditional='true'/>
+<lines fileName='foo.c'>
+<line number='18' />
+</lines>
+</block>
+<block id='8' flags='0x0' callSite='true' callReturn='true' nonLocalReturn='false'>
+<arc destination='11' fake='true' onTree='true' fallThrough='false' callNonReturn='true' nonLocalReturn='false' unconditional='false'/>
+<arc destination='9' fake='false' onTree='true' fallThrough='true' callNonReturn='false' nonLocalReturn='false' unconditional='true'/>
+<lines fileName='foo.c'>
+<line number='19' />
+</lines>
+</block>
+<block id='9' flags='0x0' callSite='false' callReturn='true' nonLocalReturn='false'>
+<arc destination='10' fake='false' onTree='false' fallThrough='true' callNonReturn='false' nonLocalReturn='false' unconditional='true'/>
+</block>
+<block id='10' flags='0x0' callSite='false' callReturn='false' nonLocalReturn='false'>
+<arc destination='11' fake='false' onTree='true' fallThrough='true' callNonReturn='false' nonLocalReturn='false' unconditional='true'/>
+</block>
+<block id='11' flags='0x0' callSite='false' callReturn='false' nonLocalReturn='false'>
+</block>
+</functionGraph>
+</note>
+</gcno>

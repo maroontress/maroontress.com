@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>FileFactory - bar_FileFactory</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package bar</h3>
+    <h1>class FileFactory</h1>
+#define bar_FileFactory_IMPORT<br>
+#include &lt;bar/FileFactory.h&gt;<br>
+    <dl><dd>Fileクラスのインスタンスを生成する機能を提供します。</dd></dl>
+    <hr>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="foo_File.html#foo_File">foo_<wbr>File</a> *</font>
+  </td>
+  <td valign="top"><a href="#bar_FileFactory_open"><b>FileFactory_<wbr>open</b></a>(const void *&nbsp;<i>cookie</i>, int (*<i>readfn</i>)(void *, char *, int), int (*<i>writefn</i>)(void *, const char *, int), fpos_<wbr>t (*<i>seekfn</i>)(void *, fpos_<wbr>t, int), int (*<i>closefn</i>)(void *))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenableインタフェースからFileクラスのインスタンスを生成します。</td>
+</tr>
+    </table>
+<h2>Method Detail</h2>
+<p><a name="bar_FileFactory_open"></a><font size="+1"><b>FileFactory_<wbr>open</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="foo_File.html#foo_File">foo_<wbr>File</a> * <b>FileFactory_open</b>(</td>
+    <td nowrap>const void *&nbsp;<i>cookie</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>int (*<i>readfn</i>)(void *, char *, int),</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>int (*<i>writefn</i>)(void *, const char *, int),</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>fpos_<wbr>t (*<i>seekfn</i>)(void *, fpos_<wbr>t, int),</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>int (*<i>closefn</i>)(void *))</td>
+  </tr>
+</table>
+<dl>
+<dd>
+      OpenableインタフェースからFileクラスのインスタンスを生成します。
+      <p>生成できないときはNULLを返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>cookie</i> - <a href='bar_Openable.html'>Openableインタフェース</a>のインスタンス<br>
+
+<i>readfn</i> - see <a href="bar_Openable.html#bar_Openable_readfn">Openable_<wbr>readfn</a>()<br>
+
+<i>writefn</i> - see <a href="bar_Openable.html#bar_Openable_writefn">Openable_<wbr>writefn</a>()<br>
+
+<i>seekfn</i> - see <a href="bar_Openable.html#bar_Openable_seekfn">Openable_<wbr>seekfn</a>()<br>
+
+<i>closefn</i> - see <a href="bar_Openable.html#bar_Openable_closefn">Openable_<wbr>closefn</a>()<br>
+
+</dd></dl>
+<dl>Returns:<dd><a href='foo_File.html'>Fileクラス</a>のインスタンス、またはNULL</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

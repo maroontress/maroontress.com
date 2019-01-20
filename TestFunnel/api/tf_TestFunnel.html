@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>TestFunnel - tf_TestFunnel</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package tf</h3>
+    <h1>class TestFunnel</h1>
+#include &lt;tf/TestFunnel.h&gt;<br>
+    <dl><dd>
+テストプログラムが使用するAPIを提供します。
+
+<p>1つのテストプログラムは1つの共有ライブラリから構成され、1つの共有ライブラリに複数のテストメソッドを定義することができます。</p>
+
+<p>テストメソッドは次のいずれかの条件を満たす任意の名前の関数です。</p>
+<ul>
+  <li><a href="tf_TestFunnel.html#TF_AUDIT">TF_<wbr>AUDIT</a>マクロの属性を指定した引数なし、戻り値なしの関数</li>
+  <li><a href="tf_TestFunnel.html#TF_METHOD">TF_<wbr>METHOD</a>マクロで定義した関数</li>
+</ul>
+
+<p>テストメソッドが呼び出しから戻ると、そのテストは成功したことになります。テストを強制的に失敗させるには<a href="tf_TestFunnel.html#tf_fail">tf_<wbr>fail</a>()を使用します。また、特定の条件が成立していない場合にテストを失敗させるには<a href="tf_TestFunnel.html#tf_assert">tf_<wbr>assert</a>()を使用します。<a href="tf_TestFunnel.html#tf_fail">tf_<wbr>fail</a>()と<a href="tf_TestFunnel.html#tf_assert">tf_<wbr>assert</a>()は両方とも呼び出しから戻りません。</p>
+
+<p>共有ライブラリに<a href="tf_TestFunnel.html#tf_initialize">tf_<wbr>initialize</a>()が定義されている場合、テストメソッドを呼び出す直前に<a href="tf_TestFunnel.html#tf_initialize">tf_<wbr>initialize</a>()を呼び出します。同様に、<a href="tf_TestFunnel.html#tf_finalize">tf_<wbr>finalize</a>()が定義されている場合、テストメソッドを呼び出した直後に<a href="tf_TestFunnel.html#tf_finalize">tf_<wbr>finalize</a>()を呼び出します。これらの関数の中からでも、<a href="tf_TestFunnel.html#tf_fail">tf_<wbr>fail</a>()や<a href="tf_TestFunnel.html#tf_assert">tf_<wbr>assert</a>()などのAPIを使用して、テストを失敗させることができます。</p>
+  </dd></dl>
+    <hr>
+    <h2>Macro Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td><a href="#TF_AUDIT"><b>TF_AUDIT</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;テストメソッドであることを示す関数の属性です。</td>
+</tr>
+<tr>
+  <td><a href="#TF_METHOD"><b>TF_METHOD</b></a>(<i>x</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;テストメソッドを宣言します。</td>
+</tr>
+<tr>
+  <td><a href="#tf_fail"><b>tf_fail</b></a>(<i>x</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;テストを失敗させます。</td>
+</tr>
+<tr>
+  <td><a href="#tf_assert"><b>tf_assert</b></a>(<i>x</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;条件式が成立することを確認します。</td>
+</tr>
+<tr>
+  <td><a href="#tf_printStackTrace"><b>tf_printStackTrace</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;スタックトレースを表示します。</td>
+</tr>
+<tr>
+  <td><a href="#tf_permitMemoryLeak"><b>tf_permitMemoryLeak</b></a>(<i>func</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;メモリ割り当てのトレースを一時的に無効にして、関数を呼び出します。</td>
+</tr>
+    </table>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#tf_initialize"><b>tf_<wbr>initialize</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;テストメソッドの呼び出しの前に呼び出されます。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#tf_finalize"><b>tf_<wbr>finalize</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;テストメソッドの呼び出しの後に呼び出されます。</td>
+</tr>
+    </table>
+<h2>Global Variable Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const char []</font>
+  </td>
+  <td valign="top"><a href="#tf_description"><b>tf_description</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;テストプログラムの説明を記述します。</td>
+</tr>
+    </table>
+    <h2>Macro Detail</h2>
+<p><a name="TF_AUDIT"></a><font size="+1"><b>TF_AUDIT</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>TF_AUDIT</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+テストメソッドであることを示す関数の属性です。
+<p>テストメソッドは引数なし戻り値なしの関数でなければなりません。</p>
+<p>例えば<span class="code">foo</span>というテストメソッドを定義する場合は、次のように記述します。</p>
+<pre>
+void <a href="tf_TestFunnel.html#TF_AUDIT">TF_<wbr>AUDIT</a> foo(void)
+{
+    /* テストの内容 */
+    ...
+}
+</pre>
+<dl><dt>Note:</dt><dd>gccの-Wmissing-prototypesオプションを指定してコンパイルする場合、テストメソッドのプロトタイプタイプ宣言がないと警告が表示されます。警告を表示しないようにするためには、プロトタイプ宣言を記述したヘッダファイルをインクルードするか、<a href="tf_TestFunnel.html#TF_METHOD">TF_<wbr>METHOD</a>()マクロを使用してください。</dd></dl>
+    </dd>
+</dl>
+<hr>
+<p><a name="TF_METHOD"></a><font size="+1"><b>TF_METHOD</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>TF_METHOD</b>(<i>x</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+テストメソッドを宣言します。
+<p>引数<span class="arg">x</span>はテストメソッドの名前になります。</p>
+<p>例えば<span class="code">foo</span>というテストメソッドを定義する場合は、次のようにこのマクロを使用します。</p>
+<pre>
+<a href="tf_TestFunnel.html#TF_METHOD">TF_<wbr>METHOD</a>(foo) {
+    /* テストの内容 */
+    ...
+}
+</pre>
+<dl><dt>Note:</dt><dd>このマクロを使用した場合、テストメソッドのプロトタイプ宣言も展開されます。</dd></dl>
+    </dd>
+<dl>Parameters:<dd>
+<i>x</i> - テストメソッドの名前<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="tf_fail"></a><font size="+1"><b>tf_fail</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>tf_fail</b>(<i>x</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+テストを失敗させます。
+<p>コンソールにファイル名、行番号、詳細メッセージを表示してテストを失敗させます。引数<span class="arg">x</span>は文字列でなければなりません。</p>
+<p>このマクロは次のように文字列を引数とする戻り値なしの関数として呼び出すように使用します。</p>
+<pre><a href="tf_TestFunnel.html#tf_fail">tf_<wbr>fail</a>(&quot;メッセージ&quot;);</pre>
+<dl><dt>Note:</dt><dd>このマクロは戻りません。</dd></dl>
+    </dd>
+<dl>Parameters:<dd>
+<i>x</i> - 文字列<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="tf_assert"></a><font size="+1"><b>tf_assert</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>tf_assert</b>(<i>x</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+条件式が成立することを確認します。
+<p>条件式である引数<span class="arg">x</span>を評価します。その条件が成立した場合はなにもしません。成立しなかった場合はコンソールにファイル名、行番号、条件式を表示してテストを失敗させます。</p>
+<p>このマクロは次のように論理値を引数とする戻り値なしの関数として呼び出すように使用します。</p>
+<pre><a href="tf_TestFunnel.html#tf_assert">tf_<wbr>assert</a>(条件式);</pre>
+<p>次のように記述するのと同様の結果になります。</p>
+<pre>
+if (!条件式) {
+    <a href="tf_TestFunnel.html#tf_fail">tf_<wbr>fail</a>(&quot;条件式&quot;);
+}
+</pre>
+<dl><dt>Note:</dt><dd>条件式が成立しない場合はこのマクロは戻りません。</dd></dl>
+    </dd>
+<dl>Parameters:<dd>
+<i>x</i> - 条件式<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="tf_printStackTrace"></a><font size="+1"><b>tf_printStackTrace</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>tf_printStackTrace</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+スタックトレースを表示します。
+<p>このマクロは次のように引数なし戻り値なしの関数として呼び出すように使用します。</p>
+<pre><a href="tf_TestFunnel.html#tf_printStackTrace">tf_<wbr>printStackTrace</a>();</pre>
+    </dd>
+</dl>
+<hr>
+<p><a name="tf_permitMemoryLeak"></a><font size="+1"><b>tf_permitMemoryLeak</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>tf_permitMemoryLeak</b>(<i>func</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+メモリ割り当てのトレースを一時的に無効にして、関数を呼び出します。
+<p>メモリ割り当てのトレースを無効にしてから、<span class="arg">func</span>を呼び出します。<span class="arg">func</span>が割り当てたメモリはテスト終了までに解放されなかったとしても、メモリリークとして報告されません。<span class="arg">func</span>の呼び出しが戻ると、メモリ割り当てのトレースは再度有効になります。<span class="arg">func</span>は引数なし戻り値なしの関数でなければなりません。</p>
+<p>このマクロは次のように使用します。</p>
+<pre>
+static void
+staticInitialize(void)
+{
+    /* メモリリークしてもよい処理 */
+    ...
+}
+
+<a href="tf_TestFunnel.html#TF_METHOD">TF_<wbr>METHOD</a>(test)
+{
+    <a href="tf_TestFunnel.html#tf_permitMemoryLeak">tf_<wbr>permitMemoryLeak</a>(staticInitialize);
+    ...
+}
+</pre>
+    <p><span class="arg">func</span>から再帰的に<a href="tf_TestFunnel.html#tf_permitMemoryLeak">tf_<wbr>permitMemoryLeak</a>()を使用することはできません。</p>
+    </dd>
+<dl>Parameters:<dd>
+<i>func</i> - メモリ割り当てのトレースを一時的に無効にした状態で呼び出す関数<br>
+
+</dd></dl>
+</dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="tf_initialize"></a><font size="+1"><b>tf_<wbr>initialize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>tf_initialize</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+テストメソッドの呼び出しの前に呼び出されます。
+<p>テストプログラムはこの関数を定義してください。定義しない場合は、この関数は呼ばれません。</p>
+<p>この関数がテストを失敗させることもできます。その場合、テストメソッドや<a href="tf_TestFunnel.html#tf_finalize">tf_<wbr>finalize</a>()は呼び出されません。</p>
+    </dd>
+
+</dl>
+<hr>
+<p><a name="tf_finalize"></a><font size="+1"><b>tf_<wbr>finalize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>tf_finalize</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+テストメソッドの呼び出しの後に呼び出されます。
+<p>テストプログラムはこの関数を定義してください。定義しない場合は、この関数は呼ばれません。</p>
+<p>テストメソッドが既に失敗している場合は、この関数は呼び出されません。また、この関数がテストを失敗させることもできます。</p>
+    </dd>
+
+</dl>
+<hr>
+<h2>Global Variable Detail</h2>
+<p><a name="tf_description"></a><font size="+1"><b>tf_description</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const char  <b>tf_description</b>[]</td>
+  </tr>
+</table>
+<dl>
+<dd>
+テストプログラムの説明を記述します。
+<p>テストプログラムがこの変数を定義すると、テスト実行時などにその内容を表示するかもしれません。</p>
+<dl><dt>Note:</dt><dd>現在のところ、エンコーディングはUTF-8でなければなりません。</dd></dl>
+    </dd>
+</dl>
+<hr>
+  </body>
+</html>

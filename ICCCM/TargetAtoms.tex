@@ -1,0 +1,84 @@
+%\begin{table}[p]
+
+\begin{center}\small
+\begin{tabular}{|l|l|l|}
+\hline
+{\bf アトム}                                 & {\bf タイプ}                & {\bf 受け取るデータ}\\
+\hline
+\atom{ADOBE\_PORTABLE\_DOCUMENT\_FORMAT}     & \atom{STRING}               & [1]\\
+\atom{APPLE\_PICT}                           & \atom{APPLE\_PICT}          & [2]\\
+\atom{BACKGROUND}                            & \atom{PIXEL}                & ピクセル値のリスト\\
+\atom{BITMAP}                                & \atom{BITMAP}               & ビットマップ資源識別子のリスト\\
+\atom{CHARACTER\_POSITION}                   & \atom{SPAN}                 & セレクションの最初と最後（バイト）\\
+\atom{CLASS}                                 & \atom{TEXT}                 & （セクション4.1.2.5を見よ）\\
+\atom{CLIENT\_WINDOW}                        & \atom{WINDOW}               & セレクションオーナの最上位ウィンドウのいずれか\\
+\atom{COLORMAP}                              & \atom{COLORMAP}             & カラーマップ資源識別子のリスト\\
+\atom{COLUMN\_NUMBER}                        & \atom{SPAN}                 & カラム番号の最初と最後\\
+\atom{COMPOUND\_TEXT}                        & \atom{COMPOUND\_TEXT}       & コンパウンドテキスト\\
+\atom{DELETE}                                & \atom{NULL}                 & （セクション2.6.3.1を見よ）\\
+\atom{DRAWABLE}                              & \atom{DRAWABLE}             & ドローワブル資源識別子のリスト\\
+\atom{ENCAPSULATED\_POSTSCRIPT}              & \atom{STRING}               & [3], Appendix H\footnotemark\\
+\atom{ENCAPSULATED\_POSTSCRIPT\_INTERCHANGE} & \atom{STRING}               & [3], Appendix H\\
+\atom{FILE\_NAME}                            & \atom{TEXT}                 & ファイルの完全なパス名\\
+\atom{FOREGROUND}                            & \atom{PIXEL}                & ピクセル値のリスト\\
+\atom{HOST\_NAME}                            & \atom{TEXT}                 & （セクション4.1.2.9を見よ）\\
+\atom{INSERT\_PROPERTY}                      & \atom{NULL}                 & （セクション2.6.3.3を見よ）\\
+\atom{INSERT\_SELECTION}                     & \atom{NULL}                 & （セクション2.6.3.2を見よ）\\
+\atom{LENGTH}                                & \atom{INTEGER}              & セレクションのバイト数\footnotemark\\
+\atom{LINE\_NUMBER}                          & \atom{SPAN}                 & 行番号の最初と最後\\
+\atom{LIST\_LENGTH}                          & \atom{INTEGER}              & セレクションの分割部分の数\\
+\atom{MODULE}                                & \atom{TEXT}                 & 選択されているプロシージャの名前\\
+\atom{MULTIPLE}                              & \atom{ATOM\_PAIR}           & （以降の説明を見よ）\\
+\atom{NAME}                                  & \atom{TEXT}                 & （セクション4.1.2.1を見よ）\\
+\atom{ODIF}                                  & \atom{TEXT}                 & ISO オフィスドキュメント相互変換フォーマット\\
+\atom{OWNER\_OS}                             & \atom{TEXT}                 & オーナクライアントのオペレーティングシステム\\
+\atom{PIXMAP}                                & \atom{PIXMAP}               & ピクスマップ資源識別子のリスト\footnotemark\\
+\atom{POSTSCRIPT}                            & \atom{STRING}               & [3]\\
+\atom{PROCEDURE}                             & \atom{TEXT}                 & 選択されているプロシージャの名前\\
+\atom{PROCESS}                               & \atom{INTEGER}, \atom{TEXT} & オーナのプロセス識別子\\
+\atom{STRING}                                & \atom{STRING}               & ISO Latin-1（+タブ+改行）テキスト\\
+\atom{TARGETS}                               & \atom{ATOM}                 & 有効なターゲットアトムのリスト\\
+\atom{TASK}                                  & \atom{INTEGER}, \atom{TEXT} & オーナのタスク識別子\\
+\atom{TEXT}                                  & \atom{TEXT}                 & オーナが選択するエンコーディングのテキスト\\
+\atom{TIMESTAMP}                             & \atom{INTEGER}              & セレクション獲得に使用したタイムスタンプ\\
+\atom{USER}                                  & \atom{TEXT}                 & オーナを動作させているユーザの名前\\
+\hline
+\end{tabular}
+\end{center}
+
+\addtocounter{footnote}{-2}
+\footnotetext{ターゲット\atom{ENCAPSULATED\_POSTSCRIPT}と
+\atom{ENCAPSULATED\_POSTSCRIPT\_INTERCHANGE}は
+（それぞれ）セレクションターゲットのレジストリに現れる
+ターゲット\atom{\_ADOBE\_EPS}と\atom{\_ADOBE\_EPSI}に等しい。
+\atom{\_ADOBE\_}ターゲットの使用はやめることになっているが、
+クライアントは過去の互換性のために、
+それらのサポートを続けるように推奨されている。}
+
+\addtocounter{footnote}{1}
+\footnotetext{異なる量のデータを返すようないくつかのターゲットのどれかひとつに、
+セレクションが変換されるかもしれないので、この定義はあいまいである。
+複数のターゲットがあるとすれば、これらの内のどれが\atom{LENGTH}の結果に対応するのかを
+リクエスタが知る方法はない。
+\atom{LENGTH}への変換の結果については、
+まったく何も保証できないとクライアントは勧告されている。
+すなわち、その使用はやめることになっている。}
+
+\addtocounter{footnote}{1}
+\footnotetext{このドキュメントの以前の版では誤って、
+ターゲット\atom{PIXMAP}の変換は、タイプ\atom{PIXMAP}ではなく、
+タイプ\atom{DRAWABLE}のプロパティを返すと指定していた。
+実装者はこのことを承知していなければならないし、
+古いクライアントとの互換性を考慮して、
+タイプ\atom{DRAWABLE}を同様にサポートするように望んでよい。}
+
+参考文献:
+\begin{enumerate}
+\renewcommand{\labelenumi}{[\theenumi] }
+\item Adobe Systems, Incorporated. {\romanshape{it}\selectfont Portable Document Format Reference Manual}. Reading, MA, Addison-Wesley, ISBN 0-201-62628-4.
+\item Apple Computer, Incorporated. {\romanshape{it}\selectfont Inside Macintosh, Volume V}. Chapter 4, ``Color QuickDraw,'' Color Picture Format. ISBN 0-201-17719-6.
+\item Adobe Systems, Incorporated. {\romanshape{it}\selectfont PostScript Language Reference Manual}. Reading, MA, Addison-Wesley, ISBN 0-201-18127-4.
+\end{enumerate}
+
+%\caption{ターゲットアトム。}
+%\end{table}

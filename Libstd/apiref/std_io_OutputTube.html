@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>OutputTube - std_io_OutputTube</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_io_OutputTube"/>
+    <h3>package std_io</h3>
+    <h1>extensible class OutputTube</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<b>std_io_OutputTube</b><br>
+<br>
+<dl><b>Direct Known Subclasses:</b><dd>
+<a href="std_io_BufferedOutputTube.html">std_io_BufferedOutputTube</a>
+</dd></dl>
+#define std_io_OutputTube_IMPORT<br>
+#include &lt;std/io/OutputTube.h&gt;<br>
+#include &lt;std/io/impl/OutputTube.h&gt;<br>
+    <dl><dd>
+<p>ストリームの出力端の抽象基底クラスです。抽象化されたストリームに出力するインタフェースを提供します。</p>
+<p>出力端はエラーインディケータをもちます。出力端でエラーが発生すると、エラーインディケータが設定されます。エラーインディケータはクリアすることはできません。エラーが発生した出力端は<a href="std_io_OutputTube.html#std_io_OutputTube_close">OutputTube_<wbr>close</a>()でクローズすることしかできません。</p>
+<dl><dt>Note:</dt><dd>サイズが0バイトのときの出力の定義は?</dd></dl>
+  </dd></dl>
+    <hr>
+<h2>Field Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="std_io_OutputTube.html#struct std_io_OutputTube_Methods">struct OutputTube_<wbr>Methods</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_OutputTube.methods"><b>methods</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;メソッドテーブルです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_OutputTube.hasError"><b>hasError</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;エラーインディケータです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;unsigned int</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_OutputTube.ancientStreams"><b>ancientStreams</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;標準入出力ライブラリのファイルの個数です。</td>
+</tr>
+    </table>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="std_io_OutputTube.html#struct std_io_OutputTube_Methods">struct OutputTube_<wbr>Methods</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ストリームの出力端のメソッドテーブルとなる構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;ssize_t</font>
+  </td>
+  <td valign="top">(*<a href="#struct std_io_OutputTube_Methods.write"><b>write</b></a>)(struct std_<wbr>io_<wbr>impl_<wbr>OutputTube *&nbsp;<i>out</i>, const void *&nbsp;<i>data</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;データを出力します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top">(*<a href="#struct std_io_OutputTube_Methods.close"><b>close</b></a>)(struct std_<wbr>io_<wbr>impl_<wbr>OutputTube *&nbsp;<i>out</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;クローズします。</td>
+</tr>
+      </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#std_io_OutputTube_initialize"><b>OutputTube_<wbr>initialize</b></a>(<a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>, const <a href="std_io_OutputTube.html#struct std_io_OutputTube_Methods">struct OutputTube_<wbr>Methods</a> *&nbsp;<i>methods</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定したメソッドテーブルでストリームの出力端を初期化します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;ssize_t</font>
+  </td>
+  <td valign="top"><a href="#std_io_OutputTube_write"><b>OutputTube_<wbr>write</b></a>(<a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>, const void *&nbsp;<i>data</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;データを出力します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_io_OutputTube_writeFully"><b>OutputTube_<wbr>writeFully</b></a>(<a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>, const void *&nbsp;<i>data</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定したサイズのデータを出力します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_io_OutputTube_print"><b>OutputTube_<wbr>print</b></a>(<a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>, const char *&nbsp;<i>format</i>, ...) __<wbr>attribute__((format(printf, 2, 3)))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;フォーマットに従って出力します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;FILE *</font>
+  </td>
+  <td valign="top"><a href="#std_io_OutputTube_getAncientStream"><b>OutputTube_<wbr>getAncientStream</b></a>(<a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ストリームに出力可能な標準入出力ライブラリのファイルを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_io_OutputTube_hasError"><b>OutputTube_<wbr>hasError</b></a>(<a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ストリームのエラー状態を返します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_io_OutputTube_close"><b>OutputTube_<wbr>close</b></a>(<a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ストリームの出力端をクローズして解放します。</td>
+</tr>
+    </table>
+<h2>Field Detail</h2>
+<p><a name="struct std_io_impl_OutputTube.methods"></a><font size="+1"><b>methods</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const <a href="std_io_OutputTube.html#struct std_io_OutputTube_Methods">struct OutputTube_<wbr>Methods</a> * <b>methods</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+メソッドテーブルです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_OutputTube.hasError"></a><font size="+1"><b>hasError</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>hasError</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+エラーインディケータです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+<dl><dt>See:</dt><dd><a href="std_io_OutputTube.html#std_io_OutputTube_hasError">OutputTube_<wbr>hasError</a>()</dd></dl>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_OutputTube.ancientStreams"></a><font size="+1"><b>ancientStreams</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>unsigned int <b>ancientStreams</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+標準入出力ライブラリのファイルの個数です。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+    <h2>Struct Detail</h2>
+<p><a name="struct std_io_OutputTube_Methods"></a>
+<font size="+1"><b>struct OutputTube_Methods</b></font></p>
+<dl><dd>
+ストリームの出力端のメソッドテーブルとなる構造体です。
+<p><span class="em">この構造体のメンバはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    
+<hr>
+<p><a name="struct std_io_OutputTube_Methods.write"></a><font size="+1"><b>write</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>ssize_t (*<b>write</b>)(</td>
+    <td nowrap>struct std_<wbr>io_<wbr>impl_<wbr>OutputTube *&nbsp;<i>out</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const void *&nbsp;<i>data</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+データを出力します。
+      </dd>
+
+<dl>Parameters:<dd>
+<i>out</i> - ストリームの出力端の実装<br>
+
+<i>data</i> - データの先頭を指すポインタ<br>
+
+<i>size</i> - データのサイズ<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は実際に出力したサイズ、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="struct std_io_OutputTube_Methods.close"></a><font size="+1"><b>close</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int (*<b>close</b>)(</td>
+    <td nowrap>struct std_<wbr>io_<wbr>impl_<wbr>OutputTube *&nbsp;<i>out</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+クローズします。
+      </dd>
+
+<dl>Parameters:<dd>
+<i>out</i> - ストリームの出力端の実装<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_io_OutputTube_initialize"></a><font size="+1"><b>OutputTube_<wbr>initialize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>OutputTube_initialize</b>(</td>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const <a href="std_io_OutputTube.html#struct std_io_OutputTube_Methods">struct OutputTube_<wbr>Methods</a> *&nbsp;<i>methods</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+指定したメソッドテーブルでストリームの出力端を初期化します。
+<p><span class="em">このメソッドはサブクラスを実装する都合で公開されているので、アプリケーションは呼び出さないでください。</span></p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>methods</i> - メソッドテーブル<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_OutputTube_write"></a><font size="+1"><b>OutputTube_<wbr>write</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>ssize_t <b>OutputTube_write</b>(</td>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const void *&nbsp;<i>data</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+データを出力します。
+<p>成功した場合は出力したバイト数を返します。ストリームの種類によっては、<span class="arg">size</span>より少ないデータを出力して呼び出しから戻るかもしれません。呼び出しから戻ると、ストリームの位置は実際に出力したバイト数だけ進みます。</p>
+<p><span class="arg">size</span>が正の場合、少なくても1バイト以上出力するまでブロックします。エラーで失敗した場合は&minus;1を返します。</p>
+<p>エラーで失敗した場合はエラーインディケータを設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>data</i> - データの先頭を指すポインタ<br>
+
+<i>size</i> - データのサイズ<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は実際に出力したサイズ、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_OutputTube_writeFully"></a><font size="+1"><b>OutputTube_<wbr>writeFully</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>OutputTube_writeFully</b>(</td>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const void *&nbsp;<i>data</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+指定したサイズのデータを出力します。
+<p>指定したサイズのデータを出力するか、エラーを検出するまでブロックします。呼び出しから戻ると、ストリームの位置は実際に出力したバイト数だけ進みます。</p>
+<p>指定したサイズのデータを出力できなかった場合、&minus;1を返します。その場合、途中までのデータをストリームに出力した可能性があります。</p>
+<p>エラーで失敗した場合はエラーインディケータを設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>data</i> - データの先頭を指すポインタ<br>
+
+<i>size</i> - データのサイズ<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_OutputTube_print"></a><font size="+1"><b>OutputTube_<wbr>print</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>OutputTube_print</b>(</td>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>format</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>...) __<wbr>attribute__((format(printf, 2, 3)))</td>
+  </tr>
+</table>
+<dl>
+<dd>
+フォーマットに従って出力します。
+<p><span class="arg">format</span>に従ってストリームに出力します。</p>
+<p>出力に失敗した場合は&minus;1を返します。その場合、途中までのデータをストリームに出力した可能性があります。</p>
+<p>エラーで失敗した場合はエラーインディケータを設定します。</p>
+<dl><dt>See:</dt><dd><span class="code">printf(3)</span></dd></dl>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>format</i> - フォーマット<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_OutputTube_getAncientStream"></a><font size="+1"><b>OutputTube_<wbr>getAncientStream</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>FILE * <b>OutputTube_getAncientStream</b>(</td>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ストリームに出力可能な標準入出力ライブラリのファイルを生成します。
+<p>戻り値が参照するオブジェクトは、<span class="arg">this</span>をクローズする前に、<span class="code">fclose(3)</span>でクローズしなければなりません。</p>
+<p>生成したファイルから入力することや、ファイルに対してシークすることはできません。</p>
+<p>ファイルへの出力とストリームへの出力を混在させることもできます。その場合、ファイルに出力した後、<span class="code">fflush(3)</span>でファイルをフラッシュしてから、ストリームに出力してください。</p>
+<p>生成に失敗した場合は<span class="code">NULL</span>を返します。</p>
+<dl><dt>Note:</dt><dd>標準入出力ライブラリのファイルにはバッファがあるので、このメソッドを使用して<a href="std_io_BufferedOutputTube.html#union std_io_BufferedOutputTube">union BufferedOutputTube</a>からファイルを取得して出力すると、パフォーマンスは悪化します。</dd></dl>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>標準入出力ライブラリのファイル、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_OutputTube_hasError"></a><font size="+1"><b>OutputTube_<wbr>hasError</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>OutputTube_hasError</b>(</td>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ストリームのエラー状態を返します。
+<p>このメソッドを呼び出す以前にストリームにエラーが発生していた場合は非0を、そうでなければ0を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>ストリームにエラーが発生した場合は非0、そうでなければ0</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_OutputTube_close"></a><font size="+1"><b>OutputTube_<wbr>close</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>OutputTube_close</b>(</td>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ストリームの出力端をクローズして解放します。
+<p>クローズに失敗した場合でも<span class="arg">this</span>が参照するオブジェクトは解放されます。</p>
+<p>呼び出し後は<span class="arg">this</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd">
+<class package="bar" name="Splint">
+  <namespace/>
+
+  <export type="struct" tag="@">
+    <desc><brief>Splint構造体です。</brief><p>不透明な構造体です。</p></desc>
+  </export>
+
+  <method name="initialize">
+    <param type="/*@out@*/ struct @ *" name="s">
+      <desc>初期化するSplint構造体のポインタ</desc>
+    </param>
+
+    <desc><brief>Splint構造体を初期化します。</brief></desc>
+  </method>
+
+  <desc><brief>Splintのアノテーションを埋め込んだ例を提供します。</brief></desc>
+</class>

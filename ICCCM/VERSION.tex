@@ -1,0 +1,30 @@
+%\begin{table}[p]
+
+\begin{center}\small
+\begin{tabular}{|l|l|p{130mm}|}
+\hline
+{\bf アトム} & {\bf タイプ} & {\bf 受け取るデータ} \\
+\hline
+\atom{VERSION} & \atom{INTEGER} &
+2つの整数。それらはそれぞれ、
+そのウィンドウマネージャが従うICCCMの
+メジャーリリース番号と
+マイナーリリース番号である。
+このバージョンのICCCMでは、
+それらの番号は2と0である\footnotemark%
+。\\
+\hline
+\end{tabular}
+\end{center}
+
+\footnotetext{
+特別な場合として、
+セレクションに関するリクエストを実装したくないクライアントは、
+単に適切な\atom{WM\_S$n$}セレクションに関して
+\req{GetSelectionOwner}リクエストを発行してもよい。
+このセレクションが所有されていれば、
+クライアントはそのウィンドウマネージャが
+バージョン2.0かそれ以降のICCCMに従うとみなしてよい。}
+
+%\caption{}
+%\end{table}

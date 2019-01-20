@@ -1,0 +1,107 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%Title: /usr/home/syl/work/appiexp/public_html/focus-out-cursor.eps
+%%Creator: XV Version 3.10a  Rev: 12/29/94  -  by John Bradley
+%%BoundingBox: 290 417 296 429
+%%Pages: 1
+%%DocumentFonts:
+%%EndComments
+%%EndProlog
+
+%%Page: 1 1
+
+% remember original state
+/origstate save def
+
+% build a temporary dictionary
+20 dict begin
+
+% define space for color conversions
+/grays 6 string def  % space for gray scale line
+/npixls 0 def
+/rgbindx 0 def
+
+% lower left corner
+290 417 translate
+
+% size of image (on paper, in 1/72inch coords)
+5.97600 12.02400 scale
+
+% define the colormap
+/cmap 2 string def
+
+
+% load up the colormap
+currentfile cmap readhexstring
+00 f8 
+pop pop   % lose return values from readhexstring
+
+
+% rlecmapimage expects to have 'w h bits matrix' on stack
+/rlecmapimage {
+  /buffer 1 string def
+  /rgbval 3 string def
+  /block  384 string def
+
+  % proc to read a block from file, and return RGB data
+  { currentfile buffer readhexstring pop
+    /bcount exch 0 get store
+    bcount 128 ge
+    {  % it's a non-run block
+      0 1 bcount 128 sub
+      { currentfile buffer readhexstring pop pop
+
+        % look up value in gray map
+        /rgbval cmap buffer 0 get 1 getinterval store
+
+        % and put it in position i in block
+        block exch rgbval putinterval
+      } for
+      block  0  bcount 127 sub  getinterval
+    }
+
+    { % else it's a run block
+      currentfile buffer readhexstring pop pop
+
+      % look up value in graymap
+      /rgbval cmap buffer 0 get 1 getinterval store
+
+      0 1 bcount { block exch rgbval putinterval } for
+
+      block 0 bcount 1 add getinterval
+    } ifelse
+  } % end of proc
+  image
+} bind def
+
+
+6 12 8			% dimensions of data
+[6 0 0 -12 0 12]		% mapping matrix
+rlecmapimage
+
+0500
+81000102010000
+81000102010000
+81000102010000
+81000102010000
+81000102010000
+81000102010000
+81000102010000
+81000102010000
+81000102010000
+81000102010000
+0500
+
+%
+% Compression made this file 102.78% of the uncompressed size.
+%
+
+
+showpage
+
+% stop using temporary dictionary
+end
+
+% restore original state
+origstate restore
+
+%%Trailer

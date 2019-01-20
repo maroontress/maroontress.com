@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd">
+<class package="foo" name="Union">
+  <namespace/>
+
+  <union tag="IntDouble">
+    <member type="int #[2]" name="i">
+      <desc><brief>int型の配列としてアクセスします。</brief></desc>
+    </member>
+
+    <member type="double" name="d">
+      <desc><brief>double型としてアクセスします。</brief></desc>
+    </member>
+
+    <desc><brief>intの配列（要素数2）とdoubleの共用体です。</brief></desc>
+  </union>
+
+  <union alias="UCharUInt">
+    <member type="unsigned char #[4]" name="c">
+      <desc><brief>unsigned char型の配列としてアクセスします。</brief></desc>
+    </member>
+
+    <member type="unsigned int" name="i">
+      <desc><brief>unsigned int型としてアクセスします。</brief></desc>
+    </member>
+
+    <desc><brief>unsigned charの配列（要素数4）とunsigned intの共用体です。</brief></desc>
+  </union>
+
+  <desc>
+    <brief>intとdouble、unsigned intとunsigned charのビットマップを相互に変換する機能を提供します。</brief>
+  </desc>
+</class>

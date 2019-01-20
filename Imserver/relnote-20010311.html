@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>リリースノート 2001-03-11</title>
+  </head>
+
+  <body>
+    <h1>リリースノート 2001-03-11</h1>
+
+    <ul>
+      <li>複数文節の半自動登録に対応するため、確定した文節が2文節以上の場合、ルートウィンドウのXIM_JA_STUDYプロパティに、確定した文字列と読み文字列を設定するようにした。</li>
+      <li>ICの破壊とIMの破壊を遅延コールバックで処理するようにした。</li>
+      <li>StatusAreaスタイルでの描画をピクスマップに描画してからウィンドウにコピーするようにした。</li>
+      <li>ALTキーが押されている場合は前編集文字列に加えずに、そのままクライアントに渡すようにした（XEmacs対応）。</li>
+      <li>クライアントの最上位ウィンドウを移動、サイズ変更したときにも前編集領域のスポット位置が追従するように、XIMレシーバに通知するときに座標変換するようにした。</li>
+      <li>XIM_SET_IC_FOCUSとXIM_UNSET_IC_FOCUSの応答処理をICの遅延コールバックで処理するようにした。</li>
+      <li>XIM_TRIGGER_NOTIFYの応答で、入力ONのときにはICのfocus_in()メソッドを呼び出すようにした。</li>
+      <li>XIMクライアントとの通信でプロパティ取得とセレクション応答のときXlibのエラーハンドラを無効化するようにした。</li>
+      <li>StatusNothingスタイルに対応した。</li>
+      <li>文節学習の処理で「文節長が変化したが、表示している文字列と候補が異なる」場合も学習していたのを修正した。</li>
+    </ul>
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jun  2 23:53:20 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Sat Nov 23 21:11:09 JST 2002
+<!-- hhmts end -->
+  </body>
+</html>

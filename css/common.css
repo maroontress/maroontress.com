@@ -1,0 +1,65 @@
+@media screen and (max-width: 816px) {
+  body {
+    width: 100% - 16;
+  }
+}
+
+@media screen and (min-width: 816px) {
+  body {
+    margin: auto;
+    width: 800px;
+  }
+}
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: "palatino linotype", "Yu Mincho", serif;
+}
+
+a {
+  color: #4db2ff
+}
+
+address {
+  font-family: Helvetica, "Yu UI Gothic", sans-selif;
+}
+
+pre, tt {
+  font-family: Courier, monospace;
+}
+
+h1, h2, h3, h4 {
+  font-weight: bold;
+  font-family: Helvetica, "Yu UI Gothic", sans-selif;
+}
+
+h1.logo {
+  font-weight: bold;
+  font-family: "palatino linotype", "Yu Mincho", serif;
+}
+
+ul.menu {
+  font-family: Helvetica, "Yu Gothic UI Semibold", sans-selif;
+  background-color: #ffffb0;
+  color: #000000;
+  margin: 0px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 32px;
+  padding-right: 8px;
+}
+
+ul.menu a {
+  color: #0000ff;
+}
+
+span.smallest {
+  font-size: xx-small;
+}
+
+.borders {
+  border-image: url("../images/borders.png") 16;
+  border-style: solid;
+  border-width: 16px;
+}

@@ -1,0 +1,41 @@
+diff -c -r -d src.orig/event-Xt.c src/event-Xt.c
+*** src.orig/event-Xt.c	Thu Jan  2 21:18:00 2003
+--- src/event-Xt.c	Thu Jan  2 21:24:27 2003
+***************
+*** 3003,3005 ****
+--- 3003,3037 ----
+    shellClassRec.core_class.initialize = ShellVisualPatch;
+  
+  }
++ 
++ #if defined(HAVE_XIM)
++ #include <dlfcn.h>
++ #include "window.h"
++ 
++ Bool
++ XFilterEvent(XEvent *event, Window w)
++ {
++     static Bool (*realXFilterEvent)(XEvent *, Window) = NULL;
++     static int self = 0;
++ 
++     if (realXFilterEvent == NULL)
++ 	realXFilterEvent = dlsym(RTLD_NEXT, "XFilterEvent");
++ 
++     if (event->type != KeyPress || EQ(minibuf_window, Fselected_window(Qnil))
++ 	|| event_chain_count(Vthis_command_keys) < 1
++ 	|| cursor_in_echo_area) {
++ 	self = 0;
++ 	return realXFilterEvent(event, w);
++     }
++     if (EQ(Vthis_command, Qself_insert_command)) {
++ 	self = 1;
++ 	return realXFilterEvent(event, w);
++     }
++     if (self) {
++ 	self = 0;
++ 	return realXFilterEvent(event, w);
++     }
++     self = 0;
++     return False;
++ }
++ #endif

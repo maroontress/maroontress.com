@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Test Funnel</title>
+    <link rel="stylesheet" type="text/css" href="look.css">
+  </head>
+  <body>
+    <table class="header" cellpadding="0" cellspacing="2" border="0">
+      <tbody>
+	<tr>
+	  <td class="headerLeft">Maroontress Fast Software</td>
+	  <td class="headerRight">Test Funnel</td>
+	</tr>
+      </tbody>
+    </table>
+    <table class="guide" cellpadding="0" cellspacing="2" border="0">
+      <tbody>
+	<tr>
+	  <td class="guideMenu">
+	    <table width="160" cellpadding="0" cellspacing="0" border="0">
+	      <tbody>
+                <tr><td class="selected">Top</td></tr>
+                <tr><td class="unselected"><a class="menu" href="download.html">Download</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="manual.html">Manual</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="reference.html">Reference</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="relnotes.html">Release&nbsp;Notes</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="bugs.html">Bugs</a></td></tr>
+	      </tbody>
+	    </table>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 160x90L Mad Angler */
+google_ad_slot = "5426136155";
+google_ad_width = 160;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 160x600 Mad Angler */
+google_ad_slot = "4451171887";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+	  </td>
+	  <td class="guideSubMenu">
+	    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+	      <tbody>
+		<tr>
+		  <td class="guideText">
+		    <table align="right">
+		      <tbody>
+			<tr>
+			  <td>
+<script type="text/javascript"><!--
+  amazon_ad_tag = "sanchappikeio-22";
+  amazon_ad_width = "180";
+  amazon_ad_height = "150";
+  amazon_ad_logo = "hide";
+  amazon_ad_link_target = "new";
+  amazon_ad_border = "hide";
+  amazon_color_border = "FFFFFF";//--></script>
+<script type="text/javascript" src="http://www.assoc-amazon.jp/s/ads.js">
+</script>
+			  </td>
+			</tr>
+		      </tbody>
+		    </table>
+    <p class="title">Test Funnel</p>
+
+    <p>GCC専用のC言語ユニットテストフレームワークです。</p>
+
+    <p class="subsection">概要</p>
+
+    <p>Test Funnelはテスト対象となるターゲットと、そのターゲットをテストするユニットテストスイートを、ファンネルで動的にリンクしてテストを実行するというユニットテストフレームワークです。</p>
+
+    <p>ファンネルはそれ単体でもテストを実行できますが、GUIのコンソールサーバとネットワークで接続すれば、テストを選択、実行し、テスト結果を一覧表示することもできます。</p>
+
+    <p>注意: Test FunnelはGCCを前提とし、またソースコードにGCC拡張を使用したテストフレームワークであるので、GCC以外の開発環境では動作しません。</p>
+
+    <hr>
+    <!-- -->
+    <p class="section">構成要素</p>
+
+    <table align="right">
+      <tbody>
+	<tr>
+	  <td><img src="images/stack.png"></td>
+	</tr>
+	<tr>
+	  <td class="caption">Test Funnelの構成</td>
+	</tr>
+      </tbody>
+    </table>
+    <p>Test Funnelはファンネル、ターゲット、テストにより構成されます。オプショナルとしてコンソールサーバを構成に追加することができます。</p>
+
+    <p class="subsection">ファンネル</p>
+
+    <p>ファンネルはシェルから実行するコマンドです。ターゲットとテストをリンクして、テストをバッチ処理で実行します（スタンドアロンモード）。コンソールサーバと接続した場合はコンソールサーバからインタラクティブにテストの実行を管理することもできます（クライアントモード）。</p>
+    <p>テストは独立したプロセスで実行されるので、シグナル（SIGSEGVなど）を捕捉して終了したテストや、一定時間経過しても終了しないテストを検出することができます。また、テストが成功した場合は、さらにメモリリークを検出できます。</p>
+
+    <p class="subsection">ターゲット</p>
+
+    <p>ターゲットはテストの対象となる任意の共有ライブラリです。</p>
+    <p>ターゲットはファンネルが実行時に（環境変数LD_PRELOADの仕組みを用いて）リンクします。また、ターゲットが必要とするの下位層のライブラリ（またはそのスタブ）も同時にリンクする必要があります。</p>
+    <p>カバレッジ可能なターゲットを生成するには<a href="manual.html#shared_library_coverage">共有ライブラリのカバレッジ</a>を参照してください。</p>
+
+    <p class="subsection">テスト</p>
+
+    <p>テストはターゲットのドライバとなるユニットテストです。テストは<a href="api/index.html">Test FunnelのAPI</a>を使用できます。</p>
+    <p>それぞれのテストはTest Funnelが規定する形式の共有ライブラリになります。1つの共有ライブラリを<b>テストクラス</b>と呼び、1つのテストクラスは複数の<b>テストメソッド</b>を含むことができます。</p>
+    <p>ファンネルは指定されたテストクラスを必要に応じてdlopen(3)で動的にリンクして、そこに含まれるテストメソッドを呼び出します。テストメソッドはTest FunnelのAPIで定義されるマクロ（TF_AUDITまたはTF_METHOD）を用いて宣言した関数で、その共有ライブラリのシンボルテーブルから自動的に発見されます。</p>
+
+    <table align="right">
+      <tbody>
+	<tr>
+	  <td><img src="images/console-server-clients.png"></td>
+	</tr>
+	<tr>
+	  <td class="caption">複数のクライアントとの接続例</td>
+	</tr>
+      </tbody>
+    </table>
+    <p class="subsection">コンソールサーバ</p>
+
+    <p>コンソールサーバはファンネルをGUIで管理するアプリケーションです。</p>
+    <p>コンソールサーバとファンネルはネットワーク経由で接続するため、ファンネルを実行する（つまりテストを実行する）ホストと、コンソールサーバを実行するホストを別にすることができます。例えば、ウィンドウシステムのない環境でテストを実行し、そのテストの実行をWindowsから制御することも可能です。また、コンソールサーバは複数のクライアントと接続できるので、複数のプラットフォームでのテストの実行を1つのホストから管理することもできます。</p>
+
+    <p>コンソールサーバAuditorがリリースに含まれます。AuditorはJRE 6（またはJRE 1.5）の実行環境で動作します。</p>
+    <table align="center">
+      <tbody>
+	<tr>
+	  <td><img src="images/auditor-screenshot.png"></td>
+	</tr>
+	<tr>
+	  <td class="caption">Auditorのスクリーンショット</td>
+	</tr>
+      </tbody>
+    </table>
+
+    <hr>
+    <!-- -->
+    <p class="section">ワークフロー</p>
+    <p>テストのワークフローには、テストスイートそのものを開発するフェーズと、ターゲットをテストするフェーズがあります。一般的には、これらのフェーズを交互に繰り返すか、または複数のチームで並行して開発を進めます。</p>
+
+    <table align="center">
+      <tbody>
+	<tr>
+	  <td><img src="images/workflow.png"></td>
+	</tr>
+	<tr>
+	  <td class="caption">テストのワークフローのモデル</td>
+	</tr>
+      </tbody>
+    </table>
+    <p>テストスイートそのものを開発するフェーズでは、ターゲットを固定してテストを実行します。ターゲットのカバレッジを確認したり、テストそのものをデバッグ（またはリファクタリング）します。Test Funnelでは、このフェーズにはクライアントモードが適しています。テストを追加、修正した後、コンソールサーバからテストを（リロードして）再実行する、という作業を繰り返します。</p>
+    <p>一方、ターゲットを開発するフェーズでは、テストスイートを固定してテストを実行します。テストに合格するようにターゲットを修正します。このフェーズにはスタンドアロンモードが適しています。ターゲットを再ビルドした後、テストを（makeなどから）再実行する、という作業を繰り返します。</p>
+
+    <hr>
+<!-- Created: Sat May  6 04:04:35 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Sun Aug 24 03:42:30 JST 2008
+<!-- hhmts end -->
+		  </td>
+		</tr>
+	      </tbody>
+	    </table>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+    <table class="header" cellpadding="0" cellspacing="2" border="0">
+      <tbody>
+	<tr>
+	  <td class="headerRight"><address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address></td>
+	</tr>
+      </tbody>
+    </table>
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-636163-1";
+      urchinTracker();
+    </script>
+  </body>
+</html>

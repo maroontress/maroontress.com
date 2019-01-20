@@ -1,0 +1,14 @@
+*** src/xterm.c	Sat Mar 16 19:34:56 2002
+--- src.new/xterm.c	Fri Dec 20 16:21:30 2002
+***************
+*** 9954,9959 ****
+--- 9954,9962 ----
+  	  XNextEvent (dpyinfo->display, &event);
+  
+  #ifdef HAVE_X_I18N
++ #if 1
++ 	  if (this_command_key_count == 0)
++ #endif
+  	  {
+  	    /* Filter events for the current X input method.
+  	       XFilterEvent returns non-zero if the input method has

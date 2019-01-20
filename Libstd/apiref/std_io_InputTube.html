@@ -1,0 +1,404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>InputTube - std_io_InputTube</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_io_InputTube"/>
+    <h3>package std_io</h3>
+    <h1>extensible class InputTube</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<b>std_io_InputTube</b><br>
+<br>
+<dl><b>Direct Known Subclasses:</b><dd>
+<a href="std_io_BufferedInputTube.html">std_io_BufferedInputTube</a>
+, <a href="std_io_ByteArrayInputTube.html">std_io_ByteArrayInputTube</a>
+</dd></dl>
+#define std_io_InputTube_IMPORT<br>
+#include &lt;std/io/InputTube.h&gt;<br>
+#include &lt;std/io/impl/InputTube.h&gt;<br>
+    <dl><dd>
+<p>ストリームの入力端の抽象基底クラスです。抽象化されたストリームから入力するインタフェースを提供します。</p>
+<p>入力端はエラーインディケータをもちます。入力端でエラーが発生すると、エラーインディケータが設定されます。エラーインディケータはクリアすることはできません。エラーが発生した入力端は<a href="std_io_InputTube.html#std_io_InputTube_close">InputTube_<wbr>close</a>()でクローズすることしかできません。</p>
+<dl><dt>Note:</dt><dd>サイズが0バイトのときの入力の定義は?</dd></dl>
+  </dd></dl>
+    <hr>
+    <h2>Macro Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td><a href="#std_io_InputTube_EOS"><b>InputTube_EOS</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ストリームの終了を表す定数です。</td>
+</tr>
+    </table>
+<h2>Field Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="std_io_InputTube.html#struct std_io_InputTube_Methods">struct InputTube_<wbr>Methods</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_InputTube.methods"><b>methods</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;メソッドテーブルです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_InputTube.hasError"><b>hasError</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;エラーインディケータです。</td>
+</tr>
+    </table>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="std_io_InputTube.html#struct std_io_InputTube_Methods">struct InputTube_<wbr>Methods</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ストリームの入力端のメソッドテーブルとなる構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;ssize_t</font>
+  </td>
+  <td valign="top">(*<a href="#struct std_io_InputTube_Methods.read"><b>read</b></a>)(struct std_<wbr>io_<wbr>impl_<wbr>InputTube *&nbsp;<i>in</i>, void *&nbsp;<i>data</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;データを入力します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top">(*<a href="#struct std_io_InputTube_Methods.close"><b>close</b></a>)(struct std_<wbr>io_<wbr>impl_<wbr>InputTube *&nbsp;<i>in</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;クローズします。</td>
+</tr>
+      </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#std_io_InputTube_initialize"><b>InputTube_<wbr>initialize</b></a>(<a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>, const <a href="std_io_InputTube.html#struct std_io_InputTube_Methods">struct InputTube_<wbr>Methods</a> *&nbsp;<i>methods</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定したメソッドテーブルでストリームの入力端を初期化します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;ssize_t</font>
+  </td>
+  <td valign="top"><a href="#std_io_InputTube_read"><b>InputTube_<wbr>read</b></a>(<a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>, void *&nbsp;<i>data</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;データを入力します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_io_InputTube_readByte"><b>InputTube_<wbr>readByte</b></a>(<a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;データを1バイト入力します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;ssize_t</font>
+  </td>
+  <td valign="top"><a href="#std_io_InputTube_readBytes"><b>InputTube_<wbr>readBytes</b></a>(<a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>, void *&nbsp;<i>data</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定したサイズのデータを入力します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_io_InputTube_readFully"><b>InputTube_<wbr>readFully</b></a>(<a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>, void *&nbsp;<i>data</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定したサイズのデータを入力します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_io_InputTube_hasError"><b>InputTube_<wbr>hasError</b></a>(<a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ストリームのエラー状態を返します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_io_InputTube_close"><b>InputTube_<wbr>close</b></a>(<a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ストリームの入力端をクローズして解放します。</td>
+</tr>
+    </table>
+    <h2>Macro Detail</h2>
+<p><a name="std_io_InputTube_EOS"></a><font size="+1"><b>InputTube_EOS</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>InputTube_EOS</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+ストリームの終了を表す定数です。
+<p>ストリームが終了している場合、<a href="std_io_InputTube.html#std_io_InputTube_readByte">InputTube_<wbr>readByte</a>()はこの値を返します。値&minus;1が割り当てられています。</p>
+<dl><dt>See:</dt><dd><a href="std_io_InputTube.html#std_io_InputTube_readByte">InputTube_<wbr>readByte</a>()</dd></dl>
+    </dd>
+</dl>
+<hr>
+<h2>Field Detail</h2>
+<p><a name="struct std_io_impl_InputTube.methods"></a><font size="+1"><b>methods</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const <a href="std_io_InputTube.html#struct std_io_InputTube_Methods">struct InputTube_<wbr>Methods</a> * <b>methods</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+メソッドテーブルです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_InputTube.hasError"></a><font size="+1"><b>hasError</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>hasError</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+エラーインディケータです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+<dl><dt>See:</dt><dd><a href="std_io_InputTube.html#std_io_InputTube_hasError">InputTube_<wbr>hasError</a>()</dd></dl>
+    </dd>
+</dl>
+<hr>
+    <h2>Struct Detail</h2>
+<p><a name="struct std_io_InputTube_Methods"></a>
+<font size="+1"><b>struct InputTube_Methods</b></font></p>
+<dl><dd>
+ストリームの入力端のメソッドテーブルとなる構造体です。
+<p><span class="em">この構造体のメンバはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    
+<hr>
+<p><a name="struct std_io_InputTube_Methods.read"></a><font size="+1"><b>read</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>ssize_t (*<b>read</b>)(</td>
+    <td nowrap>struct std_<wbr>io_<wbr>impl_<wbr>InputTube *&nbsp;<i>in</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>void *&nbsp;<i>data</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+データを入力します。
+      </dd>
+
+<dl>Parameters:<dd>
+<i>in</i> - ストリームの入力端の実装<br>
+
+<i>data</i> - データを格納する領域の先頭を指すポインタ<br>
+
+<i>size</i> - データを格納する領域のサイズ<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は実際に入力したデータのサイズ、ストリームの終端を入力した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="struct std_io_InputTube_Methods.close"></a><font size="+1"><b>close</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int (*<b>close</b>)(</td>
+    <td nowrap>struct std_<wbr>io_<wbr>impl_<wbr>InputTube *&nbsp;<i>in</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+クローズします。
+      </dd>
+
+<dl>Parameters:<dd>
+<i>in</i> - ストリームの入力端の実装<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_io_InputTube_initialize"></a><font size="+1"><b>InputTube_<wbr>initialize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>InputTube_initialize</b>(</td>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const <a href="std_io_InputTube.html#struct std_io_InputTube_Methods">struct InputTube_<wbr>Methods</a> *&nbsp;<i>methods</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+指定したメソッドテーブルでストリームの入力端を初期化します。
+<p><span class="em">このメソッドはサブクラスを実装する都合で公開されているので、アプリケーションは呼び出さないでください。</span></p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>methods</i> - メソッドテーブル<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_InputTube_read"></a><font size="+1"><b>InputTube_<wbr>read</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>ssize_t <b>InputTube_read</b>(</td>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>void *&nbsp;<i>data</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+データを入力します。
+<p>成功した場合は入力したデータのバイト数を返します。ストリームの種類によっては、ストリームの終端までに十分な量のデータが残っていても、<span class="arg">size</span>バイトのデータを入力するまで待たずに、<span class="arg">size</span>バイトを上限とするデータを入力して呼び出しから戻るかもしれません。呼び出しから戻ると、ストリームの位置は実際に入力したバイト数だけ進みます。</p>
+<p><span class="arg">size</span>が正の場合、少なくても1バイト以上入力するまでブロックします。ストリームの終端では0を返します。エラーで失敗した場合は&minus;1を返します。</p>
+<p>エラーで失敗した場合はエラーインディケータを設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>data</i> - データを格納する領域の先頭を指すポインタ<br>
+
+<i>size</i> - データを格納する領域のサイズ<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は実際に入力したデータのサイズ、ストリームの終端を入力した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_InputTube_readByte"></a><font size="+1"><b>InputTube_<wbr>readByte</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>InputTube_readByte</b>(</td>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+データを1バイト入力します。
+<p>成功した場合は入力したバイトの値（符号なし8ビット整数で表せる値）を返します。呼び出しから戻ると、ストリームの位置は1バイトだけ進みます。</p>
+<p>受信できるデータが無い場合は、入力するまでブロックします。ストリームの終端またはエラーの場合は<a href="std_io_InputTube.html#std_io_InputTube_EOS">InputTube_<wbr>EOS</a>を返します。</p>
+<p>このメソッドはエラーとストリームの終了を区別しません。エラーとストリームの終了を区別するには<a href="std_io_InputTube.html#std_io_InputTube_hasError">InputTube_<wbr>hasError</a>()を使用します。</p>
+<p>エラーで失敗した場合はエラーインディケータを設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>ストリームの終端またはエラーの場合は<a href="std_io_InputTube.html#std_io_InputTube_EOS">InputTube_<wbr>EOS</a>、そうでなければ入力したバイトの値</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_InputTube_readBytes"></a><font size="+1"><b>InputTube_<wbr>readBytes</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>ssize_t <b>InputTube_readBytes</b>(</td>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>void *&nbsp;<i>data</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+指定したサイズのデータを入力します。
+<p>指定したサイズのデータを入力するか、ストリームの終了またはエラーを検出するまでブロックします。呼び出しから戻ると、ストリームの位置は実際に入力したバイト数だけ進みます。</p>
+<p>ストリームの終了を検出した場合、それまでに入力したデータを<span class="arg">data</span>に格納し、そのサイズを返します。</p>
+<p>エラーを検出した場合は&minus;1を返します。その場合、エラーが発生するまでに入力したデータを<span class="arg">data</span>に格納している可能性があります。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>data</i> - データを格納する領域の先頭を指すポインタ<br>
+
+<i>size</i> - データを格納する領域のサイズ<br>
+
+</dd></dl>
+<dl>Returns:<dd>入力するデータのサイズ、または&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_InputTube_readFully"></a><font size="+1"><b>InputTube_<wbr>readFully</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>InputTube_readFully</b>(</td>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>void *&nbsp;<i>data</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+指定したサイズのデータを入力します。
+<p>指定したサイズのデータを入力するか、ストリームの終了またはエラーを検出するまでブロックします。呼び出しから戻ると、ストリームの位置は実際に入力したバイト数だけ進みます。</p>
+<p>指定したサイズのデータを入力することができなかった場合、&minus;1を返します。その場合、途中まで入力したデータを<span class="arg">data</span>に格納している可能性があります。</p>
+<p>このメソッドはエラーとストリームの終了を区別しません。エラーとストリームの終了を区別するには<a href="std_io_InputTube.html#std_io_InputTube_hasError">InputTube_<wbr>hasError</a>()を使用します。</p>
+<p>このメソッドは次の式と同じ意味になります。</p>
+<pre>((<a href="std_io_InputTube.html#std_io_InputTube_readBytes">InputTube_<wbr>readBytes</a>(in, data, size) != size) ? -1 : 0)</pre>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>data</i> - データを格納する領域の先頭を指すポインタ<br>
+
+<i>size</i> - データを格納する領域のサイズ<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_InputTube_hasError"></a><font size="+1"><b>InputTube_<wbr>hasError</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>InputTube_hasError</b>(</td>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ストリームのエラー状態を返します。
+<p>このメソッドを呼び出す以前にストリームにエラーが発生していた場合は非0を、そうでなければ0を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>ストリームにエラーが発生した場合は非0、そうでなければ0</dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_InputTube_close"></a><font size="+1"><b>InputTube_<wbr>close</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>InputTube_close</b>(</td>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ストリームの入力端をクローズして解放します。
+<p>クローズに失敗した場合でも<span class="arg">this</span>が参照するオブジェクトは解放されます。</p>
+<p>呼び出し後は<span class="arg">this</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

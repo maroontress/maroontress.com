@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>リリースノート 2003-03-16</title>
+  </head>
+
+  <body>
+    <h1>リリースノート 2003-03-16</h1>
+
+    <ul>
+      <li>コンパイル時の警告を減らした。</li>
+      <li>FreeBSDのwchar_tの値に依存した半角全角変換、ひらがなカタカナ変換のコードを削除し、変換規則をリソース指定できるように分離した。リソースimserver.symbolSystemMappingで「仮名」変換のルールを、リソースimserver.symbolWidthMappingで「角」変換のルールを記述するようにした。</li>
+      <li>前変換を基本規則と最終規則の2つに分割し、関係するリソースを変更、追加した。これにより、ローマ字仮名変換の規則（特に「ん」への変換）を改善した。</li>
+      <li>LinuxでCannaを使用した場合にクラッシュするバグを修正。</li>
+      <li>ローマ字かな変換入力で、付属のリソースを用いても「thi」で「てぃ」を入力できなかったバグを修正。</li>
+      <li>LinuxでビルドしやすいようにImakefileにコメントを追加した。</li>
+      <li>2つのXIC属性XNPreeditStateとXNResetStateに対応。XIMクライアントがXmb/XwcResetIC()を発行したとき、XNResetStateの指定に従って日本語入力をオン、オフにするようにした。</li>
+      <li>「かなキー」入力がFreeBSD以外（Linuxなど）で有効にならないバグを修正。</li>
+    </ul>
+
+
+    <h2><a name="preconv">● 前変換モード</a></h2>
+
+    <p>前変換モードの仕様が変更になりました。</p>
+    <ul>
+      <li><i>Direct</i>
+	<p>前変換しません。</p>
+
+      <li><i>Single</i>
+	<p>リソースimserver.preconversionBasicRuleの基本規則とimserver.preconversionFinalRuleの最終規則の内容に従って前変換します。文字が入力されると基本規則が適用されます。変換、確定する直前には最終規則が適用されます。変換ルールの詳細については、ローマ字変換を記述した付属のファイルRomaji.adを参考にしてください。</p>
+
+      <li><i>Double</i>
+	<p>Singleの場合の処理に加えて、ひらがなをカタカナに変換します。</p>
+    </ul>
+
+    <p>モード切り替えのキー割当は、次のリソースで指定します。</p>
+    <ul>
+      <li><i>imserver.preedit.directInputMode</i>
+      <li><i>imserver.undofix.directInputMode</i>
+	<p>Directモードに移行します。</p>
+
+      <li><i>imserver.preedit.singlePreconversionMode</i>
+      <li><i>imserver.undofix.singlePreconversionMode</i>
+	<p>Singleモードに移行します。</p>
+
+      <li><i>imserver.preedit.doublePreconversionMode</i>
+      <li><i>imserver.undofix.doublePreconversionMode</i>
+	<p>Doubleモードに移行します。</p>
+    </ul>
+
+    <p>デフォルトの前変換モードは、次のリソースで指定します。</p>
+    <ul>
+      <li><i>imserver.preconversion</i>
+	<p>direct, single, doubleのいずれかを指定します。</p>
+    </ul>
+
+    <p>次のリソースは廃止になりました。</p>
+    <ul>
+      <li><i>imserver.preconversionMapping</i></li>
+    </ul>
+
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sun Mar 16 23:35:35 JST 2003 -->
+<!-- hhmts start -->
+Last modified: Mon Mar 17 00:23:08 JST 2003
+<!-- hhmts end -->
+  </body>
+</html>

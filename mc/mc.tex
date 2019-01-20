@@ -1,0 +1,31 @@
+\documentstyle[a4j,11pt,epsf,ascmac]{jarticle}
+
+\newcommand{\imgsrc}[1]{\raisebox{-0.5ex}{\epsfbox{#1}}}
+\newcommand{\sub}[1]{_{#1}}
+\newenvironment{term}{\begin{screen}\raggedright\small}{\end{screen}}
+
+\setcounter{tocdepth}{2}
+
+\begin{document}
+
+\begin{titlepage}
+\vspace*{5em}
+\begin{center}
+\huge\bf 物理情報工学実験第2\\
+\Huge\bf モンテカルロシミュレーション\\[1em]
+\LARGE\bf 木曜日版 サブテキスト\\
+\end{center}
+\end{titlepage}
+
+\pagenumbering{roman}\tableofcontents\clearpage
+
+\pagenumbering{arabic}
+
+\input{mc1.tex}
+\input{mc2.tex}
+\input{mc3.tex}
+\input{mc4.tex}
+\input{mc5.tex}
+\input{mc6.tex}
+\input{bib.tex}
+\end{document}

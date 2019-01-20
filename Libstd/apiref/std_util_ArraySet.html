@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>ArraySet - std_util_ArraySet</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_util_ArraySet"/>
+    <h3>package std_util</h3>
+    <h1>extensible class ArraySet</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<b>std_util_ArraySet</b><br>
+<br>
+#define std_util_ArraySet_IMPORT<br>
+#include &lt;std/util/ArraySet.h&gt;<br>
+#include &lt;std/util/impl/ArraySet.h&gt;<br>
+    <dl><dd>
+配列による集合です。
+<p>集合の要素はvoid型のポインタによる参照です。要素の取り出しにはキャストの演算が必要です。また、整数値を要素とすることはできません。</p>
+<p>要素が参照するオブジェクトの有効性は呼び出し元が保証しなければなりません。</p>
+  </dd></dl>
+    <hr>
+<h2>Field Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void **</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_ArraySet.data"><b>data</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要素の配列です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_ArraySet.size"><b>size</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要素の配列の要素数です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_ArraySet.capacity"><b>capacity</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配列の容量です。</td>
+</tr>
+    </table>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a></font>
+  </td>
+  <td valign="top"><a href="#std_util_ArraySet_create"><b>ArraySet_<wbr>create</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配列集合を生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#std_util_ArraySet_free"><b>ArraySet_<wbr>free</b></a>(<a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配列集合を解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void *</font>
+  </td>
+  <td valign="top"><a href="#std_util_ArraySet_get"><b>ArraySet_<wbr>get</b></a>(<a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a>&nbsp;<i>this</i>, unsigned int&nbsp;<i>k</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定したインデックスの要素を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#std_util_ArraySet_getSize"><b>ArraySet_<wbr>getSize</b></a>(<a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要素の個数を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_util_ArraySet_add"><b>ArraySet_<wbr>add</b></a>(<a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a>&nbsp;<i>this</i>, void *&nbsp;<i>e</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要素を集合に追加します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_util_ArraySet_remove"><b>ArraySet_<wbr>remove</b></a>(<a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a>&nbsp;<i>this</i>, void *&nbsp;<i>e</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要素を集合から取り除きます。</td>
+</tr>
+    </table>
+<h2>Field Detail</h2>
+<p><a name="struct std_util_impl_ArraySet.data"></a><font size="+1"><b>data</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void ** <b>data</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+要素の配列です。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_impl_ArraySet.size"></a><font size="+1"><b>size</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>size</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+要素の配列の要素数です。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_impl_ArraySet.capacity"></a><font size="+1"><b>capacity</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>capacity</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+配列の容量です。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_util_ArraySet_create"></a><font size="+1"><b>ArraySet_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a> <b>ArraySet_create</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+配列集合を生成します。
+<p>生成したインスタンスは要素を含みません。</p>
+<p>戻り値が参照するオブジェクトは<a href="std_util_ArraySet.html#std_util_ArraySet_free">ArraySet_<wbr>free</a>()で解放しなければなりません。</p>
+<p>生成できなかった場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返します。</p>
+    </dd>
+
+<dl>Returns:<dd>配列集合のインスタンス、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_ArraySet_free"></a><font size="+1"><b>ArraySet_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>ArraySet_free</b>(</td>
+    <td nowrap><a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+配列集合を解放します。
+<p>含まれていた要素とは関連がなくなります。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_ArraySet_get"></a><font size="+1"><b>ArraySet_<wbr>get</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void * <b>ArraySet_get</b>(</td>
+    <td nowrap><a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>unsigned int&nbsp;<i>k</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+指定したインデックスの要素を取得します。
+<p>最初の要素はインデックス0で取得できます。また、最後の要素は、<span class="arg">this</span>の要素数を<i>n</i>として、インデックス<i>n</i> &minus; 1で取得できます。</p>
+<p>インデックス<span class="arg">k</span>が<span class="arg">this</span>の要素数以上の場合、<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>k</i> - 要素のインデックス<br>
+
+</dd></dl>
+<dl>Returns:<dd>要素、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_ArraySet_getSize"></a><font size="+1"><b>ArraySet_<wbr>getSize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>ArraySet_getSize</b>(</td>
+    <td nowrap><a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+要素の個数を取得します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>要素の個数</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_ArraySet_add"></a><font size="+1"><b>ArraySet_<wbr>add</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>ArraySet_add</b>(</td>
+    <td nowrap><a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>void *&nbsp;<i>e</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+要素を集合に追加します。
+<p>要素を集合に追加できた場合、追加された要素のインデックスは、追加前の<span class="arg">this</span>の要素数になります。</p>
+<p><span class="arg">e</span>を追加できた場合は0を返します。そうでなければ&minus;1を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>e</i> - 要素<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_ArraySet_remove"></a><font size="+1"><b>ArraySet_<wbr>remove</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>ArraySet_remove</b>(</td>
+    <td nowrap><a href="std_util_ArraySet.html#union std_util_ArraySet">union ArraySet</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>void *&nbsp;<i>e</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+要素を集合から取り除きます。
+<p>要素を集合から取り除くと、<span class="arg">this</span>に含まれる残りの要素とそのインデックスの対応が変更されます。つまり、呼び出し前の<i>k</i>番目の要素と、呼び出し後の<i>k</i>番目の要素が、同一である保証はありません。取り除かれた要素は<span class="arg">this</span>と関連がなくなります。</p>
+<p><span class="arg">e</span>を<span class="arg">this</span>から取り除くことができた場合は0を返します。そうでなければ&minus;1を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>e</i> - 要素<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

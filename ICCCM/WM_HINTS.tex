@@ -1,0 +1,42 @@
+%\begin{table}[p]
+
+\begin{center}\small
+\begin{tabular}{|l|l|l|}
+\hline
+{\bf フィールド} & {\bf データ型} & {\bf コメント} \\
+\hline
+\mem{flags}	     & CARD32	   & （次の表を見よ） \\
+\mem{input}          & CARD32	   & クライアントの入力モデル \\
+\mem{initial\_state} & CARD32	   & 最初にマップされたときの状態 \\
+\mem{icon\_pixmap}   & ピクスマップ  & アイコンの画像のピクスマップ \\
+\mem{icon\_window}   & ウィンドウ	   & アイコンの画像のウィンドウ \\
+\mem{icon\_x}        & INT32       & アイコンの位置 \\
+\mem{icon\_y}        & INT32       & \\
+\mem{icon\_mask}     & ピクスマップ  & アイコンの輪郭のマスク \\
+\mem{window\_group}  & ウィンドウ   & グループリーダのウィンドウ資源識別子 \\
+\hline
+\end{tabular}
+\end{center}
+
+\atom{WM\_HINTS}.\mem{flags}のビットの定義は次のようになる。
+
+\begin{center}\small
+\begin{tabular}{|l|r|l|}
+\hline
+{\bf 名前} & \multicolumn{1}{c|}{\bf 値} & {\bf フィールド} \\
+\hline
+\sym{InputHint}        & 1   & \mem{input}\\
+\sym{StateHint}        & 2   & \mem{initial\_state} \\
+\sym{IconPixmapHint}   & 4   & \mem{icon\_pixmap} \\
+\sym{IconWindowHint}   & 8   & \mem{icon\_window} \\
+\sym{IconPositionHint} & 16  & \mem{icon\_x} \& \mem{icon\_y} \\
+\sym{IconMaskHint}     & 32  & \mem{icon\_mask} \\
+\sym{WindowGroupHint}  & 64  & \mem{window\_group} \\
+\sym{MessageHint}      & 128 & （このビットは一般にはもう使われていない） \\
+\sym{UrgencyHint}      & 256 & 緊急 \\
+\hline
+\end{tabular}
+\end{center}
+
+%\caption{}
+%\end{table}

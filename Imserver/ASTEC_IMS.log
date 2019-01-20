@@ -1,0 +1,6 @@
+request_styles: 104
+supported->count_styles: 4
+supported->supported_styles[0]: 104; XIMPreeditPosition XIMStatusArea
+supported->supported_styles[1]: 404; XIMPreeditPosition XIMStatusNothing
+supported->supported_styles[2]: 101; XIMPreeditArea XIMStatusArea
+supported->supported_styles[3]: 408; XIMPreeditNothing XIMStatusNothing

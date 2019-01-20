@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Mad Angler</title>
+    <link rel="stylesheet" type="text/css" href="look.css">
+  </head>
+  <body>
+    <table class="header" cellpadding="0" cellspacing="2" border="0">
+      <tbody>
+	<tr>
+	  <td class="headerLeft">Maroontress Fast Software</td>
+	  <td class="headerRight">Mad Angler</td>
+	</tr>
+      </tbody>
+    </table>
+    <table class="guide" cellpadding="0" cellspacing="2" border="0">
+      <tbody>
+	<tr>
+	  <td class="guideMenu">
+	    <table width="160" cellpadding="0" cellspacing="0" border="0">
+	      <tbody>
+                <tr><td class="unselected"><a class="menu" href="index.html">Top</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="download.html">Download</a></td></tr>
+                <tr><td class="selected">Tutorial</td></tr>
+                <tr><td class="unselected"><a class="menu" href="manual.html">Manual</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="reference.html">Reference</a></td></tr>
+                <tr><td class="unselected"><a class="menu" href="relnotes.html">Release&nbsp;Notes</a></td></tr>
+	      </tbody>
+	    </table>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 160x90L Mad Angler */
+google_ad_slot = "5426136155";
+google_ad_width = 160;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 160x600 Mad Angler */
+google_ad_slot = "4451171887";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+	  </td>
+	  <td class="guideSubMenu">
+	    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+	      <tbody>
+		<tr>
+		  <td class="guideText">
+		    <table align="right">
+		      <tbody>
+			<tr>
+			  <td>
+<script type="text/javascript"><!--
+  amazon_ad_tag = "sanchappikeio-22";
+  amazon_ad_width = "180";
+  amazon_ad_height = "150";
+  amazon_ad_logo = "hide";
+  amazon_ad_link_target = "new";
+  amazon_ad_border = "hide";
+  amazon_color_border = "FFFFFF";//--></script>
+<script type="text/javascript" src="http://www.assoc-amazon.jp/s/ads.js">
+</script>
+			  </td>
+			</tr>
+		      </tbody>
+		    </table>
+    <!-- -->
+    <p class="section">Tutorial</p>
+
+    <hr>
+    <p class="section">プロジェクトの作成</p>
+
+    <p>最初に表示されるのは次のプロジェクト一覧を表示する画面です。ただし、まだプロジェクトを作成していないので、プロジェクトは表示されません。"New Project" をクリックして、プロジェクトを作成します。</p>
+    <img src="images/firstpage.png"/>
+
+    <p>次の画面でプロジェクトを作成します。"Project ID" にプロジェクト名を入力し、Createボタンをクリックします。</p>
+    <img src="images/newproject1.png"/>
+
+    <p>正しくプロジェクトを作成できると、次のようなダイアログが表示されます。OKボタンをクリックすると、プロジェクトの設定に移ります。</p>
+    <img src="images/newproject2.png"/>
+
+    <hr>
+    <p class="section">プロジェクトの設定</p>
+
+    <p>プロジェクト設定の画面はタブで設定項目が分かれています。次の画面は "Generic" タブを選択したときのものです。ここでは、"Description" にプロジェクトの簡単な説明を入力します。また、詳しくは後述しますが、"Notification URL" にビルドを開始するためのURLが示されています。</p>
+    <img src="images/configure1.png"/>
+
+    <p>次の画面は "Platform" タブを選択したときのものです。最初はなにもプラットフォームが登録されていません。Addボタンで、プラットフォームを追加します。</p>
+    <img src="images/configure2.png"/>
+
+    <p>"Platform ID" にはプラットフォームを識別するための名前を入力します。"User@Hostname" にはsshでリモートコマンドを実行するユーザ名とホスト名を@で連結したものを入力します。"Command" にはそのリモートコマンドのパスを入力します（引数は指定できません）。最後の "Charset" ではリモートコマンドの出力するログの文字セットを選択します。リモートコマンドに関する設定内容の意味については、次の節で詳しく説明します。OKボタンをクリックすると、プラットフォームが追加されます。</p>
+    <img src="images/configure3.png"/>
+
+    <p>次の画面は "Mail" タブを選択したときのものです。"Enable sending mails" チェックボックスをクリックすると、ビルドが終了したときにメールで通知するようになります。"Sender" には差出人の名前を指定します。"Receipient" にはメール受け取るメールアドレスを指定します。</p>
+    <img src="images/configure4.png"/>
+
+    <p>ここまでの設定が終わったら、Submitボタンをクリックして、設定を保存します。設定を保存に成功すると、次のダイアログが表示されます。OKボタンをクリックすると、プロジェクト一覧に戻ります。</p>
+    <img src="images/configure5.png"/>
+
+    <hr>
+    <p class="section">リモートホストとビルドスクリプトの設定</p>
+
+    <p>先ほど「プラットフォームの追加」の設定で、"User@Hostname" と "Command" を指定しました。Mad Anglerは "Notification URL" にアクセスされると、各プラットフォーム毎に次のようなコマンドを実行します。</p>
+
+<pre class="box">
+$ ssh <i>User@Hostname</i> <i>Command</i> <i>REVISION</i>
+</pre>
+
+    <p><tt><i>REVISION</i></tt>は "Notification URL" に含まれるパラメータになります。これをそれぞれのプラットフォームで正しく実行できるようにするためには、プラットフォーム毎に次のような準備をしておく必要があります。</p>
+    <ol>
+      <li>"User@Hostname" の<tt>~/.ssh/authorized_keys</tt>にMad Anglerの公開鍵を追加します。Mad Anglerの公開鍵は、プロジェクト一覧の画面で鍵のアイコンをクリックすると表示されます。</li>
+
+      <li>"User@Hostname" がリポジトリからリビジョンをチェックアウトできるように設定します。この作業はMad Anglerとは直接関係ありませんが、使用するバージョン管理システムにより、アカウントや公開鍵の登録などが必要になるでしょう。</li>
+
+      <li>リモートコマンドである "Command" を用意します。"Command" は第1引数に指定される<tt><i>REVISION</i></tt>をリポジトリからチェックアウトして、ビルドします。"Command" は<tt><i>REVISION</i></tt>を正しくビルドできたときだけ、最終行にOKを表示して終了するコマンドでなければなりません（ビルドに失敗したときは最終行にOK以外を表示する必要があります）。</li>
+    </ol>
+
+    <p>リモートコマンドの具体例は次のようになります。前半ではプラットフォームの情報を表示し、さらにリモートコマンドそれ自体を表示します。後半では、<tt><i>REVISION</i></tt>をチェックアウトしてmakeしています。</p>
+
+<pre class="box">
+#!/bin/sh
+
+echo "User:" `whoami`
+echo "Host:" `hostname`
+echo "Directory:" `pwd`
+echo "Platform:" `uname -a`
+echo "Command:" $0 "$*"
+echo "--- $0"
+cat $0
+
+echo "--- Log"
+revision=$1
+workdir=$$
+{ mkdir $workdir \
+  &amp;&amp; cd $workdir \
+  &amp;&amp; <i>$revisionをチェックアウト</i> \
+  &amp;&amp; cd <i>チェックアウトしたディレクトリ</i> \
+  &amp;&amp; ./configure \
+  &amp;&amp; make; } \
+  || { rm -rf $workdir; echo NG; exit; }
+
+rm -rf $workdir
+echo OK
+</pre>
+
+    <p>準備ができたら、Mad Anglerから実行する前に、設定が正しいかどうか確認しておきます。"User@Hostaname" にログインした後、次のようにコマンドを実行して、既知のビルド可能な<tt><i>REVISION</i></tt>をビルドできることを確認します。</p>
+
+<pre class="box">
+$ ssh <i>User@Hostname</i>
+Password:
+...
+$ <i>Command</i> <i>REVISION</i>
+...
+OK
+$
+</pre>
+
+    <hr>
+    <p class="section">ビルドの実行</p>
+
+    <p>設定が正しいことが確認できたら、次のように "Notification URL" にアクセスしてみてください。</p>
+
+<pre class="box">
+$ fetch -o - <i>URL</i>
+
+あるいは
+
+$ wget -O - <i>URL</i>
+</pre>
+
+    <p>ビルドが走れば成功です。バージョン管理システムによりますが、コミットのフックスクリプトに "Notification URL" へアクセスするコマンドを追加すれば、コミットする度にMad Anglerがビルドを確認するようになります。</p>
+
+    <hr>
+    <p class="section">ビルド結果の通知</p>
+    <p>ビルドが終了すると、Mad Anglerは次のようなメールでビルド結果を通知します（メールの設定で、通知を有効にした場合）。</p>
+
+<pre class="box">
+From: Mad Angler &lt;www@localhost.localdomain&gt;
+To: my-address@example.com
+Subject: [My first project] BUILD SUCCEEDED: Rev. <i>REVISION</i>
+<hr>
+Project: My first project
+Revision: <i>REVISION</i>
+Result: OK
+
+Log:
+http://192.168.121.128/MadAngler.html#%3Clink%20type%3D%22buildLog...
+
+Mad Angler:
+http://192.168.121.128/index.html
+</pre>
+
+    <p>"Log" に記載されているURLをウェブブラウザで開くと、次のような画面が表示され、ログの詳細を確認することができます。</p>
+    <img src="images/buildlog.png"/>
+
+    <p>ログは最後の20行だけが表示されているので、ログ全体を確認したい場合は "Display only the last part" チェックボックスのチェックを外してください。</p>
+
+    <hr>
+    <p class="section">ビルド結果の確認</p>
+
+    <p>メールによる通知だけではなく、プロジェクト一覧の画面からもプロジェクトのビルド状況を確認することができます。</p>
+
+    <p>次のプロジェクト一覧の画面からプロジェクトIDをクリックします。</p>
+    <img src="images/build1.png"/>
+
+    <p>次のようなビルド一覧の画面が表示されるので、確認したいビルドをクリックします。</p>
+    <img src="images/build2.png"/>
+
+    <p>クリックしたビルドのログが画面の下部に表示されます（ログの右上にあるアイコンをクリックすると、ログだけを表示します）。</p>
+    <img src="images/build3.png"/>
+
+    <hr>
+<!-- Created: Fri May  2 06:34:16 JST 2008 -->
+<!-- hhmts start -->
+Last modified: Fri Jun  6 21:13:50 JST 2008
+<!-- hhmts end -->
+		  </td>
+		</tr>
+	      </tbody>
+	    </table>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+    <table class="header" cellpadding="0" cellspacing="2" border="0">
+      <tbody>
+	<tr>
+	  <td class="headerRight"><address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address></td>
+	</tr>
+      </tbody>
+    </table>
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-636163-1";
+      urchinTracker();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>リリースノート 2001-02-05</title>
+  </head>
+
+  <body>
+    <h1>リリースノート 2001-02-05</h1>
+
+    <ul>
+      <li>ローマ字変換入力での初期カタカナ入力モードが可能になるように、<a href="#preconv">前変換モード</a>のモードを拡張した。</li>
+      <li>前編集文字列を全消去するキーを割り当てるリソースimserver.preedit.cancelを追加した。</li>
+      <li><a href="#status">状態ウィンドウ</a>に描画する文字列をリソースで指定できるようにした。</li>
+      <li>入力コンテキストを破壊する直前の前編集文字列の描画（フォーカスアウト）処理をやめた（Over-The-Spotスタイルでは正常に動作しないため）。</li>
+      <li>Over-The-Spotスタイルに伴う<a href="../Imreceiver/index.html">XIMレシーバ</a>との通信に関して、プロトコルを変更し、入力コンテキストのフォーカスを設定する際に、ウィンドウをセレクションで通知するようにした。</li>
+      <li>XRegisterIMInstantiateCallback()を使用するXIMクライアントに対応した。</li>
+      <li>候補の文字列がユニークになるようにした（候補に同一文字列が複数含まれる場合、正常に候補を選択できなかったバグを修正）。</li>
+    </ul>
+    <hr>
+
+    <h2><a name="preconv">● 前変換モード</a></h2>
+
+    <p>2001-02-05より、前変換モードの種類をOn/OffからDirect/Single/Doubleに変更しました。モードの意味は次の通りです。</p>
+
+    <ul>
+      <li><i>Direct</i>
+	<p>前変換しません（従来の前変換モードoffの場合と同様）。</p>
+
+      <li><i>Single</i>
+	<p>リソースimserver.preconversionMappingの内容に従って前変換します（従来の前変換モードonの場合と同様）。変換ルールの詳細については、ローマ字変換を記述した付属のファイルRomaji.adを参考にしてください。</p>
+
+      <li><i>Double</i>
+	<p>Singleの場合の処理に加えて、ひらがなをカタカナに変換します。</p>
+    </ul>
+
+    <p>モード切り替えのキー割当は、次のリソースで指定します。</p>
+
+    <ul>
+      <li><i>imserver.preedit.directInputMode</i>
+      <li><i>imserver.undofix.directInputMode</i>
+	<p>Directモードに移行します。</p>
+
+      <li><i>imserver.preedit.singlePreconversionMode</i>
+      <li><i>imserver.undofix.singlePreconversionMode</i>
+	<p>Singleモードに移行します。</p>
+
+      <li><i>imserver.preedit.doublePreconversionMode</i>
+      <li><i>imserver.undofix.doublePreconversionMode</i>
+	<p>Doubleモードに移行します。</p>
+    </ul>
+
+    <p>デフォルトの前変換モードは、次のリソースで指定します。</p>
+
+    <ul>
+      <li><i>imserver.preconversion</i>
+	<p>direct, single, doubleのいずれかを指定します。</p>
+    </ul>
+
+    <p>また2001-02-05より、次のリソースは廃止になりました。</p>
+
+    <ul>
+      <li><i>imserver.preedit.preconversionMode</i>
+      <li><i>imserver.undofix.preconversionMode</i>
+    </ul>
+
+    <h2><a name="status">● 状態領域に描画する文字列</a></h2>
+
+    <p>2001-02-05より、状態領域に描画する文字列を次のリソースで指定できるようになりました。</p>
+
+    <ul>
+      <li><i>imserver.activeLabel</i>
+	日本語入力ONのときに表示する文字列を指定します。
+
+      <li><i>imserver.inactiveLabel</i>
+	日本語入力OFFのときに表示する文字列を指定します。
+    </ul>
+
+    <p>どちらも指定した文字列中に%で始まる文字列が含まれていた場合、次のように展開されます。</p>
+
+    <ul>
+      <li><i>%s</i>
+	<p>日本語入力OFFの状態はリソースimserver.inactiveState、入力状態（無入力状態も含む）はリソースimserver.inputState、変換状態はリソースimserver.convertStateで指定する文字列に、それぞれ展開されます。</p>
+
+      <li><i>%p</i>
+	<p>Directモードはリソースimserver.directMode、Singleモードはリソースimserver.singleMode、Doubleモードはリソースimserver.doubleModeで指定する文字列に、それぞれ展開されます。</p>
+
+      <li><i>%%</i>
+	<p>%に展開されます。</p>
+
+      <li><i>そのほか%に続く任意の一文字</i>
+	<p>空文字列に展開されます。</p>
+    </ul>
+
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jun  2 23:53:20 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Sat Nov 23 21:04:36 JST 2002
+<!-- hhmts end -->
+  </body>
+</html>

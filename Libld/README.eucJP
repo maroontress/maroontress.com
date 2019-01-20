@@ -1,0 +1,118 @@
+$Id: README.eucJP,v 1.3 2004/01/17 16:49:09 syl Exp $
+README for Leak Detector
+
+Leak Detectorはメモリリークを検査するためのツールセットです。
+
+
+■ システム要件
+
+   FreeBSD/Linuxのgccで動作します。
+
+   - FreeBSD
+     事前にGNU binary utilities（binutils）をビルドしておく必要がありま
+     す。次のURLからソースコードを取得できます。
+
+	http://ftp.gnu.org/gnu/binutils/binutils-2.14.tar.gz
+
+   - Linux
+     事前にBerkeley DBをインストールしておく必要があります。
+
+
+■ ビルド手順
+
+   以下のような手順でビルドします。
+
+   % tar zxf <anywhere>/leakdetector-<yyyymmdd>.tar.gz
+   % cd leakdetector
+   % vi Config.h
+
+     - InstallBinDir: バイナリファイルのインストール先を指定します。
+     - BerkeleyDBType: Berkeley DBがどのようにインストールされているか指
+       定します（Linuxのみ）。
+     - BinutilsDir: GNU binary utilities（binutils）をビルドしてあるディ
+     レクトリを指定します（FreeBSDのみ）。
+
+   % xmkmf -a
+   % make
+   % make install
+
+
+■ サンプル
+
+   ディレクトリleakdetector/ctestにサンプルを用意しました。ファイルの構
+   成は次のようになっています。
+
+   - test.c
+     メモリリークの検査対象となるソースコード。
+
+   - test
+     実行ファイル
+
+   - all.log
+     実行中にmalloc(), free()の呼び出しを記録したログ。
+
+   - garbage.log
+     all.logからメモリリークしている部分だけを抽出したログ。
+
+   - all.out, garbage.out
+     all.log, garbage.logをそれぞれテキスト形式に変換したもの。
+
+   テキスト形式に変換されたログの例と読み方を次に示します。
+
+        allocate: [pid=1348] 0x804a0f0 (10 bytes)
+        /foo/leakdetector/libld/ld.c:128: in function 'malloc'
+        /foo/leakdetector/ctest/test.c:36: in function 'child'
+        /foo/leakdetector/ctest/test.c:66: in function 'foo'
+        /foo/leakdetector/ctest/test.c:85: in function 'main'
+        (null):0: in function '_start'
+	
+        free: [pid=1347] 0x804a0d0
+
+   各エントリは空行で区切られています。最初のエントリはヒープの割り当て
+   を表していて、プロセスIDが1348であるプロセスが、アドレス0x804a0f0から
+   10バイトを割り当てたことを示します。続く（空行までの）5行は割り当てた
+   ときのスタックトレースです。各行は次の形式で表されています。
+
+	ソースファイル:行番号: in function '関数名'
+
+   ただし、行番号は "関数の戻り先のアドレスに対応する行" を示しているこ
+   とに注意してください。
+
+   2番目のエントリはヒープの解放を表していて、プロセスIDが1347であるプロ
+   セスが、アドレス0x804a0d0のチャンクを解放したことを示します。
+
+   なお、テキスト形式に変換されたログは、emacsのcompilation-minor-modeで
+   利用できる形式になっています。
+
+
+■ 構成
+
+   Leak Detectorは次のlibld, ldcollect, ldbrowseより構成されています。
+
+   - libld
+     malloc(), calloc(), realloc(), free()を横取りして、呼び出し時のスタッ
+     クトレースと共にログファイルに出力するライブラリ。検査対象のアプリ
+     ケーションは次のファイルを使用します。
+
+     * ld.h: アプリケーション向けインクルードファイル。
+     * libld.a: アプリケーションとスタティックリンクするライブラリ。
+
+     libldは "make install" ではインストールされません。
+
+   - ldcollect
+     ログファイルからメモリリークしている部分だけを抽出して、ログファイ
+     ル形式で標準出力に出力するコマンド。
+
+   - ldbrowse
+     ログファイルをテキスト形式に変換し、標準出力に出力するコマンド。
+
+
+■ 制限事項
+
+   - バッファオーバランなどのメモリ破壊、二重解放などのバグを含むアプリ
+     ケーションは検査できません。
+
+   - libcをスタティックリンクするアプリケーションは検査できません。検査
+     の際はlibcをダイナミックリンクしてください。
+
+   - C++では正常に動作しません。

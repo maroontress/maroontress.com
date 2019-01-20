@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Map - com_maroontress_libcgi_request_Map</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_maroontress_libcgi_request</h3>
+    <h1>class Map</h1>
+#define com_maroontress_libcgi_request_Map_IMPORT<br>
+#include &lt;com/maroontress/libcgi/request/Map.h&gt;<br>
+    <dl><dd>キーから値を取得するマップです。キーと値は文字列になります。</dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マップの実体となる構造体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_Map_create"><b>Map_<wbr>create</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空のマップを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_Map_free"><b>Map_<wbr>free</b></a>(<a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> *&nbsp;<i>map</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マップを解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;char *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_Map_get"><b>Map_<wbr>get</b></a>(<a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> *&nbsp;<i>map</i>, const char *&nbsp;<i>key</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;キーに対応する値を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_Map_put"><b>Map_<wbr>put</b></a>(<a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> *&nbsp;<i>map</i>, const char *&nbsp;<i>key</i>, const char *&nbsp;<i>value</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;キーに対応する値を設定します。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct com_maroontress_libcgi_request_Map"></a>
+<font size="+1"><b>struct Map</b></font></p>
+<dl><dd>マップの実体となる構造体です。</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="com_maroontress_libcgi_request_Map_create"></a><font size="+1"><b>Map_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> * <b>Map_create</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+空のマップを生成します。
+<p>戻り値が参照するオブジェクトは<a href="com_maroontress_libcgi_request_Map.html#com_maroontress_libcgi_request_Map_free">Map_<wbr>free</a>()で解放しなければなりません。</p>
+    </dd>
+
+<dl>Returns:<dd>マップ</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_request_Map_free"></a><font size="+1"><b>Map_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Map_free</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> *&nbsp;<i>map</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+マップを解放します。
+<p><span class="arg">map</span>が<span class="code">NULL</span>のときはなにもしません。呼び出し後は<span class="arg">map</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>map</i> - マップ<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_request_Map_get"></a><font size="+1"><b>Map_<wbr>get</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>char * <b>Map_get</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> *&nbsp;<i>map</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>key</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+キーに対応する値を取得します。
+<p><span class="arg">key</span>をキーとする値を<span class="arg">map</span>から取得します。成功した場合は値となる文字列を返します。指定したキーが存在しない場合は<span class="code">NULL</span>を返します。</p>
+<p>戻り値が参照するオブジェクトは<span class="arg">map</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、解放してはなりません。</p>
+<p>同じキーに複数の値を設定した場合、いずれかの値が返ります。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>map</i> - マップ<br>
+
+<i>key</i> - キーとなる文字列<br>
+
+</dd></dl>
+<dl>Returns:<dd>値となる文字列、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_request_Map_put"></a><font size="+1"><b>Map_<wbr>put</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>Map_put</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> *&nbsp;<i>map</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>key</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>value</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+キーに対応する値を設定します。
+<p><span class="arg">key</span>をキーとする<span class="arg">value</span>を<span class="arg">map</span>に設定します。成功した場合は0、そうでなければ&minus;1を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>map</i> - マップ<br>
+
+<i>key</i> - キーとなる文字列<br>
+
+<i>value</i> - 値となる文字列<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

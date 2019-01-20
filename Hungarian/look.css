@@ -1,0 +1,212 @@
+body {
+  font-family: palatino linotype, ms pmincho, serif;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+table.guide { 
+  width: 100%;
+  background-color: #808080;
+}
+
+table.header { 
+  width: 100%;
+}
+
+a.menu {
+  color: inherit;
+}
+
+td.headerLeft {
+  text-align: left;
+  font-family: Helvetica,sans-selif;
+  font-size: small;
+}
+
+td.headerRight {
+  text-align: right;
+  font-family: Helvetica,sans-selif;
+  font-size: small;
+}
+
+td.selected {
+  width: 100%;
+  border-width: medium;
+  border-style: solid;
+  border-color: #ff8000;
+  background-color: #c08040;
+
+  vertical-align: top;
+  white-space: nowrap;
+  font-family: helvetica,arial,sans-serif;
+  font-weight: bold;
+  color: #ffffff;
+  padding: 0.5em;
+}
+
+td.unselected {
+  width: 100%;
+  border-width: medium;
+  border-style: solid;
+  border-color: #808080;
+
+  vertical-align: top;
+  white-space: nowrap;
+  font-family: helvetica,arial,sans-serif;
+  font-weight: bold;
+  color: #ffffff;
+  padding: 0.5em;
+}
+
+p.title { 
+  font-family: helvetica,arial,sans-serif;
+  font-weight: bold;
+  font-size: xx-large;
+}
+
+p.section { 
+  font-family: helvetica,arial,sans-serif;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+p.subsection { 
+  font-family: helvetica,arial,sans-serif;
+  font-weight: bold;
+  font-size: large;
+}
+
+p.subsubsection { 
+  font-family: helvetica,arial,sans-serif;
+  font-weight: bold;
+  font-size: medium;
+}
+
+p.footnote { 
+  font-size: small;
+}
+
+div.footnote { 
+  font-size: small;
+}
+
+sup {
+  vertical-align: baseline;
+}
+
+td.guideMenu {
+  vertical-align: top;
+  padding-top: 1em;
+  padding-bottom: 1em;
+
+}
+
+td.guideText {
+  vertical-align: top;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 1em;
+  font-family: palatino linotype, ms pmincho, serif;
+}
+
+td.caption { 
+  font-weight: bold;
+  font-size: x-small;
+  text-align: center;
+}
+
+address {
+  text-align: right;
+  font-family: Helvetica,sans-selif;
+  font-size: small;
+}
+
+td.figure {
+  text-align: center;
+  white-space: nowrap;
+  font-family: helvetica,arial,sans-serif;
+  font-weight: bold;
+  font-size: small;
+}
+
+span.notes {
+  font-weight: bold;
+  font-size: x-small;
+  color: #ffffff;
+  background-color: #000000;
+}
+
+p.elementTitle { 
+  font-family: helvetica,arial,sans-serif;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+p.element { 
+  font-weight: bold;
+  font-size: large;
+}
+
+p.elementSection {
+  font-weight: bold;
+}
+
+p.elementInclude {
+  font-family: courier new, ms gothic, monospace;
+  border: thin groove;
+  padding: 1ex;
+  word-break: break-all;
+}
+
+dt {
+  font-family: helvetica,arial,sans-serif;
+  font-weight: bold;
+  padding-top: .5em; 
+}
+
+dd {
+  padding-bottom: .5em;
+}
+
+dl.box {
+  border: thin groove;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+dl.attribute {
+  border: thin groove;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+pre.box {
+  font-family: courier new, ms gothic, monospace;
+  border: thin groove;
+  padding: 1ex;
+  font-size: smaller;
+}
+
+tt {
+  font-family: courier new, ms gothic, monospace;
+  font-size: smaller;
+}
+
+div.include {
+  border: thin groove;
+  padding: 1ex;
+  word-break: break-all;
+}
+
+span.em {
+  font-weight: bold;
+  color: #a00000;
+}
+
+div.box {
+  border: thin groove;
+}

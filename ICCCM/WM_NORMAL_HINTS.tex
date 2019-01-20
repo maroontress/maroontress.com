@@ -1,0 +1,47 @@
+%\begin{table}[p]
+
+\begin{center}\small
+\begin{tabular}{|l|l|l|}
+\hline
+{\bf フィールド} & {\bf データ型} & {\bf コメント} \\
+\hline
+\mem{flags}	   & CARD32	   & （次の表を見よ） \\
+\mem{pad}	   & 4 * CARD32	   & 過去の互換性のため \\
+\mem{min\_width}   & INT32	   & なければ\mem{base\_width}であるとみなす \\
+\mem{min\_height}  & INT32	   & なければ\mem{base\_height}であるとみなす \\
+\mem{max\_width}   & INT32	   & \\
+\mem{max\_height}  & INT32	   & \\
+\mem{width\_inc}   & INT32	   & \\
+\mem{height\_inc}  & INT32	   & \\
+\mem{min\_aspect}  & (INT32,INT32) & \\
+\mem{max\_aspect}  & (INT32,INT32) & \\
+\mem{base\_width}  & INT32	   & なければ\mem{min\_width}であるとみなす \\
+\mem{base\_height} & INT32	   & なければ\mem{min\_height}であるとみなす \\
+\mem{win\_gravity} & INT32	   & なければ\sym{NorthWest}であるとみなす \\
+\hline
+\end{tabular}
+\end{center}
+
+\atom{WM\_SIZE\_HINTS}.\mem{flags}のビットの定義は次のようになる。
+
+\begin{center}\small
+\begin{tabular}{|l|r|l|}
+\hline
+{\bf 名前} & \multicolumn{1}{c|}{\bf 値} & {\bf フィールド} \\
+\hline
+\sym{USPosition}  & 1   & ユーザが指定した$x$, $y$ \\
+\sym{USSize}      & 2   & ユーザが指定した幅と高さ \\
+\sym{PPosition}   & 4   & プログラムが指定した位置 \\
+\sym{PSize}       & 8   & プログラムが指定したサイズ \\
+\sym{PMinSize}    & 16  & プログラムが指定した最小サイズ \\
+\sym{PMaxSize}    & 32  & プログラムが指定した最大サイズ \\
+\sym{PResizeInc}  & 64  & プログラムが指定したサイズ変更の増分 \\
+\sym{PAspect}     & 128 & プログラムが指定した最大と最小の縦横比 \\
+\sym{PBaseSize}   & 256 & プログラムが指定したベースサイズ \\
+\sym{PWinGravity} & 512 & プログラムが指定したウィンドウのグラビティ \\
+\hline
+\end{tabular}
+\end{center}
+
+%\caption{}
+%\end{table}

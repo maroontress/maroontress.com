@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd" [
+  <!ENTITY thisParam '
+    <param type="@ *" name="d">
+      <desc>Doubleクラスのインスタンス</desc>
+    </param>
+  '>
+]>
+<class package="com_example" name="Double">
+  <namespace/>
+
+  <struct alias="@">
+    <member type="double" name="value">
+      <desc>
+        <brief>現在の実数値を保持します。</brief>
+      </desc>
+    </member>
+
+    <desc>
+      <brief>Doubleクラスのインスタンスとなる構造体です。</brief>
+      <p>実数を保持します。</p>
+    </desc>
+  </struct>
+
+  <method name="new">
+    <param type="double" name="value">
+      <desc>初期値となる実数値</desc>
+    </param>
+
+    <return type="@ *">
+      <desc>Doubleクラスのインスタンス、またはNULL</desc>
+    </return>
+
+    <desc>
+      <brief>Doubleクラスのインスタンスを生成します。</brief>
+      <p>生成できないときはNULLを返します。</p>
+    </desc>
+  </method>
+
+  <method name="delete">
+    &thisParam;
+
+    <desc>
+      <brief>Doubleクラスのインスタンスを破壊します。</brief>
+    </desc>
+  </method>
+
+  <method name="set">
+    &thisParam;
+
+    <param type="double" name="value">
+      <desc>実数値</desc>
+    </param>
+
+    <desc>
+      <brief>実数値を設定します。</brief>
+    </desc>
+  </method>
+
+  <method name="get">
+    &thisParam;
+
+    <return type="double">
+      <desc>実数値</desc>
+    </return>
+
+    <desc>
+      <brief>実数値を取得します。</brief>
+    </desc>
+  </method>
+
+  <desc>
+    <brief>実数値を表す型と、その型への操作を提供します。</brief>
+    <p><hyperlink namespace="com_example.Integer">Integerクラス</hyperlink>のstruct com_example_Integerと異なり、構造体を型定義しています。</p>
+  </desc>
+</class>

@@ -1,0 +1,150 @@
+#
+# old_revision [d492d2ec1652baa53951e3709ebf289880927721]
+#
+# patch "jchuff.c"
+#  from [bdf601f8e79245c899d821ca0a63b7540c9220fa]
+#    to [01c3a58556cd64db0e7c8b20f95232f4c407dd67]
+# 
+# patch "jchuff.h"
+#  from [721250f329f4ddaf806a77341d87b08a5cdb61ee]
+#    to [e4109a6b10dd14cc3e460f65fa7a80847c4ba91b]
+#
+============================================================
+--- jchuff.c	bdf601f8e79245c899d821ca0a63b7540c9220fa
++++ jchuff.c	01c3a58556cd64db0e7c8b20f95232f4c407dd67
+@@ -19,6 +19,7 @@
+ #include "jpeglib.h"
+ #include "jchuff.h"		/* Declarations shared with jcphuff.c */
+ 
++#define USE_ACTBL
+ 
+ /* Expanded entropy encoder object for Huffman encoding.
+  *
+@@ -199,10 +200,16 @@ jpeg_make_c_derived_tbl (j_compress_ptr 
+     ERREXIT1(cinfo, JERR_NO_HUFF_TABLE, tblno);
+ 
+   /* Allocate a workspace if we haven't already done so. */
+-  if (*pdtbl == NULL)
+-    *pdtbl = (c_derived_tbl *)
+-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE,
+-				  SIZEOF(c_derived_tbl));
++  if (*pdtbl == NULL) {
++#ifdef USE_ACTBL
++      size_t size = (isDC) ? SIZEOF(c_derived_tbl) : SIZEOF(c_derived_tbl_ac);
++#else
++      size_t size = SIZEOF(c_derived_tbl);
++#endif
++      *pdtbl = (c_derived_tbl *)
++	  (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_IMAGE, 
++				      size);
++  }
+   dtbl = *pdtbl;
+   
+   /* Figure C.1: make table of Huffman code length for each symbol */
+@@ -261,6 +268,33 @@ jpeg_make_c_derived_tbl (j_compress_ptr 
+     dtbl->ehufco[i] = huffcode[p];
+     dtbl->ehufsi[i] = huffsize[p];
+   }
++#ifdef USE_ACTBL
++  if (!isDC) {
++    int r, k, t, t2, nbits, size;
++    INT32 code, *p = ((c_derived_tbl_ac *)dtbl)->code;
++
++    for (k = -128; k < 128; ++k) {
++      t = k;
++      t2 = k;
++      if (t < 0) {
++	t = -t;
++	--t2;
++      }
++      nbits = 1;
++      while ((t >>= 1))
++	nbits++;
++      for (r = 0; r < 16; ++r) {
++	i = (r << 4) + nbits;
++	code = dtbl->ehufco[i];
++	size = dtbl->ehufsi[i];
++	code <<= nbits;
++	code |= t2 & ((1 << nbits) - 1);
++	size += nbits;
++	*p++ = (code << 8) | size;
++      }
++    }
++  }  
++#endif
+ }
+ 
+ 
+@@ -291,19 +325,19 @@ dump_buffer (working_state * state)
+ 
+ /* Outputting bits to the file */
+ 
+-/* Only the right 24 bits of put_buffer are used; the valid bits are
+- * left-justified in this part.  At most 16 bits can be passed to emit_bits
+- * in one call, and we never retain more than 7 bits in put_buffer
+- * between calls, so 24 bits are sufficient.
++/* All the 32 bits of put_buffer are used; the valid bits are
++ * left-justified in this part.  At most 24 bits can be passed to
++ * emit_bits in one call, and we never retain more than 7 bits in
++ * put_buffer between calls.
+  */
+ 
+ INLINE
+ LOCAL(boolean)
+-emit_bits (working_state * state, unsigned int code, int size)
++emit_bits (working_state * state, INT32 code, int size)
+ /* Emit some bits; return TRUE if successful, FALSE if must suspend */
+ {
+   /* This routine is heavily used, so it's worth coding tightly. */
+-  register INT32 put_buffer = (INT32) code;
++  register INT32 put_buffer = code;
+   register int put_bits = state->cur.put_bits;
+ 
+   /* if size is 0, caller used an invalid Huffman table entry */
+@@ -314,12 +348,12 @@ emit_bits (working_state * state, unsign
+   
+   put_bits += size;		/* new number of bits in buffer */
+   
+-  put_buffer <<= 24 - put_bits; /* align incoming bits */
++  put_buffer <<= 32 - put_bits; /* align incoming bits */
+ 
+   put_buffer |= state->cur.put_buffer; /* and merge with old buffer contents */
+   
+   while (put_bits >= 8) {
+-    int c = (int) ((put_buffer >> 16) & 0xFF);
++    int c = (int) ((put_buffer >> 24) & 0xFF);
+     
+     emit_byte(state, c, return FALSE);
+     if (c == 0xFF) {		/* need to stuff a zero byte? */
+@@ -405,6 +439,16 @@ encode_one_block (working_state * state,
+ 	r -= 16;
+       }
+ 
++#ifdef USE_ACTBL
++      if ((unsigned int)(temp + 128) < 256) {
++	INT32 *p = ((c_derived_tbl_ac *)actbl)->code;
++	INT32 code = p[r + ((temp + 128) << 4)];
++	if (! emit_bits(state, code >> 8, code & 0xff))
++	  return FALSE;
++	r = 0;
++	continue;
++      }
++#endif
+       temp2 = temp;
+       if (temp < 0) {
+ 	temp = -temp;		/* temp is abs value of input */
+============================================================
+--- jchuff.h	721250f329f4ddaf806a77341d87b08a5cdb61ee
++++ jchuff.h	e4109a6b10dd14cc3e460f65fa7a80847c4ba91b
+@@ -30,6 +30,11 @@ typedef struct {
+   /* If no code has been allocated for a symbol S, ehufsi[S] contains 0 */
+ } c_derived_tbl;
+ 
++typedef struct {
++  c_derived_tbl super;
++  INT32 code[16 * 256];
++} c_derived_tbl_ac;
++
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES

@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Double - com_example_Double</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_example</h3>
+    <h1>class Double</h1>
+#define com_example_Double_IMPORT<br>
+#include &lt;com/example/Double.h&gt;<br>
+    <dl><dd>
+    実数値を表す型と、その型への操作を提供します。
+    <p><a href='com_example_Integer.html'>Integerクラス</a>の<a href="com_example_Integer.html#struct com_example_Integer">struct Integer</a>と異なり、構造体を型定義しています。</p>
+  </dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_example_Double.html#com_example_Double">Double</a></b> (struct)</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Doubleクラスのインスタンスとなる構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;double</font>
+  </td>
+  <td valign="top"><a href="#com_example_Double.value"><b>value</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;現在の実数値を保持します。</td>
+</tr>
+      </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_example_Double.html#com_example_Double">Double</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_example_Double_new"><b>Double_<wbr>new</b></a>(double&nbsp;<i>value</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Doubleクラスのインスタンスを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_example_Double_delete"><b>Double_<wbr>delete</b></a>(<a href="com_example_Double.html#com_example_Double">Double</a> *&nbsp;<i>d</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Doubleクラスのインスタンスを破壊します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_example_Double_set"><b>Double_<wbr>set</b></a>(<a href="com_example_Double.html#com_example_Double">Double</a> *&nbsp;<i>d</i>, double&nbsp;<i>value</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;実数値を設定します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;double</font>
+  </td>
+  <td valign="top"><a href="#com_example_Double_get"><b>Double_<wbr>get</b></a>(<a href="com_example_Double.html#com_example_Double">Double</a> *&nbsp;<i>d</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;実数値を取得します。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="com_example_Double"></a>
+<font size="+1"><b>Double</b> (struct)</font></p>
+<dl><dd>
+      Doubleクラスのインスタンスとなる構造体です。
+      <p>実数を保持します。</p>
+    
+<hr>
+<p><a name="com_example_Double.value"></a><font size="+1"><b>value</b></font></p>
+<p>double <b>value</b></p>
+<dl>
+<dd>
+        現在の実数値を保持します。
+      </dd>
+</dl>
+</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="com_example_Double_new"></a><font size="+1"><b>Double_<wbr>new</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_example_Double.html#com_example_Double">Double</a> * <b>Double_new</b>(</td>
+    <td nowrap>double&nbsp;<i>value</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+      Doubleクラスのインスタンスを生成します。
+      <p>生成できないときはNULLを返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>value</i> - 初期値となる実数値<br>
+
+</dd></dl>
+<dl>Returns:<dd>Doubleクラスのインスタンス、またはNULL</dd></dl>
+</dl>
+<hr>
+<p><a name="com_example_Double_delete"></a><font size="+1"><b>Double_<wbr>delete</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Double_delete</b>(</td>
+    <td nowrap><a href="com_example_Double.html#com_example_Double">Double</a> *&nbsp;<i>d</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+      Doubleクラスのインスタンスを破壊します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>d</i> - Doubleクラスのインスタンス<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_example_Double_set"></a><font size="+1"><b>Double_<wbr>set</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Double_set</b>(</td>
+    <td nowrap><a href="com_example_Double.html#com_example_Double">Double</a> *&nbsp;<i>d</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>double&nbsp;<i>value</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+      実数値を設定します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>d</i> - Doubleクラスのインスタンス<br>
+
+<i>value</i> - 実数値<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_example_Double_get"></a><font size="+1"><b>Double_<wbr>get</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>double <b>Double_get</b>(</td>
+    <td nowrap><a href="com_example_Double.html#com_example_Double">Double</a> *&nbsp;<i>d</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+      実数値を取得します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>d</i> - Doubleクラスのインスタンス<br>
+
+</dd></dl>
+<dl>Returns:<dd>実数値</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

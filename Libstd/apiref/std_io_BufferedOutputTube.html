@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>BufferedOutputTube - std_io_BufferedOutputTube</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_io_BufferedOutputTube"/>
+    <h3>package std_io</h3>
+    <h1>extensible class BufferedOutputTube</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<a href="std_io_OutputTube.html">std_io_OutputTube</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&#x2514;&nbsp;<b>std_io_BufferedOutputTube</b><br>
+<br>
+#define std_io_BufferedOutputTube_IMPORT<br>
+#include &lt;std/io/BufferedOutputTube.h&gt;<br>
+#include &lt;std/io/impl/BufferedOutputTube.h&gt;<br>
+    <dl><dd>
+<p>ストリームのバッファ付き出力端です。</p>
+  </dd></dl>
+    <hr>
+<h2>Field Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a></font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_BufferedOutputTube.dest"><b>dest</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出力先です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_BufferedOutputTube.size"><b>size</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファに出力したサイズです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;unsigned char *</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_BufferedOutputTube.data"><b>data</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファに出力可能なデータの先頭を指すポインタです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_BufferedOutputTube.bufferSize"><b>bufferSize</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファのサイズです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void *</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_BufferedOutputTube.bufferData"><b>bufferData</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファの先頭を指すポインタです。</td>
+</tr>
+    </table>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_io_BufferedOutputTube.html#union std_io_BufferedOutputTube">union BufferedOutputTube</a></font>
+  </td>
+  <td valign="top"><a href="#std_io_BufferedOutputTube_create"><b>BufferedOutputTube_<wbr>create</b></a>(<a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>out</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファ付き出力端を生成して返します。</td>
+</tr>
+    </table>
+<h2>Field Detail</h2>
+<p><a name="struct std_io_impl_BufferedOutputTube.dest"></a><font size="+1"><b>dest</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a> <b>dest</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+出力先です。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_BufferedOutputTube.size"></a><font size="+1"><b>size</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>size</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+バッファに出力したサイズです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_BufferedOutputTube.data"></a><font size="+1"><b>data</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>unsigned char * <b>data</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+バッファに出力可能なデータの先頭を指すポインタです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_BufferedOutputTube.bufferSize"></a><font size="+1"><b>bufferSize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>bufferSize</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+バッファのサイズです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_BufferedOutputTube.bufferData"></a><font size="+1"><b>bufferData</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void * <b>bufferData</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+バッファの先頭を指すポインタです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_io_BufferedOutputTube_create"></a><font size="+1"><b>BufferedOutputTube_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_io_BufferedOutputTube.html#union std_io_BufferedOutputTube">union BufferedOutputTube</a></td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>BufferedOutputTube_create</b>(</td>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a>&nbsp;<i>out</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+<p>バッファ付き出力端を生成して返します。戻り値が参照するオブジェクトは<a href="std_io_OutputTube.html#std_io_OutputTube_close">OutputTube_<wbr>close</a>()でクローズしなければなりません。戻り値が参照するオブジェクトをクローズすると、<span class="arg">out</span>が参照する出力端も自動的に<a href="std_io_OutputTube.html#std_io_OutputTube_close">OutputTube_<wbr>close</a>()でクローズします。</p>
+<p>生成できなかった場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返し、<span class="arg">out</span>を<a href="std_io_OutputTube.html#std_io_OutputTube_close">OutputTube_<wbr>close</a>()でクローズします。</p>
+<p>戻り値に関わらず、呼び出し後は<span class="arg">out</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>out</i> - 出力先<br>
+
+</dd></dl>
+<dl>Returns:<dd>バッファ付き出力端、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

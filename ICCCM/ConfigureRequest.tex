@@ -1,0 +1,21 @@
+%\begin{table}[p]
+
+\begin{center}\small
+\setlength{\indwidth}{2em}
+\begin{tabular}{|l|l|}
+\hline
+{\bf 引数}         & {\bf 値} \\
+\hline
+\mem{destination} & ルートウィンドウ \\
+\mem{propagate}   & \sym{False} \\
+\mem{event-mask}  & (\eventmask{SubstructureRedirect}\textbar\eventmask{StructureNotify}) \\
+\mem{event}       & \event{ConfigureRequest} \\
+\ind\mem{event}   & ルートウィンドウ \\
+\ind\mem{window}  & ウィンドウそれ自身 \\
+\ind\ldots        & \req{ConfigureWindow}リクエストからの残りのパラメータ \\
+\hline
+\end{tabular}
+\end{center}
+
+%\caption{}
+%\end{table}

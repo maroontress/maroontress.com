@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>リリースノート 2001-05-30</title>
+  </head>
+
+  <body>
+    <h1>リリースノート 2001-05-30</h1>
+
+    <ul>
+      <li>Linuxでもビルドできるようにした。</li>
+      <li>ムダなテキスト操作を減らした。</li>
+      <li>XIMStatusNoneスタイルをサポートしていなかったのに、利用可能であるとXIMクライアントに伝えていたバグを修正した。</li>
+      <li>wstrncpy()のコピー元文字列の長さ（ヌル文字を除く）とコピー文字数が等しい場合、コピー先文字列にさらにヌル文字を追加していたバグを修正し、さらにコピー元文字列の長さよりもコピー文字数が大きい場合の振る舞いをstrncpy()と同様にした。</li>
+      <li>日本語変換エンジンとしてCannaとSJ3のどちらかを選べるようにした。</li>
+      <li>OnTheSpot以外のスタイルでは、IC破壊時に候補ウィンドウが破壊されないバグを修正した。</li>
+      <li>IC破壊リクエストは延遅コールバックで処理しないようにした。</li>
+      <li>DEBUGが定義されていないときに、unused parameterの警告が出ないようにした。</li>
+      <li>文節の数のかかわらず、変換結果の文節関係をXIM_JA_STUDYプロパティに登録するようにした。</li>
+      <li>候補ウィンドウの幅を決定する際、候補文字列のなかから最大幅のものを求めて、それに合わせるようにした。</li>
+      <li>デフォルトの変換キー（入力状態）の割り当てから、Down, Control-nを取り除いた。</li>
+      <li>デフォルトの次候補/前候補への切り替えキー（変換状態）の割り当てに、それぞれTab/Shift-Tabを追加した。</li>
+      <li>IC生成時に状態領域のジオメトリ属性を指定しないXIMクライアント（Netscape 4.7）では、状態領域のウィンドウが生成されないため、フォーカス獲得時にエラーになるバグを修正した。</li>
+      <li>入力状態でTabキーを入力したときに、読み文字列から<a href="index.html#predict">予測入力</a>できるようにした。</li>
+    </ul>
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jun  2 23:53:20 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Sat Nov 23 21:06:39 JST 2002
+<!-- hhmts end -->
+  </body>
+</html>

@@ -1,0 +1,73 @@
+       The XWMHints structure contains:
+
+	typedef struct {
+	    long flags;         /* marks which fields in this structure are defined */
+	    Bool input;         /* does this application rely on the window manager to
+	                        get keyboard input? */
+	    int initial_state;  /* see below */
+	    Pixmap icon_pixmap; /* pixmap to be used as icon */
+	    Window icon_window; /* window to be used as icon */
+	    int icon_x, icon_y; /* initial position of icon */
+	    Pixmap icon_mask;   /* pixmap to be used as mask for icon_pixmap */
+	    XID window_group;   /* id of related window group */
+	    /* this structure may be extended in the future */
+	} XWMHints;
+
+	inputメンバは、アプリケーションが用いる入力フォーカスモデル
+	に関する、ウィンドウマネージャとのコミュニケーションに用い
+	られる。不動産駆動フォーカスを用いるXバージョン10スタイルの
+	アプリケーションのような、入力を期待するが自分のサブウィン
+	ドウに明示的にフォーカスをまったくセットしない（言い換えれば、
+	フォーカス管理にプッシュモデルを使う）アプリケーションでは、
+	このメンバをTrueにセットしなくてはならない。同様に、ウィン
+	ドウマネージャによって自分のトップレベルウィンドウに入力
+	フォーカスが与えられたときだけ、入力フォーカスを自分のサブ
+	ウィンドウにセットするアプリケーションもまた、このメンバを
+	Trueにセットしなくてはならない。キーボード入力が必要なときは
+	いつでも、自分のサブウィンドウの一つに明示的にフォーカスを
+	セットすることによって、自分自身の入力フォーカスを管理する
+	（言い換えればフォーカス管理にプルモデルを使う）アプリケー
+	ションは、このメンバをFalseにセットしなくてはならない。
+	まったくキーボード入力を期待しないアプリケーションもまた、
+	このメンバをFalseにセットしなくてはならない。
+
+	プルモデルのウィンドウマネージャは、プッシュモデルのアプリ
+	ケーションが入力を得ることができるようにするため、inputメンバが
+	Trueのアプリケーションのトップレベルウィンドウに入力フォーカス
+	セットしなくてはならない。プッシュモデルのウィンドウマネー
+	ジャは、プルモデルのアプリケーションに破壊されないように、
+	適切なとき（例えば、inputメンバがFalseのアプリケーションが
+	そのサブウィンドウの一つに入力フォーカスをセットするたび）
+	に入力フォーカスがPointerRootにリセットされることを確実に
+	しなくてはならない。
+
+	The definitions for the initial_state flag are:
+
+	#define   WithdrawnState         0
+	#define   NormalState            1    /* most applications start
+	                                      this way */
+	#define   IconicState            3    /* application wants to
+	                                      start as an icon */
+
+	The icon_mask specifies which pixels of the icon_pixmap
+	should be used as the icon.  This allows for nonrectangu-
+	lar icons.  Both icon_pixmap and icon_mask must be
+	bitmaps.  The icon_window lets an application provide a
+	window for use as an icon for window managers that support
+	such use.  The window_group lets you specify that this
+	window belongs to a group of other windows.  For example,
+	if a single application manipulates multiple top-level
+	windows, this allows you to provide enough information
+	that a window manager can iconify all of the windows
+	rather than just the one window.
+
+	XUrgencyHintフラグは、flagsフィールドでセットされれば、
+	クライアントがそのウィンドウの内容を緊急なものと考えていて、
+	ユーザのタイムリーなレスポンスを要求していることを示します。
+	ウィンドウマネージャは、このフラグがセットされている間、
+	そのウィンドウに対してユーザの注意を引くために、いくらか
+	努力しようとするかも知れません。そのクライアントは、ユーザが
+	urgencyフラグをクリアできたり（そのウィンドウを緊急なものに
+	した状況を緩和したり、あるいは単にその警告を消したりする）、
+	そのウィンドウを取り消したりできるような、いくつかの手段を
+	提供する必要があります。

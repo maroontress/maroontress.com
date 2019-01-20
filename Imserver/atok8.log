@@ -1,0 +1,14 @@
+request_styles: 102
+supported->count_styles: 12
+supported->supported_styles[0]: 102; XIMPreeditCallbacks XIMStatusArea
+supported->supported_styles[1]: 104; XIMPreeditPosition XIMStatusArea
+supported->supported_styles[2]: 402; XIMPreeditCallbacks XIMStatusNothing
+supported->supported_styles[3]: 404; XIMPreeditPosition XIMStatusNothing
+supported->supported_styles[4]: 101; XIMPreeditArea XIMStatusArea
+supported->supported_styles[5]: 401; XIMPreeditArea XIMStatusNothing
+supported->supported_styles[6]: 108; XIMPreeditNothing XIMStatusArea
+supported->supported_styles[7]: 408; XIMPreeditNothing XIMStatusNothing
+supported->supported_styles[8]: 202; XIMPreeditCallbacks XIMStatusCallbacks
+supported->supported_styles[9]: 204; XIMPreeditPosition XIMStatusCallbacks
+supported->supported_styles[10]: 201; XIMPreeditArea XIMStatusCallbacks
+supported->supported_styles[11]: 208; XIMPreeditNothing XIMStatusCallbacks

@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Time - foo_Time</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package foo</h3>
+    <h1>class Time</h1>
+#define foo_Time_IMPORT<br>
+#include &lt;foo/Time.h&gt;<br>
+    <dl><dd>
+    timeval構造体を演算する操作を提供します。
+  </dd></dl>
+    <hr>
+    <h2>Macro Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td><a href="#foo_Time_add"><b>Time_add</b></a>(<i>tvp</i>, <i>uvp</i>, <i>vvp</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeval構造体の和を求めます。</td>
+</tr>
+    </table>
+    <h2>Macro Detail</h2>
+<p><a name="foo_Time_add"></a><font size="+1"><b>Time_add</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>Time_add</b>(<i>tvp</i>, <i>uvp</i>, <i>vvp</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+      timeval構造体の和を求めます。
+      <p><span class="arg">tvp</span> + <span class="arg">uvp</span>の値を計算し、<span class="arg">vvp</span>に格納します。</p>
+      <p><span class="arg">tvp</span>, <span class="arg">uvp</span>, <span class="arg">vvp</span>はtimeval構造体のポインタでなければなりません。</p>
+    </dd>
+<dl>Parameters:<dd>
+<i>tvp</i> - timeval構造体のポインタ<br>
+
+<i>uvp</i> - timeval構造体のポインタ<br>
+
+<i>vvp</i> - 和を格納するtimeval構造体のポインタ<br>
+
+</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

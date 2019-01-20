@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>on-the-spot対応日本語XIMサーバ 機能と実装の比較</title>
+  </head>
+
+  <body>
+    <h1>on-the-spot対応日本語XIMサーバ 機能と実装の比較</h1>
+
+    <h2>機能サポート</h2>
+
+    <table border="1" cols="7">
+      <tr bgcolor="#999999">
+	<th rowspan="2"></th>
+	<th colspan="6">XIMサーバ</th>
+      </tr>
+
+      <tr bgcolor="#999999">
+	<th>ATOK8<br><font size=-1>(Solaris付属)</font></th>
+	<th>xwnmo<br><font size=-1>(Wnn6 Ver3付属)</font></th>
+	<th>vje-delta 3.0</th>
+	<th>Kinput2<br><font size=-1>(v3 sj3)</font></th>
+	<th>Kinput2<br><font size=-1>(v3 canna)</font></th>
+	<th>imserver</th>
+      </tr>
+
+      <tr>
+	<th bgcolor="#999999">キャレット</th>
+	<td>IMサーバ側(アンダーバー文字で表示)制御/クライアント側キャレットは先頭位置</td>
+	<td>IMサーバ側(リバース表示、末尾では非表示)制御/クライアント側キャレットは末尾位置</td>
+	<td>IMサーバ側(リバース表示、末尾ではスペース文字のリバース表示)制御/クライアント側キャレットは末尾位置</td>
+	<td>クライアント側制御</td>
+	<td>クライアント側制御</td>
+	<td>クライアント側制御</td>
+      </tr>
+
+      <tr>
+	<th bgcolor="#999999">かなキー</th>
+	<td>○</td>
+	<td>×(濁点・半濁点に未対応)</td>
+	<td>○</td>
+	<td>○</td>
+	<td>×(~/.canna次第)</td>
+	<td>○</td>
+      </tr>
+    </table>
+
+    <h2>前編集文字列が存在するときの挙動</h2>
+
+    <table border="1" cols="7">
+      <tr bgcolor="#999999">
+	<th rowspan="2"></th>
+	<th colspan="6">XIMサーバ</th>
+      </tr>
+
+      <tr bgcolor="#999999">
+	<th>ATOK8<br><font size=-1>(Solaris付属)</font></th>
+	<th>xwnmo<br><font size=-1>(Wnn6 Ver3付属)</font></th>
+	<th>vje-delta 3.0</th>
+	<th>Kinput2<br><font size=-1>(v3 sj3)</font></th>
+	<th>Kinput2<br><font size=-1>(v3 canna)</font></th>
+	<th>imserver</th>
+      </tr>
+
+      <tr>
+	<th bgcolor="#999999">XmbResetIC()の戻り値</th>
+	<td>前編集文字列</td>
+	<td>NULL</td>
+	<td>前編集文字列</td>
+	<td>前編集文字列</td>
+	<td>空文字列(長さ0)</td>
+	<td>前編集文字列(読み文字列)</td>
+      </tr>
+
+      <tr>
+	<th bgcolor="#999999">XmbResetIC()のあとのIMサーバの行動</th>
+	<td>IMサーバ側文字列消去
+	  -> 描画コールバックを呼びクライアントの前編集文字列を消去
+	  -> 入力モードoff(<b>終了コールバックは呼ばれない</b>)</td>
+	<td>IMサーバ側文字列消去
+	  -> 描画コールバックを呼びクライアントの前編集文字列を消去
+	  -> 終了コールバックを呼ぶ
+	  -> 入力モードoff</td>
+	<td>描画コールバックを呼びクライアント側文字列を一部再描画(<b>サーバ側とクライアント側の両方の文字列が存続する</b>)</td>
+	<td>IMサーバ側文字列消去のみ</td>
+	<td>IMサーバ側文字列消去のみ</td>
+	<td>IMサーバ側文字列消去
+	  -> 描画コールバックを呼びクライアントの前編集文字列を消去</td>
+      </tr>
+
+      <tr>
+	<th bgcolor="#999999">入力モードoff</th>
+	<td>描画コールバックを呼びクライアントの前編集文字列を消去
+	  -> IMサーバ側文字列をクライアントにコミットして消去
+	  -> 終了コールバックを呼ぶ
+	  -> 入力モードoff</td>
+	<td>描画コールバックを呼びクライアントの前編集文字列を消去
+	  -> 終了コールバックを呼ぶ(<b>コミットは呼ばれない</b>)
+	  -> 入力モードoff</td>
+	<td>描画コールバックを呼びクライアントの前編集文字列を消去
+	  -> 終了コールバックを呼ぶ(<b>コミットは呼ばれない</b>)
+	  -> 入力モードoff
+	  -> 開始コールバックを呼ぶ
+	  -> 無消去無挿入の描画コールバックを呼ぶ
+	  -> 入力モードoff</td>
+	<td>描画コールバックを呼びクライアントの前編集文字列を消去
+	  -> IMサーバ側文字列をクライアントにコミットして消去
+	  -> 終了コールバックを呼ぶ
+	  -> 入力モードoff</td>
+	<td>前編集文字列が存在する状態で入力モードoffは不可</td>
+	<td>描画コールバックを呼びクライアントの前編集文字列を消去
+	  -> IMサーバ側文字列をクライアントにコミットして消去
+	  -> 終了コールバックを呼ぶ->入力モードoff</td>
+      </tr>
+
+      <tr>
+	<th bgcolor="#999999">入力モードoff直後の入力モードon</th>
+	<td>通常の入力モードon</td>
+	<td>開始コールバックを呼ぶ
+	  -> 描画コールバックを呼んで直前の前編集文字列を再挿入</td>
+	<td>通常の入力モードon</td>
+	<td>通常の入力モードon</td>
+	<td>通常の入力モードon</td>
+	<td>通常の入力モードon</td>
+      </tr>
+    </table>
+
+    <h2>そのほか</h2>
+
+    <h3>Kinput2 (v3 canna)</h3>
+    <ul>
+      <li>クライアントと前編集文字列の同期がとれなくなることがあるなど動作がおかしい。</li>
+      <li>canna側のUIライブラリを使用するため、キーバインディングが日本語変換エンジンの機構と強く結合している(そのためにかなキーが使用できない)。</li>
+      <li>クライアントに渡されるタブ、改行などのキーイベントのキーコードが0になる不具合がある。</li>
+    </ul>
+    <table border="1" cols="4">
+      <tr bgcolor="#999999">
+	<th></th>
+	<th>XIMStatusNothing</th>
+	<th>XIMStatusArea</th>
+	<th>XIMStatusCallbacks</th>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditNothing</th>
+	<td align="center">○</td>
+	<td align="center">×</td>
+	<td align="center">×</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditArea</th>
+	<td align="center">×</td>
+	<td align="center">○</td>
+	<td align="center">×</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditPosition</th>
+	<td align="center">○</td>
+	<td align="center">○</td>
+	<td align="center">×</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditCallbacks</th>
+	<td align="center">○</td>
+	<td align="center">×</td>
+	<td align="center">○</td>
+      </tr>
+    </table>
+
+    <h3>Kinput2 (v3 sj3)</h3>
+    <ul>
+      <li>cannaよりは安定している。</li>
+      <li>クライアントに渡されるタブ、改行などのキーイベントのキーコードが0になる不具合がある。</li>
+    </ul>
+    <table border="1" cols="4">
+      <tr bgcolor="#999999">
+	<th></th>
+	<th>XIMStatusNothing</th>
+	<th>XIMStatusArea</th>
+	<th>XIMStatusCallbacks</th>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditNothing</th>
+	<td align="center">○</td>
+	<td align="center">×</td>
+	<td align="center">×</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditArea</th>
+	<td align="center">×</td>
+	<td align="center">○</td>
+	<td align="center">×</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditPosition</th>
+	<td align="center">○</td>
+	<td align="center">○</td>
+	<td align="center">×</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditCallbacks</th>
+	<td align="center">○</td>
+	<td align="center">×</td>
+	<td align="center">○</td>
+      </tr>
+    </table>
+
+    <h3>ATOK8 (Solaris付属)</h3>
+    <ul>
+      <li>キーバインディングの変更は可能だが、キーの機能を状態によって区別しないので、ひとつのキーに複数機能を自由に割り当てることはできないようだ。</li>
+    </ul>
+    <table border="1" cols="4">
+      <tr bgcolor="#999999">
+	<th></th>
+	<th>XIMStatusNothing</th>
+	<th>XIMStatusArea</th>
+	<th>XIMStatusCallbacks</th>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditNothing</th>
+	<td align="center">○</td>
+	<td align="center">○</td>
+	<td align="center">○</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditArea</th>
+	<td align="center">○</td>
+	<td align="center">○</td>
+	<td align="center">○</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditPosition</th>
+	<td align="center">○</td>
+	<td align="center">○</td>
+	<td align="center">○</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditCallbacks</th>
+	<td align="center">○</td>
+	<td align="center">○</td>
+	<td align="center">○</td>
+      </tr>
+    </table>
+
+    <h3>xwnmo (WNN6 Ver3付属)</h3>
+    <ul>
+      <li>クライアントと前編集文字列の同期がとれなくなることがあるなど動作がおかしい。</li>
+      <li>頻繁にXフォントセットを生成・解放しているらしく動きが重い。</li>
+      <li>キーバインディングはいくつかのパターンから選ぶことができるだけらしい。</li>
+    </ul>
+    <table border="1" cols="4">
+      <tr bgcolor="#999999">
+	<th></th>
+	<th>XIMStatusNothing</th>
+	<th>XIMStatusArea</th>
+	<th>XIMStatusCallbacks</th>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditNothing</th>
+	<td align="center">○</td>
+	<td align="center">×</td>
+	<td align="center">×</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditArea</th>
+	<td align="center">×</td>
+	<td align="center">○</td>
+	<td align="center">○</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditPosition</th>
+	<td align="center">○</td>
+	<td align="center">○</td>
+	<td align="center">○</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditCallbacks</th>
+	<td align="center">×</td>
+	<td align="center">○</td>
+	<td align="center">○</td>
+      </tr>
+    </table>
+
+    <h3>vje-delta 3.0</h3>
+    <ul>
+      <li>バージョン2.5ではon-the-spotには対応していなかった。バージョン3ではon-the-spotに対応した。</li>
+    </ul>
+    <table border="1" cols="4">
+      <tr bgcolor="#999999">
+	<th></th>
+	<th>XIMStatusNothing</th>
+	<th>XIMStatusArea</th>
+	<th>XIMStatusCallbacks</th>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditNothing</th>
+	<td align="center">○</td>
+	<td align="center">×</td>
+	<td align="center">×</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditArea</th>
+	<td align="center">×</td>
+	<td align="center">○</td>
+	<td align="center">×</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditPosition</th>
+	<td align="center">○</td>
+	<td align="center">○</td>
+	<td align="center">×</td>
+      </tr>
+      <tr>
+	<th bgcolor="#999999">XIMPreeditCallbacks</th>
+	<td align="center">○</td>
+	<td align="center">×</td>
+	<td align="center">○</td>
+      </tr>
+    </table>
+
+    <h3>番外: ASTEC-X経由のIME</h3>
+    <ul>
+      <li>ASTEC-XのXサーバは、かなキー+コントロールキー+`a'キーを同時に押しても、`コントロール+a'ではなく、`ち'を返してくる(hの場合はバックスペースを返してくれる)。</li>
+      <li>on-the-spotには対応せず。</li>
+    </ul>
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jan  8 18:57:30 JST 2000 -->
+<!-- hhmts start -->
+Last modified: Thu Aug 31 11:07:05 JST 2006
+<!-- hhmts end -->
+  </body>
+</html>

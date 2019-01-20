@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title>Libtoolでクロス開発</title>
+    <link rel="stylesheet" type="text/css" href="look.css">
+  </head>
+
+  <body>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 728x90 White */
+google_ad_slot = "8441152606";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+    <table align="right">
+      <tbody>
+	<tr>
+	  <td>
+<script type="text/javascript"><!--
+amazon_ad_tag = "sanchappikeio-22";
+amazon_ad_width = "180";
+amazon_ad_height = "150";
+amazon_ad_logo = "hide";
+amazon_ad_link_target = "new";
+amazon_ad_border = "hide";
+amazon_color_border = "FFFFFF";//--></script>
+<script type="text/javascript" src="http://www.assoc-amazon.jp/s/ads.js"></script>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+
+    <p class="title">Libtoolでクロス開発</p>
+
+    <p>クロス開発でlibtoolを使用すると、<s>あの忌々しい</s>疑似ライブラリ（<tt>.la</tt>ファイル）に正しくない絶対パスが埋め込まれてしまい、コンビニエンスライブラリが不便なライブラリになってしまう。ウェブで検索しても、あんまり回避方法を見つけられなかったので、ここにまとめておく。</p>
+
+    <hr>
+    <p class="section">問題の詳細</p>
+
+    <p>例えば、<tt>libfoo.la</tt>というライブラリをlibtoolとautomakeでクロスコンパイルしてインストールする場合、ホストシステムのライブラリをインストールする先は、ビルドシステムのインストール先（<tt>/usr/local/lib</tt>）とは異なる場所になる。ここではそれを<tt>/w/usr/local/lib</tt>としておく。ただし、<tt>./configure --prefix=/w/usr/local</tt>とするのではなく、<tt>make DESTDIR=/w all install</tt>でビルド、インストールする。</p>
+
+    <p>このようにインストールすると、<tt>.la</tt>ファイルの中の<tt>libdir</tt>は次のようになる。</p>
+<pre>
+libdir='/usr/local/lib'
+</pre>
+
+    <p>また、<tt>foo_la_LDFLAGS</tt>にライブラリのサーチパスを指定したり、<tt>foo_la_LIBADD</tt>に依存するライブラリを指定してコンビニエンスライブラリを作成すると、<tt>dependency_libs</tt>の値には、次のようにいろいろな環境の絶対パスが埋め込まれる（注: <tt>LDFLAGS</tt>には<tt>-R$(libdir) -L$(DESTDIR)$(libdir)</tt>を、<tt>LIBADD</tt>には<tt>$(top_builddir)/libbar.la -lbaz</tt>を指定した）。</p>
+<pre>
+dependency_libs='-R/usr/local/lib -L/w/usr/local/lib /usr/local/lib/libbar.la -lbaz'
+</pre>
+
+    <p>まず<tt>libdir</tt>の値はホストシステムでは正しいが、ビルドシステムでは正しくない。そのため、インストールされた<tt>libfoo.la</tt>を<tt>-L/w/usr/local/lib -lfoo</tt>でリンクしようとすると、「<tt>libtool: warning: library `libfoo.la' was moved.</tt>」と警告が出る。つまり、この値はビルドシステムからみたときに<tt>/w/usr/local/lib</tt>でなければならない。もちろん、ホストシステムでセルフコンパイルするときは<tt>/usr/local/lib</tt>でなければならない。</p>
+
+    <p>警告は無視すればいいが、<tt>dependency_libs</tt>の方はもっと深刻である。<tt>-L</tt>で指定するサーチパスはビルドシステムのものなので、ホストシステムでは正しくない。また、依存するライブラリ<tt>libbar.la</tt>のパスはホストシステムでは正しいが、ビルドシステムでは正しくない。そのため、このインストールされた疑似ライブラリ<tt>libfoo.la</tt>をビルドシステムでリンクすると、「<tt>/usr/local/lib/libbar.la</tt>がみつからない」とエラーになってしまう。<tt>libbar.la</tt>は<tt>/w/usr/local/lib</tt>にあるのだが...。</p>
+
+    <hr>
+    <p class="section">すべてはMontaVistaのツールチェインから...</p>
+
+    <p>ウェブで検索してもよくわからず、コンビニエンスライブラリの使用は中止、警告も無視することで回避しようと考えていた。しかし、ある日MontaVistaのツールチェインを眺めていたとき、<tt>.la</tt>ファイルの<tt>libdir</tt>の行が次のようになっていることに気付いた。</p>
+<pre>
+libdir=$CROSS_COMPILE_PREFIX'/usr/lib'
+</pre>
+
+    <p>ん。これはどうやるんだ。<tt>CROSS_COMPILE_PREFIX</tt>で検索して<a href="http://mail.gnome.org/archives/gtk-devel-list/2002-January/msg00072.html">Smoother cross compilation of 1.3.12</a>を発見する。このなかの次の部分で目が覚めた。</p>
+<pre>
+Problem B) autoconf
+
+All the new code and much of the higher end code (gnome, etc) depend on
+libtool. My personal feelings about this obscure shell script aside,
+it's got problems in a cross compilation environment - typically libtool
+will fail on a link step because it decodes a .la file, then does magic
+parsing of a -lsomething into a /usr/lib/something.so - which is
+typically a native host library and not what I want.
+
+It would be really great to just turn off -l parsing in libtool and let
+the gcc compiler figure it out. I couldn't figure it out.
+
+so I wrote a script that postprocesses and demangles the libtool
+generated .la file.
+
+It gets rid of /usr/lib/*.la references, the -L references, any
+hardcoded paths to -l in the dependency_libs variable, and makes
+libdir=$CROSS_COMPILE_PREFIX'/usr/lib', etc.
+
+Is there a better solution?
+</pre>
+    <p>そう、要は自分でスクリプトを書けばいいのだ。</p>
+
+    <hr>
+    <p class="section">疑似ライブラリを変換するスクリプト</p>
+
+    <p>変換スクリプトは簡単に書ける。<tt>.la</tt>ファイル自体はシェルスクリプトからそのまま<tt>.</tt>コマンドで入力できるので、特にパースの処理も不要である。<tt>libdir</tt>の処理は上記の引用をそのまま適用した。<tt>dependency_libs</tt>については、<tt>for</tt>コマンドで複数の引数を順にみていく。絶対パスで指定された疑似ライブラリ<tt>/*/lib<i>BAR</i>.la</tt>は<tt>-l<i>BAR</i></tt>に変換する。また、<tt>-L/w/<i>PATH</i></tt>は<tt>-L'$CROSS_COMPILE_PREFIX'/<i>PATH</i></tt>に変換する。</p>
+    <p>具体的には、次のような<a href="demangle">変換スクリプト</a>を用意すればよい。なお、libtoolが<tt>.la</tt>ファイルの2行目の「libtoolのバージョン」を参照するため、<tt>.la</tt>ファイルの先頭2行のコメントは削除してはならない。</p>
+<pre>
+#!/bin/sh
+filename=$1
+. $filename
+
+new_dependency_libs=
+for lib in $dependency_libs ; do
+  case $lib in
+  /*/lib*.la)
+    lib=${lib##*/}
+    lib=${lib#lib}
+    lib=-l${lib%.la}
+    ;;
+  -L/*)
+    lib=-L\'\$CROSS_COMPILE_PREFIX\'${lib#-L$DESTDIR}
+    ;;
+  *)
+    ;;
+  esac
+  new_dependency_libs="$new_dependency_libs $lib"
+done
+
+cat &gt; $filename &lt;&lt; EOF
+# ${filename##*/} - a libtool library file
+# Generated by ltmain.sh - GNU libtool 1.5.26 (1.1220.2.493 2008/02/01 16:58:18)
+dlname='${dlname}'
+library_names='${library_names}'
+old_library='${old_library}'
+dependency_libs='${new_dependency_libs}'
+current=$current
+age=$age
+revision=$revision
+installed=$installed
+shouldnotlink=$shouldnotlink
+dlopen='$dlopen'
+dlpreopen='$dlpreopen'
+libdir=\$CROSS_COMPILE_PREFIX'${libdir}'
+EOF
+</pre>
+    <p>先ほどの<tt>libfoo.la</tt>をこのスクリプトで変換すると、次のようになる。</p>
+<pre>
+dependency_libs='-R/usr/local/lib -L'$CROSS_COMPILE_PREFIX'/usr/local/lib -lbar -lbaz'
+libdir=$CROSS_COMPILE_PREFIX'/usr/local/lib'
+</pre>
+    <p>このスクリプトを<tt>demangle</tt>としてソースツリーに追加した。</p>
+
+    <hr>
+    <p class="section">インストール後フックのターゲット</p>
+
+    <p>ライブラリ<tt>libfoo.la</tt>のインストール後に、インストールされた疑似ライブラリを「デマングル」必要がある。これは<tt>Makefile.am</tt>で、次のように<tt>install-exec-hook</tt>ターゲットを利用した。</p>
+<pre>
+install-exec-hook:
+        $(top_srcdir)/demangle $(DESTDIR)$(libdir)/libfoo.la
+</pre>
+
+    <hr>
+    <p class="section">libtoolコマンドに環境変数を渡す</p>
+
+    <p>ここまでできれば、ほぼ完了。あとは、この「デマングられた」疑似ライブラリを（もちろんlibtoolで）リンクするときのことを考える。<tt>libfoo.la</tt>をリンクするプログラム<tt>foo</tt>をビルドするときに、環境変数<tt>CROSS_COMPILE_PREFIX</tt>を設定してからlibtoolを実行するようにしたい。これも<tt>foo</tt>を（クロスコンパイルで）ビルドする<tt>Makefile.am</tt>のなかで、次のように変数<tt>LIBTOOL</tt>をオーバライドした。</p>
+<pre>
+LIBTOOL = env CROSS_COMPILE_PREFIX=$(DESTDIR) $(SHELL) $(top_builddir)/libtool
+</pre>
+
+    <hr>
+    <p class="section">libtool 1.5のバグ</p>
+
+    <p>libtool 1.5では疑似ライブラリをリンクするとき、リンクする疑似ライブラリのなかの<tt>dependency_libs</tt>に含まれる<tt>-R</tt>フラグが捨てられてしまう、という<a href="http://lists.gnu.org/archive/html/bug-libtool/2006-01/msg00019.html">バグ</a>がある。そのため、結局のところ、コンビニエンスライブラリに「依存するライブラリ」を埋め込んでも、そのライブラリをリンクするときに、「実行時に共有ライブラリを探すパス」をすべて指定しなければならない。つまり、せっせと<tt>-R</tt>を書いても、最後には依存するすべての共有ライブラリを把握しておく必要がある。すべての共有ライブラリを同じところに置ければいいが、なんだかよくわからないサードパーティの共有ライブラリに限って、特定のパスに配置せよと求められることがよくある（クロス、というか組み込みでは）。libtoolのコンビニエンスライブラリは、共有ライブラリに関してはコンビニエンスではない。</p>
+    <p>libtoolがこのバグを抱え込んでしまった過程をみると、オープンソース開発の典型的な落とし穴にはまったことがわかる。そして、このようなバグを長く放置しているlibtoolがバベルの塔になってしまったことを露呈している。一部のユーザーが満足するための（そしてオリジナルの思想にも仕様にもマッチしない）パッチが提案され、なにも理解していないメインテナが「広く利用できるように」そのパッチを適用し、互換性も確認せずにリリースする。ユーザはよくわからないまま従来の機能が使えなくなり、おかしな回避策を選ぶ。</p>
+    <p>libtool 1.4.3でも<tt>dependency_libs</tt>の<tt>-R</tt>フラグはネイティブのリンカに渡されない。例えば、GNU ldには<tt>-rpath</tt>オプションに変換して渡す（直接ldを実行するわけではないので、gccの<tt>-Wl</tt>オプションを通して渡すが）。なのに、ネイティブのリンカに<tt>-R</tt>が渡らないようにするために「えーい、<tt>dependency_libs</tt>に含まれる<tt>-R</tt>は捨てちゃえ」と修正することが正しいわけがない。<tt>-R</tt>をネイティブのリンカに渡すために変換するところを直すべきだろう（少なくても、お前のプラットフォームの場合だけ捨てろよ）。</p>
+    <p>こういうアホどもが開発に関わっている限り、libtoolは永遠にクソツールだろう。</p>
+
+<div id="yahoo">
+<SCRIPT TYPE="text/javascript" LANGUAGE="javascript">
+<!--
+if (location.href.indexOf('//www.maroontress.com/') == -1) {
+  window.yahoo.style.display = 'none';
+}
+var ywoc_ad_id="Tw84bCSCXMeS8Colo9z7TJw5sK8-";
+var ywoc_ad_sid="yDnlaeuCXMeBnvySYq8jSQ--";
+var ywoc_ad_siteurl="http%3A%2F%2Fwww.maroontress.com%2F";
+var ywoc_ad_creativeid="003";
+var ywoc_ad_altad="PB";
+var ywoc_ad_alturl="";
+var ywoc_ad_signature="8f1019d37cb382d2038677287653b1609fffe572";
+var ywoc_ad_adserv="http://dcs.yahoo.co.jp/dcs_1_0/";
+var ywoc_adcl_title="0066CC";
+var ywoc_adcl_discription="666666";
+var ywoc_adcl_link="666666";
+var ywoc_adcl_frame="FFFFFF";
+var ywoc_adcl_background="FFFFFF";
+document.write('<SCR'+'IPT TYPE="text/javascript" LANGUAGE="javascript" SRC="'+
+  ywoc_ad_adserv+
+  '?adid='+ywoc_ad_id+
+  '&sid='+ywoc_ad_sid+
+  '&surl='+ywoc_ad_siteurl+
+  '&cid=' +ywoc_ad_creativeid+
+  '&alid='+ywoc_ad_altad+
+  '&aurl='+ywoc_ad_alturl+
+  '&sig=' +ywoc_ad_signature+
+  '&clt=' +ywoc_adcl_title+
+  '&cld=' +ywoc_adcl_discription+
+  '&cll=' +ywoc_adcl_link+
+  '&clf=' +ywoc_adcl_frame+
+  '&clb=' +ywoc_adcl_background+
+  '"> </SCR' + 'IPT>');
+--></SCRIPT>
+</div>
+
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Thu Oct  5 22:10:23 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Thu May  7 05:30:03 JST 2009
+<!-- hhmts end -->
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-636163-1";
+      urchinTracker();
+    </script>
+  </body>
+</html>

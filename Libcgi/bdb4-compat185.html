@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Berkeley DB 4の1.85互換API</title>
+    <link rel="stylesheet" type="text/css" href="bdb4-compat185.css">
+  </head>
+  <body>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 728x90 White */
+google_ad_slot = "8441152606";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+    <p class="title">Berkeley DB 4の1.85互換API</p>
+
+    <p>FreeBSDの<tt>dbopen(3)</tt>はBerkeley DBバージョン1.85のAPIである。このAPIはBerkeley DBバージョン4系においても「バージョン1.85互換API」として利用可能だが、いくつかの点で両者の振る舞いが異なることがわかった。</p>
+
+    <p>以下の実験は、次の環境でそれぞれ動作を確認した。</p>
+    <ul>
+      <li>FreeBSD 6.2: OS付属のBerkeley DBバージョン1.85と、バージョン4.5（<tt>db45-4.5.20.0</tt>）</li>
+      <li>openSUSE 10.3: <tt>db1-devel-1.85-161</tt>と、<tt>libdb-4_4-devel-4.4.20-28</tt></li>
+    </ul>
+
+    <hr>
+    <p class="section">1. dbopen(3)にO_CREATとO_RDONLYを同時に指定したときの振る舞い</p>
+
+    <p><tt>dbopen(3)</tt>で、第1引数のデータベースファイルに存在しないパスを指定し、第2引数のフラグに<tt>O_RDONLY</tt>と<tt>O_CREAT</tt>を指定してみる。これは、データベースファイルを読み込み専用でオープンするが、指定したファイルが存在しないときは第3引数のモードで生成する、という意味である。</p>
+
+    <p class="subsection">バージョン1.85の場合</p>
+
+    <p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+    <div class="include">
+      <tt>% cat test-db1.c</tt><br>
+<tt>
+#include &lt;db.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen("./test.db", O_CREAT | O_RDONLY, 0666, DB_BTREE, NULL))
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;== NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、カレントディレクトリに0バイトのファイル<tt>test.db</tt>が生成される。</p>
+
+<pre class="box">
+% gcc -Wall -W test-db1.c
+% rm -f test.db
+% ./a.out
+% wc test.db
+       0       0       0 test.db
+</pre>
+
+    <p class="subsection">バージョン4.5の場合</p>
+
+    <p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<tt>db.h</tt>の代わりに<tt>db_185.h</tt>をインクルードするように変更しただけで、残りは同じである。</p>
+
+    <div class="include">
+      <tt>% cat test-db4.c</tt><br>
+<tt>
+#include &lt;db_185.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen("./test.db", O_CREAT | O_RDONLY, 0666, DB_BTREE, NULL))
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;== NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、エラーになることがわかる。しかも、空のファイルは生成されない。</p>
+
+<pre class="box">
+% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% rm -f test.db
+% ./a.out
+a.out: dbopen() failed: Invalid argument
+% wc test.db
+wc: test.db: open: No such file or directory
+</pre>
+
+    <hr>
+    <p class="section">2. del()の第3引数にR_CURSORを指定したとき、第2引数を評価するかどうかの振る舞い</p>
+
+    <p>btreeのデータベースに対し、<tt>seq()</tt>で最初から最後まで順番にキーとデータのペアを取り出しながら、<tt>del()</tt>の第3引数に<tt>R_CURSOR</tt>を指定して、ペアを削除していく。最終的には、すべてのキーとデータのペアが削除され、データベースは空になる。このとき、<tt>del()</tt>の第2引数に指定するキーは利用されないので、第2引数には<tt>NULL</tt>を指定する。</p>
+
+    <p class="subsection">バージョン1.85の場合</p>
+
+    <p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+    <div class="include">
+      <tt>% cat test-db1.c</tt><br>
+<tt>
+#include &lt;db.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+
+<br>
+static int putString(DB *db, const char *s, DBT *val)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.data = (char *)s;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.size = strlen(s) + 1;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return db-&gt;put(db, &amp;key, val, 0);
+<br>
+}
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key, val;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int s;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.data = NULL;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.size = 0;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (putString(db, "alpha", &amp;val) &lt; 0
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| putString(db, "beta", &amp;val) &lt; 0
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| putString(db, "gamma", &amp;val) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#put() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for (s = db-&gt;seq(db, &amp;key, &amp;val, R_FIRST); s == 0;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s = db-&gt;seq(db, &amp;key, &amp;val, R_NEXT)) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;del(db, NULL, R_CURSOR) != 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#del() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;close(db) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#close() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、正常に終了する。</p>
+
+<pre class="box">
+% gcc -Wall -W test-db1.c
+% ./a.out
+</pre>
+
+    <!--
+    <p>recnoでも同様になる。hashでは<tt>R_CURSOR</tt>を指定してもエラーにはならないが、<tt>R_CURSOR</tt>の指定は無視されるため、第2引数が参照される。</p>
+    -->
+
+    <p class="subsection">バージョン4.5の場合</p>
+
+    <p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<tt>db.h</tt>の代わりに<tt>db_185.h</tt>をインクルードするように変更しただけで、残りは同じである。</p>
+
+    <div class="include">
+      <tt>% cat test-db4.c</tt><br>
+<tt>
+#include &lt;db_185.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+
+<br>
+static int putString(DB *db, const char *s, DBT *val)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.data = (char *)s;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.size = strlen(s) + 1;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return db-&gt;put(db, &amp;key, val, 0);
+<br>
+}
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key, val;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int s;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.data = NULL;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.size = 0;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (putString(db, "alpha", &amp;val) &lt; 0
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| putString(db, "beta", &amp;val) &lt; 0
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| putString(db, "gamma", &amp;val) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#put() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for (s = db-&gt;seq(db, &amp;key, &amp;val, R_FIRST); s == 0;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s = db-&gt;seq(db, &amp;key, &amp;val, R_NEXT)) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;del(db, NULL, R_CURSOR) != 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#del() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;close(db) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#close() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、クラッシュすることがわかる。おそらく、第2引数を参照しているようである。</p>
+
+<pre class="box">
+% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% ./a.out
+Segmentation fault (core dumped)
+</pre>
+
+    <p>次のように第2引数に参照しても問題のないキーを指定すると、クラッシュすることはなくなる。また、バージョン1.85でも動作する。</p>
+
+    <div class="include">
+      <tt>% cat test-db4-fix.c</tt><br>
+<tt>
+...
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for (s = db-&gt;seq(db, &amp;key, &amp;val, R_FIRST); s == 0;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s = db-&gt;seq(db, &amp;key, &amp;val, R_NEXT)) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key.data = NULL;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key.size = 0;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;del(db, &amp;key, R_CURSOR) != 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#del() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+...
+<br>
+</tt>
+    </div>
+
+    <hr>
+    <p class="section">3. put()の第4引数にR_SETCURSORを指定したときの振る舞い</p>
+
+    <p>btreeのデータベースに対し、<tt>put()</tt>でキーとデータのペアを格納する。このとき、第4引数の<tt>flags</tt>に<tt>R_SETCURSOR</tt>を指定して、格納したペアの位置にカーソルを設定する。</p>
+    <p>さらに、カーソルが正しく設定されたことを確認するため、<tt>seq()</tt>の第4引数に<tt>R_NEXT</tt>を指定して、カーソルの位置の次のペアを取得しようとすると、<tt>seq()</tt>が1を返すか確認する（カーソルが設定されていなければ、<tt>R_FIRST</tt>を指定したのと同じことになるので、<tt>seq()</tt>は0を返す）。</p>
+
+    <p class="subsection">バージョン1.85の場合</p>
+
+    <p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+    <div class="include">
+      <tt>% cat test-db1.c</tt><br>
+<tt>
+#include &lt;db.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;string.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+
+<br>
+static void setString(DBT *t, const char *s)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;t-&gt;data = (char *)s;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;t-&gt;size = strlen(s) + 1;
+<br>
+}
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key, val;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setString(&amp;key, "foo");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setString(&amp;val, "bar");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;put(db, &amp;key, &amp;val, R_SETCURSOR) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#put() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;seq(db, &amp;key, &amp;val, R_NEXT) != 1) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#seq() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;close(db) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#close() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、<tt>put()</tt>が<tt>EINVAL</tt>で失敗する。</p>
+
+<pre class="box">
+% gcc -Wall -W test-db1.c
+% ./a.out
+a.out: db#put() failed: Invalid argument
+%
+</pre>
+
+    <p>FreeBSDのソースコードで<tt>put()</tt>の動作を確認してみる。<tt>/usr/src/lib/libc/db/btree/bt_put.c</tt>の<tt>__bt_put()</tt>は次のようになっている。</p>
+
+<pre class="box">
+...
+     68 int
+     69 __bt_put(dbp, key, data, flags)
+     70         const DB *dbp;
+     71         DBT *key;
+     72         const DBT *data;
+     73         u_int flags;
+     74 {
+...
+     99         switch (flags) {
+    100         case 0:
+    101         case R_NOOVERWRITE:
+    102                 break;
+    103         case R_CURSOR:
+    104                 /*
+    105                  * If flags is R_CURSOR, put the cursor.  Must already
+    106                  * have started a scan and not have already deleted it.
+    107                  */
+    108                 if (F_ISSET(&t->bt_cursor, CURS_INIT) &&
+    109                     !F_ISSET(&t->bt_cursor,
+    110                         CURS_ACQUIRE | CURS_AFTER | CURS_BEFORE))
+    111                         break;
+    112                 /* FALLTHROUGH */
+    113         default:
+    114                 errno = EINVAL;
+    115                 return (RET_ERROR);
+    116         }
+...
+    248 success:
+    249         if (flags == R_SETCURSOR)
+    250                 __bt_setcur(t, e->page->pgno, e->index);
+    251
+    252         F_SET(t, B_MODIFIED);
+    253         return (RET_SUCCESS);
+    254 }
+</pre>
+
+    <p>したがって、<tt>R_SETCURSOR</tt>は必ず<tt>EINVAL</tt>になるようだ（<tt>dbopen(3)</tt>の説明と実装は異なる）。ただし、249行目で<tt>flags</tt>と<tt>R_SETCURSOR</tt>を比較しているくらいなので、説明が間違っているというよりも、<tt>case</tt>が1つ不足しているだけのバグなのかもしれない。</p>
+
+    <!--
+    <p>recnoでは<tt>flags</tt>は<tt>R_SETCURSOR</tt>と比較されている。hashでは<tt>flags</tt>に<tt>R_SETCURSOR</tt>を指定することは許されていない。</p>
+    -->
+
+    <p class="subsection">バージョン4.5の場合</p>
+
+    <p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<tt>db.h</tt>の代わりに<tt>db_185.h</tt>をインクルードするように変更しただけで、残りは同じである。</p>
+
+    <div class="include">
+      <tt>% cat test-db4.c</tt><br>
+<tt>
+#include &lt;db_185.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;string.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+
+<br>
+static void setString(DBT *t, const char *s)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;t-&gt;data = (char *)s;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;t-&gt;size = strlen(s) + 1;
+<br>
+}
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key, val;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setString(&amp;key, "foo");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;setString(&amp;val, "bar");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;put(db, &amp;key, &amp;val, R_SETCURSOR) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#put() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;seq(db, &amp;key, &amp;val, R_NEXT) != 1) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#seq() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;close(db) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#close() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、正しく実行できることがわかる。バージョン1.85にあったバグは修正されているようだ。</p>
+
+<pre class="box">
+% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% ./a.out
+%
+</pre>
+
+    <hr>
+    <p class="section">4. put()の第4引数にR_CURSORを指定したときの振る舞い</p>
+
+    <p>btreeのデータベースに対し、いくつかのキーとデータのペアを格納し、そのいずれかのペアにカーソルをセットしておく。次に、<tt>put()</tt>の第4引数<tt>flags</tt>に<tt>R_CURSOR</tt>を指定して、カーソルの位置にキーとデータのペアを格納する。</p>
+
+    <p class="subsection">バージョン1.85の場合</p>
+
+    <p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+    <div class="include">
+      <tt>% cat test-db1.c</tt><br>
+<tt>
+#include &lt;db.h&gt;
+<br>
+#include &lt;stdio.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;string.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+
+<br>
+static void putString(DB *db, const char *k, const char *v, int flags)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key, val;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.data = (char *)k;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.size = strlen(k) + 1;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.data = (char *)v;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.size = strlen(v) + 1;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;put(db, &amp;key, &amp;val, flags) != 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#put() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+}
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key, val;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int s;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "a", "alpha", 0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "b", "beta", 0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "c", "gamma", 0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;seq(db, &amp;key, &amp;val, R_FIRST) != 0
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| db-&gt;seq(db, &amp;key, &amp;val, R_NEXT) != 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#seq() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "d", "delta", R_CURSOR);
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for (s = db-&gt;seq(db, &amp;key, &amp;val, R_FIRST); s == 0;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s = db-&gt;seq(db, &amp;key, &amp;val, R_NEXT)) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("%s:%s\n", (char *)key.data, (char *)val.data);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;close(db) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#close() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、結果が表示される。</p>
+
+<pre class="box">
+% gcc -Wall -W test-db1.c
+% ./a.out
+a:alpha
+d:delta
+c:gamma
+%
+</pre>
+
+    <p>カーソルがあった2番目のペアに上書きされることは確認できた。しかし、キーの順序性が破壊されている。<tt>R_CURSOR</tt>を指定する<tt>put</tt>を呼び出す直前では、データベースは次のようになっていた。</p>
+
+<pre class="box">
+# CURSOR KEY VALUE
+- ------ --- -----
+1        a   alpha
+2     -> b   beta
+3        c   gamma
+</pre>
+
+    <p>ここで<tt>put()</tt>を呼び出し、カーソルの位置に「キーが<tt>d</tt>、データが<tt>delta</tt>」のペアを上書きすることで、データベースは次のようになる。</p>
+
+<pre class="box">
+# CURSOR KEY VALUE
+- ------ --- -----
+1        a   alpha
+2     -> d   delta
+3        c   gamma
+</pre>
+
+<p>このように順序性が破壊されると、正しくデータベースを操作できなくなる。この例では、「キーが<tt>c</tt>、データが<tt>gamma</tt>」のペアを<tt>get()</tt>でデータベースから取り出すことができなくなる。ただし、順序性が破壊されても、<tt>seq()</tt>で先頭から順番にペアを取り出せば、すべてのペアを取得できるようである。また、カーソルに対する操作も正しく実行できるようだ。</p>
+
+    <!--
+    <p>recnoでは未確認。hashでは<tt>flags</tt>は0か<tt>R_NOOVERWRITE</tt>のどちらかでないとエラーになる。</p>
+    -->
+
+    <p class="subsection">バージョン4.5の場合</p>
+
+    <p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<tt>db.h</tt>の代わりに<tt>db_185.h</tt>をインクルードするように変更しただけで、残りは同じである。</p>
+
+    <div class="include">
+      <tt>% cat test-db4.c</tt><br>
+<tt>
+#include &lt;db_185.h&gt;
+<br>
+#include &lt;stdio.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;string.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+
+<br>
+static void putString(DB *db, const char *k, const char *v, int flags)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key, val;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.data = (char *)k;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.size = strlen(k) + 1;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.data = (char *)v;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.size = strlen(v) + 1;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;put(db, &amp;key, &amp;val, flags) != 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#put() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+}
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key, val;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int s;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "a", "alpha", 0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "b", "beta", 0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "c", "gamma", 0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;seq(db, &amp;key, &amp;val, R_FIRST) != 0
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|| db-&gt;seq(db, &amp;key, &amp;val, R_NEXT) != 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#seq() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "d", "delta", R_CURSOR);
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for (s = db-&gt;seq(db, &amp;key, &amp;val, R_FIRST); s == 0;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s = db-&gt;seq(db, &amp;key, &amp;val, R_NEXT)) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("%s:%s\n", (char *)key.data, (char *)val.data);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;close(db) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#close() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、結果が表示される。</p>
+
+<pre class="box">
+% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% ./a.out
+a:alpha
+b:delta
+c:gamma
+%
+</pre>
+
+    <p>カーソルがあった2番目のペアのうち、データだけが置き換わるようだ。したがって、順序性は破壊されない。また、このとき<tt>put()</tt>の第2引数の値は利用されないようだ（ただし第2引数に<tt>NULL</tt>を渡すとクラッシュする）。
+
+    <hr>
+    <p class="section">5. fd()の振る舞い</p>
+
+    <p><tt>dbopen(3)</tt>の第1引数に<tt>NULL</tt>を指定してデータベースを作成したあと、<tt>fd()</tt>でファイルディスクリプタを取得してみる。<tt>fd()</tt>が&minus;1を返し、<tt>errno</tt>に<tt>ENOENT</tt>を設定することを確認する。</p>
+
+    <p class="subsection">バージョン1.85の場合</p>
+
+    <p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+    <div class="include">
+      <tt>% cat test-db1.c</tt><br>
+<tt>
+#include &lt;db.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+#include &lt;errno.h&gt;
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;fd(db) != -1) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#fd() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (errno != ENOENT) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errx(1, "errno is not ENOENT.");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;close(db) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#close() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、正しく終了することがわかる。</p>
+
+<pre class="box">
+% gcc -Wall -W test-db1.c
+% ./a.out
+%
+</pre>
+
+    <p class="subsection">バージョン4.5の場合</p>
+
+    <p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<tt>db.h</tt>の代わりに<tt>db_185.h</tt>をインクルードするように変更しただけで、残りは同じである。</p>
+
+    <div class="include">
+      <tt>% cat test-db4.c</tt><br>
+<tt>
+#include &lt;db_185.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+#include &lt;errno.h&gt;
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;fd(db) != -1) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#fd() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (errno != ENOENT) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errx(1, "errno is not ENOENT.");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;close(db) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#close() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、クラッシュすることがわかる。</p>
+
+<pre class="box">
+% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% ./a.out
+Segmentation fault (core dumped)
+%
+</pre>
+
+    <p>gdbでコアをロードして、バックトレースをみると、Berkeley DBの中でクラッシュしていることがわかる。</p>
+
+<pre class="box">
+% gdb ./a.out ./a.out.core
+GNU gdb 6.1.1 [FreeBSD]
+Copyright 2004 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "i386-marcel-freebsd"...(no debugging symbols found)...
+Core was generated by `a.out'.
+Program terminated with signal 11, Segmentation fault.
+Reading symbols from /usr/local/lib/libdb-4.5.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/lib/libdb-4.5.so.0
+Reading symbols from /lib/libc.so.6...(no debugging symbols found)...done.
+Loaded symbols for /lib/libc.so.6
+Reading symbols from /lib/libpthread.so.2...(no debugging symbols found)...done.
+Loaded symbols for /lib/libpthread.so.2
+Reading symbols from /libexec/ld-elf.so.1...(no debugging symbols found)...done.
+Loaded symbols for /libexec/ld-elf.so.1
+#0  0x2815b86e in __os_fsync () from /usr/local/lib/libdb-4.5.so.0
+[New LWP 100118]
+(gdb) bt
+#0  0x2815b86e in __os_fsync () from /usr/local/lib/libdb-4.5.so.0
+#1  0x28158330 in __memp_sync_int () from /usr/local/lib/libdb-4.5.so.0
+#2  0x2815882a in __mp_xxx_fh () from /usr/local/lib/libdb-4.5.so.0
+#3  0x28113d9a in __db_fd_pp () from /usr/local/lib/libdb-4.5.so.0
+#4  0x2809de1c in db185_fd () from /usr/local/lib/libdb-4.5.so.0
+#5  0x080485cd in main ()
+(gdb)
+</pre>
+
+    <p><tt>dbopen(3)</tt>の第1引数に<tt>NULL</tt>を指定しない場合は、正しく動作するので、これはバージョン4のバグだろう。</p>
+
+    <hr>
+    <p class="section">6. O_RDONLYでオープンしたデータベースを変更しようとしたときの振る舞い</p>
+
+    <p><tt>dbopen(3)</tt>の第2引数に<tt>O_RDONLY</tt>を指定してデータベースをオープンし、<tt>put()</tt>でデータベースを変更をしてみる。<tt>put()</tt>が&minus;1を返すことと、<tt>errno</tt>にを設定される値を確認する。</p>
+
+    <p class="subsection">バージョン1.85の場合</p>
+
+    <p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+    <div class="include">
+      <tt>% cat test-db1.c</tt><br>
+<tt>
+#include &lt;db.h&gt;
+<br>
+#include &lt;stdio.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;string.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+#include &lt;errno.h&gt;
+<br>
+
+<br>
+static void
+<br>
+putString(DB *db, const char *k, const char *v)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key, val;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.data = (char *)k;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.size = strlen(k) + 1;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.data = (char *)v;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.size = strlen(v) + 1;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;put(db, &amp;key, &amp;val, 0) != 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#put() failed: %d", errno);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+}
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen("./test.db", O_CREAT | O_RDWR | O_TRUNC, 0666,
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "a", "alpha");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "b", "beta");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "c", "gamma");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;close(db) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#close() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen("./test.db", O_RDONLY | O_EXCL, 0666,
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "d", "delta");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、<tt>errno</tt>には<tt>EPERM</tt>が設定されることがわかる。</p>
+
+<pre class="box">
+% gcc -Wall -W test-db1.c
+% ./a.out
+a.out: db#put() failed: 1: Operation not permitted
+%
+</pre>
+
+    <p class="subsection">バージョン4.5の場合</p>
+
+    <p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<tt>db.h</tt>の代わりに<tt>db_185.h</tt>をインクルードするように変更しただけで、残りは同じである。</p>
+
+    <div class="include">
+      <tt>% cat test-db4.c</tt><br>
+<tt>
+#include &lt;db_185.h&gt;
+<br>
+#include &lt;stdio.h&gt;
+<br>
+#include &lt;stdlib.h&gt;
+<br>
+#include &lt;string.h&gt;
+<br>
+#include &lt;fcntl.h&gt;
+<br>
+#include &lt;err.h&gt;
+<br>
+#include &lt;errno.h&gt;
+<br>
+
+<br>
+static void
+<br>
+putString(DB *db, const char *k, const char *v)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DBT key, val;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.data = (char *)k;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key.size = strlen(k) + 1;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.data = (char *)v;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;val.size = strlen(v) + 1;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;put(db, &amp;key, &amp;val, 0) != 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#put() failed: %d", errno);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+}
+<br>
+
+<br>
+int main(void)
+<br>
+{
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DB *db;
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen("./test.db", O_CREAT | O_RDWR | O_TRUNC, 0666,
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "a", "alpha");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "b", "beta");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "c", "gamma");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (db-&gt;close(db) &lt; 0) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "db#close() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if ((db = dbopen("./test.db", O_RDONLY | O_EXCL, 0666,
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_BTREE, NULL)) == NULL) {
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;err(1, "dbopen() failed");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;putString(db, "d", "delta");
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;exit(0);
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;
+<br>
+}
+<br>
+</tt>
+    </div>
+
+    <p>次のようにコンパイルして実行すると、<tt>errno</tt>には<tt>EACCES</tt>が設定されることがわかる。</p>
+
+<pre class="box">
+% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% ./a.out
+a.out: db#put() failed: 13: Permission denied
+%
+</pre>
+
+    <p><tt>put()</tt>に限らず、<tt>del()</tt>でも同様の結果になる。</p>
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-636163-1";
+      urchinTracker();
+    </script>
+  </body>
+</html>

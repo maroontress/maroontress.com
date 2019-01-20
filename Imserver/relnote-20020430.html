@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>リリースノート 2002-04-30</title>
+  </head>
+
+  <body>
+    <h1>リリースノート 2002-04-30</h1>
+
+    <ul>
+      <li>XIM_SET_IC_FOCUSとXIM_UNSET_IC_FOCUSの応答処理である遅延コールバックの実行中は、Xlibのデフォルトエラーハンドラを無効化するようにした。</li>
+      <li>オーバライドしたXlibのエラーハンドラが呼ばれた場合は、エラーの内容を標準エラー出力に表示するようにした。</li>
+      <li>ImakefileのマクロDebugをデフォルトで定義しないようにした。</li>
+      <li>"#ifndef BUGGY_XFONTSET" とするべきところを "#ifdef BUGGY_XFONTSET" としていたバグを修正。</li>
+      <li>テキスト操作APIの関数のプロトタイプ宣言でポインタ型の引数には可能な限りconst修飾子を指定するようにした。</li>
+      <li>テキスト操作APIを追加した。マルチバイト文字列、ワイドキャラクタ文字列を保存する領域のサイズの計算方法を修正。MB_LEN_MAX、sizeof(wchar_t)とするべきところをsizeof(MB_LEN_MAX)にしていたバグを修正。</li>
+      <li>予測辞書を更新している間はSIGINTとSIGHUPを無視するようにした。</li>
+      <li>StatusAreaスタイルでXIMクライアントがXIM_RESET_ICリクエストを発行するまで状態が描画されていなかったバグを修正した。</li>
+      <li>Cannaの辞書ホームディレクトリのパスをImakefileのCANNA_DIRで指定するようにした。</li>
+    </ul>
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Tue Apr 30 05:12:31 JST 2002 -->
+<!-- hhmts start -->
+Last modified: Sat Nov 23 21:08:28 JST 2002
+<!-- hhmts end -->
+  </body>
+</html>

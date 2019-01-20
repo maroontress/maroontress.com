@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title>日本語XIMサーバ デフォルトリソース一覧</title>
+  </head>
+
+  <body>
+    <h1>日本語XIMサーバ</h1>
+
+    <h2>● デフォルトリソース一覧</h2>
+
+    <table border="1" cols="2">
+      <tr>
+        <th>
+          リソース名<br>クラス名
+	</th>
+        <th>
+	  意味<br>デフォルト
+        </th>
+      </tr>
+
+      <tr>
+        <td>
+          imserver.undofix.undo<br>XIMServer.Undofix.Undo
+	</td>
+        <td>
+	  [無入力状態]前回確定した文字列の読み文字列を伴って、入力状態に移る。 <br>Muhenkan
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.undofix.passImmediately<br>XIMServer.Undofix.PassImmediately
+	</td>
+        <td>
+	  [無入力状態]そのままXIMクライアントに渡す文字。 <br>space
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.undofix.directInputMode<br>XIMServer.Undofix.DirectInputMode
+	</td>
+        <td>
+	  [無入力状態]前変換モードを変換なしに切り替える。 <br>Meta-Control-d
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.undofix.singlePreconversionMode<br>XIMServer.Undofix.SinglePreconversionMode
+	</td>
+        <td>
+	  [無入力状態]前変換モードをシングルに切り替える。 <br>Meta-Control-j
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.undofix.doublePreconversionMode<br>XIMServer.Undofix.DoublePreconversionMode
+	</td>
+        <td>
+	  [無入力状態]前変換モードをダブルに切り替える。 <br>Meta-Control-k
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.undofix.referenceMode<br>XIMServer.Undofix.ReferenceMode
+	</td>
+        <td>
+	  [無入力状態]参照モードに切り替える。 <br>Meta-Control-r
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.undofix.autisticMode<br>XIMServer.Undofix.AutisticMode
+	</td>
+        <td>
+	  [無入力状態]自閉モードに切り替える。 <br>Meta-Control-a
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.backwardChar<br>XIMServer.Preedit.BackwardChar
+	</td>
+        <td>
+	  [入力状態]キャレットを1文字戻す。 <br>Left, Control-b
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.forwardChar<br>XIMServer.Preedit.ForwardChar
+	</td>
+        <td>
+	  [入力状態]キャレットを1文字進める。 <br>Right, Control-f
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.deleteBackwardChar<br>XIMServer.Preedit.DeleteBackwardChar
+	</td>
+        <td>
+	  [入力状態]キャレットの左側1文字を削除する。 <br>BackSpace, Control-h
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.deleteChar<br>XIMServer.Preedit.DeleteChar
+	</td>
+        <td>
+	  [入力状態]キャレットの右側1文字を削除する。 <br>Delete, Control-d
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.deleteLine<br>XIMServer.Preedit.DeleteLine
+	</td>
+        <td>
+	  [入力状態]キャレットの右側をすべて削除する。 <br>Control-u
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.convert<br>XIMServer.Preedit.Convert
+	</td>
+        <td>
+	  [入力状態]読み文字列を変換し、変換状態に移る。 <br>Henkan_Mode
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.commit<br>XIMServer.Preedit.Commit
+	</td>
+        <td>
+	  [入力状態]読み文字列を確定して、無入力状態に移る。 <br>Muhenkan
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.newline<br>XIMServer.Preedit.Newline
+	</td>
+        <td>
+	  [入力状態]読み文字列を確定後改行して、無入力状態に移る。 <br>Return, Control-m
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.convertAsSinglePhrase<br>XIMServer.Preedit.ConvertAsSinglePhrase
+	</td>
+        <td>
+	  [入力状態]読み文字列を単文節変換し、変換状態に移る。 <br>Shift-Kanji
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.beginningOfLine<br>XIMServer.Preedit.BeginningOfLine
+	</td>
+        <td>
+	  [入力状態]キャレットを先頭に移す。 <br>Control-a
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.endOfLine<br>XIMServer.Preedit.EndOfLine
+	</td>
+        <td>
+	  [入力状態]キャレットを末尾に移す。 <br>Control-e
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.translateIntoHiragana<br>XIMServer.Preedit.TranslateIntoHiragana
+	</td>
+        <td>
+	  [入力状態]読み文字列をひらがな変換し、変換状態に移る。 <br>Control-j
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.translateIntoKatakana<br>XIMServer.Preedit.TranslateIntoKatakana
+	</td>
+        <td>
+	  [入力状態]読み文字列をカタカナ変換し、変換状態に移る。 <br>Control-k
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.translateIntoZenkaku<br>XIMServer.Preedit.TranslateIntoZenkaku
+	</td>
+        <td>
+	  [入力状態]読み文字列を全角変換し、変換状態に移る。 <br>Control-l
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.translateIntoHankaku<br>XIMServer.Preedit.TranslateIntoHankaku
+	</td>
+        <td>
+	  [入力状態]読み文字列を半角変換し、変換状態に移る。 <br>Control-o
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.cancel<br>XIMServer.Preedit.Cancel
+	</td>
+        <td>
+	  [入力状態]読み文字列をすべて削除し、無入力状態に移る。 <br>Escape
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.predict<br>XIMServer.Preedit.Predict
+	</td>
+        <td>
+	  [入力状態]読み文字列から候補を予測し、変換状態に移る。 <br>Tab
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.directInputMode<br>XIMServer.Preedit.DirectInputMode
+	</td>
+        <td>
+	  [入力状態]前変換モードを変換なしに切り替える。 <br>Meta-Control-d
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.singlePreconversionMode<br>XIMServer.Preedit.SinglePreconversionMode
+	</td>
+        <td>
+	  [入力状態]前変換モードをシングルに切り替える。 <br>Meta-Control-j
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.doublePreconversionMode<br>XIMServer.Preedit.DoublePreconversionMode
+	</td>
+        <td>
+	  [入力状態]前変換モードをダブルに切り替える。 <br>Meta-Control-k
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.referenceMode<br>XIMServer.Preedit.ReferenceMode
+	</td>
+        <td>
+	  [入力状態]参照モードに切り替える。 <br>Meta-Control-r
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preedit.autisticMode<br>XIMServer.Preedit.AutisticMode
+	</td>
+        <td>
+	  [入力状態]自閉モードに切り替える。 <br>Meta-Control-a
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.cancel<br>XIMServer.Convert.Cancel
+	</td>
+        <td>
+	  [変換状態]変換結果を捨て、読み文字列に戻して、入力状態に移る。 <br>BackSpace, Control-h
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.backwardPhrase<br>XIMServer.Convert.BackwardPhrase
+	</td>
+        <td>
+	  [変換状態]注目文節を1文節戻す。 <br>Left, Control-b
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.forwardPhrase<br>XIMServer.Convert.ForwardPhrase
+	</td>
+        <td>
+	  [変換状態]注目文節を1文節進める。 <br>Right, Control-f
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.shortenPhrase<br>XIMServer.Convert.ShortenPhrase
+	</td>
+        <td>
+	  [変換状態]注目文節を縮める。 <br>Shift-Left, Control-q
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.extendPhrase<br>XIMServer.Convert.ExtendPhrase
+	</td>
+        <td>
+	  [変換状態]注目文節を伸ばす。 <br>Shift-Right, Control-w
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.nextChoice<br>XIMServer.Convert.NextChoice
+	</td>
+        <td>
+	  [変換状態]注目文節を次の候補に置換する。 <br>Henkan_Mode, Tab, Down, Control-n
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.previousChoice<br>XIMServer.Convert.PreviousChoice
+	</td>
+        <td>
+	  [変換状態]注目文節を前の候補に置換する。 <br>Shift-Tab, Up, Control-p
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.commit<br>XIMServer.Convert.Commit
+	</td>
+        <td>
+	  [変換状態]変換結果を確定して、無入力状態に移る。 <br>Muhenkan
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.newline<br>XIMServer.Convert.Newline
+	</td>
+        <td>
+	  [変換状態]変換結果を確定後改行して、無入力状態に移る。 <br>Return, Control-m
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.translateIntoHiragana<br>XIMServer.Convert.TranslateIntoHiragana
+	</td>
+        <td>
+	  [変換状態]注目文節をひらがな変換する。 <br>Control-j
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.translateIntoKatakana<br>XIMServer.Convert.TranslateIntoKatakana
+	</td>
+        <td>
+	  [変換状態]注目文節をカタカナ変換する。 <br>Control-k
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.translateIntoZenkaku<br>XIMServer.Convert.TranslateIntoZenkaku
+	</td>
+        <td>
+	  [変換状態]注目文節を全角変換する。 <br>Control-l
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.translateIntoHankaku<br>XIMServer.Convert.TranslateIntoHankaku
+	</td>
+        <td>
+	  [変換状態]注目文節を半角変換する。 <br>Control-o
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.predict<br>XIMServer.Convert.Predict
+	</td>
+        <td>
+	  [変換状態]変換結果から候補を予測する（二次予測）。 <br>Control-Tab
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.expand<br>XIMServer.Convert.Expand
+	</td>
+        <td>
+	  [変換状態]予測入力の変換結果を読み文字列に展開して、入力状態に移る（キャレットは展開後の読み文字列の末尾に移動する）。 <br>Escape, Control-g
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convert.expandAndStay<br>XIMServer.Convert.ExpandAndStay
+	</td>
+        <td>
+	  [変換状態]予測入力の変換結果を読み文字列に展開して、入力状態に移る（キャレットは展開前の読み文字列の末尾に移動する）。 <br>Shift-Escape, Shift-Control-g
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.candidate.fontset<br>XIMServer.Candidate.Fontset
+	</td>
+        <td>
+	  候補ウィンドウのフォントセット名。 <br>-*-*-medium-r-normal-*-14-*-*-*-*-*-*-*
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.onTriggerKey<br>XIMServer.TriggerKey
+	</td>
+        <td>
+	  入力モードオンのトリガキー（TriggerKey.adを参照）。 <br>keysym Henkan_Mode modifier Mod1 mask Mod1
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.offTriggerKey<br>XIMServer.TriggerKey
+	</td>
+        <td>
+	  入力モードオフのトリガキー（TriggerKey.adを参照）。 <br>keysym Henkan_Mode modifier Mod1 mask Mod1
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preconversionBasicRule<br>XIMServer.PreconversionBasicRule
+	</td>
+        <td>
+	  前変換基本規則（Romaji.adを参照）。 <br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preconversionFinalRule<br>XIMServer.PreconversionFinalRule
+	</td>
+        <td>
+	  前変換最終規則（Romaji.adを参照）。 <br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.symbolSystemMapping<br>XIMServer.SymbolSystemMapping
+	</td>
+        <td>
+	  ひらがなカタカナ変換の対応表（Symbol.adを参照）。 <br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.symbolWidthMapping<br>XIMServer.SymbolWidthMapping
+	</td>
+        <td>
+	  半角全角変換の対応表（Symbol.adを参照）。 <br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.clientOptimization<br>XIMServer.ClientOptimization
+	</td>
+        <td>
+	  クライアント毎の動作定義（Optimization.adを参照）。 <br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.preconversion<br>XIMServer.Preconversion
+	</td>
+        <td>
+	  デフォルトの前変換モード（direct, single, double）。 <br>single
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.activeLabel<br>XIMServer.ActiveLabel
+	</td>
+        <td>
+	  入力モードオンのときにステータス領域に表示する状態文字列。 <br>%s%p%r
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.inactiveLabel<br>XIMServer.InactiveLabel
+	</td>
+        <td>
+	  入力モードオフのときにステータス領域に表示する状態文字列。 <br>%s
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.inactiveState<br>XIMServer.InactiveState
+	</td>
+        <td>
+	  入力モードオフのとき状態文字列の中の%sを置換する文字列。 <br>Off
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.inputState<br>XIMServer.InputState
+	</td>
+        <td>
+	  入力モードオン（無入力状態, 入力状態）のとき状態文字列の中の%sを置換する文字列。 <br>入力
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.convertState<br>XIMServer.ConvertState
+	</td>
+        <td>
+	  入力モードオン（変換状態）のとき状態文字列の中の%sを置換する文字列。 <br>変換
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.directMode<br>XIMServer.DirectMode
+	</td>
+        <td>
+	  前変換モードが変換なしのときに状態文字列の中の%pを置換する文字列。 <br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.singleMode<br>XIMServer.SingleMode
+	</td>
+        <td>
+	  前変換モードがシングルのときに状態文字列の中の%pを置換する文字列。 <br>*
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.doubleMode<br>XIMServer.DoubleMode
+	</td>
+        <td>
+	  前変換モードがダブルのときに状態文字列の中の%pを置換する文字列。 <br>**
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.referenceMode<br>XIMServer.ReferenceMode
+	</td>
+        <td>
+	  参照モードのときに状態文字列の中の%rを置換する文字列。 <br>+
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.autisticMode<br>XIMServer.AutisticMode
+	</td>
+        <td>
+	  自閉モードのときに状態文字列の中の%rを置換する文字列。 <br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.maximumPredictions<br>XIMServer.MaximumPredictions
+	</td>
+        <td>
+	  予測入力で予測する候補の数。 <br>6
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.predictionDatabase<br>XIMServer.PredictionDatabase
+	</td>
+        <td>
+	  予測辞書のパス。指定しない場合はホームディレクトリの.imserver-prediction.dbを使用する。 <br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          imserver.referenceDatabase<br>XIMServer.ReferenceDatabase
+	</td>
+        <td>
+	  参照辞書のパス。指定しない場合はホームディレクトリの.imserver-reference.dbを使用する。 <br>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

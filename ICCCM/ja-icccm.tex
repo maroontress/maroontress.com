@@ -1,0 +1,107 @@
+%\documentclass[a4j,draft,dvips]{jreport}%邦文, A4サイズ
+\documentclass[a4j,draft,dvips]{jbook}%邦文, A4サイズ
+%\documentclass[letterpaper,draft,dvips]{book}%英文, US Letterサイズ
+
+\usepackage{graphics,color}
+\usepackage{mathptmx,palatino}
+\usepackage{makeidx}
+\usepackage{ascmac}
+
+%%% BEGIN PAPER SIZE
+  %\setlength{\textwidth}{35zw}
+
+  % a4j & jreport
+  %\addtolength{\textwidth}{2\oddsidemargin}
+  %\setlength{\oddsidemargin}{0pt}
+  %\setlength{\evensidemargin}{0pt}
+
+  % a4j & jbook
+  \addtolength{\textwidth}{\evensidemargin}
+  \addtolength{\textheight}{42pt}
+  \setlength{\topmargin}{8pt}
+  \setlength{\oddsidemargin}{0pt}
+  \setlength{\evensidemargin}{0pt}
+  \pagestyle{bothstyle}
+
+  % a4j & jbook (letterpaper)
+  %\addtolength{\textwidth}{\evensidemargin}
+  %\addtolength{\textheight}{42pt}
+  %\setlength{\topmargin}{25pt}
+  %\setlength{\oddsidemargin}{8.8775pt}
+  %\setlength{\evensidemargin}{8.8775pt}
+  %\pagestyle{bothstyle}
+%%% END PAPER SIZE
+
+\setlength{\tabcolsep}{0.25zw}
+\newlength{\indwidth}
+\newcommand{\ind}{\hspace*{\indwidth}}
+
+\newenvironment{note}[1]{\begin{quotation}\setlength{\parindent}{0pt}%
+\setlength{\parskip}{5pt plus1pt minus1pt}%
+\samepage{\centering #1\nopagebreak\\}\par}{\end{quotation}}
+\newenvironment{define}[1]{\begin{screen}\raggedright%
+\setlength{\parindent}{0pt}\samepage{#1}\nopagebreak\\}{\end{screen}}
+
+% 4分アキがなくなる
+%\DeclareTextFontCommand{\clientfont}{\romanseries{b}\selectfont}
+%\DeclareTextFontCommand{\reqfont}{\romanshape{n}\selectfont}
+%\DeclareTextFontCommand{\eventfont}{\romanshape{n}\selectfont}
+%\DeclareTextFontCommand{\eventmaskfont}{\romanshape{n}\selectfont}
+%\DeclareTextFontCommand{\memfont}{\romanshape{it}\selectfont}
+%\DeclareTextFontCommand{\symfont}{\romanfamily{pcr}\selectfont}
+%\DeclareTextFontCommand{\atomfont}%
+%	{\romanfamily{phv}\romanseries{mc}\selectfont}
+
+\newcommand{\clientfont}[1]{{\romanseries{b}\selectfont #1}}
+\newcommand{\reqfont}[1]{{\romanshape{n}\selectfont #1}}
+\newcommand{\eventfont}[1]{{\romanshape{n}\selectfont #1}}
+\newcommand{\eventmaskfont}[1]{{\romanshape{n}\selectfont #1}}
+\newcommand{\memfont}[1]{{\romanshape{it}\selectfont #1}}
+\newcommand{\symfont}[1]{{\romanfamily{pcr}\selectfont #1}}
+\newcommand{\atomfont}[1]{{\romanfamily{phv}\fontseries{mc}\selectfont #1}}
+
+\newcommand{\client}[1]{\clientfont{#1}\index{#1@\clientfont{#1}}}
+\newcommand{\sym}[1]{\symfont{#1}\index{#1@\symfont{#1}}}
+\newcommand{\mem}[1]{\memfont{#1}}
+\newcommand{\atom}[1]{\atomfont{#1}\index{#1@\atomfont{#1}}}
+\newcommand{\longatom}[2]{\atomfont{#1}\index{#2@\atomfont{#2}}}
+\newcommand{\req}[1]{\reqfont{#1}\index{#1@\reqfont{#1}}}
+\newcommand{\event}[1]{\eventfont{#1}\index{#1@\eventfont{#1}}}
+\newcommand{\eventmask}[1]{\eventmaskfont{#1}\index{#1@\eventmaskfont{#1}}}
+\makeindex
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\begin{document}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus1pt minus1pt}
+\flushbottom
+
+\pagenumbering{roman}
+\renewcommand{\thefootnote}{\textcolor{blue}{\arabic{footnote}}}
+
+\begin{titlepage}\centering\LARGE
+\vspace*{8em}
+{\bf Inter-Client Communication Conventions Manual}\\
+{\bf Version 2.0}\\
+{\bf X Consortium Standard}\\
+{\bf X Version 11, Release 6.3}\\[6em]
+
+\large
+David Rosenthal\\[6pt]
+Sun Microsystems, Inc.\\[2em]
+
+Version 2 edited by Stuart W. Marks\\[6pt]
+SunSoft, Inc.
+\end{titlepage}
+
+\input{copyright.tex}\tableofcontents\clearpage
+
+\pagenumbering{arabic}
+\input{ja-icccm-chap2}
+\input{ja-icccm-chap4}
+\input{ja-icccm-chap6}
+
+\printindex
+\end{document}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title>libjpegのエンコードを高速化する</title>
+    <link rel="stylesheet" type="text/css" href="look.css">
+  </head>
+
+  <body>
+    <h1>libjpegのエンコードを高速化する</h1>
+
+   <p><tt>jpeg-6b.tar.gz</tt>に含まれる<tt>jchuff.c</tt>の関数<tt>encode_one_block()</tt>は、DCT変換と量子化を終えたブロックを引数にとり、DC/AC成分の係数をハフマン符号にエンコードして出力する。このうち、63個のAC成分の係数をハフマン符号化する部分では、1つの係数につき、先行して0が続く個数（0ランレングス）の符号、係数のビット長の符号、係数そのものを連続してビットストリームに出力する。0ランレングスの符号と係数のビット長の符号については、事前に用意したテーブルから求めて<tt>emit_bits()</tt>でまとめて出力し、続けて係数そのものを再度<tt>emit_bits()</tt>で出力する。したがって、0ランレングスが16以上になる特別な場合を除き、ループ1回につき<tt>emit_bits()</tt>を2回呼び出すことになる。</p>
+
+<pre class="box">
+LOCAL(boolean)
+encode_one_block (working_state * state, JCOEFPTR block, int last_dc_val,
+                  c_derived_tbl *dctbl, c_derived_tbl *actbl)
+{
+  ...
+  r = 0;                        /* r = run length of zeros */
+
+  for (k = 1; k &lt; DCTSIZE2; k++) {
+    if ((temp = block[jpeg_natural_order[k]]) == 0) {
+      r++;
+    } else {
+      /* if run length &gt; 15, must emit special run-length-16 codes (0xF0) */
+      while (r &gt; 15) {
+        if (! emit_bits(state, actbl-&gt;ehufco[0xF0], actbl-&gt;ehufsi[0xF0]))
+          return FALSE;
+        r -= 16;
+      }
+
+      temp2 = temp;
+      if (temp &lt; 0) {
+        temp = -temp;           /* temp is abs value of input */
+        /* This code assumes we are on a two's complement machine */
+        temp2--;
+      }
+
+      /* Find the number of bits needed for the magnitude of the coefficient */
+      nbits = 1;                /* there must be at least one 1 bit */
+      while ((temp &gt;&gt;= 1))
+        nbits++;
+      /* Check for out-of-range coefficient values */
+      if (nbits &gt; MAX_COEF_BITS)
+        ERREXIT(state-&gt;cinfo, JERR_BAD_DCT_COEF);
+
+      /* Emit Huffman symbol for run length / number of bits */
+      i = (r &lt;&lt; 4) + nbits;
+      if (! emit_bits(state, actbl-&gt;ehufco[i], actbl-&gt;ehufsi[i]))
+        return FALSE;
+
+      /* Emit that number of bits of the value, if positive, */
+      /* or the complement of its magnitude, if negative. */
+      if (! emit_bits(state, (unsigned int) temp2, nbits))
+        return FALSE;
+
+      r = 0;
+    }
+  }
+  ...
+</pre>
+
+    <p>0ランレングスの符号、係数のビット長の符号、係数そのものを、1度に取得できるように別のテーブルを事前に作成しておけば、<tt>emit_bits()</tt>を呼ぶ回数を1回減らすことができて、性能を改善できるはずである。問題はテーブルのサイズと、1度に取得するビット数であるが、これはデータ精度によって変わってくる。</p>
+
+    <p>libjpegは、<tt>jmorecfg.h</tt>のマクロ<tt>BITS_IN_JSAMPLE</tt>でデータ精度に8ビット、または12ビットをコンパイル時に指定できる。デフォルトは8ビットであり、YUVの各成分は0から255の値をとるが、ソースコードそのものは各成分が12ビット（0から4095）でも動作するようになっている。</p>
+
+    <p>データ精度が8ビットの場合は、DCT変換と量子化を終えたブロックの係数の絶対値は最大10ビット（マクロ<tt>MAX_COEF_BITS</tt>で定義される）になる。ただし、普通の量子化テーブルなら、量子化のときに1で割ることはほとんどないので、係数の絶対値が10ビットになることは滅多にない。係数が8ビットに収まる場合（&minus;128から127）は、テーブルから出力する符合を取り出すことにして、それ以外の場合は従来通りに計算することにする。データ精度が12ビットの場合は、ブロックの係数の絶対値は最大14ビットになるが、同様に係数が8ビットに収まる場合だけテーブルを使用すれば、実装を共通化できる。</p>
+
+    <p>0ランレングスのパターン（0から15）とブロックの係数（&minus;128から127）から、出力すべき符号とその符号長を取り出せるテーブルを用意することにする。計算してみると、係数を1つ出力するとき、符号の最大長は24ビットになるので、32ビット整数の上位24ビットに符号、下位8ビットに符号長を格納することにすると、せいぜい16kバイトのテーブルを新たに用意すればよいことがわかる。</p>
+
+    <p>もし、係数の絶対値が10ビットに収まるすべての場合について、テーブルに符合を格納することになると、テーブルのサイズが8倍になる。それだけではなく、テーブルに格納する符合の最大長は26ビットになり、ビットストリームへ出力する関数<tt>emit_bits()</tt>も修正が必要になる。</p>
+
+    <p><a href="use_actbl.patch">パッチ</a>をあてた場合は、2560&times;1440の画像を<tt>cjpeg</tt>でエンコードしたとき、10%程度高速化できた。</p>
+
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon Jan 12 03:50:20 JST 2009 -->
+<!-- hhmts start -->
+Last modified: Mon Jan 12 23:59:49 JST 2009
+<!-- hhmts end -->
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-636163-1";
+      urchinTracker();
+    </script>
+  </body>
+</html>

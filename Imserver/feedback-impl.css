@@ -1,0 +1,21 @@
+body {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+span {
+  color: #ffffff;
+  background-color: #000000;
+}
+
+p.footnote { 
+  font-size: small;
+}
+
+pre { 
+  font-size: x-small;
+}
+
+sup {
+  vertical-align: baseline;
+}

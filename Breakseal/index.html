@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title>Breakseal</title>
+  </head>
+
+  <body>
+    <h1>Breakseal</h1>
+
+    <table align="right">
+      <tbody>
+	<tr>
+	  <td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-4691079535294206";
+/* 160x600 White */
+google_ad_slot = "3143269512";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+
+    <p>MIME対応の日本語MUA。</p>
+
+    <ul>
+      <li><a href="#install">インストール</a></li>
+      <li><a href="#window">ウィンドウ</a></li>
+    </ul>
+
+    <hr>
+    <h1><a name="install">インストール</a></h1>
+
+    <h2>動作環境</h2>
+    <p>次のプラットフォームで動作を確認しました。</p>
+    <ul>
+      <li>FreeBSD 2.2.8, 4.3, 4.4</li>
+      <li>LASER5 Linux 6.2 (+ libmd)</li>
+    </ul>
+
+    <h2>必要なもの</h2>
+    <ul>
+      <li><a href="http://www.penguin.cz/~mhi/libmd/">libmd</a>: FreeBSDでは不要です（標準でインストールされています）。</li>
+    </ul>
+
+    <h2>インストール方法</h2>
+
+<pre>
+% gzip -dc breakseal-<i>yyyymmdd</i>.tar.gz | tar xvf -
+% cd breakseal/
+% vi Imakefile <a href="#1">※1</a>
+% xmkmf -a
+% make
+% make install
+% mkdir ~/.mailer
+% mkdir ~/.mailer/inbox
+% mkdir ~/.mailer/trash
+% mkdir ~/.mailer/sent
+</pre>
+
+    <h2>リソース設定</h2>
+
+    <p><tt>Breakseal.ad</tt>の内容を<tt>~/.Xdefault</tt>に追加するか、リソースデータベース（<a href="#2">※2</a>）に追加します。</p>
+
+    <p>最低限、次のリソースは環境に合わせて設定する必要があります。</p>
+    <ul>
+      <li><tt>breakseal.catalog.deleteSpool</tt>: POP3サーバから新着メールを削除する場合は<tt>true</tt>を指定します。指定しない場合は<tt>false</tt>を指定したとみなし、サーバにメールを残したままにします。</li>
+
+      <li><tt>breakseal.scribble.smtpServer</tt>: SMTPサーバのホスト名。指定しない場合は「<tt>localhost</tt>」を使用します。</li>
+
+      <li><tt>breakseal.scribble.mailFrom</tt>: 送信者（Fromヘッダ）を表す文字列。指定しない場合は「<i>ユーザ名</i><tt>@</tt><i>ホスト名</i>」を使用します。</li>
+
+      <li><tt>breakseal.scribble.signatureFile</tt>: いわゆる署名ファイルのパスを指定します。</li>
+    </ul>
+
+    <h2>最初の実行（POP3サーバとアカウントの登録）</h2>
+
+    <p>Breaksealを実行したときに<tt>~/.mailer/default</tt>が存在しない場合は、POP3サーバとアカウントを問い合わせてくるので、次のように入力します。</p>
+
+<pre>
+% breakseal
+Server:<i>POP3サーバのホスト名</i>
+User:<i>POP3サーバのアカウント名</i>
+Password:<i>POP3サーバのパスワード</i> <a href="#3">※3</a>
+</pre>
+
+    <p>入力した情報は、<tt>~/.mailer/default</tt>に保存されます。このファイルの中身を他人に見られないように注意してください。情報を変更する場合は、このファイルを消してからBreaksealを実行して、再度入力してください。</p>
+
+    <hr>
+    <h4><a name="1">※1</a> Imakefileの編集</h4>
+    <ul>
+      <li>デフォルトで<tt>~/bin</tt>にインストールされるようになっています。変更する場合は<tt>InstallBinDir</tt>をインストール先で定義します。</li>
+      <li>Kinput2を使用する場合は<tt>UseKinput2</tt>を定義してください。</li>
+      <li>libmdのインストール先を変更した場合は、<tt>MD5IncDir</tt>と<tt>MD5LibDir</tt>を適切に定義してください。</li>
+    </ul>
+
+    <h4><a name="2">※2</a> リソースデータベース</h4>
+    <p>xrdbでXサーバに登録したリソース。~/.xinitrcのなかでxrdb ~/.Xresourcesを実行して、Xサーバ起動時に登録する場合が多い。</p>
+    <p>通常、リソースデータベースが登録されている場合は~/.Xdefaultsは無視されます。そのため、xrdb ~/.Xdefaultsを実行してから~/.Xdefaultsを書き換えても、設定は反映されません。また、リソースデータベースはXサーバと関連付けられますが、~/.XdefaultsはXクライアントを実行しているホストと関連付けられます。設定が思い通りにならない場合は、これらの観点から調べると間違いに気付きやすいでしょう。</p>
+
+    <h4><a name="3">※3</a> パスワードの入力</h4>
+    <p>入力した文字はエコーバックされません。</p>
+
+    <hr>
+    <h1><a name="window">ウィンドウ</a></h1>
+
+    <h2>キャビネットウィンドウ</h2>
+
+    <h2>フォルダウィンドウ</h2>
+
+    <p>フォルダにあるメールの一覧が表示されます。メールを選択すると、そのメールを開封ウィンドウで表示します。Incorporateボタンを押すと、POP3サーバから新しいメールを取り込みます。</p>
+
+    <p>Scribbleボタン</p>
+
+    <p><img src="FolderWindow.png"></p>
+
+    <h2>開封ウィンドウ</h2>
+
+    <p>左側のペインにパートの一覧が、右側のペインにパートの内容が表示されます。左側のペインでパートを選択すると、右側のペインにそのパートの内容が表示されます。</p>
+
+    <p>Reply（返信）ボタンを押すと返信メールの作成ウィンドウを表示します。左側のペインで「テキストタイプのパート」を選択している場合のみ、返信ボタンを押すことができます。</p>
+
+    <p>Forward（転送）ボタンを押すと転送メールの作成ウィンドウを表示します。</p>
+
+    <p>Save（保存）ボタンを押すと保存ダイアログが表示されます。左側のペインで選択されているパートのみが保存されます。</p>
+
+    <p>Delete（消去）ボタンを押すとゴミ箱フォルダ（<tt>~/.mailer/trash</tt>）にメールを移動して、ウィンドウを閉じます。ただし、ゴミ箱フォルダのメールについては実際に消去します。</p>
+
+    <p>Imitate（複製）ボタン</p>
+
+    <p><img src="BreaksealWindow.png"></p>
+
+    <h2>メール作成ウィンドウ</h2>
+
+    <p>上から順に、宛先一覧ペイン、題名編集ペイン、本文編集ペイン、同封一覧ペイン、送信ボタンが表示されます。宛先を追加するには宛先一覧ペインのなかの「新規追加」を選択します。宛先一覧ペインの宛先を選択すると、その宛先を変更、あるいは削除することができます。</p>
+
+    <p>添付ファイルを同封するには同封一覧ペインのなかの「新規追加」を選択します。ファイル選択ダイアログが表示されるので、ファイルを選択します。同封一覧ペインのファイルを選択すると、そのファイルを変更、あるいは削除することができます。</p>
+
+    <p>メールが完成したら、Send（送信）ボタンを押します。</p>
+
+    <p><img src="ScribbleWindow.png"></p>
+
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon Nov 26 09:07:55 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Sun May 11 09:33:47 JST 2008
+<!-- hhmts end -->
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-636163-1";
+      urchinTracker();
+    </script>
+  </body>
+</html>

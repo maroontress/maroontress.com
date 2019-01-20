@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd">
+<class package="bar" name="FileFactory">
+  <namespace/>
+
+  <include file="stdio.h"/>
+
+  <method name="open">
+    <param type="const void *" name="cookie">
+      <desc><hyperlink namespace="bar.Openable">Openableインタフェース</hyperlink>のインスタンス</desc>
+    </param>
+
+    <param type="int (*#)(void *, char *, int)" name="readfn">
+      <desc>see bar_Openable_readfn()</desc>
+    </param>
+
+    <param type="int (*#)(void *, const char *, int)" name="writefn">
+      <desc>see bar_Openable_writefn()</desc>
+    </param>
+
+    <param type="fpos_t (*#)(void *, fpos_t, int)" name="seekfn">
+      <desc>see bar_Openable_seekfn()</desc>
+    </param>
+
+    <param type="int (*#)(void *)" name="closefn">
+      <desc>see bar_Openable_closefn()</desc>
+    </param>
+
+    <return type="foo_File *">
+      <desc><hyperlink namespace="foo.File">Fileクラス</hyperlink>のインスタンス、またはNULL</desc>
+    </return>
+
+    <desc>
+      <brief>OpenableインタフェースからFileクラスのインスタンスを生成します。</brief>
+      <p>生成できないときはNULLを返します。</p>
+    </desc>
+  </method>
+
+  <desc><brief>Fileクラスのインスタンスを生成する機能を提供します。</brief></desc>
+</class>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>リリースノート 2001-09-02</title>
+  </head>
+
+  <body>
+    <h1>リリースノート 2001-09-02</h1>
+
+    <ul>
+      <li>XIMStatusAreaスタイルでの状態描画は、イベントによる再描画ではなく、ウィンドウの背景ピクスマップで処理するようにした。</li>
+      <li>XIMPreeditPositionスタイルのプロパティ受渡し用のウィンドウをマップしていたバグを修正した。</li>
+      <li>予測辞書に登録する「読み文字列」と「確定文字列」が同じ場合、確定文字列を長さ0の文字列にとして登録することにした。また、確定文字列をキーとして検索できるように「確定文字列 + 長さ0の文字列」も登録するようにした。逆に予測辞書から「読み文字列」と「確定文字列」を取り出したときに、確定文字列の長さが0であれば、読み文字列と確定文字列が同じものであるとして扱うようにした。</li>
+      <li>変換後、変換中の文字列で予測し、予測の内容を更新するようにした。</li>
+      <li>Control-Tab（デフォルトのキー割り当て）で、変換中の文字列を用いて予測入力できるようにした。</li>
+      <li>予測候補のコミットを遅延コールバックで処理するようにした。</li>
+    </ul>
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jun  2 23:53:20 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Sat Nov 23 21:11:04 JST 2002
+<!-- hhmts end -->
+  </body>
+</html>

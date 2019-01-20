@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title>過去のニュース</title>
+  </head>
+
+  <body>
+    <h1>過去のニュース</h1>
+
+    <table>
+      <tr valign="top">
+	<td><b>2000-08-16</b></td>
+	<td><a href="editor-20000816.tar.gz">editor-20000816.tar.gz</a>をリリース。受動的フォーカスモデルのコードを一部マージした。オブジェクトのグラビティを指定するためのリソースを追加した。SylPanedWindowをマップするタイミングをレイアウト指定時に変更した。前編集文字列を挿入・削除したときにスクロールバーが出現・消滅する場合、前編集文字列の領域がおかしくなるバグを修正。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>2000-02-17</b></td>
+	<td><a href="editor-20000217.tar.gz">editor-20000217.tar.gz</a>をリリース。On-The-SpotでICをリセットした直後に前編集文字列を消去するように変更した。関数の使用されない引数に__unusedキーワードを指定した。On-The-Spotの処理をTextLineとTextAreaで共通化した（Preedit.c）。前編集文字列があるときに、スクロールしてキャレットが移動してもICをリセットしていなかったのを修正。内部で使用されるマクロ名を一部変更した。Button, ListBox, TextLine, TextAreaに次のリソース: <br>
+	  <ul>
+	    <li>focusFrameColor (Foreground): フォーカス枠の色</li>
+	    <li>focusFrameWidth (LineWidth): フォーカス枠の幅</li>
+	  </ul>
+	  を追加した。TextArea, TextLineに次のリソース:<br>
+	  <ul>
+	      <li>caretColor (Foreground): キャレットの色</li>
+	  </ul>
+	  を追加した。TextAreaに次のリソース:<br>
+	  <ul>
+	    <li>focusRippleColor (Foreground): フォーカス獲得時の波紋の色</li>
+	    <li>focusRippleWidth (LineWidth): フォーカス獲得時の波紋の幅</li>
+	  </ul>
+	  を追加した。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>2000-01-29</b></td>
+	<td><a href="editor-20000129.tar.gz">editor-20000129.tar.gz</a>をリリース。ソースファイルの拡張子の構成を変更。構造体SylTextLineのメンバn_preedit_charsなどが生成時に初期化されていなかったのを修正。Solarisではisspace()の代わりにiswspace()を使うように修正（1999-09-16からSolarisでは動作しなかった）。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-11-27</b></td>
+	<td><a href="editor-19991127.tar.gz">editor-19991127.tar.gz</a>をリリース。ラベルオブジェクトの名前をTapeからPlateに変更した。カラー指定のインデックス値をマジックナンバーで指定する方式を廃止して、シンボル名で指定できる機構にした。オブジェクトを解放するときにフォントセットを解放していなかったのを修正。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-10-17</b></td>
+	<td><a href="editor-19991017.tar.gz">editor-19991017.tar.gz</a>をリリース。前編集開始位置が行末に近く、前編集文字列挿入後にそれが次の行の先頭へ移動してしまうような場合、前編集文字列の領域とキャレット位置がずれてしまうバグを修正。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-10-10</b></td>
+	<td><a href="editor-19991010.tar.gz">editor-19991010.tar.gz</a>をリリース。起動後トップレベルウィンドウがフォーカスを獲得すると、編集領域にフォーカスが移るようにした。TextLineでキャレットの線の幅が0でなくなるのを修正。ウィンドウマネージャが不在でも正常にレイアウトするように修正。トップレベルウィンドウをマップするタイミングを遅らせて、起動時のムダな描画を減らした。imserver-19991007からWCString.c, Text.cをマージした。limits.hのMB_LEN_MAXを参照してワイドキャラクタ文字をマルチバイト文字に変換するようにした（jisのようなロケールにも対応）。前編集文字列があるときにポインタを移動できないようにした。デバッグ用メッセージを整理した。セレクション挿入処理を高速化し、セレクション変換中のフラグ変換を廃止した。文字列挿入関数の呼び出し方式を変更した。文字列削除の関数を用意して、選択領域削除などの処理を高速化した。文字列挿入の際の再フォーマット処理を修正した。フォーマットする行が長いときに速くなるように処理方法を変更した。TextAreaの表示領域すべてを前編集文字列で埋めてしまうと、前編集文字列の表示位置がずれるなどの不具合を修正。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-09-16</b></td>
+	<td><a href="editor-19990916.tar.gz">editor-19990916.tar.gz</a>をリリース。On-The-Spot入力で前編集文字列がある場合はキーイベントを無視するようにした。SetICFontSet()の呼び出しをFocusInイベントを受け取るときに変更した。On-The-Spot入力で前編集終了コールバックが呼ばれたときに、前編集文字列が残っていた場合、それを消去するようにした（xwnmo対策）。前編集キャレットコールバックの一部をサポートした（xwnmo対策）。挿入可能文字をisspace()で判定するように変更して、DEL（0x7f）が挿入できたバグを修正。XSetICFocus()/XUnsetICFocus()の呼び出し方が仕様通りでなかったのを修正。フォーカスを失うときにXmbResetIC()を呼び出すようにした。TextLineもOn-The-Spot入力に対応した。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-08-06</b></td>
+	<td><a href="editor-19990806.tar.gz">editor-19990806.tar.gz</a>をリリース。Button.cのXGrabPointer()のButtonMotionMaskを外した。SolarisでコンパイルできるようにResource.cでMAXHOSTNAMELENを定義した。コントロールマネージャを実装した。Over-The-Spotで動的にフォントを変更するようにした。暫定的に<a href="index.html#on-the-spot">On-The-Spot入力</a>をサポートした。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-05-04</b></td>
+	<td><a href="editor-19990504.tar.gz">editor-19990504.tar.gz</a>をリリース。VScrollbarのコールバックの仕様を変更。レイアウトマネージャのインタフェイスの仕様を変更。ReadSylTextArea()の処理速度を改良（起動時間が短縮）。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-03-08</b></td>
+	<td><a href="editor-19990308.tar.gz">editor-19990308.tar.gz</a>をリリース。リソース名のスペルミスを修正。Buttonをマージした。レイアウトマネージャを実装した。起動時の引数の与え方を変更した（<a href="#usage">使用法</a>を参照）。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-03-01</b></td>
+	<td><a href="editor-19990301.tar.gz">editor-19990301.tar.gz</a>をリリース。TextLineをマージした。セレクションリクエストの応答処理をTextLineとTextAreaで共通化した。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-02-25</b></td>
+	<td><a href="editor-19990225.tar.gz">editor-19990225.tar.gz</a>をリリース。セレクションTIMESTAMPに対応。セレクションまわりのコードを整理した。背景ピクスマップをセレクションで張りつけできるようになった（ただしクライアント間でピクスマップのカラーマップ、ビジュアルが異なる場合は正常に動作しない）。Control-Tab, Control-Shift-Tabでフィールドの切り替えができるようになった（現在フィールドは1つしかないので機能しない）。PageUp, PageDown（RollDown, RollUp）でページ単位のスクロールができるようになった。タブを含む文字列をヤンクするとタブがスペースに置換されてしまうバグを修正。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-02-12</b></td>
+	<td><a href="editor-19990212.tar.gz">editor-19990212.tar.gz</a>をリリース。タブを使えるようにした。自発的なセレクション放棄の方法をICCCMに従うように修正した。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-01-11</b></td>
+	<td><a href="editor-19990111.tar.gz">editor-19990111.tar.gz</a>をリリース。次のリソース:<br>
+	  <ul>
+	    <li>editor.ximStyle
+	    <li>editor.geometry
+	    <li>editor.headline
+	  </ul>
+	  を追加した。作成したリソースデータベースはディスプレイに結びつけて管理するようにした。アイコンピクスマップとアイコンウィンドウに対応した。リソースの読み込みは:<br>
+	  <ol>
+	    <li>xrdbでリソースが定義されてあれば、それを読み込む。なければ``~/.Xdefault''ファイルがあればそれを読み込む。
+	    <li>環境変数XENVIRONMENTが定義されていれば、そのファイルを読み込む。なければ``~/.Xdefault-ホスト名''ファイルがあればそれを読み込む。
+	  </ol>
+	という順序で行う。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1999-01-05</b></td>
+	<td><a href="editor-19990105.tar.gz">editor-19990105.tar.gz</a>をリリース。リソース設定がいっさいなくても動作するようにした。フォーカスが入るときにカーソル位置を示すマーカを表示するようにした。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1998-11-24</b></td>
+	<td><a href="editor-19981124.tar.gz">editor-19981124.tar.gz</a>をリリース。領域選択時のkillLineが選択領域を削除するように変更した。</td>
+      </tr>
+
+      <tr valign="top">
+	<td><b>1998-08-29</b></td>
+	<td>editor-19980829.tar.gzをリリース。</td>
+      </tr>
+    </table>
+
+    <hr>
+    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jan  8 18:57:30 JST 2000 -->
+<!-- hhmts start -->
+Last modified: Sun Nov 24 00:15:39 JST 2002
+<!-- hhmts end -->
+  </body>
+</html>
