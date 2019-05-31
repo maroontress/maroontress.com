@@ -1,170 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Coverture</title>
-    <link rel="stylesheet" type="text/css" href="look.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-4691079535294206",
+          enable_page_level_ads: true
+      });
+    </script>
   </head>
+
   <body>
-    <table class="header" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="headerLeft">Maroontress Fast Software</td>
-	  <td class="headerRight">Coverture</td>
-	</tr>
-      </tbody>
-    </table>
-    <table class="guide" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="guideMenu">
-	    <table width="160" cellpadding="0" cellspacing="0" border="0">
-	      <tbody>
-                <tr><td class="selected">Top</td></tr>
-                <tr><td class="unselected"><a class="menu" href="download.html">Download</a></td></tr>
-                <tr><td class="unselected"><a class="menu" href="relnotes.html">Release&nbsp;Notes</a></td></tr>
-                <tr><td class="unselected"><a class="menu" href="appendix.html">Appendix</a></td></tr>
-	      </tbody>
-	    </table>
-<script type="text/javascript"><!--
-google_ad_client = "pub-4691079535294206";
-/* 160x90L Mad Angler */
-google_ad_slot = "5426136155";
-google_ad_width = 160;
-google_ad_height = 90;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-<script type="text/javascript"><!--
-google_ad_client = "pub-4691079535294206";
-/* 160x600 Mad Angler */
-google_ad_slot = "4451171887";
-google_ad_width = 160;
-google_ad_height = 600;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-	  </td>
-	  <td class="guideSubMenu">
-	    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-	      <tbody>
-		<tr>
-		  <td class="guideText">
-		    <table align="right">
-		      <tbody>
-			<tr>
-			  <td>
-<script type="text/javascript"><!--
-  amazon_ad_tag = "sanchappikeio-22";
-  amazon_ad_width = "180";
-  amazon_ad_height = "150";
-  amazon_ad_logo = "hide";
-  amazon_ad_link_target = "new";
-  amazon_ad_border = "hide";
-  amazon_color_border = "FFFFFF";//--></script>
-<script type="text/javascript" src="http://www.assoc-amazon.jp/s/ads.js">
-</script>
-			  </td>
-			</tr>
-		      </tbody>
-		    </table>
-    <p class="title">Coverture</p>
+    <div class="container">
+      <div class="main-container" style="order: 2;">
+        <header>
+          <h1>Coverture</h1>
+          <p>gccが生成するgcno/gcdaファイルをパースし、結果をXMLで出力します。また、gcov互換のgcovファイルを生成します。</p>
+        </header>
+        <section>
+          <h2>gcnoファイル</h2>
 
-    <p>gccが生成するgcno/gcdaファイルをパースし、結果をXMLで出力します。また、gcov互換のgcovファイルを生成します。</p>
+          <p>gcovでカバレッジするときに、gccのコンパイルオプションに<code>-ftest-coverage</code>を追加します。このオプションを指定してソースファイルをコンパイルすると、gccはソースファイルの拡張子を<code>.gcno</code>に変更したノーツファイルを生成します。</p>
 
-    <!-- -->
-    <p class="section">gcnoファイル</p>
-    <p>gcovでカバレッジするときに、gccのコンパイルオプションに<tt>-ftest-coverage</tt>を追加します。このオプションを指定してソースファイルをコンパイルすると、gccはソースファイルの拡張子を<tt>.gcno</tt>に変更したノーツファイルを生成します。</p>
-    <p>gcnoファイルには何が記録されているのでしょうか。gcnoファイルの構造については、gccのソースコードに含まれる<tt>gcov-io.h</tt>（FreeBSDなら<tt>/usr/src/contrib/gcc/gcov-io.h</tt>）に次のような説明があります。</p>
+          <p>gcnoファイルには何が記録されているのでしょうか。gcnoファイルの構造については、gccのソースコードに含まれる<wbr><code>gcov-io.h</code>（FreeBSDなら<wbr><code>/usr<wbr>/src<wbr>/contrib<wbr>/gcc<wbr>/gcov-io.h</code>）に次のような説明があります。</p>
 
-<pre class="box">
-   The basic block graph file contains the following records
-        note: unit function-graph*
-        unit: header int32:checksum string:source
-        function-graph: announce_function basic_blocks {arcs | lines}*
-        announce_function: header int32:ident int32:checksum
-                string:name string:source int32:lineno
-        basic_block: header int32:flags*
-        arcs: header int32:block_no arc*
-        arc:  int32:dest_block int32:flags
-        lines: header int32:block_no line*
-               int32:0 string:NULL
-        line:  int32:line_no | int32:0 string:filename
-</pre>
+          <div class="box">
+            <pre>The basic block graph file contains the following records
+    note: unit function-graph*
+    unit: header int32:checksum string:source
+    function-graph: announce_function basic_blocks {arcs | lines}*
+    announce_function: header int32:ident int32:checksum
+            string:name string:source int32:lineno
+    basic_block: header int32:flags*
+    arcs: header int32:block_no arc*
+    arc:  int32:dest_block int32:flags
+    lines: header int32:block_no line*
+            int32:0 string:NULL
+    line:  int32:line_no | int32:0 string:filename</pre>
+          </div>
 
-    <p>フォーマットに関する詳細は<tt>gcov-io.h</tt>を参照してください。gcnoファイルには、対応するソースコードの関数（C++ならメソッド）のフローグラフに関する情報が保存されています。この有向グラフは、グラフのノードである基本ブロックと、グラフのエッジであるアークで構成されます。また、基本ブロックそれぞれに対応するソースコードのファイル名とその行番号も保存されています。</p>
+          <p>フォーマットに関する詳細は<code>gcov-io.h</code>を参照してください。gcnoファイルには、対応するソースコードの関数（C++ならメソッド）のフローグラフに関する情報が保存されています。この有向グラフは、グラフのノードである基本ブロックと、グラフのエッジであるアークで構成されます。また、基本ブロックそれぞれに対応するソースコードのファイル名とその行番号も保存されています。</p>
 
-    <p>具体的に、次のプログラムをコンパイルしてgcnoファイル（<tt>foo.gcno</tt>）を作成してみます。</p>
+          <p>具体的に、次のプログラムをコンパイルしてgcnoファイル（<code>foo.gcno</code>）を作成してみます。</p>
 
-    <div class="include">
-<tt>
-% cat foo.c
-<br>
+          <div class="box">
+            <pre>% cat foo.c
 #include &lt;stdio.h&gt;
-<br>
 #include &lt;stdlib.h&gt;
-<br>
 #include &lt;err.h&gt;
-<br>
 
-<br>
 void bar(FILE *fp);
-<br>
 
-<br>
 void foo(const char *path)
-<br>
 {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;FILE *fp;
-<br>
+    FILE *fp;
 
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;if (path == NULL) {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abort();
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;if ((fp = fopen(path, "r")) == NULL) {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warn("fopen: %s", path);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;bar(fp);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;fclose(fp);
-<br>
+    if (path == NULL) {
+        abort();
+    }
+    if ((fp = fopen(path, "r")) == NULL) {
+        warn("fopen: %s", path);
+        return;
+    }
+    bar(fp);
+    fclose(fp);
 }
-<br>
 % gcc -Wall -W -ftest-coverage -O0 -c foo.c
-<br>
 % ls -1 foo.*
-<br>
 foo.c
-<br>
 foo.gcno
-<br>
-foo.o
-<br>
-</tt>
-    </div>
+foo.o</pre>
+          </div>
 
-    <p>Covertureで<tt>foo.gcno</tt>をパースした出力<a href="s/foo.gcno.xml"><tt>foo.gcno.xml</tt></a>をみると、関数<tt>foo</tt>は次の図のような12個の基本ブロックと、17のアークで構成されていることがわかります。</p>
+          <p>Covertureで<code>foo.gcno</code>をパースした出力<a href="s/foo.gcno.xml"><code>foo.<wbr>gcno.<wbr>xml</code></a>をみると、関数<code>foo</code>は次の図のような12個の基本ブロックと、17のアークで構成されていることがわかります。</p>
 
-    <img src="images/foo.png">
+          <div class="ads">
+            <img class="fit" src="images/foo.png">
+          </div>
 
-    <p>また、行番号の情報から、基本ブロックの番号とソースコードの対応は次のようになっています（<tt>bb</tt>は基本ブロックのID）。</p>
+          <p>また、行番号の情報から、基本ブロックの番号とソースコードの対応は次のようになっています（<code>bb</code>は基本ブロックのID）。</p>
 
-<pre class="box">
-bb   #
+          <div class="box">
+            <pre>bb   #
 -- ---
      1  #include &lt;stdio.h&gt;
      2  #include &lt;stdlib.h&gt;
@@ -185,146 +107,163 @@ bb   #
     17      }
  7  18      bar(fp);
  8  19      fclose(fp);
-    20  }
-</pre>
+    20  }</pre>
+          </div>
 
-    <p>また、アークには属性があり、<tt>gcov-io.h</tt>には次のような定数が定義されています。</p>
+          <p>また、アークには属性があり、<code>gcov-io.h</code>には次のような定数が定義されています。</p>
 
-<pre class="box">
-#define GCOV_ARC_ON_TREE        (1 &lt;&lt; 0)
+          <div class="box">
+            <pre>#define GCOV_ARC_ON_TREE        (1 &lt;&lt; 0)
 #define GCOV_ARC_FAKE           (1 &lt;&lt; 1)
-#define GCOV_ARC_FALLTHROUGH    (1 &lt;&lt; 2)
-</pre>
+#define GCOV_ARC_FALLTHROUGH    (1 &lt;&lt; 2)</pre>
+          </div>
 
-    <p>上の図では、FAKEのアークは波線で表現されています。関数<tt>foo</tt>から外部の関数を呼び出すところは、FAKEのアークで最終ブロック（関数の出口）に分岐しています。これは、呼び出した外部の関数が<tt>longjmp(3)</tt>や（C++での）例外のスローなど、非局所分岐を実行し、現在の関数から抜ける経路を表しています。</p>
+          <p>上の図では、FAKEのアークは波線で表現されています。関数<code>foo</code>から外部の関数を呼び出すところは、FAKEのアークで最終ブロック（関数の出口）に分岐しています。これは、呼び出した外部の関数が<code>longjmp(3)</code>や（C++での）例外のスローなど、非局所分岐を実行し、現在の関数から抜ける経路を表しています。</p>
 
-    <p><tt>exit(3)</tt>や<tt>abort(3)</tt>など、戻らない関数の呼び出しには、関数から戻る経路はありません。ただし、外部関数の呼び出しのため、FAKEのアークの経路は存在します。</p>
+          <p><code>exit(3)</code>や<code>abort(3)</code>など、戻らない関数の呼び出しには、関数から戻る経路はありません。ただし、外部関数の呼び出しのため、FAKEのアークの経路は存在します。</p>
 
-    <!-- -->
-    <p class="section">McCabeのcyclomatic complexity</p>
-    <p>gcnoファイルをパースすることで、McCabeのcyclomatic complexity（以下、CCと記述します）を計算することができます。定義に従うと、次の式で求めることになります。</p>
+          <h2>McCabeのcyclomatic complexity</h2>
 
-<div class="include">
-複雑度 = アーク総数 &minus; 基本ブロック総数 + 2
-</div>
+          <p>gcnoファイルをパースすることで、McCabeのcyclomatic complexity（以下、CCと記述します）を計算することができます。定義に従うと、次の式で求めることになります。</p>
 
-    <p>上の例では、関数<tt>foo</tt>の複雑度は17 &minus; 12 + 2 = 7ということになります。しかし、この値はFAKEのアークも考慮しているので、外部関数の呼び出し数の分だけ余計な複雑度が加えられたことになります。したがって、通常の複雑度は次のように計算するべきです。</p>
+          <div class="box">
+            <pre>複雑度 = アーク総数 &minus; 基本ブロック総数 + 2</pre>
+          </div>
 
-<div class="include">
-複雑度 = アーク総数 &minus; FAKEのアーク数 &minus; 基本ブロック総数 + 2
-</div>
+          <p>上の例では、関数<code>foo</code>の複雑度は17 &minus; 12 + 2 = 7ということになります。しかし、この値はFAKEのアークも考慮しているので、外部関数の呼び出し数の分だけ余計な複雑度が加えられたことになります。したがって、通常の複雑度は次のように計算するべきです。</p>
 
-    <p>この場合、関数<tt>foo</tt>の複雑度は2になり、実線のフローグラフの複雑度と等しくなります。これらの値は<a href="s/foo.gcno.xml"><tt>foo.gcno.xml</tt></a>では、<tt>functionGraph</tt>要素の<tt>complexity</tt>属性と、<tt>complexityWithFake</tt>属性の値として記録されています。</p>
+          <div class="box">
+            <pre>複雑度 = アーク総数 &minus; FAKEのアーク数 &minus; 基本ブロック総数 + 2</pre>
+          </div>
 
-    <p>Cの場合はこれで終わりですが、C++の場合はさらに考慮すべきことがあります。gcnoファイルからCCとNPATHを計算する<a href="http://sourceforge.net/project/showfiles.php?group_id=197216">gnocchi</a>は、FAKEのアークが最終ブロックに向かうことを利用して、最終ブロックを除外して複雑度を計算します。実際C++では、上記のCのケースの説明とは異なり、FAKEのアークが最終ブロックだけに向かうとは限りません。FAKEのアークが最終ブロック以外の基本ブロックに入るケースもあります（例えば、catchに対応する基本ブロックに入ります）。したがって、「最終ブロックに入るFAKEのアーク」だけを除外する必要があります。最終的に、複雑度は次のようになります。</p>
+          <p>この場合、関数<code>foo</code>の複雑度は2になり、実線のフローグラフの複雑度と等しくなります。これらの値は<a href="s/foo.gcno.xml"><code>foo.gcno.xml</code></a>では、<wbr><code>functionGraph</code>要素の<wbr><code>complexity</code>属性と、<code>complexityWithFake</code>属性の値として記録されています。</p>
 
-<div class="include">
-複雑度 = アーク総数 &minus; 最終ブロックに入るFAKEのアーク数 &minus; 基本ブロック総数 + 2
-</div>
+          <p>Cの場合はこれで終わりですが、C++の場合はさらに考慮すべきことがあります。gcnoファイルからCCとNPATHを計算する<a href="http://sourceforge.net/project/showfiles.php?group_id=197216">gnocchi</a>は、FAKEのアークが最終ブロックに向かうことを利用して、最終ブロックを除外して複雑度を計算します。実際C++では、上記のCのケースの説明とは異なり、FAKEのアークが最終ブロックだけに向かうとは限りません。FAKEのアークが最終ブロック以外の基本ブロックに入るケースもあります（例えば、catchに対応する基本ブロックに入ります）。したがって、「最終ブロックに入るFAKEのアーク」だけを除外する必要があります。最終的に、複雑度は次のようになります。</p>
 
-<p>これでC++でもCCを求めることができるようになりましたが、釈然としない点もあります。例えば、どこで例外をスローしたのかとは関係無く、catchの数だけ複雑度が増加することや、例外をスローしても複雑度が増えないことなどは、直感的には理解できません。これは、McCabeのCCがもともと構造化プログラミングの要素を対象に考案されたものであり、例外などの非局所分岐を考慮していないことに起因します。つまり、例外というメカニズムがもたらす複雑さはCCでは表現できません。catchの数だけ複雑度が増加するのは、例外の静的な側面だけを考慮するからにすぎません。例外とCCは概念的に相性が悪いのでしょう。</p>
+          <div class="box">
+            <pre>複雑度 = アーク総数 &minus; 最終ブロックに入るFAKEのアーク数 &minus; 基本ブロック総数 + 2</pre>
+          </div>
 
-    <!-- -->
-    <p class="section">gcdaファイル</p>
-    <p>gcnoファイルの次にgcdaファイルを調べてみます。実際にgcovでカバレッジするときには、前述の<tt>-ftest-coverage</tt>に加え、<tt>-fprofile-arcs</tt>をgccのコンパイルオプションに追加します。これらのオプションを指定してソースファイルをコンパイルし、そのプログラムを実行します。すると、プログラムの終了時<sup><a href="#1">★1</a></sup>に、ソースファイルの拡張子を<tt>.gcda</tt>に変更したデータファイルが生成されます。</p>
-    <p>gcnoの構造と同様、gcdaの構造に関しても、<tt>gcov-io.h</tt>に次のような説明があります。</p>
+          <p>これでC++でもCCを求めることができるようになりましたが、釈然としない点もあります。例えば、どこで例外をスローしたのかとは関係無く、catchの数だけ複雑度が増加することや、例外をスローしても複雑度が増えないことなどは、直感的には理解できません。これは、McCabeのCCがもともと構造化プログラミングの要素を対象に考案されたものであり、例外などの非局所分岐を考慮していないことに起因します。つまり、例外というメカニズムがもたらす複雑さはCCでは表現できません。catchの数だけ複雑度が増加するのは、例外の静的な側面だけを考慮するからにすぎません。例外とCCは概念的に相性が悪いのでしょう。</p>
 
-<pre class="box">
-   The data file contains the following records.
-        data: {unit function-data* summary:object summary:program*}*
-        unit: header int32:checksum
-        function-data:  announce_function arc_counts
-        announce_function: header int32:ident int32:checksum
-        arc_counts: header int64:count*
-        summary: int32:checksum {count-summary}GCOV_COUNTERS
-        count-summary:  int32:num int32:runs int64:sum
-                        int64:max int64:sum_max
-</pre>
+          <h2>gcdaファイル</h2>
 
-    <p>gcdaファイルには主に各アークの実行回数が記録されます。ただし、ON_TREEのアークの実行回数は含まれません。gccのソースコードに含まれる<tt>profile.c</tt>（FreeBSDなら<tt>/usr/src/contrib/gcc/profile.c</tt>）によると、ON_TREEの属性は「そのアークが関数フローグラフのスパニングツリーを構成する」ことを表すようですが、ここではON_TREEではないアークだけが実行回数の測定対象になることが重要です。</p>
-    <p>前述のフローグラフを書き直し、ON_TREEのアークを青色で描画すると、次のようになります。</p>
+          <p>gcnoファイルの次にgcdaファイルを調べてみます。実際にgcovでカバレッジするときには、前述の<code>-ftest-coverage</code>に加え、<code>-fprofile-arcs</code>をgccのコンパイルオプションに追加します。これらのオプションを指定してソースファイルをコンパイルし、そのプログラムを実行します。すると、プログラムの終了時<a href="#1">&dagger;</a>に、ソースファイルの拡張子を<code>.gcda</code>に変更したデータファイルが生成されます。</p>
 
-    <img src="images/foo-tree.png">
+          <p>gcnoの構造と同様、gcdaの構造に関しても、<wbr><code>gcov-io.h</code>に次のような説明があります。</p>
 
-    <p>関数<tt>foo()</tt>を呼び出すプログラムを作成、実行して、<tt>foo.gcda</tt>を出力してみます。
+          <div class="box">
+            <pre>The data file contains the following records.
+    data: {unit function-data* summary:object summary:program*}*
+    unit: header int32:checksum
+    function-data:  announce_function arc_counts
+    announce_function: header int32:ident int32:checksum
+    arc_counts: header int64:count*
+    summary: int32:checksum {count-summary}GCOV_COUNTERS
+    count-summary:  int32:num int32:runs int64:sum
+                    int64:max int64:sum_max</pre>
+          </div>
 
-<pre class="box">
-% gcc -O0 -ftest-coverage -fprofile-arcs foo.c main.c
+          <p>gcdaファイルには主に各アークの実行回数が記録されます。ただし、ON_TREEのアークの実行回数は含まれません。gccのソースコードに含まれる<wbr><code>profile.c</code><wbr>（FreeBSD<wbr>なら<wbr><code>/usr<wbr>/src<wbr>/contrib<wbr>/gcc<wbr>/profile.c</code>）によると、ON_TREEの属性は「そのアークが関数フローグラフのスパニングツリーを構成する」ことを表すようですが、ここではON_TREEではないアークだけが実行回数の測定対象になることが重要です。</p>
+
+          <p>前述のフローグラフを書き直し、ON_TREEのアークを青色で描画すると、次のようになります。</p>
+
+          <div class="ads">
+            <img src="images/foo-tree.png">
+          </div>
+
+          <p>関数<code>foo()</code>を呼び出すプログラムを作成、実行して、<code>foo.gcda</code>を出力してみます。
+
+          <div class="box">
+            <pre>% gcc -O0 -ftest-coverage -fprofile-arcs foo.c main.c
 % ls foo.*
 foo.c           foo.gcno
 % ./a.out
 ...
 % ls foo.*
-foo.c           foo.gcda        foo.gcno
-</pre>
+foo.c           foo.gcda        foo.gcno</pre>
+          </div>
 
-    <p><tt>foo.gcda</tt>をパースすることで、フローグラフのON_TREEではないアークの実行回数がわかります。例えば、ここでは次のような結果を入手できたとします。</p>
+          <p><code>foo.gcda</code>をパースすることで、フローグラフのON_TREEではないアークの実行回数がわかります。例えば、ここでは次のような結果を入手できたとします。</p>
 
-    <img src="images/foo-tree-unsolved.png">
+          <div class="ads">
+            <img src="images/foo-tree-unsolved.png">
+          </div>
 
-    <p>gccのソースコードに含まれる<tt>gcov.c</tt>（FreeBSDなら<tt>/usr/src/contrib/gcc/gcov.c</tt>）の関数<tt>solve_flow_graph()</tt>の手順で、このフローグラフを解いてみると、最終的に次のような結果を得ることができます。</p>
-    <img src="images/foo-tree-solved.png">
+          <p>gccのソースコードに含まれる<code>gcov.c</code><wbr>（FreeBSD<wbr>なら<wbr><code>/usr<wbr>/src<wbr>/contrib<wbr>/gcc<wbr>/gcov.c</code>）の関数<wbr><code>solve_<wbr>flow_<wbr>graph()</code>の手順で、このフローグラフを解いてみると、最終的に次のような結果を得ることができます。</p>
 
-    <p>Covertureで<tt>foo.gcno</tt>と<tt>foo.gcda</tt>をパースした出力<a href="s/foo.gcda.xml"><tt>foo.gcda.xml</tt></a>からも、同様な結果を得ることができます。</p>
+          <div class="ads">
+            <img src="images/foo-tree-solved.png">
+          </div>
 
-    <!-- -->
-    <p class="section">フローグラフを解く手順</p>
+          <p>Covertureで<code>foo.gcno</code>と<code>foo.gcda</code>をパースした出力<wbr><a href="s/foo.gcda.xml"><code>foo.gcda.xml</code></a>からも、同様な結果を得ることができます。</p>
 
-    <p>関数<tt>solve_flow_graph()</tt>がどのようにフローグラフを解くのか、簡単に説明しておきます。次の図のように、ブロックの実行回数は「ブロックに入るアークの実行回数の和」または「ブロックから出るアークの実行回数の和」に等しくなります。ただし、入口のブロック（入るアークは0個）と出口のブロック（出るアークは0個）は除きます。</p>
+          <h2>フローグラフを解く手順</h2>
 
-    <img src="images/sfg1.png">
+          <p>関数<code>solve_flow_graph()</code>がどのようにフローグラフを解くのか、簡単に説明しておきます。次の図のように、ブロックの実行回数は「ブロックに入るアークの実行回数の和」または「ブロックから出るアークの実行回数の和」に等しくなります。ただし、入口のブロック（入るアークは0個）と出口のブロック（出るアークは0個）は除きます。</p>
 
-    <p>最初に、すべてのブロックを、片側（入る側または出る側）のアークの実行回数がすべてわかるものと、そうではないもの（つまり両側に実行回数の不明なアークがある）ものに分けます。片側のアークの実行回数がすべてわかるブロックは実行回数を求めます。</p>
+          <div class="ads">
+            <img class="fit" src="images/sfg1.png">
+          </div>
 
-    <p>次に、実行回数がわかったブロックすべてについて、それぞれ次のように処理します。</p>
-    <ul>
-      <li>片側のアークの実行回数はすべてわかっているので、その反対側のアークで実行回数がわからないものがいくつあるのか調べます。2つ以上あるか、まったくない場合は、次のブロックに進みます。そうではなく、1つだけある場合は、次の図のようにブロック<i>v</i>の実行回数から、わかっているアークの実行回数を減算することで、そのアークの実行回数を求めます。</li>
-    </ul>
-    <img src="images/sfg2.png">
+          <p>最初に、すべてのブロックを、片側（入る側または出る側）のアークの実行回数がすべてわかるものと、そうではないもの（つまり両側に実行回数の不明なアークがある）ものに分けます。片側のアークの実行回数がすべてわかるブロックは実行回数を求めます。</p>
 
-    <ul>
-      <li>さらに、そのアークと接続するブロック<i>v</i>の反対側のブロック<i>w</i>について考えます。そのアークが<i>v</i>から<i>w</i>に向かうものとします。ブロック<i>w</i>の実行回数がすでにわかっている場合は、<i>w</i>から出るアークの実行回数は既にわかっていたことになります。<i>w</i>に入るアークで実行回数がわからないものがいくつあるのか調べ、次の図のように1つだけある場合は、上記の処理を再帰的に繰り返します（アークが<i>w</i>から<i>v</i>に向かう場合も同様）。</li>
-    </ul>
-    <img src="images/sfg3.png">
+          <p>次に、実行回数がわかったブロックすべてについて、それぞれ次のように処理します。</p>
 
-    <ul>
-      <li>反対にブロック<i>w</i>の実行回数が不明な場合は、<i>w</i>に入るアークの実行回数は、少なくても1つ以上わかっていなかったことになります（直前まで両側に実行回数が不明なアークがあったので）。<i>w</i>に入るアークで実行回数がわからないものがいくつあるのか調べます。次の図のように0になった場合は、<i>w</i>の実行回数が求まります。<i>w</i>は実行回数がわかったブロックとなったので、再帰的に上記の処理を繰り返します（アークが<i>w</i>から<i>v</i>に向かう場合も同様）。</li>
-      </li>
-    </ul>
-    <img src="images/sfg4.png">
+          <ul>
+            <li>片側のアークの実行回数はすべてわかっているので、その反対側のアークで実行回数がわからないものがいくつあるのか調べます。2つ以上あるか、まったくない場合は、次のブロックに進みます。そうではなく、1つだけある場合は、次の図のようにブロック<i>v</i>の実行回数から、わかっているアークの実行回数を減算することで、そのアークの実行回数を求めます。</li>
+          </ul>
 
-    <p>実際には、関数<tt>solve_flow_graph()</tt>は再帰呼び出しを使わず、「invalid but inferable」と「valid but unpropagated」という2つのリストとループで、同様な処理を実現しています。</p>
+          <div class="ads">
+            <img class="fit" src="images/sfg2.png">
+          </div>
 
-    <hr>
-    <div class="footnote">
-<p><a name="1">★1</a> atexit(3)のフックによってgcdaファイルを出力しているので、exit(3)の呼び出しかmain関数から戻ることで終了する必要があります。シグナルやabort(3)でプロセスが終了する場合、あるいは_exit(2)で終了する場合は、gcdaファイルは生成、更新されません。ユニットテストとカバレッジを併用する場合は注意する必要があります。</p>
+          <ul>
+            <li>さらに、そのアークと接続するブロック<i>v</i>の反対側のブロック<i>w</i>について考えます。そのアークが<i>v</i>から<i>w</i>に向かうものとします。ブロック<i>w</i>の実行回数がすでにわかっている場合は、<i>w</i>から出るアークの実行回数は既にわかっていたことになります。<i>w</i>に入るアークで実行回数がわからないものがいくつあるのか調べ、次の図のように1つだけある場合は、上記の処理を再帰的に繰り返します（アークが<i>w</i>から<i>v</i>に向かう場合も同様）。</li>
+          </ul>
+
+          <div class="ads">
+            <img class="fit" src="images/sfg3.png">
+          </div>
+
+          <ul>
+            <li>反対にブロック<i>w</i>の実行回数が不明な場合は、<i>w</i>に入るアークの実行回数は、少なくても1つ以上わかっていなかったことになります（直前まで両側に実行回数が不明なアークがあったので）。<i>w</i>に入るアークで実行回数がわからないものがいくつあるのか調べます。次の図のように0になった場合は、<i>w</i>の実行回数が求まります。<i>w</i>は実行回数がわかったブロックとなったので、再帰的に上記の処理を繰り返します（アークが<i>w</i>から<i>v</i>に向かう場合も同様）。</li>
+          </ul>
+
+          <div class="ads">
+            <img class="fit" src="images/sfg4.png">
+          </div>
+
+          <p>実際には、関数<code>solve_flow_graph()</code>は再帰呼び出しを使わず、「invalid but inferable」と「valid but unpropagated」という2つのリストとループで、同様な処理を実現しています。</p>
+
+          <p class="footnote"><a name="1">&dagger;</a> atexit(3)のフックによってgcdaファイルを出力しているので、exit(3)の呼び出しかmain関数から戻ることで終了する必要があります。シグナルやabort(3)でプロセスが終了する場合、あるいは_exit(2)で終了する場合は、gcdaファイルは生成、更新されません。ユニットテストとカバレッジを併用する場合は注意する必要があります。</p>
+        </section>
+      </div>
+      <div class="left-container" style="order: 1;">
+        <nav>
+          <ul>
+            <li class="selected">Top</li>
+            <li><a href="download.html">Download</a></li>
+            <li><a href="relnotes.html">Release&nbsp;Notes</a></li>
+            <li><a href="appendix.html">Appendix</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
-
-    <hr>
+    <footer>
+      <hr>
+      <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+    </footer>
 <!-- Created: Mon Sep  8 00:37:05 JST 2008 -->
 <!-- hhmts start -->
 Last modified: Sun Jul  4 03:42:22 JST 2010
 <!-- hhmts end -->
-		  </td>
-		</tr>
-	      </tbody>
-	    </table>
-	  </td>
-	</tr>
-      </tbody>
-    </table>
-    <table class="header" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="headerRight"><address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address></td>
-	</tr>
-      </tbody>
-    </table>
-    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    <script src="https://www.google-analytics.com/urchin.js" type="text/javascript">
     </script>
     <script type="text/javascript">
       _uacct = "UA-636163-1";
       urchinTracker();
     </script>
+    <amp-auto-ads type="adsense" data-ad-client="ca-pub-4691079535294206"></amp-auto-ads>
   </body>
 </html>

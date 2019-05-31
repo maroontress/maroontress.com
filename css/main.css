@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+@import url('https://fonts.googleapis.com/css?family=Quattrocento');
+
+@media screen and (max-width: 656px) {
+  body {
+    margin: auto;
+    width: 100% - 16;
+  }
+}
+
+@media screen and (min-width: 656px) and (max-width: 856px) {
+  body {
+    margin: auto;
+    width: 640px;
+  }
+}
+
+@media screen and (min-width: 856px) {
+  body {
+    margin: auto;
+    width: 840px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  img.fit {
+    width: 100%;
+  }
+}
+
+div.box {
+  overflow-x: auto;
+  color: white;
+  background-color: black;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+div.box a {
+  color: #4db2ff
+}
+
+div.ads {
+  margin: 1px 0px 1px 0px;
+  text-align: center;
+}
+
+@media screen and (max-width: 540px) {
+  div.box {
+    font-size: 85%;
+    font-stretch: condensed;
+  }
+  div.ads {
+    overflow-x: auto;
+  }
+}
+
+@media screen and (min-width: 540px) and (max-width: 854px) {
+  div.box {
+    font-size: 90%;
+    font-stretch: narrower;
+  }
+  div.ads {
+    overflow-x: auto;
+  }
+}
+
+span.red {
+  color: red;
+}
+
+span.greenyellow {
+  color: greenyellow;
+}
+
+code, pre {
+  font-family: 'Inconsolata', Consolas, 'Yu Gothic', monospace;
+}
+
+body {
+  font-family: 'Palatino Linotype', 'Palatino', 'Quattrocento', 'HiraMinProN-W3', 'Yu Mincho', selif;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4 {
+  font-weight: bold;
+  font-family: Helvetica, "Yu Gothic UI", sans-selif;
+}
+
+address {
+  font-family: Helvetica, "Yu Gothic UI", sans-selif;
+}
+
+dt {
+  font-family: Helvetica, "Yu Gothic UI", sans-selif;
+  font-weight: bold;
+  margin-top: 1ex;
+}
+
+dt:first-child {
+  margin-top: 0px;
+}
+
+dd {
+  margin-bottom: 1ex;
+}
+
+dd:last-child {
+  margin-bottom: 0px;
+}
+
+th {
+  font-weight: bold;
+  font-family: Helvetica, "Yu Gothic UI", sans-selif;
+}
+
+div.left-container
+{
+  font-weight: bold;
+  font-family: Helvetica, "Yu Gothic UI", sans-selif;
+}
+
+ul.sans-selif
+{
+  font-weight: bold;
+  font-family: Helvetica, "Yu Gothic UI", sans-selif;
+}
+
+@media screen and (max-width: 856px) {
+  div.cover-image {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+}
+
+@media screen and (min-width: 856px) {
+  div.left-container {
+    flex: none;
+    width: 200px;
+  }
+
+  div.main-container {
+    flex: none;
+    width: 640px;
+  }
+
+  div.container {
+    display: flex;
+  }
+
+  div.cover-image {
+    float: right;
+    margin-bottom: 1em;
+    margin-left: 1em;
+  }
+}
+
+nav > ul {
+  width: 100% - 32px;
+  padding: 1em;
+}
+
+nav ul li {
+  list-style-type: none;
+  margin-top: 1ex;
+  padding: 1ex;
+  color: blue;
+}
+
+nav ul li:first-child {
+  margin-top: 0px;
+}
+
+nav ul li:before {
+  content: "\25b8\0020";
+}
+
+nav ul li.selected {
+  background-color: blue;
+  color: white;
+}
+
+nav > ul > ul {
+  padding: 0px 0px 0px 1em;
+  font-size: 90%;
+}
+
+nav.inner-link ul li:before {
+  content: "§\0020";
+}
+
+p.footnote
+{
+  font-size: smaller;
+}
+
+p.note
+{
+  font-size: smaller;
+}
+
+p.note:before {
+  content: "\26a0\0020";
+}

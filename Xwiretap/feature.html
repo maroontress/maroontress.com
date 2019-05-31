@@ -1,149 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Xwiretap</title>
-    <link rel="stylesheet" type="text/css" href="look.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-4691079535294206",
+          enable_page_level_ads: true
+      });
+    </script>
   </head>
   <body>
-    <table class="header" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="headerLeft">Maroontress Fast Software</td>
-	  <td class="headerRight">Xwiretap</td>
-	</tr>
-      </tbody>
-    </table>
-    <table class="guide" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="guideMenu">
-            <table width="160" cellpadding="0" cellspacing="0" border="0">
-	      <tbody>
-		<tr><td class="unselected"><a class="menu" href="index.html">Top</a></td></tr>
-		<tr><td class="unselected"><a class="menu" href="news.html">News</a></td></tr>
-		<tr><td class="selected">Feature</td></tr>
-		<tr><td class="unselected"><a class="menu" href="screenshot.html">Screenshot</a></td></tr>
-		<tr><td class="unselected"><a class="menu" href="download.html">Download</a></td></tr>
-	      </tbody>
-	    </table>
-	    <br>
-<script type="text/javascript"><!--
-google_ad_client = "pub-4691079535294206";
-/* 160x90L Mad Angler */
-google_ad_slot = "5426136155";
-google_ad_width = 160;
-google_ad_height = 90;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-<script type="text/javascript"><!--
-google_ad_client = "pub-4691079535294206";
-/* 160x600 Mad Angler */
-google_ad_slot = "4451171887";
-google_ad_width = 160;
-google_ad_height = 600;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-	  </td>
-	  <td class="guideText">
-	    <table align="right">
-	      <tbody>
-		<tr>
-		  <td>
-<script type="text/javascript"><!--
-  amazon_ad_tag = "sanchappikeio-22";
-  amazon_ad_width = "180";
-  amazon_ad_height = "150";
-  amazon_ad_logo = "hide";
-  amazon_ad_link_target = "new";
-  amazon_ad_border = "hide";
-  amazon_color_border = "FFFFFF";//--></script>
-<script type="text/javascript" src="http://www.assoc-amazon.jp/s/ads.js">
-</script>
-		  </td>
-		</tr>
-	      </tbody>
-	    </table>
-    <p class="section">出力履歴を利用した予測入力</p>
-    <table align="right">
-      <tbody>
-	<tr>
-	  <td class="figure">
-	    <a href="Xwiretap.pdf"><img src="Xwiretap.pdf.png" width="160" height="120" border="0"><br>PDF 270 KB</a>
-	  </td>
-	</tr>
-      </tbody>
-    </table>
+    <div class="container">
+      <div class="main-container" style="order: 2;">
+        <header>
+          <h1>Xwiretap</h1>
+        </header>
+        <section>
+          <div class="cover-image" style="text-align: center;">
+            <a href="Xwiretap.pdf">
+              <img src="Xwiretap.pdf.png" width="160" height="120"><br>
+              <small>PDF 270 KB</small>
+            </a>
+          </div>
+          <h2>出力履歴を利用した予測入力</h2>
 
-    <p class="subsection">コンセプト</p>
-    <p>予測入力では、入力履歴や与えられたコンテキスト辞書から予測候補を提示、補完することができますが、ユーザが初めて入力する（計算機の知らない）語句を補完することは当然できません。</p>
-    <p>XwiretapはXサーバとXクライアントの通信を盗聴して、アプリケーションが画面に表示した文字列を<b>出力履歴</b>に記録し、それを<a href="../Imserver/">日本語XIMサーバ</a>の予測候補として利用できるようにします。結果として、ユーザが読み書きした経験を計算機と共有できるようになります。</p>
+          <h3>コンセプト</h3>
 
-    <p class="subsection">関連研究・製品</p>
-    <p><a href="http://www.taiyaki.org/pobox/nanashiki.html">七色</a>（Nanashiki）はEmacsのdabbrev-expand（dynamic abbreviation）を日本語の文書に<b>実用的に</b>適用できるようにして、「入力している文章の周辺の単語を検索し、予測候補として提示する機能」を実現しています。</p>
-    <p><a href="http://www.taiyaki.org/doc/wiss2002/">句倉</a>（Kukura）はウェブブラウザ、端末エミュレータ、Emacsに表示した文字列を外部文書として蓄積し、それらの外部文書に含まれる文字列を予測候補として提示する機能を実現しています。</p>
-    <p>auの携帯電話<a href="http://www.sanyo-keitai.com/html/au/w22sa/use/input.html">W22SA</a>（SANYO製）は「返信自動学習機能」を搭載しています。返信メール作成時に、もとのメールに含まれていた単語を予測変換の候補として利用できます。オムロンソフトウェアの<a href="http://www.omronsoft.co.jp/SP/mobile/advanced/indexv2.html">Advanced Wnn V2</a>に追加された形態素解析機能を利用しているようです。</p>
+          <p>予測入力では、入力履歴や与えられたコンテキスト辞書から予測候補を提示、補完することができますが、ユーザが初めて入力する（計算機の知らない）語句を補完することは当然できません。</p>
 
-    <p>七色はEmacs/POBoxで利用できますが、Emacsの世界で閉じてしまっています。</p>
-    <p>句倉は文書を蓄積する方法をアプリケーションの種類毎に用意する必要があります。またウェブブラウザの場合、文書の一部を「閲覧」した場合でも、その文書全体から予測候補を生成するため、<b>ユーザが見ていない部分</b>の単語まで予測候補の対象になってしまいます。</p>
+          <p>XwiretapはXサーバとXクライアントの通信を盗聴して、アプリケーションが画面に表示した文字列を<b>出力履歴</b>に記録し、それを<a href="../Imserver/">日本語XIMサーバ</a>の予測候補として利用できるようにします。結果として、ユーザが読み書きした経験を計算機と共有できるようになります。</p>
 
-    <!-- -->
-    <hr>
-    <p class="section">動作概要</p>
+          <h3>関連研究・製品</h3>
 
-    <p class="subsection">1. プロトコルを盗聴</p>
-    <p>Xサーバのとしてプロキシとして、ディスプレイ接続を転送します。リクエストPolyText8, PolyText16, ImageText16, ImageText8の内容から、表示文字列を推測します。</p>
+          <p><a href="http://www.taiyaki.org/pobox/nanashiki.html">七色</a>（Nanashiki）はEmacsのdabbrev-expand（dynamic abbreviation）を日本語の文書に<b>実用的に</b>適用できるようにして、「入力している文章の周辺の単語を検索し、予測候補として提示する機能」を実現しています。</p>
 
-    <p class="subsection">2. 読み文字列の取得</p>
-    <p><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">MeCab</a>を使用して形態素解析を行い、読み文字列と文節の区切りを取得します。</p>
+          <p><a href="http://www.taiyaki.org/doc/wiss2002/">句倉</a>（Kukura）はウェブブラウザ、端末エミュレータ、Emacsに表示した文字列を外部文書として蓄積し、それらの外部文書に含まれる文字列を予測候補として提示する機能を実現しています。</p>
 
-    <p class="subsection">3. 参照辞書への登録</p>
-    <p>表示文字列の先頭から文節を削りながら参照辞書に登録します。さらに、各文節をひとつずつ登録します。</p>
+          <p>auの携帯電話<a href="http://www.sanyo-keitai.com/html/au/w22sa/use/input.html">W22SA</a>（SANYO製）は「返信自動学習機能」を搭載しています。返信メール作成時に、もとのメールに含まれていた単語を予測変換の候補として利用できます。オムロンソフトウェアの<a href="http://www.omronsoft.co.jp/SP/mobile/advanced/indexv2.html">Advanced Wnn V2</a>に追加された形態素解析機能を利用しているようです。</p>
 
-    <!-- -->
-    <hr>
-    <p class="section">予測入力の候補の優先度</p>
-    <p>入力履歴は入力時のタイムスタンプを、出力履歴は出力時のタイムスタンプを保持しています。日本語XIMサーバは入力履歴、出力履歴に関わらず、タイムスタンプの新しい予測候補を優先します。そのため、参照したい文書を画面に表示するだけで、その表示している部分の内容が優先的に予測入力の候補となります。</p>
-    <p>また、日本語XIMサーバにはAutisticモードとReferenceモードがあり、Autisticモードのときは入力履歴だけを、Referenceモードのときは入力履歴と出力履歴の両方を使用します。ユーザがモードを切り替えることで、状況に適した予測入力ができるようになります。</p>
+          <p>七色はEmacs/POBoxで利用できますが、Emacsの世界で閉じてしまっています。</p>
 
-    <!-- -->
-    <hr>
-    <p class="section">既知の問題点</p>
-    <ul>
-      <li><i>On-The-Spot</i>方式のアプリケーションを盗聴すると、入力途中の文字列（前編集文字列）を出力履歴に登録してしまいます。</li>
-      <li>出力履歴（参照辞書）が早いペースでどんどん大きくなります。</li>
-      <li>箇条書を行の折り返しとして判断してしまいます。</li>
-      <li>日本語以外の2バイト文字を表示すると、文字化けした文字列を出力履歴に登録してしまいます。</li>
-      <li>アンチエイリアシングを用いて文字を描画するアプリケーション（PostScriptやPDFのビューワ、xdvi、<b>Xftを利用するもの</b>など）には無力です。</li>
-    </ul>
+          <p>句倉は文書を蓄積する方法をアプリケーションの種類毎に用意する必要があります。またウェブブラウザの場合、文書の一部を「閲覧」した場合でも、その文書全体から予測候補を生成するため、<b>ユーザが見ていない部分</b>の単語まで予測候補の対象になってしまいます。</p>
 
-    <hr>
+          <hr>
+          <h2>動作概要</h2>
+
+          <h3>1. プロトコルを盗聴</h3>
+
+          <p>Xサーバのとしてプロキシとして、ディスプレイ接続を転送します。リクエストPolyText8, PolyText16, ImageText16, ImageText8の内容から、表示文字列を推測します。</p>
+
+          <h3>2. 読み文字列の取得</h3>
+
+          <p><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">MeCab</a>を使用して形態素解析を行い、読み文字列と文節の区切りを取得します。</p>
+
+          <h3>3. 参照辞書への登録</h3>
+
+          <p>表示文字列の先頭から文節を削りながら参照辞書に登録します。さらに、各文節をひとつずつ登録します。</p>
+
+          <hr>
+          <h2>予測入力の候補の優先度</h2>
+
+          <p>入力履歴は入力時のタイムスタンプを、出力履歴は出力時のタイムスタンプを保持しています。日本語XIMサーバは入力履歴、出力履歴に関わらず、タイムスタンプの新しい予測候補を優先します。そのため、参照したい文書を画面に表示するだけで、その表示している部分の内容が優先的に予測入力の候補となります。</p>
+
+          <p>また、日本語XIMサーバにはAutisticモードとReferenceモードがあり、Autisticモードのときは入力履歴だけを、Referenceモードのときは入力履歴と出力履歴の両方を使用します。ユーザがモードを切り替えることで、状況に適した予測入力ができるようになります。</p>
+
+          <hr>
+          <h2>既知の問題点</h2>
+
+          <ul>
+            <li><i>On-The-Spot</i>方式のアプリケーションを盗聴すると、入力途中の文字列（前編集文字列）を出力履歴に登録してしまいます。</li>
+            <li>出力履歴（参照辞書）が早いペースでどんどん大きくなります。</li>
+            <li>箇条書を行の折り返しとして判断してしまいます。</li>
+            <li>日本語以外の2バイト文字を表示すると、文字化けした文字列を出力履歴に登録してしまいます。</li>
+            <li>アンチエイリアシングを用いて文字を描画するアプリケーション（PostScriptやPDFのビューワ、xdvi、<b>Xftを利用するもの</b>など）には無力です。</li>
+          </ul>
+        </section>
+      </div>
+      <div class="left-container" style="order: 1;">
+        <nav>
+          <ul>
+            <li><a href="index.html">Top</a></li>
+            <li><a href="news.html">News</a></li>
+            <li class="selected">Feature</li>
+            <li><a href="screenshot.html">Screenshot</a></li>
+            <li><a href="download.html">Download</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <footer>
+      <hr>
+      <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+    </footer>
 <!-- Created: Wed May  5 04:05:34 JST 2004 -->
 <!-- hhmts start -->
 Last modified: Fri Dec 24 06:27:20 JST 2004
 <!-- hhmts end -->
-	  </td>
-	</tr>
-      </tbody>
-    </table>
-    <table class="header" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="headerRight"><address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address></td>
-	</tr>
-      </tbody>
-    </table>
-    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    <script src="https://www.google-analytics.com/urchin.js" type="text/javascript">
     </script>
     <script type="text/javascript">
       _uacct = "UA-636163-1";
       urchinTracker();
     </script>
+    <amp-auto-ads type="adsense" data-ad-client="ca-pub-4691079535294206"></amp-auto-ads>
   </body>
 </html>

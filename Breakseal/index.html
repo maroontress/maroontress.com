@@ -1,163 +1,197 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
-    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Breakseal</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-4691079535294206",
+          enable_page_level_ads: true
+      });
+    </script>
   </head>
 
   <body>
-    <h1>Breakseal</h1>
+    <header>
+      <h1>Breakseal</h1>
+      <p>MIME対応の日本語MUA。</p>
+    </header>
+    <div class="ads">
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="fluid"
+        data-ad-layout-key="-i6-5+1o-29-3"
+        data-ad-client="ca-pub-4691079535294206"
+        data-ad-slot="9058592983"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    <nav class="inner-link">
+      <ul class="sans-selif">
+        <li><a href="#install">インストール</a></li>
+        <li><a href="#window">ウィンドウ</a></li>
+      </ul>
+    </nav>
+    <section>
+      <hr>
+      <h2><a name="install">インストール</a></h2>
 
-    <table align="right">
-      <tbody>
-	<tr>
-	  <td>
-<script type="text/javascript"><!--
-google_ad_client = "pub-4691079535294206";
-/* 160x600 White */
-google_ad_slot = "3143269512";
-google_ad_width = 160;
-google_ad_height = 600;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-	  </td>
-	</tr>
-      </tbody>
-    </table>
+      <h3>動作環境</h3>
 
-    <p>MIME対応の日本語MUA。</p>
+      <p>次のプラットフォームで動作を確認しました。</p>
 
-    <ul>
-      <li><a href="#install">インストール</a></li>
-      <li><a href="#window">ウィンドウ</a></li>
-    </ul>
+      <ul>
+        <li>FreeBSD 2.2.8, 4.3, 4.4</li>
+        <li>LASER5 Linux 6.2 (+ libmd)</li>
+      </ul>
 
-    <hr>
-    <h1><a name="install">インストール</a></h1>
+      <h3>必要なもの</h3>
 
-    <h2>動作環境</h2>
-    <p>次のプラットフォームで動作を確認しました。</p>
-    <ul>
-      <li>FreeBSD 2.2.8, 4.3, 4.4</li>
-      <li>LASER5 Linux 6.2 (+ libmd)</li>
-    </ul>
+      <ul>
+        <li><a href="http://www.penguin.cz/~mhi/libmd/">libmd</a>: FreeBSDでは不要です（標準でインストールされています）。</li>
+      </ul>
 
-    <h2>必要なもの</h2>
-    <ul>
-      <li><a href="http://www.penguin.cz/~mhi/libmd/">libmd</a>: FreeBSDでは不要です（標準でインストールされています）。</li>
-    </ul>
+      <h3>インストール方法</h3>
 
-    <h2>インストール方法</h2>
-
-<pre>
-% gzip -dc breakseal-<i>yyyymmdd</i>.tar.gz | tar xvf -
+      <div class="box">
+        <pre>% gzip -dc breakseal-<i>yyyymmdd</i>.tar.gz | tar xvf -
 % cd breakseal/
-% vi Imakefile <a href="#1">※1</a>
+% vi Imakefile <a href="#1">&dagger;</a>
 % xmkmf -a
 % make
 % make install
 % mkdir ~/.mailer
 % mkdir ~/.mailer/inbox
 % mkdir ~/.mailer/trash
-% mkdir ~/.mailer/sent
-</pre>
+% mkdir ~/.mailer/sent</pre>
+      </div>
 
-    <h2>リソース設定</h2>
+      <h3>リソース設定</h3>
 
-    <p><tt>Breakseal.ad</tt>の内容を<tt>~/.Xdefault</tt>に追加するか、リソースデータベース（<a href="#2">※2</a>）に追加します。</p>
+      <p><code>Breakseal.ad</code>の内容を<code>~/.Xdefault</code>に追加するか、リソースデータベース<a href="#2">&dagger;&dagger;</a>に追加します。</p>
 
-    <p>最低限、次のリソースは環境に合わせて設定する必要があります。</p>
-    <ul>
-      <li><tt>breakseal.catalog.deleteSpool</tt>: POP3サーバから新着メールを削除する場合は<tt>true</tt>を指定します。指定しない場合は<tt>false</tt>を指定したとみなし、サーバにメールを残したままにします。</li>
+      <p>最低限、次のリソースは環境に合わせて設定する必要があります。</p>
 
-      <li><tt>breakseal.scribble.smtpServer</tt>: SMTPサーバのホスト名。指定しない場合は「<tt>localhost</tt>」を使用します。</li>
+      <ul>
+        <li><code>breakseal.catalog.deleteSpool</code>: POP3サーバから新着メールを削除する場合は<code>true</code>を指定します。指定しない場合は<code>false</code>を指定したとみなし、サーバにメールを残したままにします。</li>
 
-      <li><tt>breakseal.scribble.mailFrom</tt>: 送信者（Fromヘッダ）を表す文字列。指定しない場合は「<i>ユーザ名</i><tt>@</tt><i>ホスト名</i>」を使用します。</li>
+        <li><code>breakseal.scribble.smtpServer</code>: SMTPサーバのホスト名。指定しない場合は「<code>localhost</code>」を使用します。</li>
 
-      <li><tt>breakseal.scribble.signatureFile</tt>: いわゆる署名ファイルのパスを指定します。</li>
-    </ul>
+        <li><code>breakseal.scribble.mailFrom</code>: 送信者（Fromヘッダ）を表す文字列。指定しない場合は「<i>ユーザ名</i><code>@</code><i>ホスト名</i>」を使用します。</li>
 
-    <h2>最初の実行（POP3サーバとアカウントの登録）</h2>
+        <li><code>breakseal.scribble.signatureFile</code>: いわゆる署名ファイルのパスを指定します。</li>
+      </ul>
 
-    <p>Breaksealを実行したときに<tt>~/.mailer/default</tt>が存在しない場合は、POP3サーバとアカウントを問い合わせてくるので、次のように入力します。</p>
+      <h3>最初の実行（POP3サーバとアカウントの登録）</h3>
 
-<pre>
-% breakseal
+      <p>Breaksealを実行したときに<code>~/.mailer/default</code>が存在しない場合は、POP3サーバとアカウントを問い合わせてくるので、次のように入力します。</p>
+
+      <div class="box">
+        <pre>% breakseal
 Server:<i>POP3サーバのホスト名</i>
 User:<i>POP3サーバのアカウント名</i>
-Password:<i>POP3サーバのパスワード</i> <a href="#3">※3</a>
-</pre>
+Password:<i>POP3サーバのパスワード</i> <a href="#3">&dagger;&dagger;&dagger;</a></pre>
+      </div>
 
-    <p>入力した情報は、<tt>~/.mailer/default</tt>に保存されます。このファイルの中身を他人に見られないように注意してください。情報を変更する場合は、このファイルを消してからBreaksealを実行して、再度入力してください。</p>
+      <p>入力した情報は、<code>~/.mailer/default</code>に保存されます。このファイルの中身を他人に見られないように注意してください。情報を変更する場合は、このファイルを消してからBreaksealを実行して、再度入力してください。</p>
 
-    <hr>
-    <h4><a name="1">※1</a> Imakefileの編集</h4>
-    <ul>
-      <li>デフォルトで<tt>~/bin</tt>にインストールされるようになっています。変更する場合は<tt>InstallBinDir</tt>をインストール先で定義します。</li>
-      <li>Kinput2を使用する場合は<tt>UseKinput2</tt>を定義してください。</li>
-      <li>libmdのインストール先を変更した場合は、<tt>MD5IncDir</tt>と<tt>MD5LibDir</tt>を適切に定義してください。</li>
-    </ul>
+      <div style="font-size: smaller">
+        <p><a name="1">&dagger;</a> Imakefileの編集</p>
+        <ul>
+          <li>デフォルトで<code>~/bin</code>にインストールされるようになっています。変更する場合は<code>InstallBinDir</code>をインストール先で定義します。</li>
+          <li>Kinput2を使用する場合は<code>UseKinput2</code>を定義してください。</li>
+          <li>libmdのインストール先を変更した場合は、<code>MD5IncDir</code>と<code>MD5LibDir</code>を適切に定義してください。</li>
+        </ul>
+      </div>
 
-    <h4><a name="2">※2</a> リソースデータベース</h4>
-    <p>xrdbでXサーバに登録したリソース。~/.xinitrcのなかでxrdb ~/.Xresourcesを実行して、Xサーバ起動時に登録する場合が多い。</p>
-    <p>通常、リソースデータベースが登録されている場合は~/.Xdefaultsは無視されます。そのため、xrdb ~/.Xdefaultsを実行してから~/.Xdefaultsを書き換えても、設定は反映されません。また、リソースデータベースはXサーバと関連付けられますが、~/.XdefaultsはXクライアントを実行しているホストと関連付けられます。設定が思い通りにならない場合は、これらの観点から調べると間違いに気付きやすいでしょう。</p>
+      <div style="font-size: smaller">
+        <p><a name="2">&dagger;&dagger;</a> リソースデータベース</p>
+        <p>xrdbでXサーバに登録したリソース。~/.xinitrcのなかでxrdb ~/.Xresourcesを実行して、Xサーバ起動時に登録する場合が多い。</p>
+        <p>通常、リソースデータベースが登録されている場合は~/.Xdefaultsは無視されます。そのため、xrdb ~/.Xdefaultsを実行してから~/.Xdefaultsを書き換えても、設定は反映されません。また、リソースデータベースはXサーバと関連付けられますが、~/.XdefaultsはXクライアントを実行しているホストと関連付けられます。設定が思い通りにならない場合は、これらの観点から調べると間違いに気付きやすいでしょう。</p>
+      </div>
 
-    <h4><a name="3">※3</a> パスワードの入力</h4>
-    <p>入力した文字はエコーバックされません。</p>
+      <div style="font-size: smaller">
+        <p><a name="3">&dagger;&dagger;&dagger;</a> パスワードの入力</p>
+        <p>入力した文字はエコーバックされません。</p>
+      </div>
 
-    <hr>
-    <h1><a name="window">ウィンドウ</a></h1>
+      <hr>
+      <h2><a name="window">ウィンドウ</a></h2>
 
-    <h2>キャビネットウィンドウ</h2>
+      <h3>キャビネットウィンドウ</h3>
 
-    <h2>フォルダウィンドウ</h2>
+      <h3>フォルダウィンドウ</h3>
 
-    <p>フォルダにあるメールの一覧が表示されます。メールを選択すると、そのメールを開封ウィンドウで表示します。Incorporateボタンを押すと、POP3サーバから新しいメールを取り込みます。</p>
+      <p>フォルダにあるメールの一覧が表示されます。メールを選択すると、そのメールを開封ウィンドウで表示します。Incorporateボタンを押すと、POP3サーバから新しいメールを取り込みます。</p>
 
-    <p>Scribbleボタン</p>
+      <p>Scribbleボタン</p>
 
-    <p><img src="FolderWindow.png"></p>
+      <div class="ads">
+        <img src="FolderWindow.png"/>
+      </div>
 
-    <h2>開封ウィンドウ</h2>
+      <h3>開封ウィンドウ</h3>
 
-    <p>左側のペインにパートの一覧が、右側のペインにパートの内容が表示されます。左側のペインでパートを選択すると、右側のペインにそのパートの内容が表示されます。</p>
+      <p>左側のペインにパートの一覧が、右側のペインにパートの内容が表示されます。左側のペインでパートを選択すると、右側のペインにそのパートの内容が表示されます。</p>
 
-    <p>Reply（返信）ボタンを押すと返信メールの作成ウィンドウを表示します。左側のペインで「テキストタイプのパート」を選択している場合のみ、返信ボタンを押すことができます。</p>
+      <p>Reply（返信）ボタンを押すと返信メールの作成ウィンドウを表示します。左側のペインで「テキストタイプのパート」を選択している場合のみ、返信ボタンを押すことができます。</p>
 
-    <p>Forward（転送）ボタンを押すと転送メールの作成ウィンドウを表示します。</p>
+      <p>Forward（転送）ボタンを押すと転送メールの作成ウィンドウを表示します。</p>
 
-    <p>Save（保存）ボタンを押すと保存ダイアログが表示されます。左側のペインで選択されているパートのみが保存されます。</p>
+      <p>Save（保存）ボタンを押すと保存ダイアログが表示されます。左側のペインで選択されているパートのみが保存されます。</p>
 
-    <p>Delete（消去）ボタンを押すとゴミ箱フォルダ（<tt>~/.mailer/trash</tt>）にメールを移動して、ウィンドウを閉じます。ただし、ゴミ箱フォルダのメールについては実際に消去します。</p>
+      <p>Delete（消去）ボタンを押すとゴミ箱フォルダ（<code>~/.mailer/trash</code>）にメールを移動して、ウィンドウを閉じます。ただし、ゴミ箱フォルダのメールについては実際に消去します。</p>
 
-    <p>Imitate（複製）ボタン</p>
+      <p>Imitate（複製）ボタン</p>
 
-    <p><img src="BreaksealWindow.png"></p>
+      <div class="ads">
+        <img src="BreaksealWindow.png"/>
+      </div>
 
-    <h2>メール作成ウィンドウ</h2>
+      <h2>メール作成ウィンドウ</h2>
 
-    <p>上から順に、宛先一覧ペイン、題名編集ペイン、本文編集ペイン、同封一覧ペイン、送信ボタンが表示されます。宛先を追加するには宛先一覧ペインのなかの「新規追加」を選択します。宛先一覧ペインの宛先を選択すると、その宛先を変更、あるいは削除することができます。</p>
+      <p>上から順に、宛先一覧ペイン、題名編集ペイン、本文編集ペイン、同封一覧ペイン、送信ボタンが表示されます。宛先を追加するには宛先一覧ペインのなかの「新規追加」を選択します。宛先一覧ペインの宛先を選択すると、その宛先を変更、あるいは削除することができます。</p>
 
-    <p>添付ファイルを同封するには同封一覧ペインのなかの「新規追加」を選択します。ファイル選択ダイアログが表示されるので、ファイルを選択します。同封一覧ペインのファイルを選択すると、そのファイルを変更、あるいは削除することができます。</p>
+      <p>添付ファイルを同封するには同封一覧ペインのなかの「新規追加」を選択します。ファイル選択ダイアログが表示されるので、ファイルを選択します。同封一覧ペインのファイルを選択すると、そのファイルを変更、あるいは削除することができます。</p>
 
-    <p>メールが完成したら、Send（送信）ボタンを押します。</p>
+      <p>メールが完成したら、Send（送信）ボタンを押します。</p>
 
-    <p><img src="ScribbleWindow.png"></p>
-
-    <hr>
-    <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+      <div class="ads">
+        <img src="ScribbleWindow.png"/>
+      </div>
+    </section>
+    <footer>
+      <hr>
+      <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+    </footer>
 <!-- Created: Mon Nov 26 09:07:55 JST 2001 -->
 <!-- hhmts start -->
 Last modified: Sun May 11 09:33:47 JST 2008
 <!-- hhmts end -->
-    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+
+    <div class="ads">
+      <ins class="adsbygoogle"
+        style="display:block; text-align:center;"
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-4691079535294206"
+        data-ad-slot="9937394537"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <script src="https://www.google-analytics.com/urchin.js" type="text/javascript">
     </script>
     <script type="text/javascript">
       _uacct = "UA-636163-1";
       urchinTracker();
     </script>
+    <amp-auto-ads type="adsense" data-ad-client="ca-pub-4691079535294206"></amp-auto-ads>
   </body>
 </html>

@@ -1,589 +1,458 @@
-<!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Test Funnel</title>
-    <link rel="stylesheet" type="text/css" href="look.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Manual | Test Funnel</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-4691079535294206",
+          enable_page_level_ads: true
+      });
+    </script>
   </head>
   <body>
-    <table class="header" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="headerLeft">Maroontress Fast Software</td>
-	  <td class="headerRight">Test Funnel</td>
-	</tr>
-      </tbody>
-    </table>
-    <table class="guide" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="guideMenu">
-	    <table width="160" cellpadding="0" cellspacing="0" border="0">
-	      <tbody>
-                <tr><td class="unselected"><a class="menu" href="index.html">Top</a></td></tr>
-                <tr><td class="unselected"><a class="menu" href="download.html">Download</a></td></tr>
-                <tr><td class="selected">Manual</td></tr>
-                <tr><td class="unselected"><a class="menu" href="reference.html">Reference</a></td></tr>
-                <tr><td class="unselected"><a class="menu" href="relnotes.html">Release&nbsp;Notes</a></td></tr>
-                <tr><td class="unselected"><a class="menu" href="bugs.html">Bugs</a></td></tr>
-	      </tbody>
-	    </table>
-<script type="text/javascript"><!--
-google_ad_client = "pub-4691079535294206";
-/* 160x90L Mad Angler */
-google_ad_slot = "5426136155";
-google_ad_width = 160;
-google_ad_height = 90;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-<script type="text/javascript"><!--
-google_ad_client = "pub-4691079535294206";
-/* 160x600 Mad Angler */
-google_ad_slot = "4451171887";
-google_ad_width = 160;
-google_ad_height = 600;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-	  </td>
-	  <td class="guideSubMenu">
-	    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-	      <tbody>
-		<tr>
-		  <td class="guideText">
-		    <table align="right">
-		      <tbody>
-			<tr>
-			  <td>
-<script type="text/javascript"><!--
-  amazon_ad_tag = "sanchappikeio-22";
-  amazon_ad_width = "180";
-  amazon_ad_height = "150";
-  amazon_ad_logo = "hide";
-  amazon_ad_link_target = "new";
-  amazon_ad_border = "hide";
-  amazon_color_border = "FFFFFF";//--></script>
-<script type="text/javascript" src="http://www.assoc-amazon.jp/s/ads.js">
-</script>
-			  </td>
-			</tr>
-		      </tbody>
-		    </table>
-    <p class="section">Manual</p>
-    <ul>
-      <li><a href="#writing_test_class">テストクラスの作成（テストの書き方）</a></li>
-      <li><a href="#funnel_usage">ファンネルの使用方法</a></li>
-      <li><a href="#auditor_usage">Auditor（コンソールサーバ）の使用方法</a></li>
-      <li><a href="#shared_library_coverage">共有ライブラリのカバレッジ</a></li>
-      <li><a href="#limitation">制限事項</a></li>
-    </ul>
+    <div class="container">
+      <div class="main-container" style="order: 2;">
+        <header>
+          <h1>Test Funnel</h1>
+        </header>
+        <section>
+          <h2>Manual</h2>
+          <nav class="inner-link">
+            <ul class="sans-selif">
+              <li><a href="#writing_test_class">テストクラスの作成（テストの書き方）</a></li>
+              <li><a href="#funnel_usage">ファンネルの使用方法</a></li>
+              <li><a href="#auditor_usage">Auditor（コンソールサーバ）の使用方法</a></li>
+              <li><a href="#shared_library_coverage">共有ライブラリのカバレッジ</a></li>
+              <li><a href="#limitation">制限事項</a></li>
+            </ul>
+          </nav>
 
-    <hr>
-    <!-- -->
-    <a name="writing_test_class"></a>
-    <p class="section">テストクラスの作成（テストの書き方）</p>
+          <hr>
+          <a name="writing_test_class"></a>
+          <h2>テストクラスの作成（テストの書き方）</h2>
 
-    <p>ターゲットをテストするテストクラスの作成方法を説明します。テストクラスはターゲットのAPIとTest Funnel APIを使用する共有ライブラリです。Test Funnel APIの詳細は<a href="api/index.html">APIリファレンス</a>を参照してください。</p>
+          <p>ターゲットをテストするテストクラスの作成方法を説明します。テストクラスはターゲットのAPIとTest Funnel APIを使用する共有ライブラリです。Test Funnel APIの詳細は<a href="api/index.html">APIリファレンス</a>を参照してください。</p>
 
-    <!-- -->
-    <p class="subsection">マクロTF_AUDIT</p>
+          <h3>マクロTF_AUDIT</h3>
 
-    <p>テストメソッドの書き方には2つのスタイルがあります。最初にマクロ<tt>TF_AUDIT</tt>を使用する書き方を説明します。<tt>TF_AUDIT</tt>を使ってテストメソッドを記述すると、次のようになります。</p>
-    <p class="elementInclude">
-<tt>
-#include &lt;tf/TestFunnel.h&gt;
-<br>
+          <p>テストメソッドの書き方には2つのスタイルがあります。最初にマクロ<code>TF_AUDIT</code>を使用する書き方を説明します。<code>TF_AUDIT</code>を使ってテストメソッドを記述すると、次のようになります。</p>
+
+          <div class="box">
+<pre>#include &lt;tf/TestFunnel.h&gt;
 #include &lt;<i>target.h</i>&gt;
-<br>
 #include "test.h"
-<br>
 
-<br>
-void <span class="em">TF_AUDIT</span> <i>test_method_1</i>(void)
-<br>
+void <span class="greenyellow">TF_AUDIT</span> <i>test_method_1</i>(void)
 {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
+    ...
 }
-<br>
 
-<br>
-void <span class="em">TF_AUDIT</span> <i>test_method_2</i>(void)
-<br>
+void <span class="greenyellow">TF_AUDIT</span> <i>test_method_2</i>(void)
 {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
+    ...
 }
-<br>
 
-<br>
-...
-<br>
-</tt>
-    </p>
-    <p><tt><i>target.h</i></tt>はターゲットのヘッダファイルになります。<tt>test.h</tt>には次のようなテストメソッドのプロトタイプ宣言を記述します。</p>
-    <p class="elementInclude">
-<tt>
-void TF_AUDIT <i>test_method_1</i>(void);
-<br>
-void TF_AUDIT <i>test_method_2</i>(void);
-<br>
-</tt>
-    </p>
-    <p><tt>test.h</tt>に相当するヘッダファイルを（何かの仕様から）自動的に生成するような状況では、このスタイルでテストメソッドを記述するとよいでしょう。そうでなければ、次に説明するマクロ<tt>TF_METHOD</tt>を使用するスタイルの方が簡単です。</p>
+...</pre>
+          </div>
 
-    <!-- -->
-    <p class="subsection">マクロTF_METHOD</p>
+          <p><code><i>target.h</i></code>はターゲットのヘッダファイルになります。<code>test.h</code>には次のようなテストメソッドのプロトタイプ宣言を記述します。</p>
 
-    <p>続いて、マクロ<tt>TF_METHOD</tt>を使用する書き方を説明します。このマクロを使ってテストメソッドを記述すると、次のようになります。</p>
-    <p class="elementInclude">
-<tt>
-#include &lt;tf/TestFunnel.h&gt;
-<br>
+          <div class="box">
+            <pre>void TF_AUDIT <i>test_method_1</i>(void);
+void TF_AUDIT <i>test_method_2</i>(void);</pre>
+          </div>
+
+          <p><code>test.h</code>に相当するヘッダファイルを（何かの仕様から）自動的に生成するような状況では、このスタイルでテストメソッドを記述するとよいでしょう。そうでなければ、次に説明するマクロ<code>TF_<wbr>METHOD</code>を使用するスタイルの方が簡単です。</p>
+
+          <h3>マクロTF_METHOD</h3>
+
+          <p>続いて、マクロ<code>TF_METHOD</code>を使用する書き方を説明します。このマクロを使ってテストメソッドを記述すると、次のようになります。</p>
+
+          <div class="box">
+            <pre>#include &lt;tf/TestFunnel.h&gt;
 #include &lt;<i>target.h</i>&gt;
-<br>
 
-<br>
-<span class="em">TF_METHOD</span>(<i>test_method_1</i>) {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
+<span class="greenyellow">TF_METHOD</span>(<i>test_method_1</i>) {
+    ...
 }
-<br>
 
-<br>
-<span class="em">TF_METHOD</span>(<i>test_method_2</i>) {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
+<span class="greenyellow">TF_METHOD</span>(<i>test_method_2</i>) {
+    ...
 }
-<br>
 
-<br>
-...
-<br>
-</tt>
-    </p>
-    <p>以降ではマクロ<tt>TF_METHOD</tt>を使用して説明します。</p>
+...</pre>
+          </div>
 
-    <!-- -->
-    <p class="subsection">テストメソッドの規則</p>
+          <p>以降ではマクロ<code>TF_METHOD</code>を使用して説明します。</p>
 
-    <p>テストメソッドは引数なし、戻り値なしの関数として記述します。テストを成功、失敗させる方法を順に説明します。</p>
+          <h3>テストメソッドの規則</h3>
 
-    <!-- -->
-    <p class="subsubsection">テストを成功させる</p>
+          <p>テストメソッドは引数なし、戻り値なしの関数として記述します。テストを成功、失敗させる方法を順に説明します。</p>
 
-    <p>テストメソッドが呼び出しから戻ると、そのテストメソッドのテストは成功したことになります。次に示すテストメソッド<tt>never_fail</tt>は常に成功します。</p>
-    <p class="elementInclude">
-<tt>
-TF_METHOD(never_fail) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;/* なにもしない */<br>
-}<br>
-</tt>
-    </p>
+          <h4>テストを成功させる</h4>
 
-    <!-- -->
-    <p class="subsubsection">テストを失敗させる</p>
+          <p>テストメソッドが呼び出しから戻ると、そのテストメソッドのテストは成功したことになります。次に示すテストメソッド<code>never_fail</code>は常に成功します。</p>
 
-    <p>テストを明示的に失敗させるには、関数<tt>tf_fail()</tt>を使用します（実際には<tt>tf_fail()</tt>はマクロですが、ここではあまり気にする必要はありません）。次に示すテストメソッド<tt>always_fail</tt>は常に失敗します。</p>
-    <p class="elementInclude">
-<tt>
-TF_METHOD(always_fail) {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="em">tf_fail</span>("this method always fails.");
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;/* NOTREACHED */
-<br>
-}
-<br>
-</tt>
-    </p>
-    <p>このテストを実行すると、<tt>tf_fail()</tt>の引数の文字列とスタックトレースがコンソールに出力されます。また、<tt>tf_fail()</tt>の呼び出しは戻りません。</p>
+          <div class="box">
+            <pre>TF_METHOD(never_fail) {
+    /* なにもしない */
+}</pre>
+          </div>
 
-    <!-- -->
-    <p class="subsubsection">条件が成立しないときテストを失敗させる</p>
+          <h4>テストを失敗させる</h4>
 
-    <p>ある条件式が成立しない場合にテストを失敗させるには、関数<tt>tf_assert()</tt>を使用します（これも実際にはマクロです）。次に例を示します。</p>
+          <p>テストを明示的に失敗させるには、関数<wbr><code>tf_fail()</code>を使用します（実際には<code>tf_fail()</code>はマクロですが、ここではあまり気にする必要はありません）。次に示すテストメソッド<code>always_fail</code>は常に失敗します。</p>
 
-    <p class="elementInclude">
-<tt>
-TF_METHOD(test_method_a) {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="em">tf_assert</span>(<i>条件式</i>);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
-}
-<br>
-</tt>
-    </p>
-    <p>これと等価のテストを<tt>tf_fail()</tt>を使用して記述すると、次のようになります。</p>
-    <p class="elementInclude">
-<tt>
-TF_METHOD(test_method_b) {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;if (!(<i>条件式</i>)) {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="em">tf_fail</span>("<i>条件式</i>");
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
-}
-<br>
-</tt>
-    </p>
-    <p>このことからわかるように、<tt>tf_assert()</tt>の引数の条件式が偽の場合、条件式とスタックトレースがコンソールに出力されます（呼び出しも戻りません）。</p>
+          <div class="box">
+            <pre>TF_METHOD(always_fail) {
+    <span class="greenyellow">tf_fail</span>("this method always fails.");
+    /* NOTREACHED */
+}</pre>
+          </div>
 
-    <!-- -->
-    <p class="subsection">前処理と後処理</p>
+          <p>このテストを実行すると、<code>tf_fail()</code>の引数の文字列とスタックトレースがコンソールに出力されます。また、<code>tf_fail()</code>の呼び出しは戻りません。</p>
 
-    <p>テストクラスとなる共有ライブラリで関数<tt>tf_initialize()</tt>を定義しておくと、ファンネルはテストメソッドを呼び出す直前に<tt>tf_initialize()</tt>を呼び出します。同様に、関数<tt>tf_finalize()</tt>を定義しておくと、テストメソッドを呼び出した直後に<tt>tf_finalize()</tt>を呼び出します（ただし、テストメソッドが失敗した場合は<tt>tf_finalize()</tt>を呼び出しません）。</p>
-    <p>これらの関数は、次のような引数なし、戻り値なしの関数でなければなりません。</p>
-    <p class="elementInclude">
-<tt>
-void tf_initialize(void)<br>
-{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...<br>
-}<br>
-<br>
-void tf_finalize(void)<br>
-{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...<br>
-}<br>
-</tt>
-    </p>
+          <h4>条件が成立しないときテストを失敗させる</h4>
 
-    <!-- -->
-    <p class="subsection">テストの説明</p>
+          <p>ある条件式が成立しない場合にテストを失敗させるには、関数<code>tf_assert()</code>を使用します（これも実際にはマクロです）。次に例を示します。</p>
 
-    <p>テストクラスとなる共有ライブラリで定数文字列<tt>tf_description[]</tt>を次のように定義しておくと、ファンネルやコンソールサーバがテストクラスの説明として、定義した文字列を表示するようになります。</p>
-    <p class="elementInclude">
-<tt>
-const char <span class="em">tf_description</span>[] = "<i>テストクラスの説明</i>";
-<br>
-</tt>
-    </p>
-    <p>この文字列はテストに影響しませんが、定義しておくとテストの理解に役立ちます。</p>
+          <div class="box">
+            <pre>TF_METHOD(test_method_a) {
+    ...
+    <span class="greenyellow">tf_assert</span>(<i>条件式</i>);
+    ...
+}</pre>
+      </div>
 
-    <!-- -->
-    <p class="subsection">メモリリークの許可</p>
+      <p>これと等価のテストを<code>tf_fail()</code>を使用して記述すると、次のようになります。</p>
+      <div class="box">
+          <pre>TF_METHOD(test_method_b) {
+    ...
+    if (!(<i>条件式</i>)) {
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="greenyellow">tf_fail</span>("<i>条件式</i>");
+    }
+    ...
+}</pre>
+          </div>
 
-    <p>ライブラリの初期化の関数など、内部的にメモリを確保してプールするものがあります。こうしたAPIをテストから呼び出すと、メモリリークが起きているように見えてしまいます。<tt>tf_permitMemoryLeak()</tt>を使用して、そのような見かけ上のメモリリークをファンネルが無視するように指示することができます。</p>
-    <p>次のように関数<tt>tf_permitMemoryLeak()</tt>を使用すると、引数に指定した関数を実行している間に割り当てられたメモリは、解放されなくてもメモリリークとして報告されなくなります。</p>
-    <p class="elementInclude">
-<tt>
-static void func(void)
-<br>
+          <p>このことからわかるように、<code>tf_assert()</code>の引数の条件式が偽の場合、条件式とスタックトレースがコンソールに出力されます（呼び出しも戻りません）。</p>
+
+          <h3>前処理と後処理</h3>
+
+          <p>テストクラスとなる共有ライブラリで関数<wbr><code>tf_initialize()</code>を定義しておくと、ファンネルはテストメソッドを呼び出す直前に<wbr><code>tf_initialize()</code>を呼び出します。同様に、関数<wbr><code>tf_finalize()</code>を定義しておくと、テストメソッドを呼び出した直後に<wbr><code>tf_finalize()</code>を呼び出します（ただし、テストメソッドが失敗した場合は<wbr><code>tf_finalize()</code>を呼び出しません）。</p>
+
+          <p>これらの関数は、次のような引数なし、戻り値なしの関数でなければなりません。</p>
+          <div class="box">
+            <pre>void <span class="greenyellow">tf_initialize</span>(void)
 {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;/* この関数から割り当てたメモリは解放しなくてもメモリリークにはならない */
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
+    ...
 }
-<br>
 
-<br>
+void <span class="greenyellow">tf_finalize</span>(void)
+{
+    ...
+}</pre>
+          </div>
+
+          <h3>テストの説明</h3>
+
+          <p>テストクラスとなる共有ライブラリで定数文字列<wbr><code>tf_description[]</code>を次のように定義しておくと、ファンネルやコンソールサーバがテストクラスの説明として、定義した文字列を表示するようになります。</p>
+
+          <div class="box">
+            <pre>const char <span class="greenyellow">tf_description</span>[] = "<i>テストクラスの説明</i> ";</pre>
+          </div>
+
+          <p>この文字列はテストに影響しませんが、定義しておくとテストの理解に役立ちます。</p>
+
+          <h3>メモリリークの許可</h3>
+
+          <p>ライブラリの初期化の関数など、内部的にメモリを確保してプールするものがあります。こうしたAPIをテストから呼び出すと、メモリリークが起きているように見えてしまいます。<wbr><code>tf_permitMemoryLeak()</code>を使用して、そのような見かけ上のメモリリークをファンネルが無視するように指示することができます。</p>
+
+          <p>次のように関数<code>tf_permitMemoryLeak()</code>を使用すると、引数に指定した関数を実行している間に割り当てられたメモリは、解放されなくてもメモリリークとして報告されなくなります。</p>
+
+          <div class="box">
+            <pre>static void func(void)
+{
+    /*
+      この関数から割り当てたメモリは解放しなくても
+      メモリリークにはならない
+    */
+    ...
+}
+
 TF_METHOD(test_method) {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="em">tf_permitMemoryLeak</span>(func);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
-}
-<br>
-</tt>
-    </p>
-    <p>この関数は再帰的に使用することはできません。つまり、<tt>tf_permitMemoryLeak()</tt>の引数に指定した関数から、<tt>tf_permitMemoryLeak()</tt>を呼び出さないでください。</p>
+    ...
+    <span class="greenyellow">tf_permitMemoryLeak</span>(func);
+    ...
+}</pre>
+          </div>
 
-    <!-- -->
-    <p class="subsection">スタックトレースの表示</p>
+          <p>この関数は再帰的に使用することはできません。つまり、<code>tf_permitMemoryLeak()</code>の引数に指定した関数から、<code>tf_permitMemoryLeak()</code>を呼び出さないでください。</p>
 
-    <p>次のように関数<tt>tf_printStackTrace()</tt>を使用して、任意の場所でスタックトレースをコンソールに表示することができます。</p>
-    <p class="elementInclude">
-<tt>
-static void common_test()
-<br>
+          <h3>スタックトレースの表示</h3>
+
+          <p>次のように関数<code>tf_printStackTrace()</code>を使用して、任意の場所でスタックトレースをコンソールに表示することができます。</p>
+
+          <div class="box">
+            <pre>static void common_test()
 {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="em">tf_printStackTrace</span>();
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
+    ...
+    <span class="greenyellow">tf_printStackTrace</span>();
+    ...
 }
-<br>
 
-<br>
 TF_METHOD(test_method_c) {
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;common_test();
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;...
-<br>
-}
-<br>
-</tt>
-    </p>
-    <p>この関数はテストに影響しません。主にテストのデバッグに使用します。</p>
+    ...
+    common_test();
+    ...
+}</pre>
+          </div>
 
-    <p>注意: <a href="http://sourceware.org/bugzilla/show_bug.cgi?id=868">GNU Binutilsのバグ</a>のため、GNU Binutils 2.18またはそれ以前のバージョンを利用している場合、このメソッドを使用するとメモリリークが発生します。</p>
+          <p>この関数はテストに影響しません。主にテストのデバッグに使用します。</p>
 
-    <hr>
-    <!-- -->
-    <a name="funnel_usage"></a>
-    <p class="section">ファンネルの使用方法</p>
+          <p>注意: <a href="http://sourceware.org/bugzilla/show_bug.cgi?id=868">GNU Binutilsのバグ</a>のため、GNU Binutils 2.18またはそれ以前のバージョンを利用している場合、このメソッドを使用するとメモリリークが発生します。</p>
 
-    <p>ファンネルの動作モードには、単独で動作するスタンドアロンモードと、コンソールサーバと接続するクライアントモードがあります。起動方法の詳細は<a href="reference.html#funnel">リファレンス</a>を参照してください。</p>
+          <hr>
+          <a name="funnel_usage"></a>
+          <h2>ファンネルの使用方法</h2>
 
-    <p class="subsection">スタンドアロンモード</p>
+          <p>ファンネルの動作モードには、単独で動作するスタンドアロンモードと、コンソールサーバと接続するクライアントモードがあります。起動方法の詳細は<a href="reference.html#funnel">リファレンス</a>を参照してください。</p>
 
-    <p>スタンドアロン（コンソールサーバなし）でファンネルを実行する場合の使用方法を説明します。</p>
+          <h3>スタンドアロンモード</h3>
 
-    <p>次のようにコマンドラインにターゲットとテストの共有ライブラリを指定して<tt>funnel</tt>コマンドを実行します。</p>
-    <p class="elementInclude">
-<tt>
-% funnel <i>libTarget.so</i> -s <i>libTest1.so</i> <i>libTest2.so</i> ...
-</tt>
-    </p>
-    <p>ターゲットが依存するライブラリ（またはそのスタブ）がある場合は、次のようにターゲットと依存するライブラリをコロンで区切って指定します。</p>
-    <p class="elementInclude">
-<tt>
-% funnel <i>libStub1.so</i>:<i>libStub2.so</i>:...:<i>libTarget.so</i> -s <i>libTest1.so</i> ...
-</tt>
-    </p>
+          <p>スタンドアロン（コンソールサーバなし）でファンネルを実行する場合の使用方法を説明します。</p>
 
-    <p>どちらの場合もファンネルはすべてのテストを順番に実行します。すべてのテストに成功した場合はステータスコード0で終了します。そうではなく、テストメソッドの呼び出しが成功しなかった場合、その時点でファンネルはテストを中止して、ステータスコード1で終了します。</p>
+          <p>次のようにコマンドラインにターゲットとテストの共有ライブラリを指定して<code>funnel</code>コマンドを実行します。</p>
 
-    <p>ファンネルに<tt>-m</tt>オプションを追加指定することで、テストに成功したあと、さらにメモリリークを検出するようになります。メモリリークが検出された場合は、テストが失敗したときと同様に、その時点でファンネルはテストを中止して、ステータスコード1で終了します。</p>
+          <div class="box">
+            <pre>% funnel <i>libTarget.so</i> -s <i>libTest1.so</i> <i>libTest2.so</i> ...</pre>
+          </div>
 
-    <p class="subsection">クライアントモード</p>
+          <p>ターゲットが依存するライブラリ（またはそのスタブ）がある場合は、次のようにターゲットと依存するライブラリをコロンで区切って指定します。</p>
 
-    <p>コンソールサーバに接続してファンネルを実行する場合の使用方法を説明します。</p>
+          <div class="box">
+            <pre>% funnel <i>libStub1.so</i>:<i>libStub2.so</i>:...:<i>libTarget.so</i> -s <i>libTest1.so</i> ...</pre>
+          </div>
 
-    <p>まず次のようにAuditor（コンソールサーバ）を実行します。</p>
-    <p class="elementInclude">
-<tt>
-% auditor &amp;<br>
-</tt>
-    </p>
-    <p>次のようなAuditorのサーバウィンドウが表示されます（<a href="#auditor_usage">Auditorの使用方法</a>は後述します）。</p>
-    <img src="images/auditor-server-window.png">
+          <p>どちらの場合もファンネルはすべてのテストを順番に実行します。すべてのテストに成功した場合はステータスコード0で終了します。そうではなく、テストメソッドの呼び出しが成功しなかった場合、その時点でファンネルはテストを中止して、ステータスコード1で終了します。</p>
 
-    <p>次にファンネルを実行します（<tt>-s</tt>オプションを外す以外はスタンドアロンモードの場合と同じです）。</p>
-    <p class="elementInclude">
-<tt>
-% funnel <i>libTarget.so</i> <i>libTest1.so</i> <i>libTest2.so</i> ...
-</tt>
-    </p>
+          <p>ファンネルに<code>-m</code>オプションを追加指定することで、テストに成功したあと、さらにメモリリークを検出するようになります。メモリリークが検出された場合は、テストが失敗したときと同様に、その時点でファンネルはテストを中止して、ステータスコード1で終了します。</p>
 
-    <p>コンソールサーバが動作しているホストとファンネルが動作するホストが異なる場合は、次のように<tt>-d</tt>オプションにホスト名を指定してから、ファンネルを実行します。</p>
-    <p class="elementInclude">
-<tt>
-% funnel <i>libTarget.so</i> -d <i>hostname</i> <i>libTest1.so</i> ...
-</tt>
-    </p>
+          <h3>クライアントモード</h3>
 
-    <p>ファンネルに<tt>-m</tt>オプションを追加指定することで、さらにメモリリークの検出を有効にします。</p>
+          <p>コンソールサーバに接続してファンネルを実行する場合の使用方法を説明します。</p>
 
-    <p>Auditorが動作しているホストに、次のようなコンソールウィンドウが表示されます。以後はこのコンソールウィンドウからファンネルを操作します。</p>
-    <img src="images/auditor-console-window.png">
+          <p>まず次のようにAuditor（コンソールサーバ）を実行します。</p>
 
-    <hr>
-    <!-- -->
-    <a name="auditor_usage"></a>
-    <p class="section">Auditor（コンソールサーバ）の使用方法</p>
+          <div class="box">
+            <pre>% auditor &amp;</pre>
+          </div>
 
-    <p>Auditorは<b>サーバウィンドウ</b>と、ファンネルとの接続毎に生成される<b>コンソールウィンドウ</b>で構成されます。起動方法の詳細は<a href="reference.html#auditor">リファレンス</a>を参照してください。</p>
+          <p>次のようなAuditorのサーバウィンドウが表示されます（<a href="#auditor_usage">Auditorの使用方法</a>は後述します）。</p>
 
-    <p class="subsection">サーバウィンドウ</p>
-    <table align="right">
-      <tbody>
-	<tr>
-	  <td><img src="images/auditor-server-window.png"></td>
-	</tr>
-	<tr>
-	  <td class="caption">サーバウィンドウの例</td>
-	</tr>
-      </tbody>
-    </table>
-    <p>サーバウィンドウはメニューバーだけで構成されています。</p>
+          <div style="text-align: center;">
+            <img src="images/auditor-server-window.png">
+          </div>
 
-    <p class="subsubsection">メニューバー</p>
-    <p>メニューバーには「File」のメニューがあります。Fileメニューには次の項目があります。</p>
+          <p>次にファンネルを実行します（<code>-s</code>オプションを外す以外はスタンドアロンモードの場合と同じです）。</p>
 
-    <dl class="box">
-      <dt>Exir</dt>
-      <dd>Auditorを終了します。接続しているファンネルはすべて終了します。</dd>
-    </dl>
+          <div class="box">
+            <pre>% funnel <i>libTarget.so</i> <i>libTest1.so</i> <i>libTest2.so</i> ...</pre>
+          </div>
 
-    <p class="subsection">コンソールウィンドウ</p>
-    <p>コンソールウィンドウは左側にクラスペイン、右側にメソッドペインと、上部にメニューバーを備えています。ウィンドウのタイトルに、接続しているファンネルのホスト名またはIPアドレスを表示します。</p>
+          <p>コンソールサーバが動作しているホストとファンネルが動作するホストが異なる場合は、次のように<code>-d</code>オプションにホスト名を指定してから、ファンネルを実行します。</p>
 
-    <table align="center">
-      <tbody>
-	<tr>
-	  <td><img src="images/auditor-console-window.png"></td>
-	</tr>
-	<tr>
-	  <td class="caption">コンソールウィンドウの例</td>
-	</tr>
-      </tbody>
-    </table>
+          <div class="box">
+            <pre>% funnel <i>libTarget.so</i> -d <i>hostname</i> <i>libTest1.so</i> ...</pre>
+          </div>
 
-    <p class="subsubsection">クラスペイン</p>
-    <table align="right">
-      <tbody>
-	<tr>
-	  <td><img src="images/auditor-classpane-popupmenu.png"></td>
-	</tr>
-	<tr>
-	  <td class="caption">クラスペインとポップアップメニュー</td>
-	</tr>
-      </tbody>
-    </table>
-    <p>コンソールウィンドウの左側のペインは、テストクラスの一覧を表示します。テストクラスをクリックすると、メソッドペインの項目をそのテストクラスで絞り込むことができます。すべてのテストクラスを表示するには「All Classes」をクリックします。</p>
-    <p>クラスペインでテストクラスを選択してからクラスペインを右クリックすると、ポップアップメニューを表示します。ポップアップメニューの「Property」を選択すると、クラスペインで選択されているテストクラスの<a href="#property_dialog">プロパティダイアログ</a>を表示します。</p>
+          <p>ファンネルに<code>-m</code>オプションを追加指定することで、さらにメモリリークの検出を有効にします。</p>
 
-    <p class="subsubsection">メソッドペイン</p>
-    <p>クラスペインで絞り込まれたテストメソッドの一覧を表示します。メソッド一覧はテーブル形式で、左からチェックボックス、クラス、メソッド、ステータスの順にカラムが並びます。各カラムの示す内容は次のとおりです。</p>
+          <p>Auditorが動作しているホストに、次のようなコンソールウィンドウが表示されます。以後はこのコンソールウィンドウからファンネルを操作します。</p>
 
-    <dl class="box">
-      <dt>チェックボックス</dt>
-      <dd>チェックのあるテストメソッドはテストの対象であることを示します。クリックすることで状態を切り替えることができます。</dd>
+          <div class="ads">
+            <img class="fit" src="images/auditor-console-window.png">
+          </div>
 
-      <dt>クラス</dt>
-      <dd>テストクラス名（共有ライブラリ名）を表示します。</dd>
+          <hr>
+          <a name="auditor_usage"></a>
+          <h2>Auditor（コンソールサーバ）の使用方法</h2>
 
-      <dt>メソッド</dt>
-      <dd>テストメソッド名を表示します。</dd>
+          <p>Auditorは<b>サーバウィンドウ</b>と、ファンネルとの接続毎に生成される<b>コンソールウィンドウ</b>で構成されます。起動方法の詳細は<a href="reference.html#auditor">リファレンス</a>を参照してください。</p>
 
-      <dt>ステータス</dt>
-      <dd>テストの状態を表示します。</dd>
-    </dl>
+          <h3>サーバウィンドウ</h3>
 
-    <p>次にテストの状態の一覧を示します。</p>
+          <div class="cover-image">
+            <div style="text-align: center">
+              <img src="images/auditor-server-window.png"><br>
+              <div style="width: 123px; display: inline-block">
+                <small>サーバウィンドウの例</small>
+              </div>
+            </div>
+          </div>
 
-    <dl class="box">
-      <dt>READY</dt>
-      <dd>テストはまだ実行していません。</dd>
+          <p>サーバウィンドウはメニューバーだけで構成されています。</p>
 
-      <dt>RUNNING</dt>
-      <dd>テストは実行中です。</dd>
+          <h4>メニューバー</h4>
 
-      <dt>OK</dt>
-      <dd>テストは成功しました。</dd>
+          <p>メニューバーには「File」のメニューがあります。Fileメニューには次の項目があります。</p>
 
-      <dt>NG</dt>
-      <dd>テストは失敗しました。</dd>
+          <dl class="box">
+              <dt>Exit</dt>
+              <dd>Auditorを終了します。接続しているファンネルはすべて終了します。</dd>
+          </dl>
 
-      <dt>LEAK</dt>
-      <dd>テストは成功しましたが、メモリリークが検出されました（<tt>funnel</tt>に<tt>-m</tt>オプションを指定した場合のみ）。</dd>
+          <h3>コンソールウィンドウ</h3>
 
-      <dt>TIMEOUT</dt>
-      <dd>テストは規定時間内に終了しませんでした。</dd>
+          <p>コンソールウィンドウは左側にクラスペイン、右側にメソッドペインと、上部にメニューバーを備えています。ウィンドウのタイトルに、接続しているファンネルのホスト名またはIPアドレスを表示します。</p>
 
-      <dt>CRASHED</dt>
-      <dd>テストはシグナルを捕捉して異常終了しました。</dd>
+          <div class="ads">
+            <div style="text-align: center">
+              <img class="fit" src="images/auditor-console-window.png"><br>
+              <small>コンソールウィンドウの例</small>
+            </div>
+          </div>
 
-      <dt>LOST</dt>
-      <dd>テストの動的リンク、またはシンボル解決に失敗しました。ファンネル実行後に共有ライブラリが消去、変更された場合にこの状態になります。</dd>
-    </dl>
+          <h4>クラスペイン</h4>
 
-    <p>テーブルの各行はクリックまたはドラッグで選択することができます。メニューバーには選択されたテストを対象にする、いくつかの操作が用意されています（チェックボックスのチェックの状態と、選択状態は独立しています）。</p>
+          <div class="cover-image">
+            <div style="text-align: center">
+              <img src="images/auditor-classpane-popupmenu.png"></br>
+              <div style="width: 187px; display: inline-block">
+                <small>クラスペインとポップアップメニュー</small>
+              </div>
+            </div>
+          </div>
 
-    <p class="subsubsection">メニューバー</p>
-    <p>メニューバーには「File」「Edit」「View」「Run」のメニューがあります。Fileメニューには次の項目があります。</p>
+          <p>コンソールウィンドウの左側のペインは、テストクラスの一覧を表示します。テストクラスをクリックすると、メソッドペインの項目をそのテストクラスで絞り込むことができます。すべてのテストクラスを表示するには「All Classes」をクリックします。</p>
 
-    <dl class="box">
-      <dt>Close</dt>
-      <dd>コンソールウィンドウを閉じます。対応するファンネルとの接続も終了します。</dd>
-    </dl>
+          <p>クラスペインでテストクラスを選択してからクラスペインを右クリックすると、ポップアップメニューを表示します。ポップアップメニューの「Property」を選択すると、クラスペインで選択されているテストクラスの<a href="#property_dialog">プロパティダイアログ</a>を表示します。</p>
 
-    <p>Editメニューには次の項目があります。</p>
+          <h4>メソッドペイン</h4>
 
-    <dl class="box">
-      <dt>Mark</dt>
-      <dd>テーブルで選択されているテストのチェックボックスをすべてオンにします。</dd>
+          <p>クラスペインで絞り込まれたテストメソッドの一覧を表示します。メソッド一覧はテーブル形式で、左からチェックボックス、クラス、メソッド、ステータスの順にカラムが並びます。各カラムの示す内容は次のとおりです。</p>
 
-      <dt>Unmark</dt>
-      <dd>テーブルで選択されているテストのチェックボックスをすべてオフにします。</dd>
-    </dl>
+          <dl>
+            <dt>チェックボックス</dt>
+            <dd>チェックのあるテストメソッドはテストの対象であることを示します。クリックすることで状態を切り替えることができます。</dd>
 
-    <p>Viewメニューには次の項目があります。</p>
+            <dt>クラス</dt>
+            <dd>テストクラス名（共有ライブラリ名）を表示します。</dd>
 
-    <dl class="box">
-      <dt>Reload</dt>
-      <dd>ファンネルからテストの内容を再読み込みします。</dd>
-      <dd>テストメソッドの追加や削除など、テストクラスの内容を変更したときはこの項目を選択してください。</dd>
-    </dl>
+            <dt>メソッド</dt>
+            <dd>テストメソッド名を表示します。</dd>
 
-    <p>Runメニューには次の項目があります。</p>
+            <dt>ステータス</dt>
+            <dd>テストの状態を表示します。</dd>
+          </dl>
 
-    <dl class="box">
-      <dt>Go</dt>
-      <dd>テストの対象の（チェックされた）テストメソッドを順に実行します。</dd>
-      <dd>テストの実行中はモーダルダイアログ（<a href="#progress_dialog">進捗ダイアログ</a>）で進捗を表示するため、コンソールウィンドウを操作できなくなります。</dd>
-      <dd>テストを開始すると、テスト対象のテストメソッドの状態はすべて一旦READYになります。また、テスト中のテストメソッドの状態はRUNNINGになります。</dd>
-      <dd>すべてのテストが終了するか、進捗ダイアログでStopを選択すると、進捗ダイアログは閉じて、再びコンソールウィンドウを操作できるようになります。</dd>
-    </dl>
+          <p>次にテストの状態の一覧を示します。</p>
 
-    <a name="progress_dialog"></a>
-    <p class="subsection">進捗ダイアログ</p>
-    <p>進捗ダイアログはプログレスバーを表示してテストの進捗を表示するモーダルダイアログです。Stopボタンを押すとテストを停止します。</p>
-    <table align="center">
-      <tbody>
-	<tr>
-	  <td><img src="images/auditor-progress-dialog.png"></td>
-	</tr>
-	<tr>
-	  <td class="caption">進捗ダイアログの例</td>
-	</tr>
-      </tbody>
-    </table>
+          <dl>
+            <dt>READY</dt>
+            <dd>テストはまだ実行していません。</dd>
 
-    <a name="property_dialog"></a>
-    <p class="subsection">プロパティダイアログ</p>
-    <p>プロパティダイアログはクラスペインで選択されていたテストクラスの<a href="api/tf_TestFunnel.html#tf_description"><tt>tf_description</tt></a>の内容を表示するモードレスダイアログです。Okボタンを押すとダイアログを閉じます。</p>
-    <table align="center">
-      <tbody>
-	<tr>
-	  <td><img src="images/auditor-property-dialog.png"></td>
-	</tr>
-	<tr>
-	  <td class="caption">プロパティダイアログの例</td>
-	</tr>
-      </tbody>
-    </table>
+            <dt>RUNNING</dt>
+            <dd>テストは実行中です。</dd>
 
-    <hr>
-    <!-- -->
-    <a name="shared_library_coverage"></a>
-    <p class="section">共有ライブラリのカバレッジ</p>
-    <p>古いGCCでは共有ライブラリをgcovで普通にカバレッジすることができましたが、最近のGCCではちょっとした細工をしないとカバレッジすることができません。</p>
-    <p>GCC 3.4以降ではカバレッジ対象とlibgcov.aをリンクすることでカバレッジが可能になります。カバレッジ対象が実行形式の場合はGCCが面倒をみてくれるので、あまり気にする必要はありません。しかし、カバレッジ対象が共有ライブラリの場合、それをlibgcov.aとリンクすることは（当たり前ですが）できません。一見すると、その「カバレッジしたい共有ライブラリ」を実行時にリンクする実行形式にlibgcov.aをリンクしておけばカバレッジできそうですが、それではうまくいきません。</p>
-    <p>というのは、libgcov.aが提供する外部シンボルが特殊な属性をもつため、その共有ライブラリとリンクする実行形式にlibgcov.aをリンクしても、共有ライブラリからlibgcov.aのシンボルを見つけることができないからです。<tt>objdump -t libgcov.a</tt>の出力の一部を次に示します。</p>
-<pre class="box">
-...
+            <dt>OK</dt>
+            <dd>テストは成功しました。</dd>
+
+            <dt>NG</dt>
+            <dd>テストは失敗しました。</dd>
+
+            <dt>LEAK</dt>
+            <dd>テストは成功しましたが、メモリリークが検出されました（<code>funnel</code>に<code>-m</code>オプションを指定した場合のみ）。</dd>
+
+            <dt>TIMEOUT</dt>
+            <dd>テストは規定時間内に終了しませんでした。</dd>
+
+            <dt>CRASHED</dt>
+            <dd>テストはシグナルを捕捉して異常終了しました。</dd>
+
+            <dt>LOST</dt>
+            <dd>テストの動的リンク、またはシンボル解決に失敗しました。ファンネル実行後に共有ライブラリが消去、変更された場合にこの状態になります。</dd>
+          </dl>
+
+          <p>テーブルの各行はクリックまたはドラッグで選択することができます。メニューバーには選択されたテストを対象にする、いくつかの操作が用意されています（チェックボックスのチェックの状態と、選択状態は独立しています）。</p>
+
+          <h4>メニューバー</h4>
+
+          <p>メニューバーには「File」「Edit」「View」「Run」のメニューがあります。Fileメニューには次の項目があります。</p>
+
+          <dl>
+            <dt>Close</dt>
+            <dd>コンソールウィンドウを閉じます。対応するファンネルとの接続も終了します。</dd>
+          </dl>
+
+          <p>Editメニューには次の項目があります。</p>
+
+          <dl>
+            <dt>Mark</dt>
+            <dd>テーブルで選択されているテストのチェックボックスをすべてオンにします。</dd>
+
+            <dt>Unmark</dt>
+            <dd>テーブルで選択されているテストのチェックボックスをすべてオフにします。</dd>
+          </dl>
+
+          <p>Viewメニューには次の項目があります。</p>
+
+          <dl>
+            <dt>Reload</dt>
+            <dd>ファンネルからテストの内容を再読み込みします。</dd>
+            <dd>テストメソッドの追加や削除など、テストクラスの内容を変更したときはこの項目を選択してください。</dd>
+          </dl>
+
+          <p>Runメニューには次の項目があります。</p>
+
+          <dl class="box">
+            <dt>Go</dt>
+            <dd>テストの対象の（チェックされた）テストメソッドを順に実行します。</dd>
+            <dd>テストの実行中はモーダルダイアログ（<a href="#progress_dialog">進捗ダイアログ</a>）で進捗を表示するため、コンソールウィンドウを操作できなくなります。</dd>
+            <dd>テストを開始すると、テスト対象のテストメソッドの状態はすべて一旦READYになります。また、テスト中のテストメソッドの状態はRUNNINGになります。</dd>
+            <dd>すべてのテストが終了するか、進捗ダイアログでStopを選択すると、進捗ダイアログは閉じて、再びコンソールウィンドウを操作できるようになります。</dd>
+          </dl>
+
+          <a name="progress_dialog"></a>
+          <h3>進捗ダイアログ</h3>
+
+          <p>進捗ダイアログはプログレスバーを表示してテストの進捗を表示するモーダルダイアログです。Stopボタンを押すとテストを停止します。</p>
+
+          <div class="ads">
+            <div style="text-align: center">
+              <img class="fit" src="images/auditor-progress-dialog.png"><br>
+              <small>進捗ダイアログの例</small>
+            </div>
+          </div>
+
+          <a name="property_dialog"></a>
+          <h3>プロパティダイアログ</h3>
+
+          <p>プロパティダイアログはクラスペインで選択されていたテストクラスの<a href="api/tf_TestFunnel.html#tf_description"><code>tf_description</code></a>の内容を表示するモードレスダイアログです。Okボタンを押すとダイアログを閉じます。</p>
+
+          <div class="ads">
+            <div style="text-align: center">
+              <img class="fit" src="images/auditor-property-dialog.png"><br>
+              <small>プロパティダイアログの例</small>
+            </div>
+          </div>
+
+          <hr>
+          <a name="shared_library_coverage"></a>
+          <h2>共有ライブラリのカバレッジ</h2>
+
+          <p>古いGCCでは共有ライブラリをgcovで普通にカバレッジすることができましたが、最近のGCCではちょっとした細工をしないとカバレッジすることができません。</p>
+
+          <p>GCC 3.4以降ではカバレッジ対象とlibgcov.aをリンクすることでカバレッジが可能になります。カバレッジ対象が実行形式の場合はGCCが面倒をみてくれるので、あまり気にする必要はありません。しかし、カバレッジ対象が共有ライブラリの場合、それをlibgcov.aとリンクすることは（当たり前ですが）できません。一見すると、その「カバレッジしたい共有ライブラリ」を実行時にリンクする実行形式にlibgcov.aをリンクしておけばカバレッジできそうですが、それではうまくいきません。</p>
+
+          <p>というのは、libgcov.aが提供する外部シンボルが特殊な属性をもつため、その共有ライブラリとリンクする実行形式にlibgcov.aをリンクしても、共有ライブラリからlibgcov.aのシンボルを見つけることができないからです。<code>objdump -t libgcov.a</code>の出力の一部を次に示します。</p>
+
+          <div class="box">
+            <pre>...
 _gcov_merge_add.o:     file format elf32-i386
 
 SYMBOL TABLE:
@@ -599,63 +468,70 @@ SYMBOL TABLE:
 00000000 l    d  .debug_aranges 00000000
 00000000 l    d  .debug_str     00000000
 00000000 l    d  .comment       00000000
-00000000 g     F .text  00000024 <span class="em">.hidden</span> __gcov_merge_add
+00000000 g     F .text  00000024 <span class="greenyellow">.hidden</span> __gcov_merge_add
 00000000         *UND*  00000000 __gcov_read_counter
-...
-</pre>
-    <table align="right">
-      <tbody>
-	<tr>
-	  <td><img src="images/libgcov-a.png"></td>
-	</tr>
-	<tr>
-	  <td class="caption" width="180">同じコンポーネントからしか見えないlibgcov.aのシンボル</td>
-	</tr>
-      </tbody>
-    </table>
-    <p>シンボルの前に<tt>.hidden</tt>と表示されているものは、そのシンボルの可視性が「所属するコンポーネント（共有ライブラリまたは実行形式）の内部からしか見えない」ことを意味しているようです。つまり、コンポーネントを越えてhidden属性のシンボルにアクセスすることはできません。したがって、共有ライブラリをカバレッジするためには、libgcov.aのオブジェクトをその共有ライブラリになんとかして<b>埋め込む</b>必要があります。</p>
-</p>
-    <p>共有ライブラリに別のアーカイブ（libgcov.a）をまるごと含めることができれば、その共有ライブラリのカバレッジができそうです。GNUリンカld(1)のオプションを調べてみると、その目的にふさわしいオプション<tt>--whole-archive</tt>があることがわかりました。</p>
-    <p>結局、共有ライブラリを生成するときに次のオプションをGCCに追加で指定すれば、実行形式と同様にその共有ライブラリをカバレッジすることができるようです。</p>
-<pre class="box">
--Wl,-whole-archive -lgcov -Wl,-no-whole-archive
-</pre>
+...</pre>
+          </div>
 
-    <hr>
-    <!-- -->
-    <a name="limitation"></a>
-    <p class="section">制限事項</p>
+          <p>
+            <div class="cover-image">
+              <div style="text-align: center;">
+                <img src="images/libgcov-a.png"><br>
+                <div style="width: 180px; display: inline-block">
+                  <small>同じコンポーネントからしか見えないlibgcov.aのシンボル</small>
+                </div>
+              </div>
+            </div>
+            シンボルの前に<code>.hidden</code>と表示されているものは、そのシンボルの可視性が「所属するコンポーネント（共有ライブラリまたは実行形式）の内部からしか見えない」ことを意味しているようです。つまり、コンポーネントを越えてhidden属性のシンボルにアクセスすることはできません。したがって、共有ライブラリをカバレッジするためには、libgcov.aのオブジェクトをその共有ライブラリになんとかして<b>埋め込む</b>必要があります。
+          </p>
 
-    <p>Test Funnelでは次のような共有ライブラリを使用できません。</p>
+          <p>共有ライブラリに別のアーカイブ（libgcov.a）をまるごと含めることができれば、その共有ライブラリのカバレッジができそうです。GNUリンカld(1)のオプションを調べてみると、その目的にふさわしいオプション<code>--whole-archive</code>があることがわかりました。</p>
 
-    <p class="subsection">-fomit-frame-pointerを指定してコンパイルしたライブラリ</p>
-    <p>Test Funnelはメモリリークを検出するために、malloc(3)の呼び出しを横取りしています。呼び出しを捕捉したら、本物のmalloc(3)を呼び出した後、確保したメモリアドレス、サイズ、プロセスID、スタックトレースなどをファイルに記録します。実際には、メモリリークを検出する、しないに関わらず、常にmalloc(3)の呼び出しを横取りして、スタックフレームを確認しています。このため、malloc(3)を呼び出すライブラリがgccの<tt>-fomit-frame-pointer</tt>オプションを指定してコンパイルしたものだと、スタックフレームを不正に追ってしまい、クラッシュします。</p>
+          <p>結局、共有ライブラリを生成するときに次のオプションをGCCに追加で指定すれば、実行形式と同様にその共有ライブラリをカバレッジすることができるようです。</p>
 
-    <hr>
+          <div class="box">
+            <pre>-Wl,-whole-archive -lgcov -Wl,-no-whole-archive</pre>
+          </div>
+
+          <hr>
+          <!-- -->
+          <a name="limitation"></a>
+          <h2>制限事項</h2>
+
+          <p>Test Funnelでは次のような共有ライブラリを使用できません。</p>
+
+          <h3>-fomit-frame-pointerを指定してコンパイルしたライブラリ</h3>
+
+          <p>Test Funnelはメモリリークを検出するために、malloc(3)の呼び出しを横取りしています。呼び出しを捕捉したら、本物のmalloc(3)を呼び出した後、確保したメモリアドレス、サイズ、プロセスID、スタックトレースなどをファイルに記録します。実際には、メモリリークを検出する、しないに関わらず、常にmalloc(3)の呼び出しを横取りして、スタックフレームを確認しています。このため、malloc(3)を呼び出すライブラリがgccの<code>-fomit-frame-pointer</code>オプションを指定してコンパイルしたものだと、スタックフレームを不正に追ってしまい、クラッシュします。</p>
+        </section>
+      </div>
+      <div class="left-container" style="order: 1;">
+        <nav>
+          <ul>
+            <li><a href="index.html">Top</a></li>
+            <li><a href="download.html">Download</a></li>
+            <li class="selected">Manual</li>
+            <li><a href="reference.html">Reference</a></li>
+            <li><a href="relnotes.html">Release&nbsp;Notes</a></li>
+            <li><a href="bugs.html">Bugs</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <footer>
+      <hr>
+      <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+    </footer>
 <!-- Created: Sun May 28 05:38:52 JST 2006 -->
 <!-- hhmts start -->
 Last modified: Mon Oct 20 05:08:58 JST 2008
 <!-- hhmts end -->
-		  </td>
-		</tr>
-	      </tbody>
-	    </table>
-	  </td>
-	</tr>
-      </tbody>
-    </table>
-    <table class="header" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="headerRight"><address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address></td>
-	</tr>
-      </tbody>
-    </table>
-    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    <script src="https://www.google-analytics.com/urchin.js" type="text/javascript">
     </script>
     <script type="text/javascript">
       _uacct = "UA-636163-1";
       urchinTracker();
     </script>
+    <amp-auto-ads type="adsense" data-ad-client="ca-pub-4691079535294206"></amp-auto-ads>
   </body>
 </html>

@@ -1,433 +1,246 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Coverture</title>
-    <link rel="stylesheet" type="text/css" href="look.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Appendix | Coverture</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-4691079535294206",
+          enable_page_level_ads: true
+      });
+    </script>
   </head>
+
   <body>
-    <table class="header" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="headerLeft">Maroontress Fast Software</td>
-	  <td class="headerRight">Coverture</td>
-	</tr>
-      </tbody>
-    </table>
-    <table class="guide" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="guideMenu">
-	    <table width="160" cellpadding="0" cellspacing="0" border="0">
-	      <tbody>
-                <tr><td class="unselected"><a class="menu" href="index.html">Top</a></td></tr>
-                <tr><td class="unselected"><a class="menu" href="download.html">Download</a></td></tr>
-                <tr><td class="unselected"><a class="menu" href="relnotes.html">Release&nbsp;Notes</a></td></tr>
-                <tr><td class="selected">Appendix</td></tr>
-	      </tbody>
-	    </table>
-<script type="text/javascript"><!--
-google_ad_client = "pub-4691079535294206";
-/* 160x90L Mad Angler */
-google_ad_slot = "5426136155";
-google_ad_width = 160;
-google_ad_height = 90;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-<script type="text/javascript"><!--
-google_ad_client = "pub-4691079535294206";
-/* 160x600 Mad Angler */
-google_ad_slot = "4451171887";
-google_ad_width = 160;
-google_ad_height = 600;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-	  </td>
-	  <td class="guideSubMenu">
-	    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-	      <tbody>
-		<tr>
-		  <td class="guideText">
-		    <table align="right">
-		      <tbody>
-			<tr>
-			  <td>
-<script type="text/javascript"><!--
-  amazon_ad_tag = "sanchappikeio-22";
-  amazon_ad_width = "180";
-  amazon_ad_height = "150";
-  amazon_ad_logo = "hide";
-  amazon_ad_link_target = "new";
-  amazon_ad_border = "hide";
-  amazon_color_border = "FFFFFF";//--></script>
-<script type="text/javascript" src="http://www.assoc-amazon.jp/s/ads.js">
-</script>
-			  </td>
-			</tr>
-		      </tbody>
-		    </table>
-    <p class="section">Appendix</p>
+    <div class="container">
+      <div class="main-container" style="order: 2;">
+        <header>
+          <h1>Coverture</h1>
+        </header>
+        <section>
+          <h2>Appendix</h2>
 
-    <!-- -->
-    <hr/>
-    <p class="section">命令カバレッジとソースコードの実行行数</h1>
+          <h3>命令カバレッジとソースコードの実行行数</h3>
 
-    <p>gcovの出力であるgcovファイルを参照すれば、ソースコードのどの行を何回実行したのか容易に確認することができます。しかし、関数のすべての行を実行したとしても、その関数の命令カバレッジが100%になっているとは限りません。</p>
+          <p>gcovの出力であるgcovファイルを参照すれば、ソースコードのどの行を何回実行したのか容易に確認することができます。しかし、関数のすべての行を実行したとしても、その関数の命令カバレッジが100%になっているとは限りません。</p>
 
-    <p>例として、glib-2.20.5の<tt>glib/guniprop.c</tt>にある関数<tt>real_toupper()</tt><sup><a href="#1">★1</a></sup>をとりあげてみます。FreeBSD 7.1で次のようにビルドして、付属のテストを実行してみます。</p>
+          <p>例として、glib-2.20.5の<code>glib/guniprop.c</code>にある関数<code>real_toupper()</code><a href="#1">&dagger;</a>をとりあげてみます。FreeBSD 7.1で次のようにビルドして、付属のテストを実行してみます。</p>
 
-<pre class="box">
-% tar jxf glib-2.20.5.tar.bz2
+          <div class="box">
+            <pre>% tar jxf glib-2.20.5.tar.bz2
 % cd glib-2.20.5
 % ./configure CFLAGS="-O0 -fprofile-arcs -ftest-coverage" \
   CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -lintl" \
   --with-libiconv=gnu --disable-shared --enable-static
 % gmake
-% gmake -C tests check
-</pre>
+% gmake -C tests check</pre>
+          </div>
 
-    <p>次にgcov、もしくはcovertureを使って、<tt>glib/guniprop.c</tt>のgcovファイルを出力します。そして、そのgcovファイルを眺めてみると、次のように、関数<tt>real_toupper()</tt>のカバレッジ結果では、未実行の行は無いことがわかります。</p>
+          <p>次にgcov、もしくはcovertureを使って、<wbr><code>glib/<wbr>guniprop.c</code><wbr>のgcovファイルを出力します。そして、そのgcovファイルを眺めてみると、次のように、関数<code>real_toupper()</code>のカバレッジ結果では、未実行の行は無いことがわかります。</p>
 
-    <div class="include">
-<tt>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;804:static&nbsp;gsize
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;805:real_toupper&nbsp;(const&nbsp;gchar&nbsp;*str,
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;806:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gssize&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_len,
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;807:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gchar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*out_buffer,
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;808:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LocaleType&nbsp;&nbsp;&nbsp;locale_type)
-<br>
-function&nbsp;real_toupper&nbsp;called&nbsp;6438&nbsp;returned&nbsp;100%&nbsp;blocks&nbsp;executed&nbsp;87%
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6438:&nbsp;&nbsp;809:{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6438:&nbsp;&nbsp;810:&nbsp;&nbsp;const&nbsp;gchar&nbsp;*p&nbsp;=&nbsp;str;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6438:&nbsp;&nbsp;811:&nbsp;&nbsp;const&nbsp;char&nbsp;*last&nbsp;=&nbsp;NULL;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6438:&nbsp;&nbsp;812:&nbsp;&nbsp;gsize&nbsp;len&nbsp;=&nbsp;0;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6438:&nbsp;&nbsp;813:&nbsp;&nbsp;gboolean&nbsp;last_was_i&nbsp;=&nbsp;FALSE;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;814:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;19368:&nbsp;&nbsp;815:&nbsp;&nbsp;while&nbsp;((max_len&nbsp;&lt;&nbsp;0&nbsp;||&nbsp;p&nbsp;&lt;&nbsp;str&nbsp;+&nbsp;max_len)&nbsp;&amp;&amp;&nbsp;*p)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;816:&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6492:&nbsp;&nbsp;817:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gunichar&nbsp;c&nbsp;=&nbsp;g_utf8_get_char&nbsp;(p);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6492:&nbsp;&nbsp;818:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;t&nbsp;=&nbsp;TYPE&nbsp;(c);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;819:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gunichar&nbsp;val;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;820:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6492:&nbsp;&nbsp;821:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last&nbsp;=&nbsp;p;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6492:&nbsp;&nbsp;822:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p&nbsp;=&nbsp;g_utf8_next_char&nbsp;(p);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;823:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6492:&nbsp;&nbsp;824:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(locale_type&nbsp;==&nbsp;LOCALE_LITHUANIAN)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;825:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;40:&nbsp;&nbsp;826:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(c&nbsp;==&nbsp;'i')
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;&nbsp;827:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_was_i&nbsp;=&nbsp;TRUE;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;828:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;829:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;36:&nbsp;&nbsp;830:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(last_was_i)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;831:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;832:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Nasty,&nbsp;need&nbsp;to&nbsp;remove&nbsp;any&nbsp;dot&nbsp;above.&nbsp;Though
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;833:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;I&nbsp;think&nbsp;only&nbsp;E&nbsp;WITH&nbsp;DOT&nbsp;ABOVE&nbsp;occurs&nbsp;in&nbsp;practice
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;834:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;which&nbsp;could&nbsp;simplify&nbsp;this&nbsp;considerably.
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;835:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;836:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gsize&nbsp;decomp_len,&nbsp;i;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;837:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gunichar&nbsp;*decomp;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;838:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;&nbsp;839:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decomp&nbsp;=&nbsp;g_unicode_canonical_decomposition&nbsp;(c,&nbsp;&amp;decomp_len);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10:&nbsp;&nbsp;840:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(i=0;&nbsp;i&nbsp;&lt;&nbsp;decomp_len;&nbsp;i++)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;841:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;&nbsp;842:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(decomp[i]&nbsp;!=&nbsp;0x307&nbsp;/*&nbsp;COMBINING&nbsp;DOT&nbsp;ABOVE&nbsp;*/)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;&nbsp;843:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;len&nbsp;+=&nbsp;g_unichar_to_utf8&nbsp;(g_unichar_toupper&nbsp;(decomp[i]),&nbsp;out_buffer&nbsp;?&nbsp;out_buffer&nbsp;+&nbsp;len&nbsp;:&nbsp;NULL);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;844:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;&nbsp;845:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_free&nbsp;(decomp);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;846:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;&nbsp;847:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;len&nbsp;+=&nbsp;output_marks&nbsp;(&amp;p,&nbsp;out_buffer&nbsp;?&nbsp;out_buffer&nbsp;+&nbsp;len&nbsp;:&nbsp;NULL,&nbsp;TRUE);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;848:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;&nbsp;849:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;850:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;851:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32:&nbsp;&nbsp;852:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!ISMARK&nbsp;(t))
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;18:&nbsp;&nbsp;853:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_was_i&nbsp;=&nbsp;FALSE;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;854:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;855:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;856:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6490:&nbsp;&nbsp;857:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(locale_type&nbsp;==&nbsp;LOCALE_TURKIC&nbsp;&amp;&amp;&nbsp;c&nbsp;==&nbsp;'i')
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;858:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;859:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;i&nbsp;=&gt;&nbsp;LATIN&nbsp;CAPITAL&nbsp;LETTER&nbsp;I&nbsp;WITH&nbsp;DOT&nbsp;ABOVE&nbsp;*/
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;&nbsp;860:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;len&nbsp;+=&nbsp;g_unichar_to_utf8&nbsp;(0x130,&nbsp;out_buffer&nbsp;?&nbsp;out_buffer&nbsp;+&nbsp;len&nbsp;:&nbsp;NULL);&nbsp;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;861:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6486:&nbsp;&nbsp;862:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;if&nbsp;(c&nbsp;==&nbsp;0x0345)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;COMBINING&nbsp;GREEK&nbsp;YPOGEGRAMMENI&nbsp;*/
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;863:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;864:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Nasty,&nbsp;need&nbsp;to&nbsp;move&nbsp;it&nbsp;after&nbsp;other&nbsp;combining&nbsp;marks&nbsp;..&nbsp;this&nbsp;would&nbsp;go&nbsp;away&nbsp;if
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;865:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;we&nbsp;normalized&nbsp;first.
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;866:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;&nbsp;867:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;len&nbsp;+=&nbsp;output_marks&nbsp;(&amp;p,&nbsp;out_buffer&nbsp;?&nbsp;out_buffer&nbsp;+&nbsp;len&nbsp;:&nbsp;NULL,&nbsp;FALSE);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;868:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;869:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;And&nbsp;output&nbsp;as&nbsp;GREEK&nbsp;CAPITAL&nbsp;LETTER&nbsp;IOTA&nbsp;*/
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;&nbsp;870:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;len&nbsp;+=&nbsp;g_unichar_to_utf8&nbsp;(0x399,&nbsp;out_buffer&nbsp;?&nbsp;out_buffer&nbsp;+&nbsp;len&nbsp;:&nbsp;NULL);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;871:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6482:&nbsp;&nbsp;872:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;if&nbsp;(IS&nbsp;(t,
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;873:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OR&nbsp;(G_UNICODE_LOWERCASE_LETTER,
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;874:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OR&nbsp;(G_UNICODE_TITLECASE_LETTER,
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;875:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0))))
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;876:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3570:&nbsp;&nbsp;877:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;val&nbsp;=&nbsp;ATTTABLE&nbsp;(c&nbsp;&gt;&gt;&nbsp;8,&nbsp;c&nbsp;&amp;&nbsp;0xff);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;878:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3570:&nbsp;&nbsp;879:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(val&nbsp;&gt;=&nbsp;0x1000000)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;880:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;206:&nbsp;&nbsp;881:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;len&nbsp;+=&nbsp;output_special_case&nbsp;(out_buffer&nbsp;?&nbsp;out_buffer&nbsp;+&nbsp;len&nbsp;:&nbsp;NULL,&nbsp;val&nbsp;-&nbsp;0x1000000,&nbsp;t,
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;882:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;==&nbsp;G_UNICODE_LOWERCASE_LETTER&nbsp;?&nbsp;0&nbsp;:&nbsp;1);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;883:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;884:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;885:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3364:&nbsp;&nbsp;886:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(t&nbsp;==&nbsp;G_UNICODE_TITLECASE_LETTER)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;887:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;888:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unsigned&nbsp;int&nbsp;i;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20:&nbsp;&nbsp;889:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;G_N_ELEMENTS&nbsp;(title_table);&nbsp;++i)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;890:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20:&nbsp;&nbsp;891:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(title_table[i][0]&nbsp;==&nbsp;c)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;892:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8:&nbsp;&nbsp;893:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;val&nbsp;=&nbsp;title_table[i][1];
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8:&nbsp;&nbsp;894:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;895:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;896:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;897:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;898:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;899:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Some&nbsp;lowercase&nbsp;letters,&nbsp;e.g.,&nbsp;U+000AA,&nbsp;FEMININE&nbsp;ORDINAL&nbsp;INDICATOR,
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;900:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;do&nbsp;not&nbsp;have&nbsp;an&nbsp;uppercase&nbsp;equivalent,&nbsp;in&nbsp;which&nbsp;case&nbsp;val&nbsp;will&nbsp;be
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;901:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;zero.&nbsp;*/
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3364:&nbsp;&nbsp;902:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;len&nbsp;+=&nbsp;g_unichar_to_utf8&nbsp;(val&nbsp;?&nbsp;val&nbsp;:&nbsp;c,&nbsp;out_buffer&nbsp;?&nbsp;out_buffer&nbsp;+&nbsp;len&nbsp;:&nbsp;NULL);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;903:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;904:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;905:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;906:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2912:&nbsp;&nbsp;907:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gsize&nbsp;char_len&nbsp;=&nbsp;g_utf8_skip[*(guchar&nbsp;*)last];
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;908:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2912:&nbsp;&nbsp;909:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(out_buffer)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1456:&nbsp;&nbsp;910:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memcpy&nbsp;(out_buffer&nbsp;+&nbsp;len,&nbsp;last,&nbsp;char_len);
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;911:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2912:&nbsp;&nbsp;912:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;len&nbsp;+=&nbsp;char_len;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;913:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;914:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;915:&nbsp;&nbsp;&nbsp;&nbsp;}
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;916:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6438:&nbsp;&nbsp;917:&nbsp;&nbsp;return&nbsp;len;
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;918:}
-<br>
-</tt>
-    </div>
-
-    <p>ところが実際には、命令カバレッジは100%ではありません。注目したいのは、次の行です。</p>
-
-<pre class="box">
-function real_toupper called 6438 returned 100% <span class="em">blocks executed 87%</span>
-</pre>
-
-    <p>これは基本ブロックのうち87%を実行したことを示しています。つまり、残り13%は実行されていないことになります。いったいどの部分を実行していないでしょうか。</p>
-
-    <p>まず、ソースコードを眺めると、三項演算子がいくつか使われているので、その条件式が常に真、または偽、になっているのでは、ということが思い付きます。しかし、そうだとしても、それで未実行の基本ブロックが13%にもなるのは不自然な気がします。</p>
-
-    <p>ソースコードを眺めるだけでは、これ以上のことは簡単にはわからないでしょう。そこで、covertureの出力結果とgraphvizを使って、次のような基本ブロックのフローグラフを作成してみました（クリックで拡大します）。</p>
-
-    <a href="images/glib-2.20.5--real_toupper@guniprop.c.png">
-      <img src="images/glib-2.20.5--real_toupper@guniprop.c.small.png"/>
-    </a>
-
-    <p>実行した基本ブロックは青で塗っています。また、実行した分岐も青い線で描画しています。ただし、図が煩雑になるので、FAKEのアークは波線で表しています。</p>
-
-    <p>図を眺めて、まず気になる点は、基本ブロック3から8へ向かうアークが未実行で、基本ブロック8から派生する一連のブロックが未実行になっていることです。該当する部分を拡大したものを次に示します。</p>
-
-    <img src="images/glib-2.20.5--real_toupper@guniprop.c.zoom.png"/>
-
-    <p>それらに対応するソースコードはどこになるのでしょうか。図から基本ブロック3が818行に、基本ブロック16が821行に対応していることがわかります。ソースコードの818行～821行は次のようになっています。</p>
-
-<pre class="box">
+          <div class="box">
+            <pre>        -:  804:static gsize
+        -:  805:real_toupper (const gchar *str,
+        -:  806:              gssize       max_len,
+        -:  807:              gchar       *out_buffer,
+        -:  808:              LocaleType   locale_type)
+function real_toupper called 6438 returned 100% blocks executed 87%
+     6438:  809:{
+     6438:  810:  const gchar *p = str;
+     6438:  811:  const char *last = NULL;
+     6438:  812:  gsize len = 0;
+     6438:  813:  gboolean last_was_i = FALSE;
+        -:  814:
+    19368:  815:  while ((max_len &lt; 0 || p &lt; str + max_len) &amp;&amp; *p)
+        -:  816:    {
+     6492:  817:      gunichar c = g_utf8_get_char (p);
      6492:  818:      int t = TYPE (c);
         -:  819:      gunichar val;
         -:  820:
      6492:  821:      last = p;
-</pre>
+     6492:  822:      p = g_utf8_next_char (p);
+        -:  823:
+     6492:  824:      if (locale_type == LOCALE_LITHUANIAN)
+        -:  825:        {
+       40:  826:          if (c == 'i')
+        4:  827:            last_was_i = TRUE;
+        -:  828:          else
+        -:  829:            {
+       36:  830:              if (last_was_i)
+        -:  831:                {
+        -:  832:                  /* Nasty, need to remove any dot above. Though
+        -:  833:                   * I think only E WITH DOT ABOVE occurs in practice
+        -:  834:                   * which could simplify this considerably.
+        -:  835:                   */
+        -:  836:                  gsize decomp_len, i;
+        -:  837:                  gunichar *decomp;
+        -:  838:
+        4:  839:                  decomp = g_unicode_canonical_decomposition (c, &amp;decomp_len);
+       10:  840:                  for (i=0; i &lt; decomp_len; i++)
+        -:  841:                    {
+        6:  842:                      if (decomp[i] != 0x307 /* COMBINING DOT ABOVE */)
+        4:  843:                        len += g_unichar_to_utf8 (g_unichar_toupper (decomp[i]), out_buffer ? out_buffer + len : NULL);
+        -:  844:                    }
+        4:  845:                  g_free (decomp);
+        -:  846:
+        4:  847:                  len += output_marks (&amp;p, out_buffer ? out_buffer + len : NULL, TRUE);
+        -:  848:
+        4:  849:                  continue;
+        -:  850:                }
+        -:  851:
+       32:  852:              if (!ISMARK (t))
+       18:  853:                last_was_i = FALSE;
+        -:  854:            }
+        -:  855:        }
+        -:  856:
+     6490:  857:      if (locale_type == LOCALE_TURKIC &amp;&amp; c == 'i')
+        -:  858:        {
+        -:  859:          /* i =&gt; LATIN CAPITAL LETTER I WITH DOT ABOVE */
+        2:  860:          len += g_unichar_to_utf8 (0x130, out_buffer ? out_buffer + len : NULL);
+        -:  861:        }
+     6486:  862:      else if (c == 0x0345)     /* COMBINING GREEK YPOGEGRAMMENI */
+        -:  863:        {
+        -:  864:          /* Nasty, need to move it after other combining marks .. this would go away if
+        -:  865:           * we normalized first.
+        -:  866:           */
+        4:  867:          len += output_marks (&amp;p, out_buffer ? out_buffer + len : NULL, FALSE);
+        -:  868:
+        -:  869:          /* And output as GREEK CAPITAL LETTER IOTA */
+        4:  870:          len += g_unichar_to_utf8 (0x399, out_buffer ? out_buffer + len : NULL);
+        -:  871:        }
+     6482:  872:      else if (IS (t,
+        -:  873:                   OR (G_UNICODE_LOWERCASE_LETTER,
+        -:  874:                   OR (G_UNICODE_TITLECASE_LETTER,
+        -:  875:                  0))))
+        -:  876:        {
+     3570:  877:          val = ATTTABLE (c &gt;&gt; 8, c &amp; 0xff);
+        -:  878:
+     3570:  879:          if (val &gt;= 0x1000000)
+        -:  880:            {
+      206:  881:              len += output_special_case (out_buffer ? out_buffer + len : NULL, val - 0x1000000, t,
+        -:  882:                                          t == G_UNICODE_LOWERCASE_LETTER ? 0 : 1);
+        -:  883:            }
+        -:  884:          else
+        -:  885:            {
+     3364:  886:              if (t == G_UNICODE_TITLECASE_LETTER)
+        -:  887:                {
+        -:  888:                  unsigned int i;
+       20:  889:                  for (i = 0; i &lt; G_N_ELEMENTS (title_table); ++i)
+        -:  890:                    {
+       20:  891:                      if (title_table[i][0] == c)
+        -:  892:                        {
+        8:  893:                          val = title_table[i][1];
+        8:  894:                          break;
+        -:  895:                        }
+        -:  896:                    }
+        -:  897:                }
+        -:  898:
+        -:  899:              /* Some lowercase letters, e.g., U+000AA, FEMININE ORDINAL INDICATOR,
+        -:  900:               * do not have an uppercase equivalent, in which case val will be
+        -:  901:               * zero. */
+     3364:  902:              len += g_unichar_to_utf8 (val ? val : c, out_buffer ? out_buffer + len : NULL);
+        -:  903:            }
+        -:  904:        }
+        -:  905:      else
+        -:  906:        {
+     2912:  907:          gsize char_len = g_utf8_skip[*(guchar *)last];
+        -:  908:
+     2912:  909:          if (out_buffer)
+     1456:  910:            memcpy (out_buffer + len, last, char_len);
+        -:  911:
+     2912:  912:          len += char_len;
+        -:  913:        }
+        -:  914:
+        -:  915:    }
+        -:  916:
+     6438:  917:  return len;
+        -:  918:}</pre>
+          </div>
 
-    <p>以上のことから、「基本ブロック3から16までの経路」はすべて818行に対応すると考えられます。これらのことから、<tt>TYPE()</tt>が怪しそうです。調べてみると、これは同じファイルで定義されている次のようなマクロでした。</p>
+          <p>ところが実際には、命令カバレッジは100%ではありません。注目したいのは、次の行です。</p>
 
-    <div class="include">
-<tt>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;43:#define&nbsp;TTYPE_PART1(Page,&nbsp;Char)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;44:&nbsp;&nbsp;((type_table_part1[Page]&nbsp;&gt;=&nbsp;G_UNICODE_MAX_TABLE_INDEX)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;45:&nbsp;&nbsp;&nbsp;?&nbsp;(type_table_part1[Page]&nbsp;-&nbsp;G_UNICODE_MAX_TABLE_INDEX)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;46:&nbsp;&nbsp;&nbsp;:&nbsp;(type_data[type_table_part1[Page]][Char]))
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;47:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;48:#define&nbsp;TTYPE_PART2(Page,&nbsp;Char)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;49:&nbsp;&nbsp;((type_table_part2[Page]&nbsp;&gt;=&nbsp;G_UNICODE_MAX_TABLE_INDEX)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;50:&nbsp;&nbsp;&nbsp;?&nbsp;(type_table_part2[Page]&nbsp;-&nbsp;G_UNICODE_MAX_TABLE_INDEX)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;51:&nbsp;&nbsp;&nbsp;:&nbsp;(type_data[type_table_part2[Page]][Char]))
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;52:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;53:#define&nbsp;TYPE(Char)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;54:&nbsp;&nbsp;(((Char)&nbsp;&lt;=&nbsp;G_UNICODE_LAST_CHAR_PART1)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;55:&nbsp;&nbsp;&nbsp;?&nbsp;TTYPE_PART1&nbsp;((Char)&nbsp;&gt;&gt;&nbsp;8,&nbsp;(Char)&nbsp;&amp;&nbsp;0xff)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;56:&nbsp;&nbsp;&nbsp;:&nbsp;(((Char)&nbsp;&gt;=&nbsp;0xe0000&nbsp;&amp;&amp;&nbsp;(Char)&nbsp;&lt;=&nbsp;G_UNICODE_LAST_CHAR)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;57:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?&nbsp;TTYPE_PART2&nbsp;(((Char)&nbsp;-&nbsp;0xe0000)&nbsp;&gt;&gt;&nbsp;8,&nbsp;(Char)&nbsp;&amp;&nbsp;0xff)&nbsp;\
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-:&nbsp;&nbsp;&nbsp;58:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;G_UNICODE_UNASSIGNED))
-<br>
-</tt>
-    </div>
+          <div class="box">
+            <pre>function real_toupper called 6438 returned 100% <span class="em">blocks executed 87%</span></pre>
+          </div>
 
-    <p><tt>TYPE()</tt>は三項演算子の盛り合わせのようなマクロであることがわかりました。そして、どうやらこのマクロを命令カバレッジするほどのテストは用意されていないようです。</p>
+          <p>これは基本ブロックのうち87%を実行したことを示しています。つまり、残り13%は実行されていないことになります。いったいどの部分を実行していないでしょうか。</p>
 
-    <hr>
-    <div class="footnote">
-      <p><a name="1">★1</a> この関数に問題があるわけではありません。</p>
-    </div>
+          <p>まず、ソースコードを眺めると、三項演算子がいくつか使われているので、その条件式が常に真、または偽、になっているのでは、ということが思い付きます。しかし、そうだとしても、それで未実行の基本ブロックが13%にもなるのは不自然な気がします。</p>
 
-    <!-- -->
-    <hr/>
-    <p class="section">実行したソースコード行数の割合とカバレッジ率</p>
+          <p>ソースコードを眺めるだけでは、これ以上のことは簡単にはわからないでしょう。そこで、covertureの出力結果とgraphvizを使って、次のような基本ブロックのフローグラフを作成してみました（クリックで拡大します）。</p>
 
-    <p>実行したソースコードの行数の割合をカバレッジ率として扱うことがよくあります。例えば、1000行のソースコードのうち、900行が実行されていれば、90%をカバレッジしたと考えてしまいがちです。</p>
+          <div class="ads">
+            <a href="images/glib-2.20.5--real_toupper@guniprop.c.png">
+              <img src="images/glib-2.20.5--real_toupper@guniprop.c.small.png"/>
+            </a>
+          </div>
 
-    <p>極端な例をあげてみましょう。次のような3つの基本ブロックに分岐する関数があり、そのうち1つだけが実行され、残りの2つは未実行であるとします。ただし、実行した基本ブロックの行数はソースコード中の98行に相当し、未実行のブロックの行数はそれぞれソースコード中の1行に相当するとします。</p>
+          <p>実行した基本ブロックは青で塗っています。また、実行した分岐も青い線で描画しています。ただし、図が煩雑になるので、FAKEのアークは波線で表しています。</p>
 
-    <img src="images/line-based-coverage-rate.png"/>
+          <p>図を眺めて、まず気になる点は、基本ブロック3から8へ向かうアークが未実行で、基本ブロック8から派生する一連のブロックが未実行になっていることです。該当する部分を拡大したものを次に示します。</p>
 
-    <p>この関数はカバレッジ率98%のテストを実行したと言えるのでしょうか。それとも、1/3程度しかテストを実行していないのでしょうか。人によって意見は分かれるでしょうが、少なくても行数ベースでカバレッジ率を計算するだけでは、真の姿はわからないということです。</p>
+          <div class="ads">
+            <img src="images/glib-2.20.5--real_toupper@guniprop.c.zoom.png"/>
+          </div>
 
-    <!-- -->
-    <hr/>
-    <p class="section">FreeBSD 8.0でカバレッジ</p>
+          <p>それらに対応するソースコードはどこになるのでしょうか。図から基本ブロック3が818行に、基本ブロック16が821行に対応していることがわかります。ソースコードの818行～821行は次のようになっています。</p>
 
-    <p>FreeBSD 8.0でgccにオプション<tt>-ftest-coverage -fprofile-arcs</tt>、もしくは<tt>-coverage</tt>を渡してビルドすると、次のように<tt>undefined reference to `__stack_chk_fail_local'</tt>というエラーを表示して、リンクに失敗する場合があります。</p>
+          <div class="box">
+            <pre>     6492:  818:      int t = TYPE (c);
+        -:  819:      gunichar val;
+        -:  820:
+     6492:  821:      last = p;</pre>
+          </div>
 
-<pre class="box">
-% cat > test.c
+          <p>以上のことから、「基本ブロック3から16までの経路」はすべて818行に対応すると考えられます。これらのことから、<code>TYPE()</code>が怪しそうです。調べてみると、これは同じファイルで定義されている次のようなマクロでした。</p>
+
+          <div class="box">
+            <pre>        -:   43:#define TTYPE_PART1(Page, Char) \
+        -:   44:  ((type_table_part1[Page] &gt;= G_UNICODE_MAX_TABLE_INDEX) \
+        -:   45:   ? (type_table_part1[Page] - G_UNICODE_MAX_TABLE_INDEX) \
+        -:   46:   : (type_data[type_table_part1[Page]][Char]))
+        -:   47:
+        -:   48:#define TTYPE_PART2(Page, Char) \
+        -:   49:  ((type_table_part2[Page] &gt;= G_UNICODE_MAX_TABLE_INDEX) \
+        -:   50:   ? (type_table_part2[Page] - G_UNICODE_MAX_TABLE_INDEX) \
+        -:   51:   : (type_data[type_table_part2[Page]][Char]))
+        -:   52:
+        -:   53:#define TYPE(Char) \
+        -:   54:  (((Char) &lt;= G_UNICODE_LAST_CHAR_PART1) \
+        -:   55:   ? TTYPE_PART1 ((Char) &gt;&gt; 8, (Char) &amp; 0xff) \
+        -:   56:   : (((Char) &gt;= 0xe0000 &amp;&amp; (Char) &lt;= G_UNICODE_LAST_CHAR) \
+        -:   57:      ? TTYPE_PART2 (((Char) - 0xe0000) &gt;&gt; 8, (Char) &amp; 0xff) \
+        -:   58:      : G_UNICODE_UNASSIGNED))</pre>
+          </div>
+
+          <p><code>TYPE()</code>は三項演算子の盛り合わせのようなマクロであることがわかりました。そして、どうやらこのマクロを命令カバレッジするほどのテストは用意されていないようです。</p>
+
+          <p class="footnote"><a name="1">&dagger;</a> この関数に問題があるわけではありません。</p>
+
+          <hr/>
+          <h3>実行したソースコード行数の割合とカバレッジ率</h3>
+
+          <p>実行したソースコードの行数の割合をカバレッジ率として扱うことがよくあります。例えば、1000行のソースコードのうち、900行が実行されていれば、90%をカバレッジしたと考えてしまいがちです。</p>
+
+          <p>極端な例をあげてみましょう。次のような3つの基本ブロックに分岐する関数があり、そのうち1つだけが実行され、残りの2つは未実行であるとします。ただし、実行した基本ブロックの行数はソースコード中の98行に相当し、未実行のブロックの行数はそれぞれソースコード中の1行に相当するとします。</p>
+
+          <div class="ads">
+            <img class="fit" src="images/line-based-coverage-rate.png"/>
+          </div>
+
+          <p>この関数はカバレッジ率98%のテストを実行したと言えるのでしょうか。それとも、1/3程度しかテストを実行していないのでしょうか。人によって意見は分かれるでしょうが、少なくても行数ベースでカバレッジ率を計算するだけでは、真の姿はわからないということです。</p>
+
+          <hr/>
+          <h3>FreeBSD 8.0でカバレッジ</h3>
+
+          <p>FreeBSD 8.0でgccにオプション<code>-ftest-coverage -fprofile-arcs</code>、もしくは<code>-coverage</code>を渡してビルドすると、次のように<code>undefined reference to `__stack_chk_fail_local'</code>というエラーを表示して、リンクに失敗する場合があります。</p>
+
+          <div class="box">
+            <pre>% cat &gt; test.c
 int
 main(void)
 {
@@ -437,40 +250,42 @@ main(void)
 % gcc -coverage test.c
 /usr/lib/libgcov.a(_gcov.o)(.text+0x145f): In function `gcov_exit':
 : undefined reference to `__stack_chk_fail_local'
-%
-</pre>
+%</pre>
+          </div>
 
-    <p>次のようにオプション<tt>-fstack-protector</tt>を指定すると、ビルドできるようになります。</p>
+          <p>次のようにオプション<code>-fstack-protector</code>を指定すると、ビルドできるようになります。</p>
 
-<pre class="box">
-% gcc -coverage -fstack-protector test.c
-%
-</pre>
-
+          <div class="box">
+            <pre>% gcc -coverage -fstack-protector test.c
+%</pre>
+          </div>
+        </section>
+      </div>
+      <div class="left-container" style="order: 1;">
+        <nav>
+          <ul>
+            <li><a href="index.html">Top</a></li>
+            <li><a href="download.html">Download</a></li>
+            <li><a href="relnotes.html">Release&nbsp;Notes</a></li>
+            <li class="selected">Appendix</li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <footer>
+      <hr>
+      <address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+    </footer>
 <!-- Created: Tue Nov 17 20:01:42 JST 2009 -->
 <!-- hhmts start -->
 Last modified: Mon Jun 14 21:24:28 JST 2010
 <!-- hhmts end -->
-		  </td>
-		</tr>
-	      </tbody>
-	    </table>
-	  </td>
-	</tr>
-      </tbody>
-    </table>
-    <table class="header" cellpadding="0" cellspacing="2" border="0">
-      <tbody>
-	<tr>
-	  <td class="headerRight"><address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address></td>
-	</tr>
-      </tbody>
-    </table>
-    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    <script src="https://www.google-analytics.com/urchin.js" type="text/javascript">
     </script>
     <script type="text/javascript">
       _uacct = "UA-636163-1";
       urchinTracker();
     </script>
+    <amp-auto-ads type="adsense" data-ad-client="ca-pub-4691079535294206"></amp-auto-ads>
   </body>
 </html>
