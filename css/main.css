@@ -4,7 +4,7 @@
 @media screen and (max-width: 656px) {
   body {
     margin: auto;
-    width: 100% - 16;
+    width: calc(100% - 16px);
   }
 }
 
@@ -79,7 +79,17 @@ code, pre {
   font-family: 'Inconsolata', Consolas, 'Yu Gothic', monospace;
 }
 
+pre {
+  width: fit-content;
+  padding-right: 12px;
+}
+
+pre.containing-hljs {
+  width: 100%;
+}
+
 body {
+  -webkit-text-size-adjust: 100%;
   font-family: 'Palatino Linotype', 'Palatino', 'Quattrocento', 'HiraMinProN-W3', 'Yu Mincho', selif;
   font-weight: 400;
 }

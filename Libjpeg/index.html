@@ -37,7 +37,7 @@
       <hr>
       <p><code>jpeg-6b.tar.gz</code>に含まれる<code>jchuff.c</code>の関数<code>encode_one_block()</code>は、DCT変換と量子化を終えたブロックを引数にとり、DC/AC成分の係数をハフマン符号にエンコードして出力する。このうち、63個のAC成分の係数をハフマン符号化する部分では、1つの係数につき、先行して0が続く個数（0ランレングス）の符号、係数のビット長の符号、係数そのものを連続してビットストリームに出力する。0ランレングスの符号と係数のビット長の符号については、事前に用意したテーブルから求めて<code>emit_bits()</code>でまとめて出力し、続けて係数そのものを再度<code>emit_bits()</code>で出力する。したがって、0ランレングスが16以上になる特別な場合を除き、ループ1回につき<code>emit_bits()</code>を2回呼び出すことになる。</p>
 
-      <pre style="overflow-x: auto;">
+      <pre class="containing-hljs" style="overflow-x: auto;">
         <code class="c">LOCAL(boolean)
 encode_one_block (working_state * state, JCOEFPTR block, int last_dc_val,
                   c_derived_tbl *dctbl, c_derived_tbl *actbl)
