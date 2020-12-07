@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <script data-ad-client="ca-pub-4691079535294206" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-636163-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-636163-1');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>J.I.さんの闇 | 闇の世界</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="stylesheet" type="text/css" href="next-button.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/toc.js"></script>
+    <script src="next-button.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">闇の世界</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>J.I.さんの闇</h1>
+<h2>ソートのやりかたがわからない</h2>
+<p>「ちょっと相談があるんですが。」</p>
+<p>J.I.さん（仮名）から声をかけられた。彼のPCのモニターには、画面一杯にソースコードが映し出されていた。エディタで何かのプログラムを編集している最中のようだ。</p>
+<p>彼は社会人2年目だが、京都にある、ノーベル賞受賞者を輩出している国立大学を修士で卒業している。専門は情報工学だ。賢いに決まっている。</p>
+<p>「どうした?」</p>
+<p>「C#でソートしたいのですが、どうやっていいのかわからなくて。」</p>
+<p>私は気を失いつつ話を聞いてみて、彼が困っていることを整理してみた。まず、ソートしたいデータはエクセルでいうところの4行分存在し、そして1行のデータには列<code>a</code>, <code>b</code>, <code>c</code>が3つある、という状況である。現状、彼はこのデータをソースコードでは次のように保持している:</p>
+<pre><code class="language-csharp">public float[] a = new float[4];
+public float[] b = new float[4];
+public float[] c = new float[4];
+</code></pre>
+<p>彼は<code>c</code>の配列をソートすることはできる。しかし、そうすると<code>c</code>の配列の要素の順番が変わるのに、<code>a</code>, <code>b</code>は要素の順番はそのままなので、どうしたらいいかと頭を抱えていた。いや、正確には、iPadで手書きのメモを大量に書いていた。やりたいことは “行単位でのソート、比較対象は列<code>c</code>の値” なのだ。</p>
+<p>「それだったら、」</p>
+<p>私はそう言いながら、彼にエクセルでいうところの行に相当する<code>Row</code>クラスか構造体を作り、その配列でデータを保持すればできると伝えた。しかし、彼はChrome（ウェブブラウザ）で “C# クラス 構造体” と検索を始めた。Googleは愚直に検索結果を表示して、彼は最初のエントリをクリックし始めた。</p>
+<p>これは話が長くなりそうだ、と私は恐れ、次のようなクラスを書くように伝えた:</p>
+<pre><code class="language-csharp">public class Row
+{
+    public float a;
+    public float b;
+    public float c;
+}
+</code></pre>
+<p>彼は私の言った通りにタイプした。</p>
+<p>「それで!?」</p>
+<p>そうか。これではまだ閃かないのか。</p>
+<p>「<code>a</code>, <code>b</code>, <code>c</code>の配列の代わりに、<code>Row</code>オブジェクトの配列を使えばいいんだよ。」</p>
+<p>彼はピンときていないようなので、元々の<code>a</code>, <code>b</code>, <code>c</code>の定義をコメントアウトして、次のようなコードを書くように伝えた:</p>
+<pre><code class="language-csharp">public class Row
+{
+    public float a;
+    public float b;
+    public float c;
+}
+public Row row[] = new Row[4];
+
+// public float[] a = new float[4];
+// public float[] b = new float[4];
+// public float[] c = new float[4];
+</code></pre>
+<p>もちろん、すべてのフィールドが<code>public</code>なことにツッコミを入れるような状況ではないことを、私は会話開始5秒で悟ったことを付け加えておく。彼にはもっと重要なことを優先的に伝えなければならない。</p>
+<p>「ただ、このままだと<code>row[0]</code>から<code>row[3]</code>は<code>null</code>になっているので、どこかで初期値を設定しておく必要があるよ。」</p>
+<p>彼は、<code>row</code>の全要素を初期化すべき場所にカーソルを移動して、次のようにコードを書き始めた:</p>
+<pre><code class="language-csharp">row[0] = new Row();
+row[1] = new Row();
+row[2] =
+</code></pre>
+<p>途中で彼はあることに気づいたようだった。そして、次のようにコードを直した:</p>
+<pre><code class="language-csharp">for (int i = 0; i &lt; row.Length; ++i)
+{
+    row[i] = new Row();
+}
+</code></pre>
+<p>「そう、それでいいよ。」</p>
+<p>この闇からやっと離れられると私は安堵した。しかし、その直後、私は見てしまったのだ。闇より暗い漆黒の世界を。</p>
+<h2>直す必要性がわからない</h2>
+<p>私は彼の “相談” を終えて帰宅するつもりだった。しかし、彼のモニターには次のようなコードが映っていた:</p>
+<pre><code class="language-csharp">...
+int index = int.Parse(...);
+switch (index)
+{
+    case 0:
+        x[0] = result;
+        break;
+    case 1:
+        x[1] = result;
+        break;
+    case 2:
+        x[2] = result;
+        break;
+    case 3:
+        x[3] = result;
+        UpdateState();
+        break;
+    default:
+        break;
+}
+</code></pre>
+<p>不幸にも私はこれを知覚してしまった。なんだろう、具合が悪くなる。</p>
+<p>「え、なんで、<code>switch</code>と<code>case</code>を使って書いてるの!?」</p>
+<p>「え!? <code>switch</code>と<code>case</code>を使わないで書けるんですか、これ。」</p>
+<p>絶望的だ。</p>
+<p>「これ、<code>switch</code>要らないでしょ。大枠としては、<code>switch</code>の代わりに<code>x[index] = result</code>って書くだけでいいよ。」</p>
+<p>彼は納得がいかない表情で、自分で書いた<code>switch</code>をコメントアウトしてから、私の言った通りにタイプしてみた:</p>
+<pre><code class="language-csharp">...
+int index = int.Parse(...);
+x[index] = result;
+// switch (index)
+// {
+//     case 0:
+//         x[0] = result;
+//         break;
+//     case 1:
+//         x[1] = result;
+//         break;
+//     case 2:
+//         x[2] = result;
+//         break;
+//     case 3:
+//         x[3] = result;
+//         UpdateState();
+//         break;
+//     default:
+//         break;
+// }
+</code></pre>
+<p>「え!? これ<code>switch</code>要らないじゃないですか!」</p>
+<p>なぜか彼は半ギレだった。誰にキレているのかはわからないが。</p>
+<p>「じゃ、コメント消します」</p>
+<p>「いや、まだ消さないで。<code>index</code>が<code>3</code>のときの処理が同じになってないから。」</p>
+<p>「え!?」</p>
+<p>彼は “<code>case 3</code>” の処理のときだけ、特定のメソッドを呼ぶようにしていたのを、自分で書いておいて忘れていたようだった。</p>
+<p>「<code>x[index] = result</code>の後に、<code>if (index == 3) ...</code>を追加して、その中で同じメソッドを呼び出してあげないと。」</p>
+<pre><code class="language-csharp">...
+int index = int.Parse(...);
+x[index] = result;
+if (index == 3)
+{
+    UpdateState();
+}
+// switch (index)
+// {
+//     case 0:
+//         x[0] = result;
+//         break;
+//     case 1:
+//         x[1] = result;
+//         break;
+//     case 2:
+//         x[2] = result;
+//         break;
+//     case 3:
+//         x[3] = result;
+//         UpdateState();
+//         break;
+//     default:
+//         break;
+// }
+</code></pre>
+<p>「これでいいですか?」</p>
+<p>「あとは、<code>default</code>の部分がね。<code>index</code>が0から3までの値じゃない場合は、元々は何もしないわけだよね。これだと、その場合に例外をスローしてしまう。<code>x[index] = result</code>の前に<code>if</code>を追加して、<code>index</code>の値をチェックしなきゃ。」</p>
+<p>「いやあ、<code>index</code>は必ず0、1、2、3のどれかになるんですよね。それ以外の値にはならないです。」</p>
+<p>「そうだとするなら、<code>index</code>が0から3までの値じゃない場合、例外をスローするようにしたほうがいいんじゃない?」</p>
+<p>「ええっ。僕、エラーチェックとか、書いたことないですけど。」</p>
+<p>そうですか。</p>
+<p>「まあ、書いてみなよ。」</p>
+<p>「はあ。じゃあ、愚直に書きます。」</p>
+<p>彼は、あまり乗り気ではなかったようだったが、次のように<code>if</code>を追加した:</p>
+<pre><code class="language-csharp">...
+int index = int.Parse(...);
+if (index != 0 &amp;&amp; index != 1 &amp;&amp; index != 2 &amp;&amp; index != 3)
+{
+
+}
+x[index] = result;
+...
+</code></pre>
+<p>再び、なんだろう、具合が悪くなる。どういう思考で、これに至るのだろうか。愚直には最近違う意味が追加されたのか、など様々な思考が駆け巡る。</p>
+<p>「どうして範囲で判定しないの? 0から3の間になければ、ではダメなの?」</p>
+<p>「<code>index</code>が例えば2.5の場合はエラーにしなければならないですよね。」</p>
+<p>そうか。そこからか。</p>
+<p>「<code>index</code>は<code>int</code>型だから、整数値しかとらないよ。だから、その心配はしなくてもいいよ。」</p>
+<p>「はあ。」</p>
+<p>彼は最終的に次のようなコードを手に入れた:</p>
+<pre><code class="language-csharp">...
+int index = int.Parse(...);
+if (index &lt; 0 || index &gt; 3)
+{
+    // 例外をスロー
+}
+x[index] = result;
+if (index == 3)
+{
+    UpdateState();
+}
+...
+</code></pre>
+<p>「コードをキレイにしていただいて、ありがとうございました。」</p>
+<p>「いや、キレイとかではなくて、あれは直さないとダメだよ。」</p>
+<p>しかし、彼はドヤ顔で言い返した:</p>
+<p>「元々のコードはちゃんと動いていたので、直さなくても良かったと思います。」</p>
+<p>「そうか。では、今度から動いてるコードはいじらないようにしようか。」</p>
+<p>彼が言いたいのはつまるところ、こういうことだ。山手線で大崎から品川に行くのに、外回りでも内回りでもいいのだ、どちらも結果的に品川に着くのだから。そうじゃないだろ、と心の中でツッコミつつ、私は帰路についた。</p>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">闇の世界</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li class="selected">
+      J.I.さんの闇
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>
