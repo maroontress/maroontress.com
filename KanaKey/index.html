@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | 日本語106キーボードにかなキー</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">日本語106キーボードにかなキー</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h2>1. xkeyboard-config-1.0でかなキー</h2>
+<p>どんどん悪くなるxorg。かなキーの設定を更新しなければいけない日がやってきた。グループ2にかなのキーマップを追加しなければならない。</p>
+<h3>1.1. ISO_Next_Groupをかなキーにする</h3>
+<p>この方法はxorg.confとxkbのシステムファイルを直接書き換えてグループ2にかなのキーマップを追加し、さらにかなキーにしたいキーにISO_Next_Groupを割り当てます。</p>
+<ol>
+<li>/usr<wbr>/local<wbr>/share<wbr>/X11<wbr>/xkb<wbr>/rules<wbr>/baseに次の行を追加します（<a href="base.diff">パッチ</a>）。</li>
+</ol>
+<pre><code class="language-diff">diff -cr xkb.orig/rules/base xkb/rules/base
+*** xkb.orig/rules/base	Sun Aug 19 09:28:10 2007
+--- xkb/rules/base	Sun Aug 19 09:34:14 2007
+***************
+*** 835,840 ****
+--- 835,841 ----
+    nbsp:level4           =	+nbsp(level4)
+    nbsp:level4n          =	+nbsp(level4n)
+    japan:nicola_f_bs    =	+jp(nicola_f_bs)
++   japan:kana            =	+jp(kana):2
+
+  ! option	=	compat
+    grp_led:num		=	+lednum(group_lock)
+</code></pre>
+<ol start="2">
+<li>次のように/etc/X11/xorg.confの入力デバイスセクションにXkbOptionsを追加します。</li>
+</ol>
+<pre><code class="nohighlight">Section "InputDevice"
+        Identifier  "Keyboard0"
+        Driver      "kbd"
+        Option      "XkbRules" "xorg"
+        Option      "XkbModel" "jp106"
+        Option      "XkbLayout" "jp"
+        <span style="color: greenyellow;">Option      "XkbOptions" "japan:kana,grp_led:scroll"</span>
+EndSection</code></pre>
+<ol start="3">
+<li>
+<p>Xサーバを再起動します。</p>
+</li>
+<li>
+<p>左の旗マークキー（キーコード115）をかなキーにするには、次のようにします（~/.xinitrcや~/.xsessionで実行するようにした方が便利です）。</p>
+</li>
+</ol>
+<pre><code class="language-plaintext">% xmodmap -e &quot;keycode 115 = ISO_Next_Group&quot;
+</code></pre>
+<ol start="5">
+<li>「かなキーを押すと、キーボードの第3LED（もともとScrollLockキー用だったもの）が点灯する」ことを確認してください。なお、ScrollLockキーを押しても、そのLEDはもはや点灯しません。</li>
+</ol>
+<h3>1.2. xkbcompでISO_Next_Groupをかなキーにする</h3>
+<p>上記の方法のようにシステムファイルを書き換えられない場合は、xkbcompで同様なことを実現できます。</p>
+<ol>
+<li>次のようなファイルを用意しておきます。</li>
+</ol>
+<pre><code class="nohighlight">xkb_keymap {
+  xkb_keycodes { include "xfree86(jp106)+aliases(qwerty)" };
+  xkb_types    { include "complete" };
+  xkb_compat   { include "complete+japan<span style="color: greenyellow">+ledscroll(group_lock)</span>" };
+  xkb_symbols  { include "pc+jp(106)<span style="color: greenyellow">+jp(kana):2</span>" };
+  xkb_geometry { include "pc(jp106)" };
+};</code></pre>
+<ol start="2">
+<li>用意したファイルを次のようにxkbcompでコンパイルしてXサーバに設定し、左の旗マークキー（キーコード115）をかなキーに割り当てます（実際には~/.xinitrcや~/.xsessionで実行することになります）。</li>
+</ol>
+<pre><code class="language-plaintext">% xkbcomp -I/usr/local/share/X11/xkb 用意したファイル $DISPLAY
+% xmodmap -e &quot;keycode 115 = ISO_Next_Group&quot;
+</code></pre>
+<h3>1.3. バーチャルなKana_Lockキーを追加する</h3>
+<p>ISO_Next_Groupではなく、Kana_Lockキーを使用する方法を説明します。ただし、Kana_Lockのキーシムを無視しないXクライアントを使用する場合、この方法は適さないでしょう。</p>
+<ol>
+<li>/usr/local/share/X11/xkb/rules/baseに次の行を追加します（<a href="base.diff">パッチ</a>）。</li>
+</ol>
+<pre><code class="language-diff">diff -cr xkb.orig/rules/base xkb/rules/base
+*** xkb.orig/rules/base	Sun Aug 19 09:28:10 2007
+--- xkb/rules/base	Sun Aug 19 09:34:14 2007
+***************
+*** 835,840 ****
+--- 835,841 ----
+    nbsp:level4           =	+nbsp(level4)
+    nbsp:level4n          =	+nbsp(level4n)
+    japan:nicola_f_bs    =	+jp(nicola_f_bs)
++   japan:kana            =	+jp(kana):2
+
+  ! option	=	compat
+    grp_led:num		=	+lednum(group_lock)
+</code></pre>
+<ol start="2">
+<li>次のように/etc/X11/xorg.confの入力デバイスセクションにXkbOptionsを追加します。</li>
+</ol>
+<pre><code class="nohighlight">Section "InputDevice"
+        Identifier  "Keyboard0"
+        Driver      "kbd"
+        Option      "XkbRules" "xorg"
+        Option      "XkbModel" "jp106"
+        Option      "XkbLayout" "jp"
+        <span style="color: greenyellow">Option      "XkbOptions" "japan:kana,japan:kana_lock,grp_led:scroll"</span>
+EndSection</code></pre>
+<ol start="3">
+<li>
+<p>Xサーバを再起動します。</p>
+</li>
+<li>
+<p>次のように左の旗マークキー（キーコード115）をかなキーにします（実際には~/.xinitrcや~/.xsessionで実行します）。</p></p>
+</li>
+</ol>
+<pre><code class="language-plaintext">% xmodmap -e &quot;keycode 115 = Kana_Lock&quot;
+</code></pre>
+<h3>1.4. xkbcompでバーチャルなKana_Lockキーを追加する</h3>
+<p>上記の方法でシステムファイルを書き換えられない場合は、xkbcompで同様なことを実現できます。</p>
+<ol>
+<li>次のようなファイルを用意しておきます。</li>
+</ol>
+<pre><code class="nohighlight">xkb_keymap {
+  xkb_keycodes { include "xfree86(jp106)+aliases(qwerty)" };
+  xkb_types    { include "complete" };
+  xkb_compat   { include "complete+japan<span style="color: greenyellow">+japan(kana_lock)+ledscroll(group_lock)</span>" };
+  xkb_symbols  { include "pc+jp(106)<span style="color: greenyellow">+jp(kana):2</span>" };
+  xkb_geometry { include "pc(jp106)" };
+};</code></pre>
+<ol start="2">
+<li>用意したファイルを次のようにxkbcompでコンパイルしてXサーバに設定し、左の旗マークキー（キーコード115）をかなキーに割り当てます（実際には~/.xinitrcや~/.xsessionで実行することになります）。</li>
+</ol>
+<pre><code class="language-plaintext">% xkbcomp -I/usr/local/share/X11/xkb 用意したファイル $DISPLAY
+% xmodmap -e &quot;keycode 115 = Kana_Lock&quot;
+</code></pre>
+<h3>1.5. 特定のキーをかなキーにする</h3>
+<p>最初に左の旗マークキーをかなキーにする例を説明します。</p>
+<ol>
+<li>/usr<wbr>/local<wbr>/share<wbr>/X11<wbr>/xkb<wbr>/rules<wbr>/baseに次の行を追加します（<a href="base.diff">パッチ</a>）。</li>
+</ol>
+<pre><code class="language-diff">diff -cr xkb.orig/rules/base xkb/rules/base
+*** xkb.orig/rules/base	Sun Aug 19 09:28:10 2007
+--- xkb/rules/base	Sun Aug 19 09:34:14 2007
+***************
+*** 835,840 ****
+--- 835,841 ----
+    nbsp:level4           =	+nbsp(level4)
+    nbsp:level4n          =	+nbsp(level4n)
+    japan:nicola_f_bs    =	+jp(nicola_f_bs)
++   japan:kana            =	+jp(kana):2
+
+  ! option	=	compat
+    grp_led:num		=	+lednum(group_lock)
+</code></pre>
+<ol start="2">
+<li>次のように/etc/X11/xorg.confの入力デバイスセクションにXkbOptionsを追加します。</li>
+</ol>
+<pre><code class="nohighlight">Section "InputDevice"
+        Identifier  "Keyboard0"
+        Driver      "kbd"
+        Option      "XkbRules" "xorg"
+        Option      "XkbModel" "jp106"
+        Option      "XkbLayout" "jp"
+        <span style="color: greenyellow;">Option      "XkbOptions" "japan:kana,<u>grp:lwin_toggle</u>,grp_led:scroll"</span>
+EndSection</code></pre>
+<ol start="3">
+<li>Xサーバを再起動します。</li>
+</ol>
+<p>下線部を次のいずれかに変更することで、かなキーの割り当てを変更できます。</p>
+<pre><code class="language-plaintext">grp:toggle
+grp:shifts_toggle
+grp:ctrls_toggle
+grp:alts_toggle
+grp:ctrl_shift_toggle
+grp:caps_toggle
+grp:shift_caps_toggle
+grp:alt_caps_toggle
+grp:ctrl_alt_toggle
+grp:alt_shift_toggle
+grp:menu_toggle
+grp:lwin_toggle
+grp:rwin_toggle
+grp:lshift_toggle
+grp:rshift_toggle
+grp:lctrl_toggle
+grp:rctrl_toggle
+grp:lalt_toggle
+</code></pre>
+<p>それぞれの意味は/usr<wbr>/local<wbr>/share<wbr>/X11<wbr>/xkb<wbr>/symbols<wbr>/groupを参照してください。</p>
+<h3>1.6. xkbcompで特定のキーをかなキーにする</h3>
+<p>上記の方法でシステムファイルを書き換えられない場合は、xkbcompで同様なことを実現できます。</p>
+<ol>
+<li>次のようなファイルを用意しておきます。</li>
+</ol>
+<pre><code class="nohighlight">xkb_keymap {
+  xkb_keycodes { include "xfree86(jp106)+aliases(qwerty)" };
+  xkb_types    { include "complete" };
+  xkb_compat   { include "complete+japan<span style="color: greenyellow;">+ledscroll(group_lock)</span>" };
+  xkb_symbols  { include "pc+jp(106)<span style="color: greenyellow;">+jp(kana):2+group(<u>lwin_toggle</u>)</span>" };
+  xkb_geometry { include "pc(jp106)" };
+};</code></pre>
+<p>用意したファイルを次のようにxkbcompでコンパイルしてXサーバに設定します（実際には~/.xinitrcや~/.xsessionで実行することになります）。</p>
+<pre><code class="language-plaintext">% xkbcomp -I/usr/local/share/X11/xkb 用意したファイル $DISPLAY
+</code></pre>
+<p>下線部を次のいずれかに変更することで、かなキーの割り当てを変更できます。</p>
+<pre><code class="language-plaintext">toggle
+shifts_toggle
+ctrls_toggle
+alts_toggle
+ctrl_shift_toggle
+caps_toggle
+shift_caps_toggle
+alt_caps_toggle
+ctrl_alt_toggle
+alt_shift_toggle
+menu_toggle
+lwin_toggle
+rwin_toggle
+lshift_toggle
+rshift_toggle
+lctrl_toggle
+rctrl_toggle
+lalt_toggle
+</code></pre>
+<p>それぞれの意味は/usr<wbr>/local<wbr>/share<wbr>/X11<wbr>/xkb<wbr>/symbols<wbr>/groupを参照してください。</p>
+<h2>2. xkeyboard-config-0.9（またはそれ以前）でかなキー</h2>
+<h3>2.1. ISO_Next_Groupをかなキーにする</h3>
+<p>この方法はかなキーにしたいキーにISO_Next_Groupを割り当てます。</p>
+<ol>
+<li>次のように/etc/X11/xorg.confの入力デバイスセクションにXkbOptionsを追加します。</li>
+</ol>
+<pre><code class="nohighlight">Section "InputDevice"
+        Identifier  "Keyboard0"
+        Driver      "kbd"
+        Option      "XkbRules" "xorg"
+        Option      "XkbModel" "jp106"
+        Option      "XkbLayout" "jp"
+        <span style="color: greenyellow;">Option      "XkbOptions" "grp_led:scroll"</span>
+EndSection</code></pre>
+<ol start="2">
+<li>
+<p>Xサーバを再起動します。</p>
+</li>
+<li>
+<p>左の旗マークキー（キーコード115）をかなキーにするには、次のようにします（~/.xinitrcや~/.xsessionで実行するようにした方が便利です）。</p>
+</li>
+</ol>
+<pre><code class="language-plaintext">% xmodmap -e &quot;keycode 115 = ISO_Next_Group&quot;
+</code></pre>
+<ol start="4">
+<li>「かなキーを押すと、キーボードの第3LED（もともとScrollLockキー用だったもの）が点灯する」ことを確認してください。なお、ScrollLockキーを押しても、そのLEDはもはや点灯しません。</li>
+</ol>
+<h3>2.2. xkbcompでISO_Next_Groupをかなキーにする</h3>
+<p>上記の方法でシステムファイルを書き換えられない場合は、xkbcompで同様なことを実現できます。</p>
+<ol>
+<li>次のようなファイルを用意しておきます。</li>
+</ol>
+<pre><code class="nohighlight">xkb_keymap {
+        xkb_keycodes  { include "xfree86(jp106)+aliases(qwerty)"        };
+        xkb_types     { include "complete"      };
+        xkb_compat    { include "complete+japan<span style="color: greenyellow;">+ledscroll(group_lock)</span>" };
+        xkb_symbols   { include "pc+jp(latin)+jp:2"     };
+        xkb_geometry  { include "pc(jp106)"     };
+};</code></pre>
+<ol start="2">
+<li>用意したファイルを次のようにxkbcompでコンパイルしてXサーバに設定し、左の旗マークキー（キーコード115）をかなキーに割り当てます（実際には~/.xinitrcや~/.xsessionで実行することになります）。</li>
+</ol>
+<pre><code class="language-plaintext">% xkbcomp -I/usr/local/share/X11/xkb 用意したファイル $DISPLAY
+% xmodmap -e &quot;keycode 115 = ISO_Next_Group&quot;
+</code></pre>
+<h2>3. さらに昔の話</h2>
+<ol>
+<li>/usr<wbr>/X11R6<wbr>/lib<wbr>/X11<wbr>/XF86Configのキーボードセクションが次のようになっているか確認します。ただし、XkbOptionsの行はなくてもいいです。</li>
+</ol>
+<pre><code>Section &quot;Keyboard&quot;
+...
+    XkbOptions  &quot;ctrl:swapcaps&quot;
+    XkbRules    &quot;xfree86&quot;
+    XkbModel    &quot;jp106&quot;
+    XkbLayout   &quot;jp&quot;
+...
+EndSection
+</code></pre>
+<ol start="2">
+<li>
+<p>ルートになります。</p>
+</li>
+<li>
+<p>/usr<wbr>/X11R6<wbr>/lib<wbr>/X11<wbr>/xkb<wbr>/compat<wbr>/basicのバックアップを取ります。</p>
+</li>
+<li>
+<p>ファイル<a href="basic.gz">basic.gz</a>を展開してできるファイルbasicを/usr<wbr>/X11R6<wbr>/lib<wbr>/X11<wbr>/xkb<wbr>/compat<wbr>/におきます。</p>
+</li>
+<li>
+<p>ルートの作業はこれで終わりです。</p>
+</li>
+<li>
+<p>Xサーバを再起動します。</p>
+</li>
+<li>
+<p>「Shiftキーと変換キーを同時に押すと、キーボードの第3LED（もともとScrollLockキー用だったもの）が点灯する」ことを確認してください。なお、ScrollLockキーを押しても、そのLEDはもはや点灯しません。</p>
+</li>
+<li>
+<p>この段階でも、Shift+変換キーでかなキーの代用になりますが、左の旗マークキーをかなキーにするには、次のようにします（~/.xinitrcや~/.xsessionで実行するようにした方が便利です）。</p>
+</li>
+</ol>
+<pre><code>% xmodmap -e &quot;keycode 115 = Mode_switch&quot;
+</code></pre>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Nov  6 17:42:37 JST 1999 -->
+<!-- hhmts start -->
+Last modified: Mon May 12 05:22:02 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">日本語106キーボードにかなキー</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

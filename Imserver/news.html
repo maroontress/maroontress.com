@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>News | Japanese XIM Server</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo"><img src="imserver-icon.png" alt="アイコン" style="width: 32px; height: 32px; vertical-align: bottom;"/>日本語XIMサーバ</div>
+<div id="toc-level" data-values="H2"></div>
+<h1>News</h1>
+<!-- download.htmlを確認 -->
+<h2>2005-02-12</h2>
+<p><a href="imserver-20050212.tar.gz">imserver-20050212.tar.gz</a>をリリース。</p>
+<ul>
+<li>XIMクライアントの最上位ウィンドウをリサイズしたとき、候補ウィンドウがリサイズされないバグを修正。</li>
+<li>Xmb/XwcResetIC()で前編集文字列が消去されないバグを修正。</li>
+<li>XIMクライアントが終了した直後に別のXIMクライアントと接続するとクラッシュするバグを修正。</li>
+<li>XIMクライアントが終了したときに（imreceiverが）予測候補を表示したままになるバグを修正。</li>
+<li>deleteLine（キャレットから行末まで削除）がOpenOfficeとQtで正しく動作しないバグを修正。</li>
+</ul>
+<h2>2005-01-08</h2>
+<p><a href="imserver-20050108.tar.gz">imserver-20050108.tar.gz</a>をリリース。</p>
+<ul>
+<li>常にXエラーハンドラをオーバライドするようにして、XIMクライアントが強制終了させられたりクラッシュしたときに、巻き添えにならないようにした。</li>
+<li>入力状態でキャレットの位置から行末までを削除できるようにした（デフォルトはControl-u）。</li>
+<li>予測変換後の変換状態で、予測候補を読み文字列に展開し、かつキャレットの位置を展開前の読み文字列の末尾に移動できるようにした（デフォルトはShift-Escape, Shift-Control-g）。</li>
+<li>OpenOffice 1.1.2/1.1.3の設定例を追加。</li>
+</ul>
+<h2>2004-05-16</h2>
+<p><a href="imserver-20040516.tar.gz">imserver-20040516.tar.gz</a>をリリース。</p>
+<ul>
+<li>Imakefileでの日本語変換サーバの指定方法を変更。</li>
+<li>DB4のDB1.85互換APIを使用した場合、無入力状態なのに予測候補が提示されてしまうバグを修正。</li>
+</ul>
+<h2>2004-05-06</h2>
+<p><a href="imserver-20040506.tar.gz">imserver-20040506.tar.gz</a>をリリース。</p>
+<ul>
+<li>タイムスタンプが同じ予測候補は辞書順にソートして提示するようにした。</li>
+<li>無入力状態以外ではキーイベントをXIMクライアントに転送しないようにした。</li>
+<li>自閉モード（Autisticモード、従来の動作）に加え、参照辞書を併用して予測する<a href="feature.html#referenceMode">参照（Reference）モード</a>を追加した。それに伴い、AutisticモードとReferenceモードを切り替えるキー割り当て、状態文字列中のエスケープ文字を置換する文字列、参照辞書のパスを指定するリソースを追加した。</li>
+</ul>
+<h2>2003-12-17</h2>
+<p><a href="imserver-20031217.tar.gz">imserver-20031217.tar.gz</a>をリリース。</p>
+<ul>
+<li>XIMクライアントが終了するときに、imserverがひきずられてクラッシュするバグを修正。</li>
+<li>imreceiverの変更をマージ。</li>
+</ul>
+<h2>2003-11-03</h2>
+<p><a href="imserver-20031103.tar.gz">imserver-20031103.tar.gz</a>をリリース。</p>
+<ul>
+<li>OpenOffice 1.1.0のフィードバックの実装に対応するため、クライアント最適化の動作指定AnotherFeedbackを廃止した。代わりに動作指定Feedbackを追加して、OpenOffice 1.0/1.1の両方に対応した。</li>
+</ul>
+<h2>2003-07-07</h2>
+<p><a href="imserver-20030707.tar.gz">imserver-20030707.tar.gz</a>をリリース。</p>
+<ul>
+<li>リソースimserver.clientOptimizationを設定することで、クライアント毎に使用する予測辞書を切り替えられるようにした。</li>
+<li>前変換や半角全角変換、ひらがなカタカナ変換のリソースを読み込む際、文字列に含まれるエスケープ文字の処理するときにバッファオーバランが発生するバグを修正。</li>
+</ul>
+<h2>2003-06-09</h2>
+<p><a href="screenshot.html">クライアント最適化のデモ</a>を公開。</p>
+<h2>2003-06-06</h2>
+<p><a href="imserver-20030606.tar.gz">imserver-20030606.tar.gz</a>をリリース。</p>
+<ul>
+<li>リソースimserver.clientOptimizationを指定することで、クライアント毎の動作を最適化できるようにした。</li>
+<li>On-The-Spotスタイルでキャレットを描画しないXIMクライアントのために、反転文字で疑似的にキャレットを描画できるようにした。</li>
+<li>On-The-Spotスタイルでフィードバックを正常に描画できないXIMクライアントのために、フィードバック無しのOn-The-Spotスタイルを使用できるようにした。</li>
+<li>On-The-Spotスタイルでフィードバックの解釈が仕様と異なるXIMクライアントのために、使用するフィードバックの値を切り替えることができるようにした。</li>
+<li>設定値を字句解析する処理を共通のモジュールにまとめた。</li>
+<li>XIMSetIMValues()と2つのXIM属性XNResourceNameとXNResourceClassに対応するコードを追加。</li>
+<li>XIC属性XNPreeditStateNotifyCallbackに対応。</li>
+<li>キャレットコールバックを使用してキャレットを移動するコードを追加した。</li>
+</ul>
+<h2>2003-04-17</h2>
+<p><a href="imserver-20030417.tar.gz">imserver-20030417.tar.gz</a>をリリース。</p>
+<ul>
+<li>OpenOffice 1.0.2で正常にOn-The-Spot入力できるようにした。</li>
+</ul>
+<h2>2003-03-16</h2>
+<p><a href="imserver-20030316.tar.gz">imserver-20030316.tar.gz</a>をリリース。</p>
+<ul>
+<li>コンパイル時の警告を減らした。</li>
+<li>FreeBSDのwchar_tの値に依存した半角全角変換、ひらがなカタカナ変換のコードを削除し、変換規則をリソース指定できるように分離した。リソースimserver.symbolSystemMappingで「仮名」変換のルールを、リソースimserver.symbolWidthMappingで「角」変換のルールを記述するようにした。</li>
+<li>前変換を基本規則と最終規則の2つに分割し、関係するリソースを変更、追加した。これにより、ローマ字仮名変換の規則（特に「ん」への変換）を改善した。</li>
+<li>LinuxでCannaを使用した場合にクラッシュするバグを修正。</li>
+<li>ローマ字かな変換入力で、付属のリソースを用いても「thi」で「てぃ」を入力できなかったバグを修正。</li>
+<li>LinuxでビルドしやすいようにImakefileにコメントを追加した。</li>
+<li>2つのXIC属性XNPreeditStateとXNResetStateに対応。XIMクライアントがXmb/XwcResetIC()を発行したとき、XNResetStateの指定に従って日本語入力をオン、オフにするようにした。</li>
+<li>「かなキー」入力がFreeBSD以外（Linuxなど）で有効にならないバグを修正。</li>
+</ul>
+<p><a name="2003-03-16-preconv"></a></p>
+<h3>前変換モード</h3>
+<p>前変換モードの仕様が変更になりました。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><i>Direct</i></dt>
+<dd>前変換しません。</dd>
+<dt><i>Single</i></dt>
+<dd>リソースimserver.preconversionBasicRuleの基本規則とimserver.preconversionFinalRuleの最終規則の内容に従って前変換します。文字が入力されると基本規則が適用されます。変換、確定する直前には最終規則が適用されます。変換ルールの詳細については、ローマ字変換を記述した付属のファイルRomaji.adを参考にしてください。</dd>
+<dt><i>Double</i></dt>
+<dd>Singleの場合の処理に加えて、ひらがなをカタカナに変換します。</dd>
+</dl>
+<p>モード切り替えのキー割当は、次のリソースで指定します。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><i>imserver.preedit.directInputMode</i></dt>
+<dt><i>imserver.undofix.directInputMode</i></dt>
+<dd>Directモードに移行します。</dd>
+<dt><i>imserver.preedit.singlePreconversionMode</i></dt>
+<dt><i>imserver.undofix.singlePreconversionMode</i></dt>
+<dd>Singleモードに移行します。</dd>
+<dt><i>imserver.preedit.doublePreconversionMode</i></dt>
+<dt><i>imserver.undofix.doublePreconversionMode</i></dt>
+<dd>Doubleモードに移行します。</dd>
+</dl>
+<p>デフォルトの前変換モードは、次のリソースで指定します。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><i>imserver.preconversion</i></dt>
+<dd>direct, single, doubleのいずれかを指定します。</dd>
+</dl>
+<p>次のリソースは廃止になりました。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><i>imserver.preconversionMapping</i></dt>
+</dl>
+<h2>2002-12-23</h2>
+<p><a href="screenshot.html">予測入力のデモ</a>を公開。</p>
+<h2>2002-09-09</h2>
+<p><a href="imserver-20020909.tar.gz">imserver-20020909.tar.gz</a>をリリース。</p>
+<ul>
+<li>XFree86 4.2.0でmake installが失敗するのを修正した。</li>
+<li>マクロBUGGY_XFONTSETが適切に定義されるように修正した。</li>
+<li>候補のデータ型を見直して、候補のアクセス方法を統一した。</li>
+<li>変換状態で候補の読みを展開できるようにした。予測変換の候補を展開すると、候補の読み文字列が前編集文字列になる。通常の変換の候補や、二次予測変換の候補を展開したときは、変換のキャンセルとして扱われる。</li>
+</ul>
+<h2>2002-07-23</h2>
+<p><a href="imserver-20020723.tar.gz">imserver-20020723.tar.gz</a>をリリース。</p>
+<ul>
+<li>Exposeイベントにより候補ウィンドウを再描画するときにsegmentation faultが発生するバグを修正。</li>
+<li>warnx()を使用していたところを、fprintf()で標準エラー出力に表示するように直した。</li>
+<li>Imakefileのターゲット指定方法を、由緒正しいマクロを使うように変更した。</li>
+</ul>
+<h2>2002-06-21</h2>
+<p><a href="imserver-20020621.tar.gz">imserver-20020621.tar.gz</a>をリリース。</p>
+<ul>
+<li>XIMレシーバに送信する予測候補と予測変換の候補が一致しないバグを修正。</li>
+<li>予測変換の候補数がリソースimserver.maximumPredictionsで指定した数よりも少なくなるバグを修正。</li>
+<li>IC生成時に不適切なXIMスタイルが指定されていた場合の回復処置を追加。</li>
+</ul>
+<h2>2002-04-30</h2>
+<p><a href="imserver-20020430.tar.gz">imserver-20020430.tar.gz</a>をリリース。</p>
+<ul>
+<li>XIM_SET_IC_FOCUSとXIM_UNSET_IC_FOCUSの応答処理である遅延コールバックの実行中は、Xlibのデフォルトエラーハンドラを無効化するようにした。</li>
+<li>オーバライドしたXlibのエラーハンドラが呼ばれた場合は、エラーの内容を標準エラー出力に表示するようにした。</li>
+<li>ImakefileのマクロDebugをデフォルトで定義しないようにした。</li>
+<li>&quot;#ifndef BUGGY_XFONTSET&quot; とするべきところを &quot;#ifdef BUGGY_XFONTSET&quot; としていたバグを修正。</li>
+<li>テキスト操作APIの関数のプロトタイプ宣言でポインタ型の引数には可能な限りconst修飾子を指定するようにした。</li>
+<li>テキスト操作APIを追加した。マルチバイト文字列、ワイドキャラクタ文字列を保存する領域のサイズの計算方法を修正。MB_LEN_MAX、sizeof(wchar_t)とするべきところをsizeof(MB_LEN_MAX)にしていたバグを修正。</li>
+<li>予測辞書を更新している間はSIGINTとSIGHUPを無視するようにした。</li>
+<li>StatusAreaスタイルでXIMクライアントがXIM_RESET_ICリクエストを発行するまで状態が描画されていなかったバグを修正した。</li>
+<li>Cannaの辞書ホームディレクトリのパスをImakefileのCANNA_DIRで指定するようにした。</li>
+</ul>
+<h2>2001-09-23</h2>
+<p><a href="imserver-20010923.tar.gz">imserver-20010923.tar.gz</a>をリリース。</p>
+<ul>
+<li>予測候補の後始末処理の性能を改善した。</li>
+<li>テキスト操作APIの仕様を一部変更した。</li>
+<li>XICで指定されるフォントセットを共有するように変更した。詳細については<a href="bug-xcreatefontset.html">XCreateFontsSet()のバグ</a>を参照。X11R6.5.1以降では、新たなフォントセットを生成するときに使われてないフォントがあれば解放するようにしたが、それより古いリリースでは、いっさいフォントセットを解放しないようにした。</li>
+</ul>
+<h2>2001-09-02</h2>
+<p><a href="imserver-20010902.tar.gz">imserver-20010902.tar.gz</a>をリリース。</p>
+<ul>
+<li>XIMStatusAreaスタイルでの状態描画は、イベントによる再描画ではなく、ウィンドウの背景ピクスマップで処理するようにした。</li>
+<li>XIMPreeditPositionスタイルのプロパティ受渡し用のウィンドウをマップしていたバグを修正した。</li>
+<li>予測辞書に登録する「読み文字列」と「確定文字列」が同じ場合、確定文字列を長さ0の文字列にとして登録することにした。また、確定文字列をキーとして検索できるように「確定文字列 + 長さ0の文字列」も登録するようにした。逆に予測辞書から「読み文字列」と「確定文字列」を取り出したときに、確定文字列の長さが0であれば、読み文字列と確定文字列が同じものであるとして扱うようにした。</li>
+<li>変換後、変換中の文字列で予測し、予測の内容を更新するようにした。</li>
+<li>Control-Tab（デフォルトのキー割り当て）で、変換中の文字列を用いて予測入力できるようにした。</li>
+<li>予測候補のコミットを遅延コールバックで処理するようにした。</li>
+</ul>
+<h2>2001-05-30</h2>
+<p><a href="imserver-20010530.tar.gz">imserver-20010530.tar.gz</a>をリリース。</p>
+<ul>
+<li>Linuxでもビルドできるようにした。</li>
+<li>ムダなテキスト操作を減らした。</li>
+<li>XIMStatusNoneスタイルをサポートしていなかったのに、利用可能であるとXIMクライアントに伝えていたバグを修正した。</li>
+<li>wstrncpy()のコピー元文字列の長さ（ヌル文字を除く）とコピー文字数が等しい場合、コピー先文字列にさらにヌル文字を追加していたバグを修正し、さらにコピー元文字列の長さよりもコピー文字数が大きい場合の振る舞いをstrncpy()と同様にした。</li>
+<li>日本語変換エンジンとしてCannaとSJ3のどちらかを選べるようにした。</li>
+<li>OnTheSpot以外のスタイルでは、IC破壊時に候補ウィンドウが破壊されないバグを修正した。</li>
+<li>IC破壊リクエストは延遅コールバックで処理しないようにした。</li>
+<li>DEBUGが定義されていないときに、unused parameterの警告が出ないようにした。</li>
+<li>文節の数のかかわらず、変換結果の文節関係をXIM_JA_STUDYプロパティに登録するようにした。</li>
+<li>候補ウィンドウの幅を決定する際、候補文字列のなかから最大幅のものを求めて、それに合わせるようにした。</li>
+<li>デフォルトの変換キー（入力状態）の割り当てから、Down, Control-nを取り除いた。</li>
+<li>デフォルトの次候補/前候補への切り替えキー（変換状態）の割り当てに、それぞれTab/Shift-Tabを追加した。</li>
+<li>IC生成時に状態領域のジオメトリ属性を指定しないXIMクライアント（Netscape 4.7）では、状態領域のウィンドウが生成されないため、フォーカス獲得時にエラーになるバグを修正した。</li>
+<li>入力状態でTabキーを入力したときに、読み文字列から<a href="feature.html#predict">予測入力</a>できるようにした。</li>
+</ul>
+<h2>2001-03-11</h2>
+<p><a href="imserver-20010311.tar.gz">imserver-20010311.tar.gz</a>をリリース。</p>
+<ul>
+<li>複数文節の半自動登録に対応するため、確定した文節が2文節以上の場合、ルートウィンドウのXIM_JA_STUDYプロパティに、確定した文字列と読み文字列を設定するようにした。</li>
+<li>ICの破壊とIMの破壊を遅延コールバックで処理するようにした。</li>
+<li>StatusAreaスタイルでの描画をピクスマップに描画してからウィンドウにコピーするようにした。</li>
+<li>ALTキーが押されている場合は前編集文字列に加えずに、そのままクライアントに渡すようにした（XEmacs対応）。</li>
+<li>クライアントの最上位ウィンドウを移動、サイズ変更したときにも前編集領域のスポット位置が追従するように、XIMレシーバに通知するときに座標変換するようにした。</li>
+<li>XIM_SET_IC_FOCUSとXIM_UNSET_IC_FOCUSの応答処理をICの遅延コールバックで処理するようにした。</li>
+<li>XIM_TRIGGER_NOTIFYの応答で、入力ONのときにはICのfocus_in()メソッドを呼び出すようにした。</li>
+<li>XIMクライアントとの通信でプロパティ取得とセレクション応答のときXlibのエラーハンドラを無効化するようにした。</li>
+<li>StatusNothingスタイルに対応した。</li>
+<li>文節学習の処理で「文節長が変化したが、表示している文字列と候補が異なる」場合も学習していたのを修正した。</li>
+</ul>
+<h2>2001-02-05</h2>
+<p><a href="imserver-20010205.tar.gz">imserver-20010205.tar.gz</a>をリリース。</p>
+<ul>
+<li>ローマ字変換入力での初期カタカナ入力モードが可能になるように、<a href="#2001-02-05-preconv">前変換モード</a>のモードを拡張した。</li>
+<li>前編集文字列を全消去するキーを割り当てるリソースimserver.preedit.cancelを追加した。</li>
+<li><a href="#2001-02-05-status">状態ウィンドウ</a>に描画する文字列をリソースで指定できるようにした。</li>
+<li>入力コンテキストを破壊する直前の前編集文字列の描画（フォーカスアウト）処理をやめた（Over-The-Spotスタイルでは正常に動作しないため）。</li>
+<li>Over-The-Spotスタイルに伴う<a href="../Imreceiver/index.html">XIMレシーバ</a>との通信に関して、プロトコルを変更し、入力コンテキストのフォーカスを設定する際に、ウィンドウをセレクションで通知するようにした。</li>
+<li>XRegisterIMInstantiateCallback()を使用するXIMクライアントに対応した。</li>
+<li>候補の文字列がユニークになるようにした（候補に同一文字列が複数含まれる場合、正常に候補を選択できなかったバグを修正）。</li>
+</ul>
+<p><a name="2001-02-05-preconv"></a></p>
+<h3>前変換モード</h3>
+<p>2001-02-05より、前変換モードの種類をOn/OffからDirect/Single/Doubleに変更しました。モードの意味は次の通りです。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><i>Direct</i></dt>
+<dd>前変換しません（従来の前変換モードoffの場合と同様）。</dd>
+<dt><i>Single</i></dt>
+<dd>リソースimserver.preconversionMappingの内容に従って前変換します（従来の前変換モードonの場合と同様）。変換ルールの詳細については、ローマ字変換を記述した付属のファイルRomaji.adを参考にしてください。</dd>
+<dt><i>Double</i></dt>
+<dd>Singleの場合の処理に加えて、ひらがなをカタカナに変換します。</dd>
+</dl>
+<p>モード切り替えのキー割当は、次のリソースで指定します。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><i>imserver.preedit.directInputMode</i></dt>
+<dt><i>imserver.undofix.directInputMode</i></dt>
+<dd>Directモードに移行します。</dd>
+<dt><i>imserver.preedit.singlePreconversionMode</i></dt>
+<dt><i>imserver.undofix.singlePreconversionMode</i></dt>
+<dd>Singleモードに移行します。</dd>
+<dt><i>imserver.preedit.doublePreconversionMode</i></dt>
+<dt><i>imserver.undofix.doublePreconversionMode</i></dt>
+<dd>Doubleモードに移行します。</dd>
+</dl>
+<p>デフォルトの前変換モードは、次のリソースで指定します。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><i>imserver.preconversion</i></dt>
+<dd>direct, single, doubleのいずれかを指定します。</dd>
+</dl>
+<p>また2001-02-05より、次のリソースは廃止になりました。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><i>imserver.preedit.preconversionMode</i></dt>
+<dt><i>imserver.undofix.preconversionMode</i></dt>
+</dl>
+<p><a name="2001-02-05-status"></a></p>
+<h3>状態領域に描画する文字列</h3>
+<p>2001-02-05より、状態領域に描画する文字列を次のリソースで指定できるようになりました。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><i>imserver.activeLabel</i></dt>
+<dd>日本語入力ONのときに表示する文字列を指定します。</dd>
+<dt><i>imserver.inactiveLabel</i></dt>
+<dd>日本語入力OFFのときに表示する文字列を指定します。</dd>
+</dl>
+<p>どちらも指定した文字列中に%で始まる文字列が含まれていた場合、次のように展開されます。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><i>%s</i></dt>
+<dd>日本語入力OFFの状態はリソースimserver.inactiveState、入力状態（無入力状態も含む）はリソースimserver.inputState、変換状態はリソースimserver.convertStateで指定する文字列に、それぞれ展開されます。</dd>
+<dt><i>%p</i></dt>
+<dd>Directモードはリソースimserver.directMode、Singleモードはリソースimserver.singleMode、Doubleモードはリソースimserver.doubleModeで指定する文字列に、それぞれ展開されます。</dd>
+<dt><i>%%</i></dt>
+<dd>%に展開されます。</dd>
+<dt><i>そのほか%に続く任意の一文字</i></dt>
+<dd>空文字列に展開されます。</dd>
+</dl>
+<h2>2001-01-24</h2>
+<p><a href="imserver-20010124.tar.gz">imserver-20010124.tar.gz</a>をリリース。</p>
+<ul>
+<li>変換状態における処理のコード（convert.c）を共通化した。</li>
+<li>ICの状態領域のAreaNeeded属性とArea属性に暫定的に対応した。</li>
+<li>On-The-RootとOver-The-Spotに対応するコードを追加した（補助クライアントを同時に使用することで暫定的に対応）。</li>
+<li>前編集領域または状態領域のフォントセット属性が変更された場合、新しく指定されたフォントセット名が現在のものと同じ場合は何もしないようにした（性能改善のため）。</li>
+<li>XIM_RESET_ICを受け取ったときに前編集文字列を消去するタイミングを、リプライ前からリプライ後に変更した。</li>
+</ul>
+<h2>2000-06-12</h2>
+<p><a href="imserver-20000612.tar.gz">imserver-20000612.tar.gz</a>をリリース。</p>
+<ul>
+<li>XmbResetIC()の直後、描画コールバックを呼び出して前編集文字列を消去するように変更した。</li>
+</ul>
+<h2>2000-05-29</h2>
+<p><a href="imserver-20000529.tar.gz">imserver-20000529.tar.gz</a>をリリース。</p>
+<ul>
+<li>IC破壊リクエストへの応答に対応した。</li>
+<li>クライアントウィンドウのDestroyNotifyを受け取ったときに、入力コンテキストの管理情報を解放する処理が間違っていたバグを修正した。</li>
+</ul>
+<h2>2000-04-30</h2>
+<p><a href="imserver-20000430.tar.gz">imserver-20000430.tar.gz</a>をリリース。</p>
+<ul>
+<li>関数SendXIMResetICReply()で、リプライする前に状態表示を更新するようにした。</li>
+<li>前編集文字列がある状態でもpreconversionModeとDirectKanaInputModeの切り替えができるようにした。</li>
+<li>候補一覧のウィンドウを表示するようにした。</li>
+</ul>
+<h2>2000-02-07</h2>
+<p><a href="xim-server.html"><em>On-The-Spot</em>対応の日本語XIMサーバ機能比較</a>をまとめた。</p>
+<h2>2000-01-08</h2>
+<p><a href="imserver-20000108.tar.gz">imserver-20000108.tar.gz</a>をリリース。</p>
+<h2>1999-09-20</h2>
+<p>imserver-19990920.tar.gzをリリース。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jan  8 18:57:30 JST 2000 -->
+<!-- hhmts start -->
+Last modified: Sat Feb 12 05:52:48 JST 2005
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Japanese XIM Server</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li class="selected">
+      News
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="feature.html">Feature</a>
+    </li>
+    <li>
+      <a href="screenshot.html">Screenshot</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="document.html">Document</a>
+    </li>
+    <li>
+      <a href="bug.html">Bug</a>
+    </li>
+    <li>
+      <a href="xim-server.html">on-the-spot対応日本語XIMサーバ 機能と実装の比較</a>
+    </li>
+    <li>
+      <a href="bug-xcreatefontset.html">XCreate<wbr>Font<wbr>Set()のバグ</a>
+    </li>
+    <li>
+      <a href="feedback-impl.html">XIMFeedbackの仕様解釈と実装</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

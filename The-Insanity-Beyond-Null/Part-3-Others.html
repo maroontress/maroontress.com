@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <script data-ad-client="ca-pub-4691079535294206" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-636163-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-636163-1');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Part 3. そのほかのnull | The Insanity Beyond Null</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="stylesheet" type="text/css" href="next-button.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+    <script src="next-button.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">The Insanity Beyond Null</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>3. そのほかの<code>null</code></h1>
+<p>最後に、比較的最近誕生した言語であるSwift [<a href="#ref1">1</a>]
+の<code>nil</code>とKotlin [<a href="#ref2">2</a>]の<code>null</code>について、
+Java、C#と比較しながら考える。
+また、C++の<code>std::optional</code>についても簡単に紹介する。</p>
+<h2>Swift 5</h2>
+<p>Swiftの<code>nil</code>は安全である。まず、ローカル変数は宣言時に初期化を強制する。
+つまり、未初期化の変数の心配は不要だ。</p>
+<p>それから、
+Javaの<code>Optional&lt;T&gt;</code>同様、
+選択型の<code>Optional&lt;T&gt;</code> [<a href="#ref3">3</a>] 型があり、
+そのインスタンスは不変オブジェクトである。
+ただし、
+Javaとは異なり、
+Swiftでは<code>T?</code>という記法でも記述できる。</p>
+<blockquote>
+<p><code>T?</code>は<code>Optional&lt;T&gt;</code>のシンタックスシュガーでしかなく、
+Javaでの参照型の値を<code>java.util.Optional&lt;T&gt;</code>でラップしたもの、
+あるいはC#での値型の値を<code>System.Nullable&lt;T&gt;</code>でラップしたものと同様に考えてよい。</p>
+</blockquote>
+<p>ラップした値にアクセスする方法は複数用意されている。</p>
+<h3>無条件アンラップ</h3>
+<p><code>Optional&lt;T&gt;</code>型の式に強制アンラップ演算子を適用（式に<code>!</code>を後置する）すると、
+強制的に型<code>T</code>の値をアンラップする。
+ただし、値が存在しないと、ランタイムエラーとなる。</p>
+<blockquote>
+<p>Swiftの<code>!</code>後置演算子は、
+Javaの<code>java.util.Optional&lt;T&gt;</code>のメソッド<code>get()</code>、
+C#の<code>System.Nullable&lt;T&gt;</code>のプロパティ<code>Value</code>に相当する操作を表す記法である。</p>
+</blockquote>
+<h3>選択連鎖</h3>
+<p><code>Optional&lt;T&gt;</code>型の式に選択連鎖演算子を適用（式に<code>?</code>を後置）して、
+ラップされた型<code>T</code>のインスタンスのメソッド、プロパティのアクセス、
+または添え字アクセスを実行する。
+値が存在しない場合、何もアクセスされず、式は<code>nil</code>となる。
+メソッドの戻り値の型、プロパティの型、
+または添え字アクセスの型が<code>U</code>ならば、式の型は<code>U?</code>になる。</p>
+<p>戻り値が<code>Void</code>型のメソッドは<code>()</code>、すなわち空のタプル、を返すと定義されている<sup>†1</sup>。
+そのため、選択連鎖演算子で戻り値が<code>Void</code>型のメソッドを呼び出すと、
+式の型は<code>Void?</code>、すなわち<code>()?</code>になる。
+さらに、プロパティに値をセットする式は、
+戻り値が<code>Void</code>型のセッターメソッドを呼び出す式と同等なので、
+選択連鎖演算子でプロパティに値を設定する式の型も<code>()?</code>となる。</p>
+<blockquote>
+<p>†1 <code>Void</code>は<code>()</code>の<strong>型エイリアス</strong>（<strong>type alias</strong>）である。</p>
+</blockquote>
+<p>したがって、選択連鎖演算子のアクセスの結果を<code>nil</code>と比較して、
+アクセスできたかどうかを調べることができる。
+公式ドキュメントで例証されているコードを次に引用する:</p>
+<pre><code class="language-swift">// printNumberOfRooms()は戻り値がVoid型のメソッド
+if john.residence?.printNumberOfRooms() != nil {
+    print(&quot;It was possible to print the number of rooms.&quot;)
+} else {
+    print(&quot;It was not possible to print the number of rooms.&quot;)
+}
+
+// プロパティaddressに値をセットする
+if (john.residence?.address = someAddress) != nil {
+    print(&quot;It was possible to set the address.&quot;)
+} else {
+    print(&quot;It was not possible to set the address.&quot;)
+}
+</code></pre>
+<h3><code>nil</code>合体演算子</h3>
+<p>nil合体演算子（<code>??</code>）は<code>Optional&lt;T&gt;</code>型の式に値が存在しないときのデフォルト値を提供する演算子である。例えば、<code>expr1</code>が選択型のとき<code>expr1 ?? expr2</code>は、
+<code>expr1</code>の値が存在すればその値に、存在しなければ式<code>expr2</code>の値になる式である。</p>
+<h3>選択束縛</h3>
+<p><code>Optional&lt;T&gt;</code>のオブジェクトにラップされている値が存在するときに、
+それを別の変数に取り出すフロー制御の記法が用意されている:</p>
+<ul>
+<li><code>if let</code></li>
+<li><code>guard let</code></li>
+<li><code>switch</code></li>
+</ul>
+<p><code>if let</code>は<a href="https://docs.microsoft.com/en-us/dotnet/csharp/pattern-matching#the-is-type-pattern-expression">C#の<code>is</code>パターンマッチング</a>に似た感じで使用できる:</p>
+<pre><code class="language-swift">if let value = maybeNil {
+    // maybeNilがラップする値が存在した場合: このスコープでvalueはその値となる
+    ...
+} else {
+    // maybeNilがラップする値が存在しない場合
+    ...
+}
+</code></pre>
+<p>ところが選択型の値が複数あるときは、次のようにコードのネストが深くなりやすい<sup>†2</sup>:</p>
+<pre><code class="language-swift">if let value1 = maybeNil1 {
+    if let value2 = maybeNil2 {
+        if let value3 = maybeNil3 {
+            // value1, value2, value3を使うコードが続く
+            ...
+</code></pre>
+<blockquote>
+<p>†2 ちなみにC#の<code>is</code>パターンマッチングも同様の傾向にあるが、
+C#では変数のスコープが異なるので、
+<code>if</code>の条件を反転させてSwiftの<code>guard let</code>のように使うこともできる。
+しかし、そのような使用例を積極的に紹介しないところをみると、
+Microsoftは <em>Early Exit</em> [<a href="#ref4">4</a>] の考え方があまり好きではないのだろう。
+実際、
+C#の<code>is</code>パターンマッチングの解説 [<a href="#ref5">5</a>] には、
+次のような記載がある:</p>
+<blockquote>
+<p><em>The samples in this topic use the recommended construct where a pattern match
+<code>is</code> expression definitely assigns the match variable in the <code>true</code> branch of
+the <code>if</code> statement. You could reverse the logic by saying
+<code>if (!(shape is Square s))</code> and the variable <code>s</code> would be definitely assigned
+only in the <code>false</code> branch. While this is valid C#,
+<strong>it is not recommended because it is more confusing to follow the logic</strong>.</em></p>
+</blockquote>
+</blockquote>
+<p>これを解消するのが<code>guard let</code>である。
+次のように、必要な値のいずれかが存在しなかった時点で<code>return</code>するような構造にコードを書ける:</p>
+<pre><code class="language-swift">guard let value1 = maybeNil1 else {
+    return
+}
+guard let value2 = maybeNil2 else {
+    return
+}
+guard let value3 = maybeNil3 else {
+    return
+}
+// value1, value2, value3を使うコードが続く
+...
+</code></pre>
+<p>もちろん、<code>return</code>以外のフロー制御も可能で、
+例えば、ループ内であれば<code>break</code>や<code>continue</code>を用いることもできる。
+なお、<code>guard</code>は必ず<code>let</code>と組み合わせて使う必要があるわけではない。
+<code>guard</code>ステートメントの条件式で代入された定数や変数は、
+その<code>guard</code>ステートメントを含むスコープが閉じるまで有効なので、
+<code>nil</code>のチェック以外のガードでEarly Exitする際でも役に立つ。</p>
+<p>最後に<code>switch</code>を用いる束縛だが、次のように
+<code>case let</code>の後に定数名と<code>?</code>を指定する:</p>
+<pre><code class="language-swift">func printValue(_ maybeString: String?) {
+    switch maybeString {
+    case let value?:
+        // maybeStringは値が存在し、valueに代入済み
+        print(&quot;value: \(value)&quot;)
+        break
+    default:
+        // maybeStringはnil
+        print(&quot;no value&quot;)
+        break
+    }
+}
+
+printValue(&quot;foo&quot;)
+printValue(nil)
+</code></pre>
+<p>出力は次のようになる:</p>
+<pre><code class="language-plaintext">value: foo
+no value
+</code></pre>
+<blockquote>
+<p><a href="https://repl.it/@maroontress/Example-usage-of-optional-and-switch-1">実行結果</a></p>
+</blockquote>
+<p>また、
+<code>switch</code>にタプルを用いることで、複数の値を同時にチェックすることもできる:</p>
+<pre><code class="language-swift">func printValues(_ maybeInt1: Int?, _ maybeInt2: Int?) {
+    switch (maybeInt1, maybeInt2) {
+    case let (value1?, value2?):
+        print(&quot;values: (\(value1), \(value2))&quot;)
+        break
+    default:
+        print(&quot;one of the values is nil.&quot;)
+        break
+    }
+}
+
+printValues(2, 3)
+printValues(4, nil)
+printValues(nil, nil)
+</code></pre>
+<p>出力は次のようになる:</p>
+<pre><code class="language-plaintext">values: (2, 3)
+one of the values is nil.
+one of the values is nil.
+</code></pre>
+<blockquote>
+<p><a href="https://repl.it/@maroontress/Example-usage-of-optional-and-switch-2">実行結果</a></p>
+</blockquote>
+<h3>標準ライブラリにおける選択型の整合性</h3>
+<p>Swiftの選択型は、Javaの<code>Optional&lt;T&gt;</code>やC#のnull許容型と比べて明らかに優れている。
+標準ライブラリの基本的な機能として<strong>最初から</strong>選択型が組み込まれているからだ。
+例えば、<a href="https://developer.apple.com/documentation/swift/dictionary/2885650-subscript"><code>Dictionary&lt;K, V&gt;</code>の添え字アクセス（<code>subscript</code>）</a>の戻り値は<code>V?</code>型であるし、
+<a href="https://developer.apple.com/documentation/swift/array/1848165-first"><code>Array&lt;E&gt;</code>の<code>first</code></a>の戻り値は<code>E?</code>型である。</p>
+<p>理解を深めるため、
+<a href="https://developer.apple.com/documentation/swift/sequence/2950916-compactmap"><code>Sequence</code>プロトコルの<code>compactMap</code></a>について言及しておきたい。
+<code>compactMap</code>は引数に「シーケンスの要素を型<code>T?</code>の値に変換する」クロージャをとり、
+型<code>T</code>の要素を含むシーケンスを生成する。
+つまり、<code>compactMap</code>はその引数のクロージャでシーケンスの要素を選択型のオブジェクトに変換後、
+値をラップしていないものを除き、
+さらに値をアンラップして取り出すことで、
+型<code>T</code>の要素だけのシーケンスを生成する。
+この操作は<code>nil</code>の除去と、型<code>T?</code>から<code>T</code>への変換の両方を含む。
+重要なのは、変換後のシーケンスが<code>nil</code>を含まない、
+ということが静的解析的にはっきりすることだ。
+対照的に、要素が型<code>T?</code>のシーケンスに<code>filter</code>を適用して<code>nil</code>の要素を除いても、
+コンパイラは生成したシーケンスを要素が型<code>T?</code>のものとみなしてしまう。</p>
+<p>これをC#のLINQを用いて説明してみよう。
+次のコードは参照型の要素のリスト、
+ただし要素が<code>null</code>である可能性があるリスト、
+を受け取り、
+<code>null</code>を含まないリストを生成して返す、つもりである:</p>
+<pre><code class="language-csharp">public static IEnumerable&lt;T&gt; WhereNonNull&lt;T&gt;(this IEnumerable&lt;T?&gt; list)
+    where T : class
+{
+    var newList = list.Where(e =&gt; e is {});
+    ...
+</code></pre>
+<p>このように<code>Where</code>を使って、
+<code>null</code>を含む<code>list</code>から、
+<code>null</code>を含まない<code>newList</code>を作ることができる。
+一見すると、
+これで<code>IEnumerable&lt;T&gt;</code>の<code>newList</code>が手に入り、目的を達成したように思える。
+しかし、実際には<code>newList</code>の型は<code>IEnumerable&lt;T?&gt;</code>である。
+つまり、元々の<code>list</code>も生成した<code>newList</code>も要素の型は同じ<code>T?</code>である。
+したがって、静的解析では<code>newList</code>が<code>null</code>を含む可能性があるとみなしてしまう。</p>
+<p>なお、C#で<code>null</code>の除去と、型<code>T?</code>から<code>T</code>の変換は、
+次のように<code>OfType</code>メソッドを使うことでも実現できる:</p>
+<pre><code class="language-csharp">public static IEnumerable&lt;T&gt; WhereNonNull&lt;T&gt;(this IEnumerable&lt;T?&gt; list)
+    where T : class
+{
+    var newList = list.OfType&lt;T&gt;();
+    ...
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwMRQgG0wQwEaYCmABIVPkQLABQNAAgEwCM9ADMXUwHQAyAllACOAbjYcmAFlG1qdAMziAbBwbEAohgC2hMBUJqAHsDIBnPgHsoJmgG8axBxwWdlnOQB4AKgD5iAJRw+E0IAYQBlAA5FJgBOL28ACmAACyDxD08Afl9MIOAASntHYoB3ZJ0ST2IQFSKHO2pi4oA3HDBiKEIS/hNgYgBeYlzergB1crBCBJJ+3xIAQkGMbHzpJsc6AHYOrp7gNccAXxo6pyV0+OJxioA5SxusTHik1JMLrJy8wsb14jKK4hVGqMU4NX7EVrtTrdPIDIZ5LgAeQAZp4AJ4AB0Iz1Wp2KWx2MN6Bwcxx+DlOGLAfFaxnOdAkxAACtSoMAAGo4TAQQgmZ5uS5czDfcGzcQxBKcVhcABS5gECQARDBiMriEKuGFCEQAMbAaYDXwAEkVNkIh0V+St0lO8npjIAsoEoJKmKwANoAXXVYAA5iYRY4wb9IT7dGi4dCvXigzH1orPOU1YrBBA+DqANbJvBgcwlKBq5aYFWKgBWEE0GJMyfMzR0yZShGTuAAXmjC48YHHiIcSU0WQIOVyeSYEm1w2MJoQ7lAHtgEtbTmSyUA==">実行結果</a></p>
+</blockquote>
+<p>これを利用して、Swiftの<code>compactMap</code>をC#で模倣すると、次のようになる:</p>
+<pre><code class="language-csharp">public static IEnumerable&lt;U&gt; CompactReferenceMap&lt;T, U&gt;(
+    this IEnumerable&lt;T&gt; list,
+    Func&lt;T, U?&gt; transform)
+    where U : class
+{
+    return list.Select(e =&gt; transform(e))
+        .OfType&lt;U&gt;();
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwMRQgG0wQwEaYCmABIVPkQLABQNAAgEwCM9ADMXUwHQAyAllACOAbjYcmAFlG1qdAMziAbBwbEAohgC2hMBUJqAHsDIBnPgHsoJmgG8axBxwWdlnOQB4AqgD5iAYXNNAAccAGNgADUcTAhCAFkcIPcAFRhiHwAKe0cc4AALPhNxD2TfTELgGGychzoAVhS0zwB+X2BdKwAzczBNAEpqmoB3PJ0ST2IQYhN2iHDBu2oaxzoAdmJyma4AZUIicIySAF42jpNu3sO+gaXlmq4AeU7kgE8gwi9vDL7pHIBfGiDeRKYqffyBELhABKhE6YygoXiiUa6S+g1yBSKbhSZQqVVuy3qKJapxwXR6/XRjhGY3SkxUCyptXWm2AOz2hAOx1J5MuhGuTPuT1e70+31+jgBMhyQTAfAAbjhjCC6BJiAAFOVQSLRWImHEZbGlYjRTA3O7EE7iACchqYrC4AClzAIMgAiNIek3Ydn7YCHS2+AAkbpshD+buuP0Gg1lCqVJBcHDVAWCYR1MSRQWShBm30ZBJqirAJrAuheluIUEIQwA2gBdQWLC05N3JUZet2CCB8UIAa07eDA5iGUC9GGwnoAVhBgiZO+Z5TpO/lCJ3cAAvF7jrCYfEWv4S5bF72YSs4Ms4F5cVOQjOxBJBANWwjNXhkADm+WjhZymoE965hkpo/v8gKFnGirKkmqrgmm0KwvCiKPjmebmo4zZ3CeF7lpW1ZDMQAHNA2TaCjkTBpAwaRyGkE57sQdS0buaSrExk5VsxHHscQgqHoK2HYOel7Xre6YwnCYBkMhiTPr4r5cMk5jbO0Agft8oF3P+2pRJmJjAdgGkOFKORAs4TCuGqCSupwrANqWH4mOhDiYcsonhDpD6JKh/qGTUbnAOJSFZt54qDFKfxAA">実行結果</a></p>
+</blockquote>
+<p>また、Javaで模倣すると次のようになる<sup>†3</sup>:</p>
+<pre><code class="language-java">private static &lt;T, U&gt; List&lt;U&gt; compactMap(
+        List&lt;T&gt; list,
+        Function&lt;T, Optional&lt;U&gt;&gt; transform) {
+    return list.stream()
+        .map(e -&gt; transform.apply(e))
+        .flatMap(o -&gt; o.stream())
+        .collect(Collectors.toList());
+}
+</code></pre>
+<blockquote>
+<p><a href="https://ideone.com/xRs9sK">実行結果</a></p>
+</blockquote>
+<blockquote>
+<p>†3 Java 9で<code>Optional</code>クラスに追加された<code>stream()</code>メソッドを使った。
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html#stream()">APIリファレンス</a>にも同様の説明がある。</p>
+</blockquote>
+<!--
+API Note:
+This method can be used to transform a Stream of optional elements
+to a Stream of present value elements:
+
+     Stream<Optional<T>> os = ..
+     Stream<T> s = os.flatMap(Optional::stream)
+-->
+<h2>Kotlin 1.3</h2>
+<p>Kotlinの<code>null</code>も、Swiftの<code>nil</code>と同じように安全だ。
+<a href="https://kotlinlang.org/docs/reference/">公式のリファレンス</a>でnull安全性
+[<a href="#ref6">6</a>]
+についてまとめられているので、
+その全貌についてはそちらを参照してほしい。</p>
+<p>Swiftと大きく違う点は、<code>T?</code>が選択型ではなく、null許容型であることだ。
+null許容型は、<strong>C# 8のnull許容参照型</strong>と同様に、フェイク型である。
+つまり、null許容型はコンパイラの静的解析によって実現されている。
+Kotlinを発明したJetBrains社は、JavaのIDEであるIntelliJ IDEAの開発元でもある。
+Java 11のパートで説明したように、
+IntelliJ IDEAのコンパイラは<code>@NotNull</code>/<code>@Nullable</code>アノテーションをヒントにして、
+データフロー解析でnullチェックが適切かどうか検証できる。
+だから、その技術をKotlinとそのコンパイラに用いたのも不思議ではない。</p>
+<h3>プリミティブ型のnull許容型</h3>
+<p>ただし、プリミティブ型の値については注意が必要である。
+例えば、
+<a href="https://kotlinlang.org/docs/reference/basic-types.html#representation">公式のドキュメント</a>にも記載されているように、
+<code>Int?</code>型の値はボクシングされた<code>Int</code>オブジェクトとなる。
+これはJavaで、<code>@Nullable Integer</code>は可能だが<code>@Nullable int</code>は不可、
+というのと同じである。
+次のように、ボクシングされたプリミティブ型の値では、
+値の等価性（equality）は保たれるが、
+オブジェクトの同一性（identity）が保たれることは保証されない:</p>
+<pre><code class="language-kotlin">val a: Int = 10000
+val boxedA: Int? = a
+val anotherBoxedA: Int? = a
+// Prints 'true'
+println(boxedA == anotherBoxedA)
+// Prints 'false'
+println(boxedA === anotherBoxedA)
+</code></pre>
+<blockquote>
+<p><a href="https://pl.kotl.in/82b2sRxmR">実行結果</a></p>
+</blockquote>
+<h3>null許容型の演算子</h3>
+<p>デジャブ感があるが、null許容型に対して、次の演算子が用意されている:</p>
+<ul>
+<li><code>.?</code>（safe call operator）</li>
+<li><code>?:</code>（Elvis operator）</li>
+<li><code>!!</code>（not-null assertion operator）</li>
+</ul>
+<p>それぞれ、C#/Swiftの<code>.?</code>演算子、<code>??</code>演算子、<code>!</code>後置演算子と同様の意味をもつ。
+詳細については公式リファレンスを参照してもらうことにして、
+興味深い点についてだけ紹介しておく。</p>
+<p><code>.?</code>演算子はSwift同様に左辺値に適用できる。
+また、<code>.?</code>演算子と<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/let.html"><code>let</code>関数</a>を次のように組み合わせる<sup>†4</sup>ことで、
+Javaの<code>Optional&lt;T&gt;</code>の<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html#ifPresent(java.util.function.Consumer)"><code>ifPresent(Consumer)</code></a>や
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html#map(java.util.function.Function)"><code>map(Function)</code></a>と同様な処理を実現できる:</p>
+<pre><code class="language-kotlin">val item: String? = ...
+item?.let { println(it) }
+val length = item?.let { it.length }
+</code></pre>
+<blockquote>
+<p>†4 実際には<code>let</code>に限らず、
+公式ドキュメントの<a href="https://kotlinlang.org/docs/reference/scope-functions.html"><strong>スコープ関数</strong></a>にある<code>run</code>、
+<code>apply</code>、
+<code>also</code>なども組み合わせることができる。</p>
+</blockquote>
+<p><code>?:</code>演算子の右の項には、式の代わりに<code>return</code>または<code>throw</code>を指定できる。
+[<a href="#ref6">6</a>] から例証を引用して次に示す:</p>
+<pre><code class="language-kotlin">fun foo(node: Node): String? {
+    val parent = node.getParent() ?: return null
+    val name = node.getName() ?: throw IllegalArgumentException(&quot;name expected&quot;)
+    ...
+</code></pre>
+<h3>null許容型と集合</h3>
+<p><code>Array</code>クラスと<code>Iterable</code>インターフェースには、
+Swiftの<code>compactMap</code>に相当する、
+<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/map-not-null.html"><code>mapNotNull</code></a>メソッドがある。
+さらに、
+要素がnull許容型のコレクションから値の存在する要素だけを取り出す<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/filter-not-null.html"><code>filterNotNull</code></a>メソッドも用意されている。</p>
+<p>Swiftと同様、
+このようなAPIの存在が、
+最初からnull許容型が存在していた言語の優れている点である。</p>
+<h3>プラットフォーム型</h3>
+<p>Javaとの相互運用性（interoperability）はKotlinの重要な特徴のひとつである。
+しかし、
+Kotlinから見ればJavaの参照型はすべてnull許容型なので、
+何の対策も無しにJavaのAPIを利用することはnull安全性に脅威をもたらすことになる。
+つまり、JavaのAPIを呼び出し、戻り値をすべてnull許容型として扱うと、
+エラーまみれになり、<code>!!</code>をひたすら追加することになる。
+そうしているうちに、
+本当に修正が必要なエラーは埋もれてしまい、
+null安全性は崩壊する。</p>
+<p>Kotlinの設計者は賢いので、
+Javaからやって来る値を扱うために、
+プラットフォーム型 [<a href="#ref7">7</a>] という特別な型を用意した。
+といっても、それは銀の弾丸ではなく、
+コンパイル時にnullに関するデータフロー解析をオフにするだけの型、
+つまり暗黙に<code>!!</code>演算子が適用されている型である。
+これにより、Javaからのインスタンスのnullチェックを怠れば、
+実行時にNPEがスローされる、というだけの問題になる。
+[6] から引用した例証を次に示す:</p>
+<pre><code class="language-kotlin">// listはnull非許容型（コンストラクタの結果）
+val list = ArrayList&lt;String&gt;()
+list.add(&quot;Item&quot;)
+
+// sizeはnull非許容型（プリミティブ型）
+val size = list.size
+
+// itemはプラットフォーム型（Javaのオブジェクト）
+val item = list[0]
+
+// コンパイルは成功するが、実行時にitemがnullなら例外をスロー
+item.substring(1)
+
+// 何の問題もない
+val nullable: String? = item
+
+// コンパイルは成功するが、実行時に失敗するかもしれない
+val notNull: String = item
+</code></pre>
+<p>このように、Javaからの値がすべてプラットフォーム型になるわけではなく、
+コンストラクタの結果やプリミティブ型の値など<code>null</code>でないことが自明なものはnull非許容型になる。
+プラットフォーム型の値は速やかにnull許容型、
+または<code>null</code>でないことが明白ならnull非許容型、
+の変数に代入して扱うべきだろう。</p>
+<p>プラットフォーム型は記述のための記法をもたない。
+しかし、コンパイラがエラーなどで型の説明をするための表記法だけは用意されていて、
+「<code>T</code>または<code>T?</code>」という意味のプラットフォーム型を<code>T!</code>として表示する。
+表記例を [6] から次に引用しておく:</p>
+<ul>
+<li><code>(Mutable)Collection&lt;T&gt;!</code></li>
+<li><code>Array&lt;(out) T&gt;!</code></li>
+</ul>
+<p>前者は「要素の型が<code>T</code>の、可変または不変のJavaの集合」の参照または<code>null</code>、
+後者は「要素の型が<code>T</code>または<code>T</code>のサブタイプであるJavaの配列」の参照または<code>null</code>を表す。</p>
+<p>なお、Kotlinのコンパイラは、
+Javaのパートで説明した<code>null</code>にまつわるアノテーションを理解するので、
+Kotlinから参照するJavaのAPIを<code>@NotNull</code>と<code>@Nullable</code>でアノテーションしておけば、
+Javaのオブジェクトがプラットフォーム型になることを回避できる。</p>
+<h2>C++17</h2>
+<p>C++はC++11で<code>nullptr</code>キーワード、C++17で<code>std::optional</code>クラスが導入された。
+<code>std::optional</code>は、
+Javaの<code>Optional</code>と同様の課題を解決するためのものだ。</p>
+<p>C/C++では、配列はオブジェクトではない。したがって、
+Javaのパートで説明した「<code>null</code>の代わりに長さ0または1の配列を返す」ようなことをモノマネすることはできない。
+もちろん、理屈の上では配列の代わりに<code>std::vector</code>などで同様なことを実現できるものの、
+C++を使う動機の多くは、そのようなオーバーヘッドを許容しないため、だからだ。</p>
+<p>C++の標準は<code>std::optional</code>の実装が（値を格納するために）動的にメモリを割り当てることを禁止<sup>†5</sup>している。
+パフォーマンスを理由に選択型の採用を拒絶する輩への対策は、
+標準化委員会がやっておいてくれた。</p>
+<blockquote>
+<p>†5 誤解しないように念のため補足しておく。
+<code>std::optional&lt;T&gt;</code>型のオブジェクトは、
+生成された時点で型<code>T</code>の値を格納するためのメモリ領域を事前に確保しておく。
+だから、<code>std::optional&lt;T&gt;</code>型のオブジェクトに型<code>T</code>の値を格納するときに、
+動的なメモリ割り当ては発生しない、という意味である。
+典型的な実装は、長さ<code>sizeof(T)</code>のバイト配列を確保しておいて、
+プレイスメント<code>new</code>でそこに値を格納する。
+そして、このことから分かるように、JavaやSwiftとは異なり、
+<code>T</code>の派生型の値を格納することはできない。</p>
+</blockquote>
+<h3>オブジェクトの生成</h3>
+<p>値をもつ<code>std::optional&lt;int&gt;</code>型のオブジェクトの宣言の例を示す:</p>
+<pre><code class="language-c++">std::optional&lt;int&gt; v1(123);
+std::optional&lt;int&gt; v2 {{123}};
+std::optional&lt;int&gt; v3 = 123;
+auto v4 = std::optional&lt;int&gt;(123);
+auto v5 = std::make_optional&lt;int&gt;(123);
+</code></pre>
+<blockquote>
+<p><a href="https://godbolt.org/#z:OYLghAFBqd5QCxAYwPYBMCmBRdBLAF1QCcAaPECAM1QDsCBlZAQwBtMQBGAFlICsupVs1qhkAUgBMAISnTSAZ0ztkBPHUqZa6AMKpWAVwC2tQVvQAZPLUwA5YwCNMxLgAZSAB1QLC62nsMTQS8fNTorG3sjJxdOdyUVMNoGAmZiAgDjU05FZUxVPxS0ggi7R2c3RVT0zKCchWqS6zLoiriASkVUA2JkDgByKQBma2RDLABqcSG9DyS2aexxVwBBZZXrAgmjZmsIdqmAdllVibOJhvQQEFQ5vwWZzcWJgDdOCE5JIfbpk5Xzi4EK43O50B46J5DbCvSRHWTHT5DcSHAAiyLRQz%2BAMu11u81Y0wh9GeLyGUyGKImiN%2B6wBzAMRFe3HJlJxIPxhMh2A%2BXx%2BmNp53pjJeAFYWYDgTsANaYAD6ePuBMexKhPO%2BNNW6PW/U6rBA/RF/VIpn6riNqH1Ojkcgu3V6mCmX04RoI%2BrN7U6UpAQyGADofQHA0GAGxCfXcI0ms2kC39I0KEDuV2mnWkOCwJBoIwePDsMgUCBZnN5kDAACcklIVFzBGcCYgDjdRoc1jSAE99c7SFmjFoCAB5WisDsp0hYHaidhNsd4Yj5NQvTAJ0eYAAe%2BQZA2jm2U09YeAcxHbeiwnZdxDwRjPnRo9CYbA4PH4gmEohQ1pkQgPCcgnQVdGXABaS5phRCQZDkThDnjPICg0CBzFqbJSHMUoohiYJvF8OgkMw0I/DQ8pYlyRJCkaXD6lgpIinSQjWmIhpigoqpijojDOE6BQ7T6LhdX1Q1jWnWNVwADmDQDg2ZYBkGQCYy19WEIFwQgSEdIYcgmPRs1zZw1I4zSP2kF0mw9UgvR9f0gysn1Qz1foI0E0dY3jRNSGTd00xgRAbgZDwGXISgix04jMHwIhiNvRgWCnJ8AHcjw8a8wwNSMhP1YZOAmWLCAQCZRPEySJmk2T5MkYyU1M8y/Ws6zkocqNzX1FykxMvj%2BjKxzo2ctzWtIRdiB8DRuCAA">コンパイル結果</a></p>
+</blockquote>
+<p>どれでも同じ結果になる。同様に、値をもたない宣言の例を示す:</p>
+<pre><code class="language-c++">std::optional&lt;int&gt; n1;
+std::optional&lt;int&gt; n2 {};
+std::optional&lt;int&gt; n3 = std::nullopt;
+auto n4 = std::optional&lt;int&gt;();
+</code></pre>
+<blockquote>
+<p><a href="https://godbolt.org/#z:OYLghAFBqd5QCxAYwPYBMCmBRdBLAF1QCcAaPECAM1QDsCBlZAQwBtMQBGAFlICsupVs1qhkAUgBMAISnTSAZ0ztkBPHUqZa6AMKpWAVwC2tQVvQAZPLUwA5YwCNMxEAE5SAB1QLC62nsMTQS8fNTorG3sjJxd3JRUw2gYCZmICAONTTkVlTFU/ZNSCCLtHZzdFFLSMoOyFKuLrUujy1wBKRVQDYmQOAHIpAGZrZEMsAGpxQb0PRLYp7HEABgBBZZXrAnGjZmsINsmAdllV8bPx%2BvQQEFRZv3npzYXx2k4pk5Xzi4Irm7u6B46J6DbAvSRHWSHAAi73WX0u11uc1YUyB9GetEGk0GUO%2Bv1oBlYrCRsNO52YBiIL242NxCL%2ByNRwOw%2B1Ja2h6z6HVYID6AFY%2BqRTH0loLULydHI5Bcuj1MJNJINOIKCLzRW0OgBrECDQYAOl1hqNxoAbEJedxBcLRaRxX1BQoQEtSKqRVzSHBYEg0EYPHh2GQKBAfX6AyBgK5JKQqP6CM5HRAHGrBQ5rKkAJ685WkH1GLQEADytFYmbdpCwO1E7GT5bwxDyagAbphHWXMAAPPKU/o2zbKGusPAOYgZvRYLMq4h4IwTjo0ehMNgcHj8QTCUQoKUyIRDx2QDpIvytgC0lymUIkMjknEODty%2BQ0EHMNSypHMJSiMWC3l8dBf39CPwPzKFw6nvRJCmqfRMkEeIGwKBpgJaUDKiKf86kQppP3KTgOgUWVei4bleQFIUaztdsAA4TWPE0aWAZBkHGVw9XBCBcEIEgFSVUhxj0X1/WcbjcL4rdpBVZMNVIbVdQNY15N1M0eT6S0yLLO0HSdF1JI9GBEBuSkPEpchKBDQSUMwfAiBQ%2BdGBYasVwAdxHDxZ3NfkrXI3khk4cZHMIBBxiomi6PGBimJYyQJLdKSZP1BSFPc1TrTFXlNOdV11WIvoorUm0NO0mKOmbYgfA0bggA%3D">コンパイル結果</a></p>
+</blockquote>
+<p>同じく、どれも同じ結果になる。</p>
+<h3>値の有無の確認と取り出し</h3>
+<p>他の言語の選択型、null許容型に比べると、
+C++17の<code>std::optional</code>でできることは少ない。
+<code>std::optional</code>には、
+Javaの<code>Optional</code>の<code>ifPresent(Consumer)</code>メソッド、
+<code>map(Function)</code>メソッドのような、
+ラムダ式を受け取る操作がない。
+そもそも、
+C++は現在のところ標準ライブラリに<strong>リスト内包表記</strong>（<strong>list comprehension</strong>）[<a href="#ref8">8</a>]
+のAPIがない。
+だから、そのようなものが<code>std::optional</code>だけにあったところで、
+使い勝手が劇的に良くなることはないだろう。</p>
+<blockquote>
+<p>ただし、次のようなプロポーザルが出ているので、
+将来的には他の言語でできることができるくらいに機能が追加されるかもしれない:</p>
+<p><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p0798r3.html">p0798R3 Monadic operations for std::optional</a></p>
+</blockquote>
+<p><code>std::optional</code>の値の有無は、<code>bool</code>型の値を返す<code>has_value()</code>メンバ関数で取得できる。
+しかし、この関数を使う必要はない。
+<code>std::optional</code>は<code>operator bool</code>（<code>bool</code>型への暗黙的な型変換）を定義しているので、
+次のようにインスタンスを<code>if</code>などの条件式にそのまま指定できる:</p>
+<pre><code class="language-c++">std::optional&lt;int&gt; maybeInt = ...;
+if (maybeInt) {
+    // maybeInt.has_value()がtrue、すなわち値が存在する場合
+    ...
+} else {
+    // maybeInt.has_value()がfalse、すなわち値が存在しない場合
+    ...
+}
+</code></pre>
+<p>値の取り出しには、<code>operator *</code>もしくは<code>value()</code>メンバ関数を使う。
+これらの結果が異なるのは、値が存在しない場合だけである。
+その場合、前者は未定義の振る舞い、
+後者は例外<code>std::bad_optional_access</code>のスローとなる。</p>
+<p>値が存在する場合は、<code>operator -&gt;</code>を使って値のメンバにアクセスすることもできる:</p>
+<pre><code class="language-c++">std::optional&lt;std::string&gt; maybeString = ...;
+if (maybeString) {
+    // auto &amp;s = *maybeString;
+    // auto size = s.size();
+    // と書くのと、次の行は同じ:
+    auto size = maybeString-&gt;size();
+    ...
+}
+</code></pre>
+<blockquote>
+<p><a href="https://godbolt.org/#z:OYLghAFBqd5QCxAYwPYBMCmBRdBLAF1QCcAaPECAM1QDsCBlZAQwBtMQBGAFlICsupVs1qhkAUgBMAISnTSAZ0ztkBPHUqZa6AMKpWAVwC2tQVvQAZPLUwA5YwCNMxLgDZSAB1QLC62nsMTQS8fNTorG3sjJxdOdyUVMNoGAmZiAgDjU05FZUxVPxS0ggi7R2c3RVT0zKCchWqS6zLoiriASkVUA2JkDgByKQBma2RDLABqcSGddQbiTGYjaexxAAYAQWHR8cwpmdQPJLYV9a3N6wIJo2ZrCHapgHZZTYm3iYb0EBBD49ZpnSfb7zazAFbXZgATycKWIoP2ABEppJJAhlKxUKQJgB3EisdBSSTTF4bd4TPBUCYQG7QzCw0EPcTPM5ksnMAxEZGuBSIiYAKhpMIIcNExJZrLe7M5PgAXntpkiFAA6WWYe5i14Sj4EL4obpXAEA5GSVUgY37HRG1UWq0677mf5DElkpkI8VvClUwV04UMp7OrVS1AfPBy3ne%2BmiAC0K1V6qd7tZQL1HJtM2NpvNhvT1uzOm1uodGtJ71dZzLm36nVYIH6AFZ%2BqRTP01o3ULXLTI5B9ur15ZIhpxGwRa632p0ANYgIZDJUz%2BcLxfuGv9biN5ut0jt/qNhQgNakEctqukOCwJBoIwePDsMgUCCX6%2B3kDAACcklIVBvBGce4gDlHRsHGsNJIVrIdSEvIwtAIAB5WhWDA49SCwG5RHYQCULwBYCgAN0wPdkMwAAPfIOQGTdLmUTDWDwBxiFAvQsHA4c4SMFjOhoegmDYDgeH4QRhFEFA5DkIQ6L3SBOl%2BPxCKjT4FQkLsZE4R5dzyAoNAgcxamyUhzFKKIYmCbxfDoXSTNCPxDPKWJckSQpGgs%2BoNKSIp0hs1o7IaYpnKqYpPOMzhOgUXs%2Bi4atawbJtMO3YiAA5XCjVxuAmYBkGQCZXyVSQqVwQgSGRQcsT0K8b2cIrgomTtZBkYdAPHUgpxnOdFzamdl1rNcYuQ7dd33Q8GtPGBEB%2BDkPA5chKEfcq7MwfAiDsrjGBYDD%2BOxBiPA4oQovXWLa2GTgcUIBAJgSpKUrSjKspy%2Brj0a5rZ3a9qdtXPbetrfqDyPMdIv6SR3s3PrBvuzp8OIHwNG4IA%3D">実行結果</a></p>
+</blockquote>
+<p>ただし、<code>operator *</code>同様、値が存在しないときは未定義の振る舞いとなる。</p>
+<p><code>value_or(T)</code>メンバ関数は、値が存在するときはその値、そうでなければ引数の値を返す:</p>
+<pre><code class="language-c++">std::optional&lt;std::string&gt; maybeString = ...;
+auto s = maybeString.value_or(defaultValue);
+</code></pre>
+<h3>遅延初期化</h3>
+<p>興味深いことに、
+Javaの<code>Optional</code>、C#の<code>Nullable</code>、Swiftの<code>Optional</code>とは異なり、
+C++の<code>std::optional</code>のインスタンスは不変オブジェクトではない。
+値の有り、無しの状態を変更すること、
+そして値有りの状態のままで値を別のものに変更することもできる。
+値無しから値有りへの変更を用いて、
+<strong>遅延初期化</strong>（<strong>lazy initialization</strong>）を実現できる
+（#7「Immutable Object」の遅延評価、
+#12「Javaのメモリモデル」の遅延初期化を参照）。</p>
+<blockquote>
+<p><code>std::optional&lt;T&gt;</code>のオブジェクトを、
+値無しから値有りに状態を変える、または値を別のものに変更するには、
+<code>emplace(...)</code>メンバ関数を呼び出す、
+<code>operator =</code>で<code>T</code>型のオブジェクトを代入する、
+または値有りの<code>std::optional</code>オブジェクトを代入する、
+などの操作がある。
+また逆に、値有りから値無しに状態を変えるには
+<code>reset()</code>メンバ関数を呼び出す、<code>operator =</code>で<code>std::nullopt</code>を代入する、
+などの操作がある。</p>
+</blockquote>
+<p>遅延初期化の例として、計算式を表す文字列をコンストラクタで受け取り、
+<code>getValue()</code>で評価した値を返すクラス<code>Calculator</code>を考えてみよう。
+次のような使用例を想定する:</p>
+<pre><code class="language-c++">int main() {
+    Calculator c(&quot;(8 * 7 + 6) / 4&quot;);
+    std::cout &lt;&lt; c.getValue() &lt;&lt; std::endl;
+}
+</code></pre>
+<p>計算式の評価を初回の<code>getValue()</code>の呼び出しまで遅延するクラス<code>Calculator</code>の実装例を次に示す:</p>
+<pre><code class="language-c++">class Calculator {
+public:
+    Calculator(std::string expr) : expr(expr) {
+    }
+
+    int getValue() {
+        if (!value) {
+            value.emplace(evalExpr());
+        }
+        return *value;
+    }
+
+private:
+    std::string expr;
+    std::optional&lt;int&gt; value;
+
+    // exprを評価して返す
+    int evalExpr() {
+        return ...
+    }
+};
+</code></pre>
+<blockquote>
+<p><a href="https://godbolt.org/#z:OYLghAFBqd5QCxAYwPYBMCmBRdBLAF1QCcAaPECAM1QDsCBlZAQwBtMQBGAFlICsupVs1qhkAUgBMAISnTSAZ0ztkBPHUqZa6AMKpWAVwC2tLpNJb0AGTy1MAOWMAjTMRCSAbKQAOqBYXVaPUMTMx8/ALobO0cjFzdPRWVMVUCGAmZiAmDjU05zJRU1OnTMgmiHZ1d3LwUMrJzQ/MV68ttKuOrPAEpFVANiZA4AcikAZltkQywAanExnXU64kxmI3nscQAGAEFxyenMOYXUb2LaNg3tvd2p5gUFGZ02ZANhImI5gHZZXe8DJysPDIEDXGbgp4vN7MD4QOroEAgZa2YAzTAAD28xG6MxAaMxxAgGKxOPEPzBELJABFrhTwbYCDNgJgCAA1NgGTAQUnk3YQ/kzPBUGYQMBgABuHMwPN%2BOwF8pmksMmAAdJgjN5hEMiUrsATud15rKFd8aXyFSsCANaDMAFRKzlGumm2l/Yh4SUEDjO%2BGI5GifFYp3m8G%2BkCnc6XBYMjaKqXBm5yiEMtG6/Uy538gD0WZmtFQjLwGvYRi0XvQpBmlutKJmClQpbjypmIgAngB3ZitlWZiHV4g24nEFX%2BABeXMNY2NlK%2BZr2s4T1xTRmYtm532n4OerFe7xIM2QECkkggAA47TMvnMZDMPDjc9xj5PN3WCAiUP1GfMdN%2BDyrmWyUrrt%2Bv5hpYrCLguuzDL0rAgMMACswykKYwxbMhqDwT%2BMhyHW/SDEc4ycMhBDweh3S9AA1iAYxjCqtEMYxTFeHBwzcMhqHoaQmHDMhCggFspCkWhMGkHAsBIGgGp4OwZAUBAUneDJ1TAAAnOYVAyV6xD8RAThkchTi2JkrbwcRpBSaW9AAPK0KwpkiaQWArqI7AGU5eArKk4qYPxjkYikBheu5DLKO5QJOMQJl6FgZkke6Rhxb0ND0EwbAcDw/CCMIogoHIchCHgTj8ZAvQRoEfkALTwvMVISDhMicF8fHJKkGhEtojR5BY2gVLE8SCL4/jnF1g0ROcfVVG4nBJEUaStKNM2FCk5ylFkk2dNNLRlIt23re0/XVJwvT1gMQxcLB8FISh7k8eip4eJVHjcEyyDIDMqkqpIIq4IQ%2B5EZWejSbJ15jMdTz5TIJEGRRpDUbR9FMUjtEsfB7E3Y5PF8QJQkw2JMCIOGQX/AQ5CUIpylbZg%2BAfIIKWMCwbmZe2UXeElQhXRxt3wURMztoQCAzPdj3Pa972fZI0MibD8N0cjyMc2xXOY/B2OCcJ5GXcMksY1xWO49LvQ%2BTpgQgNwQA">実行結果</a></p>
+</blockquote>
+<p>もう少し実用的な例を示す。
+クラス<code>Foo</code>が、クラス<code>Bar</code>型のメンバ<code>bar</code>を持ちたいが、
+<code>Bar</code>クラスにはデフォルトコンストラクタが無い場合を考える。
+ただし、<code>Foo</code>のコンストラクタでは<code>bar</code>を初期化できず、
+<code>bar</code>を遅延初期化せざる得ないとする。</p>
+<p>C++17より前では、次のように<code>std::unique_ptr</code>を使って解決することができる:</p>
+<pre><code class="language-c++">class Foo {
+public:
+    Foo() {
+        ...
+    }
+
+    void initialize() {
+        bar = std::make_unique&lt;Bar&gt;(...);
+    }
+
+private:
+    std::unique_ptr&lt;Bar&gt; bar;
+};
+</code></pre>
+<p>しかし、次のように<code>std::optional</code>を使えば、
+動的なメモリ割り当てを用いずに、遅延初期化を実現できる:</p>
+<pre><code class="language-c++">class Foo {
+public:
+    Foo() {
+        ...
+    }
+
+    void initialize() {
+        bar.emplace(...);
+    }
+
+private:
+    std::optional&lt;Bar&gt; bar;
+};
+</code></pre>
+<h3>未定義の振る舞いから例外のスローへ</h3>
+<p>C++でこの<code>std::optional</code>を使う最大の魅力は例外<code>std::bad_optional_access</code>のスローである。
+例えば、あるAPIが<code>std::optional</code>を使わず、<code>nullptr</code>を返すとしよう。
+戻り値が<code>nullptr</code>なのにnullチェックを忘れてアクセスしたら、
+未定義の振る舞いになる。
+そうではなく、そのAPIが<code>std::optional</code>を返すのであれば、
+値の有無をチェックせずに<code>value</code>でアクセスしても、
+<strong>所詮</strong>例外のスローで済む。この違いは大きい。</p>
+<p>しかしながら、<code>nullptr</code>または<code>NULL</code>を返す過去の資産があるため、
+これから新規に作成するAPIだけに<code>std::optional</code>を用いても、
+焼け石に水なのだろう（長い時間をかけて変わっていく可能性もあるだろうけど...）。</p>
+<h3>C++ Core Guidelinesの<code>gsl::not_null</code>クラス</h3>
+<p>標準ライブラリの話ではないが、
+C++ Core Guidelines [<a href="#ref9">9</a>]
+の<code>gsl::not_null</code>クラスを非nullのポインタを扱うための仕掛けとして使うことができる。
+以降ではMicrosoft実装のGuidelines Support Library（GSL）[<a href="#ref10">10</a>]
+を取り扱う。</p>
+<p>スマートポインタの場合と異なり、
+<code>T</code>を何かのポインタ型（すなわち<code>U *</code>）とするか、
+もしくはスマートポインタ型<sup>†6</sup>とするように<code>gsl::not_null&lt;T&gt;</code>は設計されている。
+例えば、非nullの<code>const char *</code>型の引数をとる関数を次のように記述することができる:</p>
+<pre><code class="language-c++">std::size_t length(gsl::not_null&lt;const char *&gt; s)
+{
+    return std::strlen(s);
+}
+</code></pre>
+<p>同様に、非nullの<code>std::shared_ptr&lt;U&gt;</code>型であれば、
+<code>gsl::not_null&lt;std::shared_ptr&lt;U&gt;&gt;</code>と記述できる。</p>
+<blockquote>
+<p>†6 スマートポインタ型といっても、標準ライブラリでは
+<code>std::shared_ptr</code>または<code>std::unique_ptr</code>しか使えず、
+<code>std::weak_ptr</code>は使えない。というのは、
+<code>T</code>はその値と<code>nullptr</code>が比較可能（<code>T</code>型の値<code>v</code>に対して式<code>v != nullptr</code>の評価が可能）でなければならないが、
+<code>std::weak_ptr</code>はその条件を満たさないからである。
+その他にも、<code>T</code>に対して単項演算子<code>*</code>が適用可能である、
+などの条件がある。もちろん、そうした条件を満たせば適当なクラスを<code>T</code>に指定できる。</p>
+</blockquote>
+<p><code>T</code>型の値から<code>gsl::not_null&lt;T&gt;</code>を構築できるので、次のように関数<code>length</code>を呼び出すことができる:</p>
+<pre><code class="language-c++">auto n = length(&quot;hello&quot;);
+</code></pre>
+<blockquote>
+<p><a href="https://replit.com/@maroontress/Example-usage-of-notnull-1#main.cpp">実行結果</a></p>
+</blockquote>
+<p>しかし、次のようにnullポインタ定数を引数とする呼び出しは<strong>コンパイルエラー</strong>となる:</p>
+<pre><code class="language-c++">auto n = length(nullptr);
+</code></pre>
+<blockquote>
+<p><a href="https://replit.com/@maroontress/Example-usage-of-notnull-2#main.cpp">コンパイル結果</a></p>
+</blockquote>
+<p>実行時、<code>T</code>型の値から<code>gsl::not_null&lt;T&gt;</code>を構築する際、
+その値がnullと等しければ<code>std::terminate()</code>を呼び出して終了する。
+したがって、<code>T</code>が<code>U *</code>（または「<code>std::shared_ptr&lt;U&gt;</code>」など）であれば、
+構築後はそのポインタが非nullであることが確実になる。</p>
+<blockquote>
+<p>構築時に値が非nullであっても、取得するときには値がnullになり得るような、
+自作のクラスを<code>T</code>に指定する場合は注意が必要である。
+<code>gsl::not_null&lt;T&gt;</code>から値を取得しようとすると、
+<code>T</code>の単項演算子<code>*</code>で「ポインタをたどって」値を取得する<strong>前に</strong>、
+その<code>T</code>型の値と<code>nullptr</code>との比較（つまりnullチェック）を実行する。
+そして、それが<code>nullptr</code>とイコールであれば、
+構築時同様に、<code>std::terminate()</code>を呼び出して終了する。</p>
+</blockquote>
+<p>構築後は<code>gsl::not_null&lt;T&gt;</code>の<code>get()</code>関数で<code>T</code>型の値（<code>U</code>のポインタ型）を取得できるほか、
+スマートポインタと同様、単項演算子<code>*</code>と<code>-&gt;</code>でのアクセスも可能である。また、
+<code>gsl::not_null&lt;T&gt;</code>から<code>T</code>（null非許容からnull許容）への暗黙の型変換が許されているので、
+上の例の<code>std::strlen()</code>の呼び出しのように、
+<code>T</code>型を期待しているところに<code>gsl::not_null&lt;T&gt;</code>型の値を指定してよい。</p>
+<p><code>gsl::not_null&lt;T&gt;</code>を用いることで、
+大昔によく見かけた、次のような関数の先頭での引数のnullチェック:</p>
+<pre><code class="language-c++">void foo(const void *p)
+{
+    assert(p != nullptr);
+    ...
+}
+</code></pre>
+<p>は多くの場合、不要になる。
+ただし、<code>++s</code>などのポインタ演算や、
+<code>s[1]</code>などのような添え字アクセスは許されていないので、
+必要であれば別の<code>T</code>型の変数に代入してから操作するしかない。
+ポインタは（参照のように）単一のオブジェクトを指すべき、という思想のようだ。</p>
+<h2>References</h2>
+<!--
+<style>
+#references + ol > li::marker { content: "[" counter(list-item) "] "; }
+</style>
+-->
+<div id="references"></div>
+<ol>
+<li>
+<p><a name="ref1"></a>
+<a href="https://en.wikipedia.org/wiki/Swift_(programming_language)">Wikipedia, <em>Swift (programming language)</em></a></p>
+</li>
+<li>
+<p><a name="ref2"></a>
+<a href="https://en.wikipedia.org/wiki/Kotlin_(programming_language)">Wikipedia, <em>Kotlin (programming language)</em></a></p>
+</li>
+<li>
+<p><a name="ref3"></a>
+<a href="https://developer.apple.com/documentation/swift/optional">Apple, <em>Swift Standard Library, Numbers and Basic Values, Optional</em></a></p>
+</li>
+<li>
+<p><a name="ref4"></a>
+<a href="https://docs.swift.org/swift-book/LanguageGuide/ControlFlow.html#ID525">Apple, <em>The Swift Programming Language, Language Guide, Control Flow</em></a></p>
+</li>
+<li>
+<p><a name="ref5"></a>
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/pattern-matching">Microsoft, <em>Pattern Matching (C# guide)</em></a></p>
+</li>
+<li>
+<p><a name="ref6"></a>
+<a href="https://kotlinlang.org/docs/reference/null-safety.html">Kotlin Foundation, <em>Kotlin Programming Language, Language Guide, Null Safety</em></a></p>
+</li>
+<li>
+<p><a name="ref7"></a>
+<a href="https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types">Kotlin Foundation, <em>Kotlin Programming Language, Language Guide, Calling Java code from Kotlin</em></a></p>
+</li>
+<li>
+<p><a name="ref8"></a>
+<a href="https://en.wikipedia.org/wiki/List_comprehension">Wikipedia, <em>List comprehension</em></a></p>
+</li>
+<li>
+<p><a name="ref9"></a>
+<a href="https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md">Bjarne Stroustrup, Herb Sutter. <em>C++ Core Guidelines</em></a></p>
+</li>
+<li>
+<p><a name="ref10"></a>
+<a href="https://github.com/microsoft/GSL">Microsoft, <em>GSL: Guidelines Support Library</em></a></p>
+</li>
+</ol>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">The Insanity Beyond Null</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="Part-0-Null.html">0. Null</a>
+    </li>
+    <li>
+      <a href="Part-1-Java-11.html">1. Java 11のnull</a>
+    </li>
+    <li>
+      <a href="Part-2-CSharp-8.html">2. C# 8のnull</a>
+    </li>
+    <li class="selected">
+      3. そのほかのnull
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="Part-4-Exercises.html">4. 演習問題</a>
+    </li>
+    <li>
+      <a href="Part-5-Epilog.html">5. 結び</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

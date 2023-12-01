@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tutorial | Sanctuary | Version 2.0</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Sanctuary 2.0</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Tutorial</h1>
+<p>SanctuaryでAPI仕様をどのように記述するかを具体的な例を用いて説明します。より詳細な記法については、<a href="reference.html">Reference</a>を参照してください。</p>
+<p><a name="1"></a></p>
+<h2>初級編</h2>
+<p><a name="1.1"></a></p>
+<h3>パッケージとクラス</h3>
+<p>APIの定義はパッケージとクラスで名前空間を定義します。生成されるファイル（ヘッダファイル、HTMLファイル、TeXファイルなど）のファイル名は、パッケージ名とクラス名で決まります。</p>
+<p>生成されるヘッダファイルのファイル名は、<code>パッケージ名/クラス名.h</code>になります。ただし、パッケージ名に含まれる<code>_</code>は<code>/</code>に展開されます。例えば、パッケージ<code>foo_bar</code>、クラス<code>Baz</code>の場合、生成されるヘッダファイルは<code>foo/bar/Baz.h</code>となります。</p>
+<p>生成されるHTML、TeXファイルのファイル名は、それぞれ<code>パッケージ名_クラス名.html</code>、<code>パッケージ名_クラス名.tex</code>になります。例えば、パッケージ<code>foo_bar</code>、クラス<code>Baz</code>の場合、生成されるHTMLファイルは<code>foo_bar_Baz.html</code>となります。</p>
+<p>入力するXMLファイルは次のような形式になります。</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;エンコード名&quot;?&gt;
+&lt;!DOCTYPE class SYSTEM &quot;http://maroontress.com/Sanctuary/2.0/sanctuary.dtd&quot;&gt;
+&lt;class package=&quot;パッケージ名&quot; name=&quot;クラス名&quot;&gt;
+  ...
+&lt;/class&gt;
+</code></pre>
+<p><a name="1.2"></a></p>
+<h3>命名規則</h3>
+<p>APIの記述の前に、おおよその命名規則を次のように決めておきます。</p>
+<ul>
+<li>パッケージ名はすべて子文字で、必要なら<code>_</code>で区切る（例: <code>foo_bar</code>）</li>
+<li>クラス名、構造体のタグ名は大文字で始める（例: <code>FooBar</code>）</li>
+<li>定数のマクロ名と列挙型の定数名はすべて大文字で、必要なら<code>_</code>で区切る（例: <code>FOO_BAR</code>）</li>
+<li>引数付きマクロ名と関数名、構造体のメンバ名、グローバル変数は小文字で始める（例: <code>fooBar</code>）</li>
+</ul>
+<p>さらに識別子が衝突しないように、パッケージ名とクラス名を利用して、メンバ名以外の識別子に<code>パッケージ名_クラス名_</code>というプレフィックス（接頭辞）を付加します。ただし、例外的にクラスのインスタンスとなる構造体のタグ名は<code>パッケージ名_クラス名</code>にします。</p>
+<p>例として、整数を扱う<code>com_example</code>パッケージのクラス<code>Integer0</code>の記述を次に示します。</p>
+<div style="text-align: center;">
+<a href="s1/com/example/Integer0.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE <span class="greenyellow">class</span> SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+<span style="color: greenyellow;">&lt;class</span> package=<span style="color: greenyellow;">"com_example"</span> name=<span style="color: greenyellow;">"Integer0"</span>&gt;
+  &lt;define name="com_example_Integer0_MAX"&gt;
+    &lt;macro&gt;0x7fffffff&lt;/macro&gt;
+  &lt;/define&gt;
+
+  &lt;define name="com_example_Integer0_MIN"&gt;
+    &lt;macro&gt;(-0x7fffffff - 1)&lt;/macro&gt;
+  &lt;/define&gt;
+
+  &lt;typedef type="int" name="com_example_Integer0_t"/&gt;
+
+  &lt;struct tag="com_example_Integer0"&gt;
+    &lt;member type="com_example_Integer0_t" name="value"/&gt;
+  &lt;/struct&gt;
+
+  &lt;method name="com_example_Integer0_new"&gt;
+    &lt;param type="com_example_Integer0_t" name="i"/&gt;
+    &lt;return type="struct com_example_Integer0 *"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="com_example_Integer0_delete"&gt;
+    &lt;param type="struct com_example_Integer0 *" name="i"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="com_example_Integer0_set"&gt;
+    &lt;param type="struct com_example_Integer0 *" name="i"/&gt;
+    &lt;param type="com_example_Integer0_t" name="value"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="com_example_Integer0_get"&gt;
+    &lt;param type="struct com_example_Integer0 *" name="i"/&gt;
+    &lt;return type="com_example_Integer0_t"/&gt;
+  &lt;/method&gt;
+<span style="color: greenyellow;">&lt;/class&gt;</span></code></pre>
+<p>このXMLファイルから生成されるヘッダファイルを次に示します。ヘッダファイルは二重インクルード防止のためのマクロ<code>パッケージ名_クラス名_H</code>でガードされます。</p>
+<div style="text-align: center;">
+<a href="s1/com/example/Integer0.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="language-c">#ifndef com_example_Integer0_H
+#define com_example_Integer0_H
+
+#define com_example_Integer0_MAX 0x7fffffff
+#define com_example_Integer0_MIN (-0x7fffffff - 1)
+
+struct com_example_Integer0;
+
+typedef int com_example_Integer0_t;
+
+#if defined(__cplusplus)
+extern &quot;C&quot; {
+#endif
+
+struct com_example_Integer0 {
+    com_example_Integer0_t value;
+};
+
+struct com_example_Integer0 * com_example_Integer0_new(com_example_Integer0_t i);
+void com_example_Integer0_delete(struct com_example_Integer0 * i);
+void com_example_Integer0_set(struct com_example_Integer0 * i,
+                              com_example_Integer0_t value);
+com_example_Integer0_t com_example_Integer0_get(struct com_example_Integer0 * i);
+
+#if defined(__cplusplus)
+}
+#endif
+
+#endif /* !com_example_Integer0_H */
+</code></pre>
+<p><a name="1.3"></a></p>
+<h3>@展開</h3>
+<p>クラス<code>Integer0</code>ではプレフィックス<code>com_example_Interger0_</code>が頻繁に現れるため、ヘッダファイルを直接書くより簡単になったとは言えません。プレフィックスを実体宣言と実体参照で記述するという方法もありますが、@展開を使用すればより簡単に記述することができます。</p>
+<p>@展開とは特定の属性の値に含まれる<code>@</code>を<code>パッケージ名_クラス名</code>に置換する機能です。@展開を使用してクラス<code>Integer0</code>を書き直したクラス<code>Integer1</code>を次に示します。</p>
+<div style="text-align: center;">
+<a href="s1/com/example/Integer1.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="com_example" name="Integer1"&gt;
+  &lt;define name="<span style="color: greenyellow;">@</span>_MAX"&gt;
+    &lt;macro&gt;0x7fffffff&lt;/macro&gt;
+  &lt;/define&gt;
+
+  &lt;define name="<span style="color: greenyellow;">@</span>_MIN"&gt;
+    &lt;macro&gt;(-0x7fffffff - 1)&lt;/macro&gt;
+  &lt;/define&gt;
+
+  &lt;typedef type="int" name="<span style="color: greenyellow;">@</span>_t"/&gt;
+
+  &lt;struct tag="<span style="color: greenyellow;">@</span>"&gt;
+    &lt;member type="<span style="color: greenyellow;">@</span>_t" name="value"/&gt;
+  &lt;/struct&gt;
+
+  &lt;method name="<span style="color: greenyellow;">@</span>_new"&gt;
+    &lt;param type="<span style="color: greenyellow;">@</span>_t" name="i"/&gt;
+    &lt;return type="struct <span style="color: greenyellow;">@</span> *"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="<span style="color: greenyellow;">@</span>_delete"&gt;
+    &lt;param type="struct <span style="color: greenyellow;">@</span> *" name="i"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="<span style="color: greenyellow;">@</span>_set"&gt;
+    &lt;param type="struct <span style="color: greenyellow;">@</span> *" name="i"/&gt;
+    &lt;param type="<span style="color: greenyellow;">@</span>_t" name="value"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="<span style="color: greenyellow;">@</span>_get"&gt;
+    &lt;param type="struct <span style="color: greenyellow;">@</span> *" name="i"/&gt;
+    &lt;return type="<span style="color: greenyellow;">@</span>_t"/&gt;
+  &lt;/method&gt;
+&lt;/class&gt;</code></pre>
+<p><a href="s1/com/example/Integer1.h">生成されるヘッダファイル</a>は<code>Integer0</code>と<code>Integer1</code>の違いだけなので省略します。@展開の詳細はリファレンスの<a href="reference.html#@%E5%B1%95%E9%96%8B">@展開</a>を参照してください。</p>
+<p><a name="1.4"></a></p>
+<h3>名前空間展開</h3>
+<p>確かに@展開で入力の手間を省くことができます。しかし、最初に決めたような命名規則を採用し、メンバ名を除く識別子にプレフィックスを必ず付加するのであれば、@展開よりも名前空間展開を使用した方が便利です。@展開とは異なり、名前空間展開では後述するインポートマクロを利用できるようになるからです。</p>
+<p>名前空間展開とは特定の属性の値に<code>パッケージ名_クラス名_</code>を前置する機能です。ただし、属性の値が<code>@</code>のときは<code>パッケージ名_クラス名</code>に展開します。</p>
+<p>名前空間展開を有効にするには<code>namespace</code>要素を指定する必要があります。名前空間展開を使用してクラス<code>Integer1</code>を書き直したクラス<code>Integer2</code>を次に示します。</p>
+<div style="text-align: center;">
+<a href="s1/com/example/Integer2.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="com_example" name="Integer2"&gt;
+  <span style="color: greenyellow;">&lt;namespace/&gt;</span>
+
+  &lt;define name="MAX"&gt;
+    &lt;macro&gt;0x7fffffff&lt;/macro&gt;
+  &lt;/define&gt;
+
+  &lt;define name="MIN"&gt;
+    &lt;macro&gt;(-0x7fffffff - 1)&lt;/macro&gt;
+  &lt;/define&gt;
+
+  &lt;typedef type="int" name="t"/&gt;
+
+  &lt;struct tag="@"&gt;
+    &lt;member type="@_t" name="value"/&gt;
+  &lt;/struct&gt;
+
+  &lt;method name="new"&gt;
+    &lt;param type="@_t" name="i"/&gt;
+    &lt;return type="struct @ *"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="delete"&gt;
+    &lt;param type="struct @ *" name="i"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="set"&gt;
+    &lt;param type="struct @ *" name="i"/&gt;
+    &lt;param type="@_t" name="value"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="get"&gt;
+    &lt;param type="struct @ *" name="i"/&gt;
+    &lt;return type="@_t"/&gt;
+  &lt;/method&gt;
+&lt;/class&gt;</code></pre>
+<p>このXMLファイルから生成されるヘッダファイルを次に示します。</p>
+<div style="text-align: center;">
+<a href="s1/com/example/Integer2.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="nohighlight">#ifndef com_example_Integer2_H
+#define com_example_Integer2_H
+
+#define com_example_Integer2_MAX 0x7fffffff
+#define com_example_Integer2_MIN (-0x7fffffff - 1)
+
+struct com_example_Integer2;
+typedef int com_example_Integer2_t;
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+struct com_example_Integer2 {
+    com_example_Integer2_t value;
+};
+
+struct com_example_Integer2 * com_example_Integer2_new(com_example_Integer2_t i);
+void com_example_Integer2_delete(struct com_example_Integer2 * i);
+void com_example_Integer2_set(struct com_example_Integer2 * i,
+                              com_example_Integer2_t value);
+com_example_Integer2_t com_example_Integer2_get(struct com_example_Integer2 * i);
+
+#if defined(__cplusplus)
+}
+#endif
+
+<span style="color: greenyellow;">#ifdef com_example_Integer2_IMPORT
+#define Integer2 com_example_Integer2
+#define Integer2_MAX com_example_Integer2_MAX
+#define Integer2_MIN com_example_Integer2_MIN
+#define Integer2_delete com_example_Integer2_delete
+#define Integer2_get com_example_Integer2_get
+#define Integer2_new com_example_Integer2_new
+#define Integer2_set com_example_Integer2_set
+#define Integer2_t com_example_Integer2_t
+#endif /* com_example_Integer2_IMPORT */</span>
+
+#endif /* !com_example_Integer2_H */</code></pre>
+<p>ヘッダファイルの終わりで定義されているマクロがインポートマクロです（詳細は次のセクションで説明します）。名前空間展開の詳細はリファレンスの<a href="reference.html#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>を参照してください。</p>
+<p><a name="1.5"></a></p>
+<h3>インポートマクロ</h3>
+<p>名前空間展開を使用した場合、インポートマクロを利用することができます。インポートマクロとは、ソースコードでパッケージ名を省略するためのマクロ定義です。インポートマクロを有効にするには、マクロ<code>パッケージ名_クラス名_IMPORT</code>を定義してからヘッダファイルをインクルードします。例えば、マクロ<code>com_example_Integer2_IMPORT</code>を定義してから、パッケージ<code>com_example</code>のクラス<code>Integer2</code>のヘッダファイルをインクルードすると、クラス<code>Integer2</code>のインポートマクロが有効になります。</p>
+<p>インポートマクロを有効にした場合、そのファイルのスコープではパッケージ名を省略することができるようになります。ただし、そのファイルのスコープでクラス名が衝突しない必要があります。</p>
+<p>インポートマクロを定義してパッケージ名を省略するコードの例を次に示します。このコードはパッケージ<code>com_example</code>のクラス<code>Foo</code>とクラス<code>Bar</code>を使用しますが、クラス<code>Foo</code>に関してはインポートマクロを使用してパッケージ名を省略しています。</p>
+<pre><code class="nohighlight"><span style="color: greenyellow;">#define com_example_Foo_IMPORT</span>
+
+#include &lt;com/example/Foo.h&gt;
+#include &lt;com/example/Bar.h&gt;
+
+int main(void)
+{
+  struct Foo foo;
+  struct com_example_Bar bar;
+
+  Foo_init(&amp;foo);
+  com_example_Bar_init(&amp;bar);
+  ⋮
+}</code></pre>
+<p>もちろん、インポートマクロに相当するものを手で書くこともできますが、それはあまりにも非生産的な行為です。そしてもっと酷いのは、クラス名が衝突するわけでもないのに、ひたすらプレフィックス（実際は<code>com_example_</code>よりは短いでしょうが...）をAPIの利用者が入力するように強要することでしょう。</p>
+<blockquote>
+<p>⚠️ インポートマクロを利用してもリンカから見えるシンボルに影響はありません。</p>
+</blockquote>
+<p><a name="1.6"></a></p>
+<h3>実体宣言と実体参照の利用</h3>
+<p>記述したAPIからヘッダファイルを生成できました。今度はドキュメントの記述を追加して、HTMLやTeXのAPIリファレンスを生成できるようにします。しかし、その前に、XMLの実体宣言と実体参照を使用して、重複する記述を整理しておきます。</p>
+<p>クラス<code>Integer2</code>には、<code>this</code>ポインタに相当する引数を第1引数に指定する関数がいくつかあります。それらを実体参照でまとめておきます。実体宣言と実体参照を使用してクラス<code>Integer2</code>を書き直したクラス<code>Integer3</code>を次に示します。</p>
+<div style="text-align: center;">
+<a href="s1/com/example/Integer3.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd" <span style="color: greenyellow;">[
+  &lt;!ENTITY thisParam '&lt;param type="struct @ *" name="i"/&gt;'&gt;
+]</span>&gt;
+&lt;class package="com_example" name="Integer3"&gt;
+  &lt;namespace/&gt;
+
+  &lt;define name="MAX"&gt;
+    &lt;macro&gt;0x7fffffff&lt;/macro&gt;
+  &lt;/define&gt;
+
+  &lt;define name="MIN"&gt;
+    &lt;macro&gt;(-0x7fffffff - 1)&lt;/macro&gt;
+  &lt;/define&gt;
+
+  &lt;typedef type="int" name="t"/&gt;
+
+  &lt;struct tag="@"&gt;
+    &lt;member type="@_t" name="value"/&gt;
+  &lt;/struct&gt;
+
+  &lt;method name="new"&gt;
+    &lt;param type="@_t" name="i"/&gt;
+    &lt;return type="struct @ *"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="delete"&gt;
+    <span class="greenyellow">&amp;thisParam;</span>
+  &lt;/method&gt;
+
+  &lt;method name="set"&gt;
+    <span class="greenyellow">&amp;thisParam;</span>
+    &lt;param type="@_t" name="value"/&gt;
+  &lt;/method&gt;
+
+  &lt;method name="get"&gt;
+    <span class="greenyellow">&amp;thisParam;</span>
+    &lt;return type="@_t"/&gt;
+  &lt;/method&gt;
+&lt;/class&gt;</code></pre>
+<p><a href="s1/com/example/Integer3.h">生成されるヘッダファイル</a>には変化はありませんので省略します。</p>
+<p><a name="1.7"></a></p>
+<h3>ドキュメントの追加</h3>
+<p>クラス<code>Integer3</code>にドキュメントを追加した例を次に示します。クラス<code>Integer3</code>に<code>desc</code>要素を追加したクラス<code>Integer4</code>を次に示します。</p>
+<div style="text-align: center;">
+<a href="s1/com/example/Integer4.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd" [
+  &lt;!ENTITY thisParam '
+    &lt;param type="struct @ *" name="i"&gt;
+      <span style="color: greenyellow;">&lt;desc&gt;Integer4クラスのインスタンス&lt;/desc&gt;</span>
+    &lt;/param&gt;
+  '&gt;
+]&gt;
+&lt;class package="com_example" name="Integer4"&gt;
+  &lt;namespace/&gt;
+
+  &lt;define name="MAX"&gt;
+    &lt;macro&gt;0x7fffffff&lt;/macro&gt;
+    <span style="color: greenyellow;">&lt;desc&gt;&lt;brief&gt;整数の最大値です。&lt;/brief&gt;&lt;/desc&gt;</span>
+  &lt;/define&gt;
+
+  &lt;define name="MIN"&gt;
+    &lt;macro&gt;(-0x7fffffff - 1)&lt;/macro&gt;
+    <span style="color: greenyellow;">&lt;desc&gt;&lt;brief&gt;整数の最小値です。&lt;/brief&gt;&lt;/desc&gt;</span>
+  &lt;/define&gt;
+
+  &lt;typedef type="int" name="t"&gt;
+    <span style="color: greenyellow;">&lt;desc&gt;&lt;brief&gt;整数値を表す型です。&lt;/brief&gt;&lt;/desc&gt;</span>
+  &lt;/typedef&gt;
+
+  &lt;struct tag="@"&gt;
+    &lt;member type="@_t" name="value"&gt;
+      <span style="color: greenyellow;">&lt;desc&gt;&lt;brief&gt;現在の整数値を保持します。&lt;/brief&gt;&lt;/desc&gt;</span>
+    &lt;/member&gt;
+
+    <span style="color: greenyellow;">&lt;desc&gt;
+      &lt;brief&gt;Integer4クラスのインスタンスとなる構造体です。&lt;/brief&gt;
+      &lt;p&gt;整数を保持します。&lt;/p&gt;
+    &lt;/desc&gt;</span>
+  &lt;/struct&gt;
+
+  &lt;method name="new"&gt;
+    &lt;param type="@_t" name="i"&gt;
+      <span style="color: greenyellow;">&lt;desc&gt;インスタンスの初期化&lt;/desc&gt;</span>
+    &lt;/param&gt;
+
+    &lt;return type="struct @ *"&gt;
+      <span style="color: greenyellow;">&lt;desc&gt;生成したインスタンス、または&lt;code&gt;NULL&lt;/code&gt;&lt;/desc&gt;</span>
+    &lt;/return&gt;
+
+    <span style="color: greenyellow;">&lt;desc&gt;
+      &lt;brief&gt;Integer4クラスのインスタンスを生成します。&lt;/brief&gt;
+      &lt;p&gt;生成できないときはNULLを返します。&lt;/p&gt;
+    &lt;/desc&gt;</span>
+  &lt;/method&gt;
+
+  &lt;method name="delete"&gt;
+    &amp;thisParam;
+
+    <span style="color: greenyellow;">&lt;desc&gt;
+      &lt;brief&gt;Integerクラスのインスタンスを破壊します。&lt;/brief&gt;
+      &lt;p&gt;&lt;arg&gt;i&lt;/arg&gt;が&lt;code&gt;NULL&lt;/code&gt;のときは何もしません。&lt;/p&gt;
+    &lt;/desc&gt;</span>
+  &lt;/method&gt;
+
+  &lt;method name="set"&gt;
+    &amp;thisParam;
+
+    &lt;param type="@_t" name="value"&gt;
+      <span style="color: greenyellow;">&lt;desc&gt;整数値&lt;/desc&gt;</span>
+    &lt;/param&gt;
+
+    <span style="color: greenyellow;">&lt;desc&gt;&lt;brief&gt;整数値を設定します。&lt;/brief&gt;&lt;/desc&gt;</span>
+  &lt;/method&gt;
+
+  &lt;method name="get"&gt;
+    &amp;thisParam;
+
+    &lt;return type="@_t"&gt;
+      <span style="color: greenyellow;">&lt;desc&gt;整数値&lt;/desc&gt;</span>
+    &lt;/return&gt;
+
+    <span style="color: greenyellow;">&lt;desc&gt;&lt;brief&gt;整数値を取得します。&lt;/brief&gt;&lt;/desc&gt;</span>
+  &lt;/method&gt;
+
+  <span style="color: greenyellow;">&lt;desc&gt;
+    &lt;brief&gt;整数値を表す型と、その型への操作を提供します。&lt;/brief&gt;
+    &lt;p&gt;チュートリアル以外に用途はありません。&lt;/p&gt;
+  &lt;/desc&gt;</span>
+&lt;/class&gt;</code></pre>
+<p>生成されるHTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s1/com_example_Integer4.html">生成されるHTMLファイル</a>
+</div>
+<p>生成されるTeXファイルそのものは省略しますが、それをPDFに変換したものを次に示します。</p>
+<div style="text-align: center;">
+<a href="s1/sample.pdf">生成されるTeXファイルから作成したPDFファイル</a>
+</div>
+<p><a href="s1/com/example/Integer4.h">生成されるヘッダファイル</a>には変化はありませんので省略します。</p>
+<p><a name="1.8"></a></p>
+<h3>パッケージのドキュメント</h3>
+<p>パッケージのドキュメントを記述することもできます。ただし、パッケージを記述したXMLファイルからヘッダファイルは生成されません。</p>
+<div style="text-align: center;">
+<a href="s1/com/example/package-info.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE <span style="color: greenyellow;">package</span> SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+<span style="color: greenyellow;">&lt;package</span> name="com_example"&gt;
+  &lt;desc&gt;
+    &lt;p&gt;sanctuaryのサンプルを提供します。&lt;/p&gt;
+  &lt;/desc&gt;
+<span style="color: greenyellow;">&lt;/package&gt;</span></code></pre>
+<p>生成されるHTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s1/index.html">生成されるHTMLファイル</a>
+</div>
+<p><a name="1.9"></a></p>
+<h3>簡単なサンプル</h3>
+<p>上述の例に加え、いくつか簡単なサンプルを用意しました。<a href="s2/index.html#com_example"><code>com_example</code>パッケージ</a>を次に示します。</p>
+<dl style="background-color: var(--pre-background); padding: 16px;">
+<dt>クラス<code>Integer</code></dt>
+<dd>上述のクラス<code>Integer</code><i>X</i>と同じものです。</dd>
+<dd>
+<ul>
+<li><a href="s2/com/example/Integer.xml">XMLファイル</a></li>
+<li><a href="s2/com/example/Integer.h">ヘッダファイル</a></li>
+<li><a href="s2/com_example_Integer.html">HTMLファイル</a></li>
+</ul>
+</dd>
+<dt>クラス<code>Double</code></dt>
+<dd>実数を扱うクラスです。構造体を<code>typedef</code>で型定義する例です。</dd>
+<dd>
+<ul>
+<li><a href="s2/com/example/Double.xml">XMLファイル</a></li>
+<li><a href="s2/com/example/Double.h">ヘッダファイル</a></li>
+<li><a href="s2/com_example_Double.html">HTMLファイル</a></li>
+</ul>
+</dd>
+<dt>クラス<code>StringList</code></dt>
+<dd>自己参照する構造体の例です。</dd>
+<dd>
+<ul>
+<li><a href="s2/com/example/StringList.xml">XMLファイル</a></li>
+<li><a href="s2/com/example/StringList.h">ヘッダファイル</a></li>
+<li><a href="s2/com_example_StringList.html">HTMLファイル</a></li>
+</ul>
+</dd>
+</dl>
+<p>また、TeXファイルから作成した<a href="s2/sample.pdf">PDFファイル</a>も用意しておきました。</p>
+<p><a name="2"></a></p>
+<h2>中級編</h2>
+<p><a name="2.1"></a></p>
+<h3>共用体</h3>
+<p>共用体の例として、クラス<code>Union</code>を次に示します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Union.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="foo" name="Union"&gt;
+  &lt;namespace/&gt;
+
+  <span style="color: greenyellow;">&lt;union</span> tag="IntDouble"&gt;
+    &lt;member type="int <span style="color: greenyellow;">#</span>[2]" name="i"&gt;
+      &lt;desc&gt;&lt;brief&gt;int型の配列としてアクセスします。&lt;/brief&gt;&lt;/desc&gt;
+    &lt;/member&gt;
+
+    &lt;member type="double" name="d"&gt;
+      &lt;desc&gt;&lt;brief&gt;double型としてアクセスします。&lt;/brief&gt;&lt;/desc&gt;
+    &lt;/member&gt;
+
+    &lt;desc&gt;&lt;brief&gt;intの配列（要素数2）とdoubleの共用体です。&lt;/brief&gt;&lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/union&gt;</span>
+
+  <span style="color: greenyellow;">&lt;union</span> alias="UCharUInt"&gt;
+    &lt;member type="unsigned char <span style="color: greenyellow;">#</span>[4]" name="c"&gt;
+      &lt;desc&gt;&lt;brief&gt;unsigned char型の配列としてアクセスします。&lt;/brief&gt;&lt;/desc&gt;
+    &lt;/member&gt;
+
+    &lt;member type="unsigned int" name="i"&gt;
+      &lt;desc&gt;&lt;brief&gt;unsigned int型としてアクセスします。&lt;/brief&gt;&lt;/desc&gt;
+    &lt;/member&gt;
+    &lt;desc&gt;&lt;brief&gt;unsigned charの配列（要素数4）とunsigned intの共用体です。&lt;/brief&gt;&lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/union&gt;</span>
+
+  &lt;desc&gt;
+    &lt;brief&gt;intとdouble、unsigned intとunsigned charのビットマップを相互に変換する機能を提供します。&lt;/brief&gt;
+  &lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイルと、HTMLファイルは次のようになります。<code>member</code>要素の<code>type</code>属性に含まれる<code>#</code>は<code>name</code>属性の内容で置き換えられます。</p></p>
+<div style="text-align: center;">
+<a href="s2/foo/Union.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="language-c">#ifndef foo_Union_H
+#define foo_Union_H
+
+union foo_Union_IntDouble {
+    int i[2];
+    double d;
+};
+
+typedef union {
+    unsigned char c[4];
+    unsigned int i;
+} foo_Union_UCharUInt;
+
+#ifdef foo_Union_IMPORT
+#define Union_IntDouble foo_Union_IntDouble
+#define Union_UCharUInt foo_Union_UCharUInt
+#endif /* foo_Union_IMPORT */
+
+#endif /* !foo_Union_H */
+</code></pre>
+<div style="text-align: center;">
+<a href="s2/foo_Union.html">生成されるHTMLファイル</a>
+</div>
+<p><a name="2.2"></a></p>
+<h3>列挙型</h3>
+<p>列挙型の例として、クラス<code>Whence</code>を次に示します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Whence.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="foo" name="Whence"&gt;
+  &lt;namespace/&gt;
+
+  <span style="color: greenyellow;">&lt;enum</span> tag="@"&gt;
+    <span style="color: greenyellow;">&lt;constant</span> name="SET" value="1"&gt;
+      &lt;desc&gt;&lt;brief&gt;ファイル先頭からのオフセットを表します。&lt;/brief&gt;&lt;/desc&gt;
+    <span style="color: greenyellow;">&lt;/constant&gt;</span>
+
+    <span style="color: greenyellow;">&lt;constant</span> name="CUR"&gt;
+      &lt;desc&gt;&lt;brief&gt;現在のファイル位置からのオフセットを表します。&lt;/brief&gt;&lt;/desc&gt;
+    <span style="color: greenyellow;">&lt;/constant&gt;</span>
+
+    <span style="color: greenyellow;">&lt;constant</span> name="END"&gt;
+      &lt;desc&gt;&lt;brief&gt;ファイル末尾からのオフセットを表します。&lt;/brief&gt;&lt;/desc&gt;
+    <span style="color: greenyellow;">&lt;/constant&gt;</span>
+
+    &lt;desc&gt;
+      &lt;brief&gt;ファイルをシークする際にオフセットの基点を指定する列挙型です。&lt;/brief&gt;
+    &lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/enum&gt;</span>
+
+  &lt;desc&gt;
+    &lt;brief&gt;ファイルのシークに必要な指令を提供します。&lt;/brief&gt;
+    &lt;p&gt;lseek(2)の引数whenceをenumで表現してみました。&lt;/p&gt;
+  &lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイルと、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Whence.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="language-c">#ifndef foo_Whence_H
+#define foo_Whence_H
+
+enum foo_Whence {
+    foo_Whence_SET = 1,
+    foo_Whence_CUR,
+    foo_Whence_END
+};
+
+#ifdef foo_Whence_IMPORT
+#define Whence foo_Whence
+#define Whence_CUR foo_Whence_CUR
+#define Whence_END foo_Whence_END
+#define Whence_SET foo_Whence_SET
+#endif /* foo_Whence_IMPORT */
+
+#endif /* !foo_Whence_H */
+</code></pre>
+<div style="text-align: center;">
+<a href="s2/foo_Whence.html">生成されるHTMLファイル</a>
+</div>
+<p><code>struct</code>要素（や<code>union</code>要素）と同様に、<code>enum</code>要素に<code>alias</code>属性を指定することで、列挙型の<code>typedef</code>も記述できます。</p>
+<p><a name="2.3"></a></p>
+<h3>複数行マクロ</h3>
+<p>マクロ定義の例として、クラス<code>Time</code>を次に示します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Time.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="foo" name="Time"&gt;
+  &lt;namespace/&gt;
+
+  <span style="color: greenyellow;">&lt;define</span> name="add"&gt;
+    <span style="color: greenyellow;">&lt;macroparam</span> name="tvp"&gt;
+      &lt;desc&gt;timeval構造体のポインタ&lt;/desc&gt;
+    <span style="color: greenyellow;">&lt;/macroparam&gt;</span>
+
+    <span style="color: greenyellow;">&lt;macroparam</span> name="uvp"&gt;
+      &lt;desc&gt;timeval構造体のポインタ&lt;/desc&gt;
+    <span style="color: greenyellow;">&lt;/macroparam&gt;</span>
+
+    <span style="color: greenyellow;">&lt;macroparam</span> name="vvp"&gt;
+      &lt;desc&gt;和を格納するtimeval構造体のポインタ&lt;/desc&gt;
+    <span style="color: greenyellow;">&lt;/macroparam&gt;</span>
+
+    <span style="color: greenyellow;">&lt;macro&gt;</span>
+do {
+  (vvp)-&gt;tv_sec = (tvp)-&gt;tv_sec + (uvp)-&gt;tv_sec;
+  (vvp)-&gt;tv_usec = (tvp)-&gt;tv_usec + (uvp)-&gt;tv_usec;
+  if ((vvp)-&gt;tv_usec &gt;= 1000000) {
+    (vvp)-&gt;tv_sec++;
+    (vvp)-&gt;tv_usec -= 1000000;
+  }
+} while (0)
+    <span style="color: greenyellow;">&lt;/macro&gt;</span>
+
+    &lt;desc&gt;
+      &lt;brief&gt;timeval構造体の和を求めます。&lt;/brief&gt;
+      &lt;p&gt;&lt;arg&gt;tvp&lt;/arg&gt; + &lt;arg&gt;uvp&lt;/arg&gt;の値を計算し、&lt;arg&gt;vvp&lt;/arg&gt;に格納します。&lt;/p&gt;
+      &lt;p&gt;&lt;arg&gt;tvp&lt;/arg&gt;, &lt;arg&gt;uvp&lt;/arg&gt;, &lt;arg&gt;vvp&lt;/arg&gt;はtimeval構造体のポインタでなければなりません。&lt;/p&gt;
+    &lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/define&gt;</span>
+
+  &lt;desc&gt;
+    &lt;brief&gt;timeval構造体を演算する操作を提供します。&lt;/brief&gt;
+  &lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイルと、HTMLファイルは次のようになります。複数行のマクロ定義には自動的にバックスラッシュを展開します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Time.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="nohighlight">#ifndef foo_Time_H
+#define foo_Time_H
+
+#define <span style="color: greenyellow;">foo_Time_add(tvp, uvp, vvp) \
+        do { \
+          (vvp)-&gt;tv_sec = (tvp)-&gt;tv_sec + (uvp)-&gt;tv_sec; \
+          (vvp)-&gt;tv_usec = (tvp)-&gt;tv_usec + (uvp)-&gt;tv_usec; \
+          if ((vvp)-&gt;tv_usec &gt;= 1000000) { \
+            (vvp)-&gt;tv_sec++; \
+            (vvp)-&gt;tv_usec -= 1000000; \
+          } \
+        } while (0)</span>
+
+#ifdef foo_Time_IMPORT
+#define Time_add foo_Time_add
+#endif /* foo_Time_IMPORT */
+
+#endif /* !foo_Time_H */</code></pre>
+<div style="text-align: center;">
+<a href="s2/foo_Time.html">生成されるHTMLファイル</a>
+</div>
+<p><a name="2.4"></a></p>
+<h3>ネストする構造体</h3>
+<p>構造体のメンバとして構造体を定義したい場合は、<code>member</code>要素の代わりに<code>structmember</code>要素を使用します。<code>structmember</code>要素の<code>name</code>属性には（<code>member</code>要素の<code>name</code>属性と同様に）メンバ名を指定します。構造体のタグ名を指定したい場合は<code>tag</code>属性にタグ名を指定します。<code>tag</code>属性を指定しない場合は、タグ名が匿名の構造体になります。</p>
+<p><code>structmember</code>要素の中には<code>member</code>要素をネストすることができます。それにより、ネストする構造体を記述できます。</p>
+<p>ネストする構造体の例を次に示します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/NestedStruct.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="foo" name="NestedStruct"&gt;
+  &lt;namespace/&gt;
+
+  &lt;struct tag="Outer"&gt;
+    <span style="color: greenyellow;">&lt;structmember</span> name="s1"&gt;
+      &lt;member type="int" name="i"&gt;
+        &lt;desc&gt;&lt;brief&gt;何かの整数値です。&lt;/brief&gt;&lt;/desc&gt;
+      &lt;/member&gt;
+
+      <span style="color: greenyellow;">&lt;tag&gt;</span>
+        &lt;desc&gt;
+          &lt;brief&gt;匿名の構造体です。&lt;/brief&gt;
+          &lt;p&gt;匿名の構造体には、便宜上、仮の名前が付けられます。仮の名前は@に続くユニークなID（整数値）となります。&lt;/p&gt;
+          &lt;p&gt;&lt;em&gt;匿名の構造体の説明をここに記述します。&lt;/em&gt;&lt;/p&gt;
+        &lt;/desc&gt;
+      <span style="color: greenyellow;">&lt;/tag&gt;</span>
+
+      &lt;desc&gt;
+        &lt;brief&gt;型が「匿名の構造体」のメンバです。&lt;/brief&gt;
+        &lt;p&gt;&lt;em&gt;メンバs1の説明をここに記述します。&lt;/em&gt;&lt;/p&gt;
+      &lt;/desc&gt;
+    <span style="color: greenyellow;">&lt;/structmember&gt;</span>
+
+    <span style="color: greenyellow;">&lt;structmember</span> tag="Inner" name="s2"&gt;
+      &lt;member type="int" name="i"&gt;
+        &lt;desc&gt;&lt;brief&gt;何かの整数値です。&lt;/brief&gt;&lt;/desc&gt;
+      &lt;/member&gt;
+
+      <span style="color: greenyellow;">&lt;tag&gt;</span>
+        &lt;desc&gt;
+          &lt;brief&gt;構造体のメンバとして定義される構造体です。&lt;/brief&gt;
+          &lt;p&gt;この構造体はトップレベルで定義された場合と同様に扱えます。&lt;/p&gt;
+          &lt;p&gt;&lt;em&gt;構造体Innerの説明をここに記述します。&lt;/em&gt;&lt;/p&gt;
+        &lt;/desc&gt;
+      <span style="color: greenyellow;">&lt;/tag&gt;</span>
+
+      &lt;desc&gt;
+        &lt;brief&gt;型が「foo_NestedStruct_Inner構造体」のメンバです。&lt;/brief&gt;
+        &lt;p&gt;&lt;em&gt;メンバs2の説明をここに記述します。&lt;/em&gt;&lt;/p&gt;
+      &lt;/desc&gt;
+    <span style="color: greenyellow;">&lt;/structmember&gt;</span>
+
+    &lt;desc&gt;&lt;brief&gt;メンバとして構造体を定義する構造体です。&lt;/brief&gt;&lt;/desc&gt;
+  &lt;/struct&gt;
+
+  &lt;desc&gt;&lt;brief&gt;ネストする構造体の例を提供します。&lt;/brief&gt;&lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイルと、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/foo/NestedStruct.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="language-c">#ifndef foo_NestedStruct_H
+#define foo_NestedStruct_H
+
+struct foo_NestedStruct_Outer {
+    struct {
+        int i;
+    } s1;
+    struct foo_NestedStruct_Inner {
+        int i;
+    } s2;
+};
+
+#ifdef foo_NestedStruct_IMPORT
+#define NestedStruct_Inner foo_NestedStruct_Inner
+#define NestedStruct_Outer foo_NestedStruct_Outer
+#endif /* foo_NestedStruct_IMPORT */
+
+#endif /* !foo_NestedStruct_H */
+</code></pre>
+<div style="text-align: center;">
+<a href="s2/foo_NestedStruct.html">生成されるHTMLファイル</a>
+</div>
+<p>構造体のメンバに共用体、列挙型を記述することもできます。また同様に、共用体のメンバにもネストした定義を記述できます。</p>
+<blockquote>
+<p>⚠️ 構造体の定義がネストするようなソースコードを記述することを推奨しているわけではありません。構造体を匿名にすることが重要でなければ、構造体はすべて<code>struct</code>要素で定義しておきましょう。そして、<code>member</code>要素を使用して構造体型のメンバを記述した方がよいでしょう（例えば、<code>type</code>属性の値を<code>struct Foo</code>のようにする）。</p>
+</blockquote>
+<p><a name="2.5"></a></p>
+<h3>関数ポインタ型のメンバ</h3>
+<p>構造体のメンバとして関数ポインタ型のメンバを記述する場合は、<code>member</code>要素の代わりに<code>methodmember</code>要素を使用します。関数ポインタ型のメンバをもつ構造体の例を次に示します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/FunctionMember.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="foo" name="FunctionMember"&gt;
+  &lt;namespace/&gt;
+
+  &lt;struct tag="@"&gt;
+    <span style="color: greenyellow;">&lt;methodmember</span> name="func"&gt;
+      &lt;param type="int" name="in"&gt;
+        &lt;desc&gt;入力値&lt;/desc&gt;
+      &lt;/param&gt;
+
+      &lt;return type="int"&gt;
+        &lt;desc&gt;出力値&lt;/desc&gt;
+      &lt;/return&gt;
+
+      &lt;desc&gt;&lt;brief&gt;入力に対応する出力を返します。&lt;/brief&gt;&lt;/desc&gt;
+    <span style="color: greenyellow;">&lt;/methodmember&gt;</span>
+
+    &lt;desc&gt;&lt;brief&gt;関数ポインタ型のメンバをもつ構造体です。&lt;/brief&gt;&lt;/desc&gt;
+  &lt;/struct&gt;
+
+  &lt;desc&gt;&lt;brief&gt;関数ポインタ型のメンバをもつ構造体の例を提供します。&lt;/brief&gt;&lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイル、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/foo/FunctionMember.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="language-c">#ifndef foo_FunctionMember_H
+#define foo_FunctionMember_H
+
+struct foo_FunctionMember {
+    int (*func)(int in);
+};
+
+#ifdef foo_FunctionMember_IMPORT
+#define FunctionMember foo_FunctionMember
+#endif /* foo_FunctionMember_IMPORT */
+
+#endif /* !foo_FunctionMember_H */
+</code></pre>
+<div style="text-align: center;">
+<a href="s2/foo_FunctionMember.html">生成されるHTMLファイル</a>
+</div>
+<blockquote>
+<p>⚠️ <code>methodmember</code>要素ではなく、<code>member</code>要素を使用して関数ポインタ型のメンバを記述することもできます（例えば、<code>type</code>属性の値を<code>int (*#)(int)</code>のようにする）。その場合は、引数や戻り値などのドキュメントを指定することができません。また、予め関数ポインタ型を<code>typedef</code>で型定義しておき、それを使用して記述することもできます。</p>
+</blockquote>
+<p><a name="2.6"></a></p>
+<h3>ヘッダファイルのインクルード</h3>
+<p>ヘッダファイルの内部で別のヘッダファイルをインクルードする場合は、次のように<code>include</code>要素を使用します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/File.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="foo" name="File"&gt;
+  &lt;namespace/&gt;
+
+  <span style="color: greenyellow;">&lt;include file="stdio.h"/&gt;</span>
+
+  &lt;struct alias="@"&gt;
+    &lt;member type="FILE *" name="file"&gt;
+      &lt;desc&gt;&lt;brief&gt;標準入出力ライブラリのFILE型へのポインタです。&lt;/brief&gt;&lt;/desc&gt;
+    &lt;/member&gt;
+
+    &lt;desc&gt;&lt;brief&gt;Fileクラスのインスタンスとなる構造体です。&lt;/brief&gt;&lt;/desc&gt;
+  &lt;/struct&gt;
+
+  &lt;method name="new"&gt;
+    &lt;param type="FILE *" name="file"&gt;
+      &lt;desc&gt;標準入出力ライブラリのFILE型へのポインタ&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;return type="@ *"&gt;
+      &lt;desc&gt;Fileクラスのインスタンス、またはNULL&lt;/desc&gt;
+    &lt;/return&gt;
+
+    &lt;desc&gt;
+      &lt;brief&gt;Fileクラスのインスタンスを生成します。&lt;/brief&gt;
+      &lt;p&gt;生成できないときはNULLを返します。&lt;/p&gt;
+    &lt;/desc&gt;
+  &lt;/method&gt;
+
+  &lt;desc&gt;
+    &lt;brief&gt;include要素の使用例を提供します。&lt;/brief&gt;
+    &lt;p&gt;include要素はドキュメントに影響を与えません。&lt;/p&gt;
+  &lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/foo/File.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="nohighlight">#ifndef foo_File_H
+#define foo_File_H
+
+<span style="color: greenyellow;">#include &lt;stdio.h&gt;</span>
+
+typedef struct {
+    FILE * file;
+} foo_File;
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+foo_File * foo_File_new(FILE * file);
+
+#if defined(__cplusplus)
+}
+#endif
+
+#ifdef foo_File_IMPORT
+#define File foo_File
+#define File_new foo_File_new
+#endif /* foo_File_IMPORT */
+
+#endif /* !foo_File_H */</code></pre>
+<blockquote>
+<p>⚠️ <code>include</code>要素はヘッダファイルだけに影響があります。</p>
+</blockquote>
+<p><a name="2.7"></a></p>
+<h3>不完全な構造体の定義</h3>
+<p>型の詳細が隠されている構造体をAPIに記述することがあります。例えば、<code>pthread(3)</code>の<code>pthread_t</code>型や、Xlibの<code>Region</code>型などです。しかし、<code>struct</code>要素ではこのような<strong>不透明なデータ型</strong>（opaqueなデータ型）を記述することができません。<code>struct</code>要素は完全な構造体を宣言するからです。</p>
+<p>Sanctuaryは関数の引数や戻り値、<code>typedef</code>による型定義、構造体のメンバなどの型（<code>type</code>属性の値）から構造体のタグ名を抽出して、必要な構造体の前方定義をヘッダファイルに出力します。つまり、<strong>ほぼ</strong>自動的に不完全な構造体を定義（構造体を前方定義）するので、通常は明示的に前方定義する必要はないでしょう。</p>
+<p>次のいずれかの方法で、不完全な構造体を定義できます。</p>
+<dl style="background-color: var(--pre-background); padding: 16px;">
+<dt><code>export</code>要素を使用する</dt>
+<dd><code>export</code>要素で構造体のタグを定義し、タグに関するドキ
+ュメントを記述します。</dd>
+<dd>同じクラスで定義される構造体ですが、APIにはその構造体のポインタ
+型しか現れない場合に使用します。</dd>
+<dt><code>typedef</code>要素を使用する</dt>
+<dd>構造体のポインタ型を<code>typedef</code>要素で宣言します。ドキュメントは<code>typedef</code>要素に記述します。構造体のタグの前方定義はヘッダファイルのみに出現し、ドキュメントには出現しません。</dd>
+<dd><code>pthread_t</code>型のようなデータ型を記述する場合に使用します。</dd>
+<dt><code>import</code>要素を使用する</dt>
+<dd><code>import</code>要素で構造体のタグを定義します。ドキュメント
+は記述しません。</dd>
+<dd>例えば、同じクラスで定義したマクロの展開結果に構造体のポインタ型が含まれ、その構造体の詳細が隠蔽されているような場合、その構造体のタグを<code>import</code>要素で前方定義する必要があるかもしれません。また、GCC拡張の「不完全な列挙型」を記述する場合も必要になります。</dd>
+</dl>
+<p><code>export</code>要素の使用例を次に示します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/OpaqueStruct.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="foo" name="OpaqueStruct"&gt;
+  &lt;namespace/&gt;
+
+  <span style="color: greenyellow;">&lt;export</span> type="struct" tag="@"&gt;
+    &lt;desc&gt;
+      &lt;brief&gt;ある構造体です。&lt;/brief&gt;
+      &lt;p&gt;構造体の詳細は隠蔽されています。&lt;/p&gt;
+    &lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/export&gt;</span>
+
+  &lt;method name="new"&gt;
+    &lt;param type="<span style="color: greenyellow;">struct another_Class</span> *" name="s"&gt;
+      &lt;desc&gt;別のクラスで記述されている構造体のポインタ&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;return type="struct @ *"&gt;
+      &lt;desc&gt;インスタンスのポインタ&lt;/desc&gt;
+    &lt;/return&gt;
+
+    &lt;desc&gt;&lt;brief&gt;別のクラスで定義されている構造体のポインタ型から、不透明なデータ型のインスタンスを生成します。&lt;/brief&gt;&lt;/desc&gt;
+  &lt;/method&gt;
+
+  &lt;desc&gt;&lt;brief&gt;export要素の使用例を提供します。&lt;/brief&gt;&lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイル、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/foo/OpaqueStruct.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="nohighlight">#ifndef foo_OpaqueStruct_H
+#define foo_OpaqueStruct_H
+
+<span style="color: greenyellow;">struct another_Class;</span>
+<span style="color: greenyellow;">struct foo_OpaqueStruct;</span>
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+struct foo_OpaqueStruct * foo_OpaqueStruct_new(struct another_Class * s);
+
+#if defined(__cplusplus)
+}
+#endif
+
+#ifdef foo_OpaqueStruct_IMPORT
+#define OpaqueStruct foo_OpaqueStruct
+#define OpaqueStruct_new foo_OpaqueStruct_new
+#endif /* foo_OpaqueStruct_IMPORT */
+
+#endif /* !foo_OpaqueStruct_H */</code></pre>
+<div style="text-align: center;">
+<a href="s2/foo_OpaqueStruct.html">生成されるHTMLファイル</a>
+</div>
+<p><code>import</code>要素の使用例を次に示します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Opaque.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="foo" name="Opaque"&gt;
+  &lt;namespace/&gt;
+
+  &lt;define name="TYPE"&gt;
+    &lt;macro&gt;struct another_Class *&lt;/macro&gt;
+
+    &lt;desc&gt;
+      &lt;brief&gt;コンストラクタの引数の型です。&lt;/brief&gt;
+      &lt;p&gt;型の詳細は隠蔽されています。&lt;/p&gt;
+    &lt;/desc&gt;
+  &lt;/define&gt;
+
+  <span style="color: greenyellow;">&lt;import type="struct" tag="another_Class"/&gt;</span>
+
+  &lt;typedef type="struct @_ *" name="@"&gt;
+    &lt;desc&gt;
+      &lt;brief&gt;ある構造体のポインタ型です。&lt;/brief&gt;
+      &lt;p&gt;構造体の詳細は隠蔽されています。&lt;/p&gt;
+    &lt;/desc&gt;
+  &lt;/typedef&gt;
+
+  &lt;method name="new"&gt;
+    &lt;param type="@_TYPE" name="s"&gt;
+      &lt;desc&gt;別のクラスで記述されている構造体のポインタ&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;return type="@"&gt;
+      &lt;desc&gt;インスタンスのポインタ&lt;/desc&gt;
+    &lt;/return&gt;
+
+    &lt;desc&gt;&lt;brief&gt;別のクラスで定義されている構造体のポインタ型から、不透明なデータ型のインスタンスを生成します。&lt;/brief&gt;&lt;/desc&gt;
+  &lt;/method&gt;
+
+  &lt;desc&gt;&lt;brief&gt;import要素の使用例を提供します。&lt;/brief&gt;&lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイル、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Opaque.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="nohighlight">#ifndef foo_Opaque_H
+#define foo_Opaque_H
+
+#define foo_Opaque_TYPE struct another_Class *
+
+<span style="color: greenyellow;">struct another_Class;</span>
+struct foo_Opaque_;
+
+typedef struct foo_Opaque_ * foo_Opaque;
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+foo_Opaque foo_Opaque_new(foo_Opaque_TYPE s);
+
+#if defined(__cplusplus)
+}
+#endif
+
+#ifdef foo_Opaque_IMPORT
+#define Opaque foo_Opaque
+#define Opaque_TYPE foo_Opaque_TYPE
+#define Opaque_new foo_Opaque_new
+#endif /* foo_Opaque_IMPORT */
+
+#endif /* !foo_Opaque_H */</code></pre>
+<div style="text-align: center;">
+<a href="s2/foo_Opaque.html">生成されるHTMLファイル</a>
+</div>
+<p>同様に、不完全な共用体も定義できます。また、GCCでは不完全な列挙型も定義できます。</p>
+<blockquote>
+<p>⚠️ <code>import</code>要素はヘッダファイルだけに影響があります。</p></p>
+</blockquote>
+<p><a name="2.8"></a></p>
+<h3>可変長引数</h3>
+<p>可変長引数の関数を記述するには、次のように<code>variableparam</code>要素を使用します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Printer.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="foo" name="Printer"&gt;
+  &lt;namespace/&gt;
+
+  &lt;method name="print"&gt;
+    &lt;param type="const char *" name="format"&gt;
+      &lt;desc&gt;フォーマット（printf(3)を参照してください）&lt;/desc&gt;
+    &lt;/param&gt;
+
+    <span style="color: greenyellow;">&lt;variableparam/&gt;</span>
+
+    &lt;return type="int"&gt;
+      &lt;desc&gt;出力したバイト数&lt;/desc&gt;
+    &lt;/return&gt;
+
+    &lt;desc&gt;
+      &lt;brief&gt;指定したフォーマットに整形した文字列を出力します。&lt;/brief&gt;
+      &lt;p&gt;いわゆるprintf()ライクな関数です。&lt;/p&gt;
+    &lt;/desc&gt;
+  &lt;/method&gt;
+
+  &lt;desc&gt;&lt;brief&gt;variableparam要素の使用例を提供します。&lt;/brief&gt;&lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイル、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Printer.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="nohighlight">#ifndef foo_Printer_H
+#define foo_Printer_H
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+int foo_Printer_print(const char * format,
+                      <span style="color: greenyellow;">...</span>);
+
+#if defined(__cplusplus)
+}
+#endif
+
+#ifdef foo_Printer_IMPORT
+#define Printer_print foo_Printer_print
+#endif /* foo_Printer_IMPORT */
+
+#endif /* !foo_Printer_H */</code></pre>
+<div style="text-align: center;">
+<a href="s2/foo_Printer.html">生成されるHTMLファイル</a>
+</div>
+<p><a name="2.9"></a></p>
+<h3>グローバル変数</h3>
+<p>グローバル変数を記述するには、次のように<code>globalvariable</code>要素を使用します。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Preference.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd" [
+  &lt;!ENTITY maxParameters '3'&gt;
+]&gt;
+&lt;class package="foo" name="Preference"&gt;
+  &lt;namespace/&gt;
+
+  <span style="color: greenyellow;">&lt;globalvariable</span> type="char *" name="option"&gt;
+    &lt;desc&gt;&lt;brief&gt;オプションを表す文字列です。&lt;/brief&gt;&lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/globalvariable&gt;</span>
+
+  <span style="color: greenyellow;">&lt;globalvariable</span> type="int #[&amp;maxParameters;]" name="parameters"&gt;
+    &lt;desc&gt;
+      &lt;brief&gt;パラメータを表す整数の配列です。&lt;/brief&gt;
+      &lt;p&gt;配列の要素数は&amp;maxParameters;です。&lt;/p&gt;
+    &lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/globalvariable&gt;</span>
+
+  &lt;desc&gt;
+    &lt;brief&gt;globalvariable要素の使用例を提供します。&lt;/brief&gt;
+    &lt;p&gt;グローバル変数を使用するべきでありません。設定、取得メソッドをもつシングルトンパターンのクラスを用意すべきです。&lt;/p&gt;
+  &lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイル、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/foo/Preference.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="nohighlight">#ifndef foo_Preference_H
+#define foo_Preference_H
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+<span style="color: greenyellow;">extern char * foo_Preference_option;</span>
+<span style="color: greenyellow;">extern int foo_Preference_parameters[3];</span>
+
+#if defined(__cplusplus)
+}
+#endif
+
+#ifdef foo_Preference_IMPORT
+#define Preference_option foo_Preference_option
+#define Preference_parameters foo_Preference_parameters
+#endif /* foo_Preference_IMPORT */
+
+#endif /* !foo_Preference_H */</code></pre>
+<div style="text-align: center;">
+<a href="s2/foo_Preference.html">生成されるHTMLファイル</a>
+</div>
+<p><a name="3"></a></p>
+<h2>上級編</h2>
+<p><a name="3.1"></a></p>
+<h3>関数の修飾子</h3>
+<p>GCCでは関数の定義に<code>__attribute__((__const__))</code>などの属性を付加することができます。このような属性は<code>modifier</code>要素で次のように指定することができます。</p>
+<div style="text-align: center;">
+<a href="s2/bar/Modifier.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="bar" name="Modifier"&gt;
+  &lt;namespace/&gt;
+
+  &lt;method name="abort"&gt;
+    <span style="color: greenyellow;">&lt;modifier code="__attribute__((noreturn))"/&gt;</span>
+    &lt;desc&gt;&lt;brief&gt;コアをダンプして強制終了します。&lt;/brief&gt;&lt;/desc&gt;
+  &lt;/method&gt;
+
+  &lt;method name="square"&gt;
+    &lt;param type="int" name="value"&gt;
+      &lt;desc&gt;整数値&lt;/desc&gt;
+    &lt;/param&gt;
+
+    <span style="color: greenyellow;">&lt;modifier code="__attribute__((const))"/&gt;</span>
+
+    &lt;return type="int"&gt;
+      &lt;desc&gt;&lt;arg&gt;value&lt;/arg&gt;の自乗の値&lt;/desc&gt;
+    &lt;/return&gt;
+
+    &lt;desc&gt;&lt;brief&gt;自乗の値を返します。&lt;/brief&gt;&lt;/desc&gt;
+  &lt;/method&gt;
+
+  &lt;desc&gt;&lt;brief&gt;修飾子の例を提供します。&lt;/brief&gt;&lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイル、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/bar/Modifier.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="nohighlight">#ifndef bar_Modifier_H
+#define bar_Modifier_H
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+void bar_Modifier_abort(void) <span style="color: greenyellow;">__attribute__((noreturn))</span>;
+int bar_Modifier_square(int value) <span style="color: greenyellow;">__attribute__((const))</span>;
+
+#if defined(__cplusplus)
+}
+#endif
+
+#ifdef bar_Modifier_IMPORT
+#define Modifier_abort bar_Modifier_abort
+#define Modifier_square bar_Modifier_square
+#endif /* bar_Modifier_IMPORT */
+
+#endif /* !bar_Modifier_H */</code></pre>
+<div style="text-align: center;">
+<a href="s2/bar_Modifier.html">生成されるHTMLファイル</a>
+</div>
+<p><a name="3.2"></a></p>
+<h3>splintのアノテーション</h3>
+<p>splintという静的解析ツール（lintのようなもの）では、<code>/*@...@*/</code>という形式のアノテーションを使用します。Sanctuaryはこのようなコメントを通常とは異なるスタイルで強調表示します。splintのアノテーションを埋め込んだ例を次に示します。</p>
+<div style="text-align: center;">
+<a href="s2/bar/Splint.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd"&gt;
+&lt;class package="bar" name="Splint"&gt;
+  &lt;namespace/&gt;
+
+  &lt;export type="struct" tag="@"&gt;
+    &lt;desc&gt;&lt;brief&gt;Splint構造体です。&lt;/brief&gt;&lt;p&gt;不透明な構造体です。&lt;/p&gt;&lt;/desc&gt;
+  &lt;/export&gt;
+
+  &lt;method name="initialize"&gt;
+    &lt;param type="<span style="color: greenyellow;">/*@out@*/</span> struct @ *" name="s"&gt;
+      &lt;desc&gt;初期化するSplint構造体のポインタ&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;desc&gt;&lt;brief&gt;Splint構造体を初期化します。&lt;/brief&gt;&lt;/desc&gt;
+  &lt;/method&gt;
+
+  &lt;desc&gt;&lt;brief&gt;Splintのアノテーションを埋め込んだ例を提供します。&lt;/brief&gt;&lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイル、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/bar/Splint.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="nohighlight">#ifndef bar_Splint_H
+#define bar_Splint_H
+
+struct bar_Splint;
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+void bar_Splint_initialize(<span style="color: greenyellow;">/*@out@*/</span> struct bar_Splint * s);
+
+#if defined(__cplusplus)
+}
+#endif
+
+#ifdef bar_Splint_IMPORT
+#define Splint bar_Splint
+#define Splint_initialize bar_Splint_initialize
+#endif /* bar_Splint_IMPORT */
+
+#endif /* !bar_Splint_H */</code></pre>
+<div style="text-align: center;">
+<a href="s2/bar_Splint.html">生成されるHTMLファイル</a>
+</div>
+<p><a name="3.3"></a></p>
+<h3>インタフェース</h3>
+<p>関数ポインタ、つまりコールバック関数を引数とする関数のAPIドキュメントを書く場合、そのコールバック関数がどのように呼ばれるのか、どのような値を返さなければならないかを記述することになります。DoxyGenなどでは関数ポインタを<code>typedef</code>で定義して記述することが多いようです。しかし、コールバックされる関数が<strong>インスタンスメソッド的な</strong>関数の場合、そのインスタンスのインタフェースとして記述したいこともあります。</p>
+<p>例として4.4BSDの<code>funopen(3)</code>を考えてみます。<code>man(1)</code>によると、<code>funopen(3)</code>の定義は次のようになっています。</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+FILE *
+funopen(const void *cookie, int (*readfn)(void *, char *, int),
+    int (*writefn)(void *, const char *, int),
+    fpos_t (*seekfn)(void *, fpos_t, int), int (*closefn)(void *));
+</code></pre>
+<p>このAPIはインスタンスのポインタ（<code>cookie</code>）と、その4つのインスタンスメソッド（<code>readfn</code>, <code>writefn</code>, <code>seekfn</code>, <code>closefn</code>）を渡して、<code>FILE</code>構造体へのポインタを返すという、<code>FILE</code>構造体のファクトリーメソッドと捉えてもよいでしょう。つまり、Javaのインタフェースの意味で、<strong>あるインタフェースのオブジェクトを引数に指定する</strong>と言えます。</p>
+<p>そのインタフェースを<code>Openable</code>インタフェースとすることにして、次のように定義します。</p>
+<div style="text-align: center;">
+<a href="s2/bar/Openable.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE <span class="greenyellow">interface</span> SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd" [
+  &lt;!ENTITY cookieParam '
+    &lt;param type="void *" name="cookie"&gt;
+      &lt;desc&gt;このインスタンスのポインタ&lt;/desc&gt;
+    &lt;/param&gt;'&gt;
+]&gt;
+<span style="color: greenyellow;">&lt;interface</span> package="bar" name="Openable"&gt;
+  &lt;namespace/&gt;
+
+  <span style="color: greenyellow;">&lt;method</span> name="readfn"&gt;
+    &amp;cookieParam;
+
+    &lt;param type="char *" name="data"&gt;
+      &lt;desc&gt;読み込むデータを格納する領域のポインタ&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;param type="int" name="size"&gt;
+      &lt;desc&gt;&lt;arg&gt;data&lt;/arg&gt;のサイズ&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;return type="int"&gt;
+      &lt;desc&gt;成功した場合は実際に読み込んだデータのサイズを返します。ファイルの最後の場合は0を返します。そうでなければ&lt;math&gt;-1&lt;/math&gt;を返します。&lt;/desc&gt;
+    &lt;/return&gt;
+
+    &lt;desc&gt;&lt;brief&gt;ファイルからデータを読み込みます。&lt;/brief&gt;&lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/method&gt;</span>
+
+  <span style="color: greenyellow;">&lt;method</span> name="writefn"&gt;
+    &amp;cookieParam;
+
+    &lt;param type="const char *" name="data"&gt;
+      &lt;desc&gt;書き込むデータを格納した領域のポインタ&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;param type="int" name="size"&gt;
+      &lt;desc&gt;&lt;arg&gt;data&lt;/arg&gt;のサイズ&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;return type="int"&gt;
+      &lt;desc&gt;成功した場合は書き込んだデータのサイズを返します。そうでなければ&lt;math&gt;-1&lt;/math&gt;を返します。&lt;/desc&gt;
+    &lt;/return&gt;
+
+    &lt;desc&gt;&lt;brief&gt;ファイルにデータを書き込みます。&lt;/brief&gt;&lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/method&gt;</span>
+
+  <span style="color: greenyellow;">&lt;method</span> name="seekfn"&gt;
+    &amp;cookieParam;
+
+    &lt;param type="fpos_t" name="offset"&gt;
+      &lt;desc&gt;ファイルのオフセット&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;param type="int" name="whence"&gt;
+      &lt;desc&gt;&lt;arg&gt;offset&lt;/arg&gt;の起点&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;return type="fpos_t"&gt;
+      &lt;desc&gt;成功した場合はファイルの先頭からのオフセットを返します。そうでなければ&lt;math&gt;-1&lt;/math&gt;を返します。&lt;/desc&gt;
+    &lt;/return&gt;
+
+    &lt;desc&gt;
+      &lt;brief&gt;ファイルのオフセットを変更します。&lt;/brief&gt;
+      &lt;p&gt;&lt;arg&gt;whence&lt;/arg&gt;の値には&lt;code&gt;foo_Whence_SET&lt;/code&gt;、&lt;code&gt;foo_Whence_SET&lt;/code&gt;、&lt;code&gt;foo_Whence_END&lt;/code&gt;のいずれかを指定します。&lt;/p&gt;
+    &lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/method&gt;</span>
+
+  <span style="color: greenyellow;">&lt;method</span> name="closefn"&gt;
+    &amp;cookieParam;
+
+    &lt;return type="int"&gt;
+      &lt;desc&gt;成功した場合は0を返します。そうでなければ&lt;math&gt;-1&lt;/math&gt;を返します。&lt;/desc&gt;
+    &lt;/return&gt;
+
+    &lt;desc&gt;&lt;brief&gt;ファイルをクローズします。&lt;/brief&gt;&lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/method&gt;</span>
+
+  &lt;desc&gt;&lt;brief&gt;オープン可能なインタフェースの記述例を提供します。&lt;/brief&gt;&lt;/desc&gt;
+<span style="color: greenyellow;">&lt;/interface&gt;</span></code></pre>
+<p>HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/bar_Openable.html">生成されるHTMLファイル</a>
+</div>
+<blockquote>
+<p>⚠️ <code>interface</code>要素はドキュメントだけを生成します。</p>
+</blockquote>
+<p>一方、<code>Openable</code>インタフェースのオブジェクトを受け取り、<code>File</code>クラスのインスタンスを生成するファクトリークラスを<code>FileFactory</code>クラスとします。<code>FileFactory</code>クラスを次のように定義します。</p>
+<div style="text-align: center;">
+<a href="s2/bar/FileFactory.xml">入力するXML</a>
+</div>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;euc-jp&quot;?&gt;
+&lt;!DOCTYPE class SYSTEM &quot;http://maroontress.com/Sanctuary/2.0/sanctuary.dtd&quot;&gt;
+&lt;class package=&quot;bar&quot; name=&quot;FileFactory&quot;&gt;
+  &lt;namespace/&gt;
+
+  &lt;include file=&quot;stdio.h&quot;/&gt;
+
+  &lt;method name=&quot;open&quot;&gt;
+    &lt;param type=&quot;const void *&quot; name=&quot;cookie&quot;&gt;
+      &lt;desc&gt;&lt;hyperlink namespace=&quot;bar.Openable&quot;&gt;Openableインタフェース&lt;/hyperlink&gt;のインスタンス&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;param type=&quot;int (*#)(void *, char *, int)&quot; name=&quot;readfn&quot;&gt;
+      &lt;desc&gt;see bar_Openable_readfn()&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;param type=&quot;int (*#)(void *, const char *, int)&quot; name=&quot;writefn&quot;&gt;
+      &lt;desc&gt;see bar_Openable_writefn()&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;param type=&quot;fpos_t (*#)(void *, fpos_t, int)&quot; name=&quot;seekfn&quot;&gt;
+      &lt;desc&gt;see bar_Openable_seekfn()&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;param type=&quot;int (*#)(void *)&quot; name=&quot;closefn&quot;&gt;
+      &lt;desc&gt;see bar_Openable_closefn()&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;return type=&quot;foo_File *&quot;&gt;
+      &lt;desc&gt;&lt;hyperlink namespace=&quot;foo.File&quot;&gt;Fileクラス&lt;/hyperlink&gt;のインスタンス、またはNULL&lt;/desc&gt;
+    &lt;/return&gt;
+
+    &lt;desc&gt;
+      &lt;brief&gt;OpenableインタフェースからFileクラスのインスタンスを生成します。&lt;/brief&gt;
+      &lt;p&gt;生成できないときはNULLを返します。&lt;/p&gt;
+    &lt;/desc&gt;
+  &lt;/method&gt;
+
+  &lt;desc&gt;&lt;brief&gt;Fileクラスのインスタンスを生成する機能を提供します。&lt;/brief&gt;&lt;/desc&gt;
+&lt;/class&gt;
+</code></pre>
+<p>生成されるヘッダファイルと、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/bar/FileFactory.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="language-c">#ifndef bar_FileFactory_H
+#define bar_FileFactory_H
+
+#include &lt;stdio.h&gt;
+
+#if defined(__cplusplus)
+extern &quot;C&quot; {
+#endif
+
+foo_File * bar_FileFactory_open(const void * cookie,
+                                int (*readfn)(void *, char *, int),
+                                int (*writefn)(void *, const char *, int),
+                                fpos_t (*seekfn)(void *, fpos_t, int),
+                                int (*closefn)(void *));
+
+#if defined(__cplusplus)
+}
+#endif
+
+#ifdef bar_FileFactory_IMPORT
+#define FileFactory_open bar_FileFactory_open
+#endif /* bar_FileFactory_IMPORT */
+
+#endif /* !bar_FileFactory_H */
+</code></pre>
+<div style="text-align: center;">
+<a href="s2/bar_FileFactory.html">生成されるHTMLファイル</a>
+</div>
+<p><a name="3.4"></a></p>
+<h3>アブストラクトメソッド</h3>
+<p>インタフェースと同様に、インスタンスメソッドとしてコールバックする関数を登録するが、むしろ<strong>そのクラスを拡張する目的で</strong>コールバック関数を登録するようなAPIの場合、インタフェースというよりはJavaのアブストラクトメソッド（もしくはC++のバーチャルメソッド）のように記述したい場合があります。</p>
+<p>次のような<code>Thread</code>クラスを考えてみます。</p>
+<div style="text-align: center;">
+<a href="s2/bar/Thread.xml">入力するXML</a>
+</div>
+<pre><code class="nohighlight">&lt;?xml version="1.0" encoding="euc-jp"?&gt;
+&lt;!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd" [
+  &lt;!ENTITY thisParam '
+    &lt;param type="struct @ *" name="thread"&gt;
+      &lt;desc&gt;Threadクラスのインスタンス&lt;/desc&gt;
+    &lt;/param&gt;
+  '&gt;
+]&gt;
+&lt;class package="bar" name="Thread"&gt;
+  &lt;namespace/&gt;
+
+  &lt;export type="struct" tag="@"&gt;
+    &lt;desc&gt;&lt;brief&gt;スレッドの実体となる構造体です。&lt;/brief&gt;&lt;p&gt;不透明な構造体です。&lt;/p&gt;&lt;/desc&gt;
+  &lt;/export&gt;
+
+  &lt;method name="new"&gt;
+    &amp;thisParam;
+
+    &lt;param type="void (*#)(struct @ *)" name="run"&gt;
+      &lt;desc&gt;see bar_Thread_run()&lt;/desc&gt;
+    &lt;/param&gt;
+
+    &lt;desc&gt;&lt;brief&gt;スレッドのインスタンスを生成します。&lt;/brief&gt;&lt;/desc&gt;
+  &lt;/method&gt;
+
+  &lt;method name="start"&gt;
+    &amp;thisParam;
+    &lt;desc&gt;&lt;brief&gt;新しいスレッドによるbar_Thread_run()の実行を開始します。&lt;/brief&gt;&lt;/desc&gt;
+  &lt;/method&gt;
+
+  <span style="color: greenyellow;">&lt;abstractmethod</span> name="run"&gt;
+    &amp;thisParam;
+    &lt;desc&gt;&lt;brief&gt;スレッドが実行する処理を実装します。&lt;/brief&gt;&lt;/desc&gt;
+  <span style="color: greenyellow;">&lt;/abstractmethod&gt;</span>
+
+  &lt;desc&gt;&lt;brief&gt;アブストラクトメソッドの例を提供します。&lt;/brief&gt;&lt;/desc&gt;
+&lt;/class&gt;</code></pre>
+<p>生成されるヘッダファイルと、HTMLファイルは次のようになります。</p>
+<div style="text-align: center;">
+<a href="s2/bar/Thread.h">生成されるヘッダファイル</a>
+</div>
+<pre><code class="language-c">#ifndef bar_Thread_H
+#define bar_Thread_H
+
+struct bar_Thread;
+
+#if defined(__cplusplus)
+extern &quot;C&quot; {
+#endif
+
+void bar_Thread_new(struct bar_Thread * thread,
+                    void (*run)(struct bar_Thread *));
+void bar_Thread_start(struct bar_Thread * thread);
+
+#if defined(__cplusplus)
+}
+#endif
+
+#ifdef bar_Thread_IMPORT
+#define Thread bar_Thread
+#define Thread_new bar_Thread_new
+#define Thread_start bar_Thread_start
+#endif /* bar_Thread_IMPORT */
+
+#endif /* !bar_Thread_H */
+</code></pre>
+<div style="text-align: center;">
+<a href="s2/bar_Thread.html">生成されるHTMLファイル</a>
+</div>
+<p>実際どのようにして<code>Thread</code>クラスを継承したクラスを定義するかはさておき、このように抽象クラスを定義することができます。</p>
+<blockquote>
+<p>⚠️ <code>abstractmethod</code>要素はドキュメントだけを生成します。</p>
+</blockquote>
+<p><a name="3.5"></a></p>
+<h3>ユニットテスト</h3>
+<p>C言語ではユニットテストをやりにくいものですが、Sanctuaryのスタブ自動生成機能を使用することで、煩雑な作業を減らすことができます。</p>
+<p>例として、<code>bar</code>パッケージのクラス<code>Alpha</code>、<code>Beta</code>、<code>Gamma</code>からなるライブラリを考えてみます。<code>Alpha</code>は<code>Beta</code>と<code>Gamma</code>を使用するクラスで、次のようなAPIを実装しているとしましょう。</p>
+<pre><code class="language-c">#define bar_Alpha_IMPORT
+#define bar_Beta_IMPORT
+#define bar_Gamma_IMPORT
+
+#include &lt;bar/Alpha.h&gt;
+#include &lt;bar/Beta.h&gt;
+#include &lt;bar/Gamma.h&gt;
+
+void
+Alpha_initialize(/*@out@*/ struct Alpha *a)
+{
+    Beta_initialize(&amp;a-&gt;beta);
+    Gamma_initialize(&amp;a-&gt;gamma);
+    a-&gt;flags = 0;
+    ⋮
+}
+
+⋮
+</code></pre>
+<p>ここでは<code>Alpha_initialize()</code>メソッドをテストしてみましょう。</p>
+<p>まずユニットテストの準備として、クラス<code>Alpha</code>、<code>Beta</code>、<code>Gamma</code>のソースコードを用意します。</p>
+<ul>
+<li><code>bar/Alpha.c</code></li>
+<li><code>bar/Alpha.xml</code></li>
+<li><code>bar/Beta.c</code></li>
+<li><code>bar/Beta.xml</code></li>
+<li><code>bar/Gamma.c</code></li>
+<li><code>bar/Gamma.xml</code></li>
+</ul>
+<p>これらからヘッダファイルとオブジェクトファイルを生成します。</p>
+<ul>
+<li><code>bar/Alpha.h</code></li>
+<li><code>bar/Alpha.o</code></li>
+<li><code>bar/Beta.h</code></li>
+<li><code>bar/Beta.o</code></li>
+<li><code>bar/Gamma.h</code></li>
+<li><code>bar/Gamma.o</code></li>
+</ul>
+<p>次にソースコードのXMLファイルから次のスタブを生成します（スタブの生成方法は<a href="download.html#usage:stub">スタブの生成</a>を参照してください）。</p>
+<ul>
+<li><code>stub/bar/Alpha.c</code></li>
+<li><code>stub/bar/Alpha.h</code></li>
+<li><code>stub/bar/Beta.c</code></li>
+<li><code>stub/bar/Beta.h</code></li>
+<li><code>stub/bar/Gamma.c</code></li>
+<li><code>stub/bar/Gamma.h</code></li>
+</ul>
+<p>さらにこれらをコンパイルして、次のオブジェクトファイルを生成します。</p>
+<ul>
+<li><code>stub/bar/Alpha.o</code></li>
+<li><code>stub/bar/Beta.o</code></li>
+<li><code>stub/bar/Gamma.o</code></li>
+</ul>
+<p>これで準備は終わりました。今度は<code>Alpha</code>をテストするプログラムとして、次のような<code>TestAlpha.c</code>（<code>TestAlpha</code>クラス）を用意します。</p>
+<pre><code class="language-c">#define bar_Alpha_IMPORT
+#define bar_Beta_IMPORT
+#define bar_Gamma_IMPORT
+
+#include &lt;assert.h&gt;
+#include &lt;bar/Alpha.h&gt;
+#include &lt;stub/bar/Beta.h&gt;
+#include &lt;stub/bar/Gamma.h&gt;
+
+static int betaIsInitialized = 0;
+static int gammaIsInitialized = 0;
+
+static void
+initializeBeta(struct Beta *b)
+{
+    betaIsInitialized = 1;
+}
+
+static void
+initializeGamma(struct Gamma *g)
+{
+    gammaIsInitialized = 1;
+}
+
+void
+TestAlpha_testInitialize(void)
+{
+    struct Alpha a;
+
+    /* Alpha_initialize()が使用する関数をオーバライド */
+    stub_bar_Beta_initialize = initializeBeta;
+    stub_bar_Gamma_initialize = initializeGamma;
+
+    /* Alpha_initialize()を実行 */
+    Alpha_initialize(&amp;a);
+
+    /* 結果の検証 */
+    assert(betaIsInitialized &amp;&amp; gammaIsInitialized);
+    assert(a.flags == 0);
+    ⋮
+}
+</code></pre>
+<p>これは「<code>TestAlpha_testInitialize()</code>メソッドを呼び出すと<code>Alpha_initialize()</code>メソッドをテストする」というものです。<code>TestAlpha_testInitialize()</code>は、最初にスタブの関数をオーバライドしてから、<code>Alpha_initialize()</code>を呼び出し、最後に結果を検証します（例では説明を簡単にするため、検証には<code>assert(3)</code>を使用しています）。</p>
+<p><code>TestAlpha.c</code>をコンパイルするときに、次のオブジェクトファイルとリンクします。</p>
+<ul>
+<li><code>bar/Alpha.o</code></li>
+<li><code>stub/bar/Beta.o</code></li>
+<li><code>stub/bar/Gamma.o</code></li>
+</ul>
+<p><code>TestAlpha</code>が<code>Alpha_initialize()</code>を呼び出したときのシーケンスの概略は次の図のようになります。</p>
+<div class="horizontal-scroll"><img style="padding: 16px; background-color: white;" src="images/stub.png"></div>
+<p>同様に、<code>Beta</code>、<code>Gamma</code>のユニットテストを行うこともできます。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Tue Mar 14 22:51:01 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Fri May 16 10:12:30 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="../index.html">Sanctuary</a></span>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="../index.html#%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88">Version 2.0</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li class="selected">
+      Tutorial
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="reference.html">Reference</a>
+    </li>
+    <li>
+      <a href="dtd.html">DTD</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

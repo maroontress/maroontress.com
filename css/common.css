@@ -1,0 +1,132 @@
+@media screen and (max-width: 816px) {
+  body {
+    width: calc(100% - 16px);
+  }
+}
+
+@media screen and (min-width: 816px) {
+  body {
+    margin: auto;
+    width: 800px;
+  }
+  ul.menu {
+    column-count: 2;
+  }
+}
+
+body {
+  -webkit-text-size-adjust: 100%;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: "palatino linotype", "Yu Mincho", serif;
+}
+
+a {
+  color: #4db2ff
+}
+
+address {
+  font-family: Helvetica, "Yu Gothic UI", sans-selif;
+}
+
+pre, tt {
+  font-family: Courier, monospace;
+}
+
+h1, h2, h3, h4 {
+  font-weight: bold;
+  font-family: Helvetica, "Yu Gothic UI", sans-selif;
+}
+
+h1.logo {
+  font-weight: bold;
+  font-family: "palatino linotype", "Yu Mincho", serif;
+}
+
+ul.menu {
+  font-family: Helvetica, "Yu Gothic UI Semibold", sans-selif;
+  background-color: #ffffb0;
+  color: #000000;
+  margin: 0px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 32px;
+  padding-right: 8px;
+}
+
+ul.menu a {
+  color: #0000ff;
+}
+
+span.smallest {
+  font-size: xx-small;
+}
+
+.borders {
+  border-image: url("../images/borders.png") 16;
+  border-style: solid;
+  border-width: 16px;
+}
+
+li {
+  margin-top: 1ex;
+}
+
+li:first-child {
+  margin-top: 0px;
+}
+
+input.gsc-input {
+  font-family: Helvetica, "Yu Gothic UI Semibold", sans-selif !important;
+  color: white !important;
+  background-color: black !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  vertical-align: middle !important;
+}
+
+div.gsc-input-box {
+  color: white !important;
+  background-color: transparent !important;
+  border: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+td.gsc-input {
+  color: white !important;
+  background-color: black !important;
+  border: 1px solid !important;
+  border-color: #4db2ff !important;
+  border-radius: 0;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.gsc-search-button-v2 svg {
+  fill: black !important;
+}
+
+button.gsc-search-button-v2 {
+  border-color: #4db2ff !important;
+  background-color: #4db2ff !important;
+  padding: 14px 10px;
+  margin: 0;
+  border: 1px solid;
+  border-radius: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+div.gsc-control-cse {
+  padding: 0px !important;
+  border: 0px !important;
+}
+
+div.gsc-results-wrapper-visible {
+  padding: 1rem !important;
+}
+
+nav {
+  margin-top: 1rem;
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>ByteArrayInputTube - std_io_ByteArrayInputTube</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_io_ByteArrayInputTube"/>
+    <h3>package std_io</h3>
+    <h1>extensible class ByteArrayInputTube</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<a href="std_io_InputTube.html">std_io_InputTube</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&#x2514;&nbsp;<b>std_io_ByteArrayInputTube</b><br>
+<br>
+#define std_io_ByteArrayInputTube_IMPORT<br>
+#include &lt;std/io/ByteArrayInputTube.h&gt;<br>
+#include &lt;std/io/impl/ByteArrayInputTube.h&gt;<br>
+    <dl><dd>
+<p>バイト配列の入力端です。</p>
+  </dd></dl>
+    <hr>
+<h2>Field Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const unsigned char *</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_ByteArrayInputTube.data"><b>data</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入力可能なデータの先頭を指すポインタです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_ByteArrayInputTube.size"><b>size</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;読みだし可能なデータのサイズです。</td>
+</tr>
+    </table>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_io_ByteArrayInputTube.html#union std_io_ByteArrayInputTube">union ByteArrayInputTube</a></font>
+  </td>
+  <td valign="top"><a href="#std_io_ByteArrayInputTube_create"><b>ByteArrayInputTube_<wbr>create</b></a>(const void *&nbsp;<i>data</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バイト配列の入力端を生成して返します。</td>
+</tr>
+    </table>
+<h2>Field Detail</h2>
+<p><a name="struct std_io_impl_ByteArrayInputTube.data"></a><font size="+1"><b>data</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const unsigned char * <b>data</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+入力可能なデータの先頭を指すポインタです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_ByteArrayInputTube.size"></a><font size="+1"><b>size</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>size</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+読みだし可能なデータのサイズです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_io_ByteArrayInputTube_create"></a><font size="+1"><b>ByteArrayInputTube_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_io_ByteArrayInputTube.html#union std_io_ByteArrayInputTube">union ByteArrayInputTube</a></td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>ByteArrayInputTube_create</b>(</td>
+    <td nowrap>const void *&nbsp;<i>data</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+<p>バイト配列の入力端を生成して返します。戻り値が参照するオブジェクトは<a href="std_io_InputTube.html#std_io_InputTube_close">InputTube_<wbr>close</a>()でクローズしなければなりません。戻り値が参照するオブジェクトをクローズするまで<span class="arg">data</span>が参照する<span class="arg">size</span>バイトのバイト配列は有効でなければなりません。</p>
+<p>生成できなかった場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>data</i> - バイト配列の先頭を指すポインタ<br>
+
+<i>size</i> - バイト配列のサイズ<br>
+
+</dd></dl>
+<dl>Returns:<dd>バイト配列の入力端、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

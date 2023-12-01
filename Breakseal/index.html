@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | Breakseal</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Breakseal</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p>MIME対応の日本語MUA。</p>
+<p><a name="install"></a></p>
+<h2>インストール</h2>
+<h3>動作環境</h3>
+<p>次のプラットフォームで動作を確認しました。</p>
+<ul>
+<li>FreeBSD 2.2.8, 4.3, 4.4</li>
+<li>LASER5 Linux 6.2 (+ libmd)</li>
+</ul>
+<h3>必要なもの</h3>
+<ul>
+<li><a href="http://www.penguin.cz/~mhi/libmd/">libmd</a>: FreeBSDでは不要です（標準でインストールされています）。</li>
+</ul>
+<h3>インストール方法</h3>
+<pre><code class="nohighlight">% gzip -dc breakseal-<i>yyyymmdd</i>.tar.gz | tar xvf -
+% cd breakseal/
+% vi Imakefile <a href="#1">&dagger;1</a>
+% xmkmf -a
+% make
+% make install
+% mkdir ~/.mailer
+% mkdir ~/.mailer/inbox
+% mkdir ~/.mailer/trash
+% mkdir ~/.mailer/sent</code></pre>
+<h3>リソース設定</h3>
+<p><code>Breakseal.ad</code>の内容を<code>~/.Xdefault</code>に追加するか、リソースデータベース<a href="#2">†2</a>に追加します。</p>
+<p>最低限、次のリソースは環境に合わせて設定する必要があります。</p>
+<ul>
+<li><code>breakseal.catalog.deleteSpool</code>: POP3サーバから新着メールを削除する場合は<code>true</code>を指定します。指定しない場合は<code>false</code>を指定したとみなし、サーバにメールを残したままにします。</li>
+<li><code>breakseal.scribble.smtpServer</code>: SMTPサーバのホスト名。指定しない場合は「<code>localhost</code>」を使用します。</li>
+<li><code>breakseal.scribble.mailFrom</code>: 送信者（Fromヘッダ）を表す文字列。指定しない場合は「<em>ユーザ名</em><code>@</code><em>ホスト名</em>」を使用します。</li>
+<li><code>breakseal.scribble.signatureFile</code>: いわゆる署名ファイルのパスを指定します。</li>
+</ul>
+<h3>最初の実行（POP3サーバとアカウントの登録）</h3>
+<p>Breaksealを実行したときに<code>~/.mailer/default</code>が存在しない場合は、POP3サーバとアカウントを問い合わせてくるので、次のように入力します。</p>
+<pre><code class="nohighlight">% breakseal
+Server:<i>POP3サーバのホスト名</i>
+User:<i>POP3サーバのアカウント名</i>
+Password:<i>POP3サーバのパスワード</i> <a href="#3">&dagger;3</a></code></pre>
+<p>入力した情報は、<code>~/.mailer/default</code>に保存されます。このファイルの中身を他人に見られないように注意してください。情報を変更する場合は、このファイルを消してからBreaksealを実行して、再度入力してください。</p>
+<div style="font-size: smaller">
+<p><a name="1">&dagger;1</a> Imakefileの編集</p>
+<ul>
+<li>デフォルトで<code>~/bin</code>にインストールされるようになっています。変更する場合は<code>InstallBinDir</code>をインストール先で定義します。</li>
+<li>Kinput2を使用する場合は<code>UseKinput2</code>を定義してください。</li>
+<li>libmdのインストール先を変更した場合は、<code>MD5IncDir</code>と<code>MD5LibDir</code>を適切に定義してください。</li>
+</ul>
+</div>
+<div style="font-size: smaller">
+<p><a name="2">&dagger;2</a> リソースデータベース</p>
+<ul>
+<li>xrdbでXサーバに登録したリソース。<code>~/.xinitrc</code>のなかで<code>xrdb ~/.Xresources</code>を実行して、Xサーバ起動時に登録する場合が多い。</li>
+<li>通常、リソースデータベースが登録されている場合は<code>~/.Xdefaults</code>は無視されます。そのため、<code>xrdb ~/.Xdefaults</code>を実行してから<code>~/.Xdefaults</code>を書き換えても、設定は反映されません。また、リソースデータベースはXサーバと関連付けられますが、<code>~/.Xdefaults</code>はXクライアントを実行しているホストと関連付けられます。設定が思い通りにならない場合は、これらの観点から調べると間違いに気付きやすいでしょう。</li>
+</ul>
+</div>
+<div style="font-size: smaller">
+<p><a name="3">&dagger;3</a> パスワードの入力</p>
+<ul>
+<li>入力した文字はエコーバックされません。</li>
+</ul>
+</div>
+<p><a name="window"></a></p>
+<h2>ウィンドウ</h2>
+<h3>キャビネットウィンドウ</h3>
+<h3>フォルダウィンドウ</h3>
+<p>フォルダにあるメールの一覧が表示されます。メールを選択すると、そのメールを開封ウィンドウで表示します。Incorporateボタンを押すと、POP3サーバから新しいメールを取り込みます。</p>
+<h4>Scribbleボタン</h4>
+<div class="horizontal-scroll">
+<img src="FolderWindow.png"/>
+</div>
+<h3>開封ウィンドウ</h3>
+<p>左側のペインにパートの一覧が、右側のペインにパートの内容が表示されます。左側のペインでパートを選択すると、右側のペインにそのパートの内容が表示されます。</p>
+<h4>Reply（返信）ボタン</h4>
+<p>返信メールの作成ウィンドウを表示します。左側のペインで「テキストタイプのパート」を選択している場合のみ、返信ボタンを押すことができます。</p>
+<h4>Forward（転送）ボタン</h4>
+<p>転送メールの作成ウィンドウを表示します。</p>
+<h4>Save（保存）ボタン</h4>
+<p>保存ダイアログが表示されます。左側のペインで選択されているパートのみが保存されます。</p>
+<h4>Delete（消去）ボタン</h4>
+<p>ゴミ箱フォルダ（<code>~/.mailer/trash</code>）にメールを移動して、ウィンドウを閉じます。ただし、ゴミ箱フォルダのメールについては実際に消去します。</p>
+<h4>Imitate（複製）ボタン</h4>
+<div class="horizontal-scroll">
+<img src="BreaksealWindow.png"/>
+</div>
+<h3>メール作成ウィンドウ</h3>
+<p>上から順に、宛先一覧ペイン、題名編集ペイン、本文編集ペイン、同封一覧ペイン、送信ボタンが表示されます。宛先を追加するには宛先一覧ペインのなかの「新規追加」を選択します。宛先一覧ペインの宛先を選択すると、その宛先を変更、あるいは削除することができます。</p>
+<p>添付ファイルを同封するには同封一覧ペインのなかの「新規追加」を選択します。ファイル選択ダイアログが表示されるので、ファイルを選択します。同封一覧ペインのファイルを選択すると、そのファイルを変更、あるいは削除することができます。</p>
+<p>メールが完成したら、Send（送信）ボタンを押します。</p>
+<div class="horizontal-scroll">
+<img src="ScribbleWindow.png"/>
+</div>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon Nov 26 09:07:55 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Sun May 11 09:33:47 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Breakseal</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

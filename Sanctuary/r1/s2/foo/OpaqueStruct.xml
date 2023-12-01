@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd">
+<class package="foo" name="OpaqueStruct">
+  <namespace/>
+
+  <export type="struct" tag="@">
+    <desc>
+      <brief>ある構造体です。</brief>
+      <p>構造体の詳細は隠蔽されています。</p>
+    </desc>
+  </export>
+
+  <method name="new">
+    <param type="struct another_Class *" name="s">
+      <desc>別のクラスで記述されている構造体のポインタ</desc>
+    </param>
+
+    <return type="struct @ *">
+      <desc>インスタンスのポインタ</desc>
+    </return>
+
+    <desc><brief>別のクラスで定義されている構造体のポインタ型から、不透明なデータ型のインスタンスを生成します。</brief></desc>
+  </method>
+
+  <desc><brief>export要素の使用例を提供します。</brief></desc>
+</class>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Download | Sanctuary | Version 2.0</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Sanctuary 2.0</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Download</h1>
+<p>最新版は<a href="../sanctuary-2.0.3.tar.bz2">sanctuary-2.0.3.tar.bz2</a>です。リリースノートと過去のリリースは<a href="../relnotes.html">Release Notes</a>から取得してください。</p>
+<h2>必要な構成</h2>
+<h3>ビルドできたプラットフォーム</h3>
+<p>以下のプラットフォームでビルドを確認しました（i386アーキテクチャのみ）。</p>
+<ul>
+<li>FreeBSD 6.3</li>
+<li>Ubuntu 9.04</li>
+<li>openSUSE 10.3</li>
+</ul>
+<p>imake、AntのどちらかでSanctuaryをビルドできます。</p>
+<h3>ビルドに必要なもの（Ant編）</h3>
+<p>ビルドは次のものに依存しています。</p>
+<ul>
+<li><a href="http://java.sun.com/javase/downloads/index.jsp">Java SE Development Kit（JDK）6</a></li>
+<li><a href="http://ant.apache.org/bindownload.cgi">Apache Ant 1.7</a></li>
+</ul>
+<p>各プラットフォームではそれぞれ次のように準備するのが簡単です。</p>
+<dl style="background-color: var(--pre-background); padding: 16px;">
+<dt>FreeBSD 6.3</dt>
+<dd>以下のportsをインストールしておきます。</dd>
+<dd>
+<ul>
+<li>java/jdk16</li>
+<li>devel/apache-ant</li>
+</ul>
+</dd>
+<dt>Ubuntu 9.04</dt>
+<dd>一般的な開発環境に加え、次のパッケージをインストールしておきます。</dd>
+<dd>
+<ul>
+<li>sun-java6-jdk</li>
+<li>ant</li>
+<li>ant-optional</li>
+</ul>
+</dd>
+<dt>openSUSE 10.3</dt>
+<dd>一般的な開発環境に加え、次のRPMをインストールしておきます。</dd>
+<dd>
+<ul>
+<li>java-1_6_0-sun-devel-1.6.0.u7-1.1</li>
+<li>ant-1.7.0-30</li>
+<li>ant-nodeps-1.7.0-37</li>
+<li>ant-trax-1.7.0-37</li>
+</ul>
+</dd>
+</dl>
+<h3>ビルドに必要なもの（imake編）</h3>
+<p>ビルドは次のものに依存しています。</p>
+<ul>
+<li><a href="http://java.sun.com/javase/downloads/index.jsp">Java SE Development Kit（JDK）6</a></li>
+<li>imake (X.Org/XFree86)</li>
+<li>libxslt 1.1</li>
+</ul>
+<p>各プラットフォームではそれぞれ次のように準備するのが簡単です。</p>
+<dl style="background-color: var(--pre-background); padding: 16px;">
+<dt>FreeBSD 6.3</dt>
+<dd>以下のportsをインストールしておきます。</dd>
+<dd>
+<ul>
+<li>java/jdk16</li>
+<li>devel/imake</li>
+<li>textproc/libxslt</li>
+</ul>
+</dd>
+<dt>Ubuntu 9.04</dt>
+<dd>一般的な開発環境に加え、次のパッケージをインストールしておきます。</dd>
+<dd>
+<ul>
+<li>sun-java6-jdk</li>
+<li>xutils-dev</li>
+<li>xsltproc</li>
+</ul>
+</dd>
+<dt>openSUSE 10.3</dt>
+<dd>一般的な開発環境に加え、次のRPMをインストールしておきます。</dd>
+<dd>
+<ul>
+<li>java-1_6_0-sun-devel-1.6.0.u7-1.1</li>
+<li>xorg-x11-devel-7.2-103.4</li>
+<li>libxslt-1.1.20-41</li>
+</ul>
+</dd>
+</dl>
+<h3>実行に必要なもの</h3>
+<p>実行するには次のものをインストールしておく必要があります。</p>
+<ul>
+<li>Java SE Runtime Environment (JRE) 6</li>
+</ul>
+<h2>ビルドとインストール</h2>
+<p>コマンドラインから<code>java</code>を実行したとき、<strong>SunのJVMを</strong>実行するように環境を設定しておきます<a href="#1">★1</a>。</p>
+<p>この後はビルドツールによって手順が異なります。</p>
+<h3>Antでビルドする場合</h3>
+<p>次の手順でビルド、インストールします。</p>
+<pre><code class="nohighlight">% tar jxf sanctuary-<i>VERSION</i>.tar.bz2
+% cd sanctuary-<i>VERSION</i>
+% ant
+% su
+# ant -Dprefix=<i>path</i> install <a href="#2">★2</a></code></pre>
+<h3>imakeでビルドする場合</h3>
+<p>次の手順でビルド、インストールします。</p>
+<pre><code class="nohighlight">% tar jxf sanctuary-<i>VERSION</i>.tar.bz2
+% cd sanctuary-<i>VERSION</i>
+% xmkmf -a
+% make
+% su
+# make DESTDIR=<i>path</i> install <a href="#2">★2</a></code></pre>
+<p class="footnote"><a name="1">★1</a> FreeBSDでは<code>javavm(1)</code>を参照の上、環境変数<code>JAVA_<wbr>HOME</code>（または<code>JAVA_<wbr>VENDOR</code>と<code>JAVA_<wbr>VERSION</code>）を適切に設定してください。Linuxではディストリビューションによって異なりますが、少なくても環境変数<code>PATH</code>を適切に設定することで実行するJVMを切り替えることができます。その後、次のように表示されることを確認してください。</p>
+<pre><code class="language-plaintext">% java -version
+java version &quot;1.6.0_13&quot;
+Java(TM) SE Runtime Environment (build 1.6.0_13-b06)
+Java HotSpot(TM) Client VM (build 1.6.0_13-b06, mixed mode)
+</code></pre>
+<p class="footnote"><a name="2">★2</a> <code><i>path</i></code>には絶対パス（<code>/usr/local</code>や<code>/home/foo</code>など）を指定します。インストールされるファイルは次の通りです。</p>
+<pre><code class="nohighlight"><i>path</i>/bin/sanctuary
+<i>path</i>/lib/sanctuary/sanctuary.jar</code></pre>
+<h2>使用方法</h2>
+<h3>ヘッダファイルの生成</h3>
+<p>次のようにXMLファイルを指定してコマンドを実行するとヘッダファイルを生成します。</p>
+<pre><code class="nohighlight">% sanctuary --code <i>XMLファイル...</i></code></pre>
+<p>コマンドを実行したディレクトリを起点として、生成するヘッダファイルのパスは<code><i>パッケージ名</i>/<i>クラス名</i>.h</code>になります。ただし、パッケージ名に含まれるアンダースコア（<code>_</code>）はスラッシュ（<code>/</code>）に展開されます。</p>
+<p>デフォルトでC++からインクルードできるヘッダファイルを生成します。C++をサポートしないようにする場合は、次のようにオプション<code>--without-c++</code>を指定します。</p>
+<pre><code class="nohighlight">% sanctuary --code --without-c++ <i>XMLファイル...</i></code></pre>
+<h3>HTMLファイルの生成</h3>
+<p>次のようにXMLファイルを指定してコマンドを実行するとHTMLファイルを生成します。</p>
+<pre><code class="nohighlight">% sanctuary --html <i>XMLファイル...</i></code></pre>
+<p>コマンドを実行したディレクトリに<code><i>パッケージ名</i>_<i>クラス名</i>.html</code>を生成します。さらに、インデックスとなるページとして<code>index.html</code>を生成します。</p>
+<h3>TeXファイルの生成</h3>
+<p>次のようにXMLファイルを指定してコマンドを実行するとTeXのソースファイルを生成します。</p>
+<pre><code class="nohighlight">% sanctuary --tex <i>XMLファイル...</i></code></pre>
+<p>コマンドを実行したディレクトリに<code><i>パッケージ名</i>_<i>クラス名</i>.tex</code>を生成します。さらに、<code>sanctuary.tex</code>と<code>sanctuary.sty</code>を生成します。</p>
+<p>dviファイルを生成するには、同じディレクトリに<code>sanctuary.tex</code>と<code>sanctuary.sty</code>を読み込むTeXファイルを用意する必要があります。配布物に含まれている<code>sample.tex</code>を用いてdviファイルを生成するには、次のようにコマンドを実行します。</p>
+<pre><code class="nohighlight">% cp <i>どこか</i>/sanctuary/sample.tex .
+% platex sample.tex</code></pre>
+<p><code>sample.tex</code>と<a href="tutorial.html">Tutorial</a>で紹介したサンプルから生成した<a href="s2/sample.pdf">PDFファイル</a>のサンプルを用意しておきました。</p>
+<p><a name="usage:stub"></a></p>
+<h3>スタブの生成</h3>
+<p>次のようにXMLファイルを指定してコマンドを実行するとスタブとなるソースコードを生成します。</p>
+<pre><code class="nohighlight">% sanctuary --stub <i>XMLファイル...</i></code></pre>
+<p>コマンドを実行したディレクトリを起点として、生成するスタブのソースファイルのパスは<code>stub/<i>パッケージ名</i>/<i>クラス名</i>.c</code>（と<code>.h</code>）になります。ただし、パッケージ名に含まれるアンダースコア（<code>_</code>）はスラッシュ（<code>/</code>）に展開されます。</p>
+<h3>出力ディレクトリの変更</h3>
+<p>例えばHTMLファイルを生成する場合、次のようにしてファイルを生成するディレクトリを変更できます。</p>
+<pre><code class="nohighlight">% sanctuary --html --output-dir=<i>ディレクトリのパス</i> <i>XMLファイル...</i></code></pre>
+<p>ディレクトリが存在しない場合は生成します。相対パスの場合はカレントディレクトリが基点になります。</p>
+<h3>入力ファイルの指定</h3>
+<p>XMLファイルのパスのリストを記述したファイルをオプションに指定し、そのファイルに含まれるXMLファイルを入力とすることができます。例えば、次のような内容のファイルがあるとします。</p>
+<pre><code class="language-plaintext">foo/Bar.xml
+foo/Baz.xml
+</code></pre>
+<p>このファイルを次のように指定することで、<code>foo_Bar</code>と<code>foo_Baz</code>のHTMLファイルを生成することができます。</p>
+<pre><code class="nohighlight">% sanctuary --html --input-file=<i>ファイルのパス</i></code></pre>
+<p><code>--input-file</code>オプションは通常の引数による入力ファイルの指定と併用することができます。</p>
+<h3>バージョンの表示</h3>
+<p>次のようにコマンドを実行するとバージョンを表示します。</p>
+<pre><code class="nohighlight">% sanctuary --version</code></pre>
+<p>バージョンは<i>メジャー</i>.<i>マイナー</i>.<i>リビジョン</i>の形式で、DTDに互換性がなくなるとメジャー番号が増加して、マイナー番号とリビジョン番号は0に戻ります。DTDが後方互換性を保ったまま変更された場合はマイナー番号が増加して、リビジョン番号は0に戻ります。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Wed Mar 22 00:11:13 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Thu May  7 04:00:05 JST 2009
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="../index.html">Sanctuary</a></span>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="../index.html#%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88">Version 2.0</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Download
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="tutorial.html">Tutorial</a>
+    </li>
+    <li>
+      <a href="reference.html">Reference</a>
+    </li>
+    <li>
+      <a href="dtd.html">DTD</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

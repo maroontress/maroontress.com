@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Download | Coverture</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Coverture</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Download</h1>
+<p>最新版は<a href="coverture-20100704.tar.bz2">coverture-20100704.tar.bz2</a>です。リリースノートと過去のリリースは<a href="relnotes.html">Release Notes</a>から取得してください。</p>
+<h2>ライセンス</h2>
+<p>二条項BSDライセンスです。コピーライトは<a href="COPYRIGHT">こちら</a>になります。</p>
+<h2>必要な構成</h2>
+<h3>ビルドできたプラットフォーム</h3>
+<p>以下のプラットフォームでビルドを確認しました（i386アーキテクチャのみ）。</p>
+<ul>
+<li>FreeBSD 8.0</li>
+<li>Ubuntu 10.04</li>
+<li>openSUSE 11.2</li>
+</ul>
+<h3>ビルドに必要なもの</h3>
+<p>ビルドは次のものに依存しています。</p>
+<ul>
+<li><a href="http://ant.apache.org/bindownload.cgi">Apache Ant 1.7.1</a></li>
+<li><a href="http://java.sun.com/javase/downloads/index.jsp">Java SE Development Kit（JDK）6</a></li>
+</ul>
+<p>各プラットフォームではそれぞれ次のように準備するのが簡単です。</p>
+<h4>FreeBSD 8.0</h4>
+<p>以下のportsをインストールしておきます。</p>
+<ul>
+<li>java/jdk16</li>
+<li>devel/apache-ant</li>
+</ul>
+<h4>Ubuntu 10.04</h4>
+<p>次のパッケージをインストールしておきます。</p>
+<ul>
+<li>openjdk-6-jdk</li>
+<li>ant</li>
+<li>ant-optional</li>
+</ul>
+<h4>openSUSE 11.2</h4>
+<p>次のRPMをインストールしておきます。</p>
+<ul>
+<li>java-1_6_0-sun-devel-1.6.0.u18-0.1.1</li>
+<li>ant-1.7.1-7.1.noarch</li>
+<li>ant-nodeps-1.7.1-7.1.noarch</li>
+</ul>
+<h3>実行に必要なもの</h3>
+<p>実行するには次のものをインストールしておく必要があります。</p>
+<ul>
+<li>Java SE Runtime Environment (JRE) 6</li>
+</ul>
+<p>各プラットフォームではそれぞれ次のように準備するのが簡単です。</p>
+<h4>FreeBSD 8.0</h4>
+<p>以下のportsをインストールしておきます。</p>
+<ul>
+<li>java/jdk16</li>
+</ul>
+<h4>Ubuntu 10.04</h4>
+<p>次のパッケージをインストールしておきます。</p>
+<ul>
+<li>openjdk-6-jre</li>
+</ul>
+<h4>openSUSE 11.2</h4>
+<p>次のRPMをインストールしておきます。</p>
+<ul>
+<li>java-1_6_0-sun-1.6.0.u18-0.1.1</li>
+</ul>
+<h2>ビルドとインストール</h2>
+<p>次の手順でビルド、インストールします。</p>
+<pre><code class="nohighlight">% tar jxf coverture-<i>YYYYMMDD</i>.tar.bz2
+% cd coverture-<i>YYYYMMDD</i>/
+% ant
+% su
+# ant -Dprefix=<i>path</i> install<a href="#1">&dagger;</a></code></pre>
+<p class="footnote"><a name="1">&dagger;</a> <code><i>path</i></code>には絶対パス（<code>/usr/local</code>や<code>/home/foo</code>など）を指定します。インストールされるファイルは次の通りです。</p>
+<pre><code class="nohighlight"><i>path</i>/bin/coverture
+<i>path</i>/lib/coverture/coverture.jar</code></pre>
+<h2>設定</h2>
+<h3>環境変数COVERTURE_JVM_OPTIONS</h3>
+<p>JVMに渡したいオプションがある場合は、環境変数<code>COVERTURE_JVM_OPTIONS</code>に設定しておきます。</p>
+<h2>使用方法</h2>
+<p>引数に指定したgcnoファイルの内容をパースします。gcnoファイルの拡張子を<code>gcda</code>に変えたファイルが存在すれぱ、そのgcdaファイルもパースします。パースした結果は標準出力にXMLで出力します。</p>
+<pre><code class="nohighlight">% coverture <i>gcnoファイル...</i> &gt; <i>result.xml</i></code></pre>
+<p>gcnoファイルのリストファイルを<code>--input-file</code>オプションで指定することもできます。リストファイルは各行がgcnoファイルのパスになっていなければなりません。ファイル名に<code>-</code>を指定するとリストファイルを標準入力から入力します。</p>
+<pre><code class="nohighlight">% cat <i>filelist</i>
+foo/Bar.gcno
+foo/Baz.gcno
+...
+% coverture --input-file=<i>filelist</i> &gt; <i>result.xml</i></code></pre>
+<p><code>--gcov</code>オプションを指定すると、gcov互換のgcovファイルを生成します。gcovファイルはデフォルトでカレントディレクトリに生成しますが、<code>--output-dir</code>オプションで出力先のディレクトリを変更することもできます。</p>
+<pre><code class="nohighlight">% coverture --gcov --output-dir=<i>gcov</i> <i>gcnoファイル...</i> &gt; <i>result.xml</i></code></pre>
+<p>生成するgcovファイルのファイル名は、gcnoファイルのパスから拡張子を取り除いたものと、gcnoファイルが参照するソースファイルのパスを<code>##</code>で連結したものに<code>.gcov</code>を追加したファイル名になります。ただし、パスの区切りは<code>#</code>に変換され、パスの成分が<code>..</code>の場合は<code>^</code>に変換されます。例えば、<code>foo/bar.gcno</code>が<code>foo/bar.c</code>を参照する場合、生成するgcovファイルのファイル名は<code>foo#bar##foo#bar.c.gcov</code>になります。</p>
+<p>ソースファイルの文字集合は<code>--source-file-charset</code>オプションで指定できます。また、出力するgcovファイルの文字集合は<code>--gcov-file-charset</code>オプションで指定できます。デフォルトでは両方とも現在のロケールの文字集合を使用します。例えば、ソースファイルがEUC-JPでエンコードされていて、gcovファイルをUTF-8で出力したい場合は次のようにオプションを指定してください。</p>
+<pre><code class="nohighlight">% coverture --source-file-charset=EUC-JP --gcov-file-charset=UTF-8 --gcov ...</code></pre>
+<p>XML形式のパース結果は、与えたgcnoファイルと同数のnote要素を含みます。note要素はデフォルトで、そのgcnoファイルのパスでソートした順に並びます。しかし、<code>--no-sort</code>オプションを指定した場合は、ソートすることなく、与えたgcnoファイルの順にnote要素を出力します。また、<code>--thread</code>オプションの指定を無視してシングルスレッドで処理します。そのため、OutOfMemoryErrorが発生する場合は<code>--no-sort</code>オプションを指定することで、XMLファイルを出力できる可能性があります。</p>
+<h2>使用例</h2>
+<p>特に意味はありませんが、libpngをFreeBSDで次のようにカバレッジしてみます。まずは、コンパイルして付属のテストを実行します。</p>
+<pre><code class="language-plaintext">% tar jxvf /usr/ports/distfiles/libpng-1.2.32.tar.bz2
+% cd libpng-1.2.32/
+% ./configure CFLAGS=&quot;-ftest-coverage -fprofile-arcs&quot; --disable-shared
+% gmake test
+</code></pre>
+<p>covertureでカバレッジ結果を表示してみます。</p>
+<pre><code class="language-plaintext">% ls libpng12*.gcno | coverture --input-file=- --gcov --output-dir=gcov &gt; gcov.xml
+libpng12_la-pngpread.gcda: not found.
+% grep &quot;source file&quot; gcov.xml
+&lt;source file='png.c' executableLines='218' executedLines='116' rate='53.21'/&gt;
+&lt;source file='pngerror.c' executableLines='104' executedLines='5' rate='4.81'/&gt;
+&lt;source file='pngget.c' executableLines='316' executedLines='100' rate='31.65'/&gt;
+&lt;source file='pngmem.c' executableLines='90' executedLines='61' rate='67.78'/&gt;
+&lt;source file='pngpread.c' executableLines='654' executedLines='0' rate='0.00'/&gt;
+&lt;source file='pngread.c' executableLines='518' executedLines='275' rate='53.09'/&gt;
+&lt;source file='pngrio.c' executableLines='21' executedLines='15' rate='71.43'/&gt;
+&lt;source file='pngrtran.c' executableLines='1838' executedLines='42' rate='2.29'/&gt;
+&lt;source file='pngrutil.c' executableLines='1399' executedLines='473' rate='33.81'/&gt;
+&lt;source file='pngset.c' executableLines='507' executedLines='150' rate='29.59'/&gt;
+&lt;source file='pngtrans.c' executableLines='209' executedLines='4' rate='1.91'/&gt;
+&lt;source file='pngwio.c' executableLines='32' executedLines='16' rate='50.00'/&gt;
+&lt;source file='pngwrite.c' executableLines='510' executedLines='219' rate='42.94'/&gt;
+&lt;source file='pngwtran.c' executableLines='275' executedLines='14' rate='5.09'/&gt;
+&lt;source file='pngwutil.c' executableLines='1070' executedLines='481' rate='44.95'/&gt;
+% ls gcov
+libpng12_la-png##png.c.gcov             libpng12_la-pngrutil##pngrutil.c.gcov
+libpng12_la-pngerror##pngerror.c.gcov   libpng12_la-pngset##pngset.c.gcov
+libpng12_la-pngget##pngget.c.gcov       libpng12_la-pngtrans##pngtrans.c.gcov
+libpng12_la-pngmem##pngmem.c.gcov       libpng12_la-pngwio##pngwio.c.gcov
+libpng12_la-pngread##pngread.c.gcov     libpng12_la-pngwrite##pngwrite.c.gcov
+libpng12_la-pngrio##pngrio.c.gcov       libpng12_la-pngwtran##pngwtran.c.gcov
+libpng12_la-pngrtran##pngrtran.c.gcov   libpng12_la-pngwutil##pngwutil.c.gcov
+</code></pre>
+<p>参考としてgcovで同様にカバレッジしてみます。</p>
+<pre><code class="language-plaintext">% ls libpng12*.gcda | sort | xargs gcov
+File `png.c'
+Lines executed:53.21% of 218
+png.c:creating `png.c.gcov'
+
+File `pngerror.c'
+Lines executed:4.81% of 104
+pngerror.c:creating `pngerror.c.gcov'
+
+File `pngget.c'
+Lines executed:31.65% of 316
+pngget.c:creating `pngget.c.gcov'
+
+File `pngmem.c'
+Lines executed:67.78% of 90
+pngmem.c:creating `pngmem.c.gcov'
+
+File `pngread.c'
+Lines executed:53.09% of 518
+pngread.c:creating `pngread.c.gcov'
+
+File `pngrio.c'
+Lines executed:71.43% of 21
+pngrio.c:creating `pngrio.c.gcov'
+
+File `pngrtran.c'
+Lines executed:2.29% of 1838
+pngrtran.c:creating `pngrtran.c.gcov'
+
+File `pngrutil.c'
+Lines executed:33.81% of 1399
+pngrutil.c:creating `pngrutil.c.gcov'
+
+File `pngset.c'
+Lines executed:29.59% of 507
+pngset.c:creating `pngset.c.gcov'
+
+File `pngtrans.c'
+Lines executed:1.91% of 209
+pngtrans.c:creating `pngtrans.c.gcov'
+
+File `pngwio.c'
+Lines executed:50.00% of 32
+pngwio.c:creating `pngwio.c.gcov'
+
+File `pngwrite.c'
+Lines executed:42.94% of 510
+pngwrite.c:creating `pngwrite.c.gcov'
+
+File `pngwtran.c'
+Lines executed:5.09% of 275
+pngwtran.c:creating `pngwtran.c.gcov'
+
+File `pngwutil.c'
+Lines executed:44.95% of 1070
+pngwutil.c:creating `pngwutil.c.gcov'
+
+% ls *.gcov
+png.c.gcov      pngmem.c.gcov   pngrtran.c.gcov pngtrans.c.gcov pngwtran.c.gcov
+pngerror.c.gcov pngread.c.gcov  pngrutil.c.gcov pngwio.c.gcov   pngwutil.c.gcov
+pngget.c.gcov   pngrio.c.gcov   pngset.c.gcov   pngwrite.c.gcov
+</code></pre>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon Sep  8 00:37:43 JST 2008 -->
+<!-- hhmts start -->
+Last modified: Tue Apr  3 20:22:44 JST 2018
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Coverture</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li class="selected">
+      Download
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+    <li>
+      <a href="appendix.html">Appendix</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

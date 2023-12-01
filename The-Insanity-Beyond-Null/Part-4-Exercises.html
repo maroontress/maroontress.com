@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <script data-ad-client="ca-pub-4691079535294206" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-636163-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-636163-1');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Part 4. 演習問題 | The Insanity Beyond Null</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="stylesheet" type="text/css" href="next-button.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+    <script src="next-button.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">The Insanity Beyond Null</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>4. 演習</h1>
+<p>リスト内包表記の操作をリファクタリングします。</p>
+<h2>演習1</h2>
+<h3>演習1 Java 11</h3>
+<p><code>fixMe</code>メソッドをリファクタリングして、<code>null</code>との比較を行う<code>filter</code>を取り除いてください。</p>
+<pre><code class="language-java">...
+public final class Main {
+
+    public static final class Node {
+
+        ...
+        public List&lt;Node&gt; getChildNodes() {
+            ...
+        }
+        ...
+    }
+
+    private static List&lt;Node&gt; getNodes() {
+        ...
+    }
+
+    private static void fixMe() {
+        var list = getNodes().stream()
+            .map(n -&gt; n.getChildNodes().stream().findFirst().orElse(null))
+            // 次の行は .filter(Objects::nonNull) でも同じ
+            .filter(n -&gt; n != null)
+            .collect(Collectors.toList());
+        ...
+    }
+    ...
+</code></pre>
+<blockquote>
+<p><a href="https://ideone.com/KgetT1">実行結果</a></p>
+</blockquote>
+<h3>演習1 C# 8</h3>
+<p><code>FixMe</code>メソッドをリファクタリングして、<code>null</code>との比較を行う<code>Where</code>を取り除いてください。</p>
+<pre><code class="language-cs">...
+public sealed class Program
+{
+    public sealed class Node
+    {
+        ...
+        public IEnumerable&lt;Node&gt; ChildNodes { get; }
+        ...
+    }
+
+    private static IEnumerable&lt;Node&gt; Nodes { get; } = ...;
+
+    private static void FixMe()
+    {
+        var list = Nodes
+            // ChildNodes が空のときは null に変換して処分を先送り
+            .Select(n =&gt; n.ChildNodes.FirstOrDefault())
+            .Where(n =&gt; n is {});
+        ...
+</code></pre>
+<blockquote>
+<p><a href="https://dotnetfiddle.net/RiKjAw">実行結果</a></p>
+</blockquote>
+<h3>演習1 Swift 5</h3>
+<p><code>fixMe</code>関数をリファクタリングして、<code>nil</code>との比較を行う<code>filter</code>を取り除いてください。</p>
+<pre><code class="language-swift">public class Node : CustomStringConvertible {
+  ...
+  public let childNodes: [Node]
+  ...
+  public var description: String { ... }
+}
+
+let nodes = [ ... ]
+
+func fixMe() {
+  let list = nodes.map { $0.childNodes.first }
+    .filter { $0 != nil }
+  ...
+}
+</code></pre>
+<blockquote>
+<p><a href="https://repl.it/@maroontress/The-Insanity-Beyond-Null-Exercise-1">実行結果</a></p>
+</blockquote>
+<h3>演習1 Kotlin 1.3</h3>
+<p><code>fixMe</code>関数をリファクタリングして、<code>filterNotNull</code>を取り除いてください。</p>
+<pre><code class="language-kotlin">public class Node ... {
+    ...
+    public val childNodes = ...
+    ...
+    public override fun toString(): String {
+        ...
+    }
+}
+
+val nodes = arrayOf(...)
+
+fun fixMe() {
+    val list = nodes.map { it.childNodes.firstOrNull() }
+        .filterNotNull()
+    ...
+}
+</code></pre>
+<blockquote>
+<p><a href="https://play.kotlinlang.org/#eyJ2ZXJzaW9uIjoiMS4zLjUwIiwiY29kZSI6InB1YmxpYyBjbGFzcyBOb2RlIHByaXZhdGUgY29uc3RydWN0b3IobmFtZTogU3RyaW5nLCBjaGlsZE5vZGVzOiBMaXN0PE5vZGU+KSB7XG5cbiAgICBwcml2YXRlIHZhbCBuYW1lID0gbmFtZVxuXG4gICAgcHVibGljIHZhbCBjaGlsZE5vZGVzID0gY2hpbGROb2Rlc1xuXG4gICAgcHVibGljIGNvbnN0cnVjdG9yKG5hbWU6IFN0cmluZywgdmFyYXJnIGNoaWxkTmFtZXM6IFN0cmluZylcbiAgICAgICAgOiB0aGlzKG5hbWUsIGNoaWxkTmFtZXMubWFwIHsgTm9kZShpdCkgfSkgeyAgICAgICAgXG4gICAgfVxuXG4gICAgcHVibGljIGNvbnN0cnVjdG9yKG5hbWU6IFN0cmluZylcbiAgICAgICAgOiB0aGlzKG5hbWUsIGVtcHR5TGlzdCgpKSB7XG4gICAgfVxuXG4gICAgcHVibGljIG92ZXJyaWRlIGZ1biB0b1N0cmluZygpOiBTdHJpbmcge1xuICAgICAgICByZXR1cm4gXCJuYW1lOiAkbmFtZVwiXG4gICAgfVxufVxuXG52YWwgbm9kZXMgPSBhcnJheU9mKFxuICAgIE5vZGUoXCJtdXNpY1wiLCBcIndhdlwiLCBcIm1wM1wiKSxcbiAgICBOb2RlKFwicGhvdG9cIiwgXCJwbmdcIiwgXCJqcGVnXCIpLFxuICAgIE5vZGUoXCJnYW1lXCIpLFxuICAgIE5vZGUoXCJ2aWRlb1wiLCBcIm1wNFwiKSlcblxuZnVuIGZpeE1lKCkge1xuICAgIHZhbCBsaXN0ID0gbm9kZXMubWFwIHsgaXQuY2hpbGROb2Rlcy5maXJzdE9yTnVsbCgpIH1cbiAgICAgICAgLmZpbHRlck5vdE51bGwoKVxuICAgIGxpc3QuZm9yRWFjaCB7IHByaW50bG4oaXQpIH1cbn1cblxuZnVuIG1haW4oKSB7XG4gICAgZml4TWUoKVxufSIsInBsYXRmb3JtIjoiamF2YSIsImFyZ3MiOiIifQ==">実行結果</a></p>
+</blockquote>
+<h2>演習1 解答例</h2>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Language</th>
+<th style="text-align:left">URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Java 11</td>
+<td style="text-align:left"><a href="https://ideone.com/gmxGnY">Here</a></td>
+</tr>
+<tr>
+<td style="text-align:left">C# 8</td>
+<td style="text-align:left"><a href="https://dotnetfiddle.net/2s7ds2">Here</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Swift 5</td>
+<td style="text-align:left"><a href="https://repl.it/@maroontress/The-Insanity-Beyond-Null-Exercise-1-sample-fix">Here</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Kotlin 1.3</td>
+<td style="text-align:left"><a href="https://play.kotlinlang.org/#eyJ2ZXJzaW9uIjoiMS4zLjUwIiwiY29kZSI6InB1YmxpYyBjbGFzcyBOb2RlIHByaXZhdGUgY29uc3RydWN0b3IobmFtZTogU3RyaW5nLCBjaGlsZE5vZGVzOiBMaXN0PE5vZGU+KSB7XG5cbiAgICBwcml2YXRlIHZhbCBuYW1lID0gbmFtZVxuXG4gICAgcHVibGljIHZhbCBjaGlsZE5vZGVzID0gY2hpbGROb2Rlc1xuXG4gICAgcHVibGljIGNvbnN0cnVjdG9yKG5hbWU6IFN0cmluZywgdmFyYXJnIGNoaWxkTmFtZXM6IFN0cmluZylcbiAgICAgICAgOiB0aGlzKG5hbWUsIGNoaWxkTmFtZXMubWFwIHsgTm9kZShpdCkgfSkgeyAgICAgICAgXG4gICAgfVxuXG4gICAgcHVibGljIGNvbnN0cnVjdG9yKG5hbWU6IFN0cmluZylcbiAgICAgICAgOiB0aGlzKG5hbWUsIGVtcHR5TGlzdCgpKSB7XG4gICAgfVxuXG4gICAgcHVibGljIG92ZXJyaWRlIGZ1biB0b1N0cmluZygpOiBTdHJpbmcge1xuICAgICAgICByZXR1cm4gXCJuYW1lOiAkbmFtZVwiXG4gICAgfVxufVxuXG52YWwgbm9kZXMgPSBhcnJheU9mKFxuICAgIE5vZGUoXCJtdXNpY1wiLCBcIndhdlwiLCBcIm1wM1wiKSxcbiAgICBOb2RlKFwicGhvdG9cIiwgXCJwbmdcIiwgXCJqcGVnXCIpLFxuICAgIE5vZGUoXCJnYW1lXCIpLFxuICAgIE5vZGUoXCJ2aWRlb1wiLCBcIm1wNFwiKSlcblxuZnVuIGZpeE1lKCkge1xuICAgIHZhbCBsaXN0ID0gbm9kZXMuZmxhdE1hcCB7IGl0LmNoaWxkTm9kZXMudGFrZSgxKSB9XG5cbiAgICAvLyBUaGUgbmV4dCBpcyBhbHNvIGZpbmU6XG4gICAgLy9cbiAgICAvLyB2YWwgbGlzdCA9IG5vZGVzLm1hcE5vdE51bGwgeyBpdC5jaGlsZE5vZGVzLmZpcnN0T3JOdWxsKCkgfVxuXG4gICAgbGlzdC5mb3JFYWNoIHsgcHJpbnRsbihpdCkgfVxufVxuXG5mdW4gbWFpbigpIHtcbiAgICBmaXhNZSgpXG59IiwicGxhdGZvcm0iOiJqYXZhIiwiYXJncyI6IiJ9">Here</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2>演習2</h2>
+<h3>演習2 Java 11</h3>
+<p><code>fixMe</code>メソッドをリファクタリングして、<code>null</code>との比較を行う<code>filter</code>を取り除いてください。</p>
+<pre><code class="language-java">...
+import static java.util.Map.entry;
+
+public final class Main {
+
+    private static final Map&lt;String, Runnable&gt; COMMAND_MAP = Map.ofEntries(
+            entry(&quot;help&quot;, () -&gt; printHelp()),
+            entry(&quot;quit&quot;, () -&gt; exitProgram()),
+            entry(&quot;shutdown&quot;, () -&gt; shutdownSystem()));
+
+    ...
+    private static List&lt;String&gt; getCommandList() {
+        return List.of(&quot;help&quot;, &quot;reboot&quot;, &quot;shutdown&quot;);
+    }
+
+    private static void fixMe() {
+        var list = getCommandList().stream()
+            // Map#get(Object) の戻り値が null のときは処分を先送り
+            .map(COMMAND_MAP::get)
+            // 次の行は .filter(Objects::nonNull) でも同じ
+            .filter(r -&gt; r != null)
+            .collect(Collectors.toList());
+        ...
+    }
+    ...
+</code></pre>
+<blockquote>
+<p><a href="https://ideone.com/ZWEj6t">実行結果</a></p>
+</blockquote>
+<h3>演習2 C# 8</h3>
+<p><code>FixMe</code>メソッドをリファクタリングして、<code>null</code>との比較を行う<code>Where</code>を取り除いてください。</p>
+<pre><code class="language-cs">public static class Program
+{
+    private static readonly ImmutableDictionary&lt;string, Action&gt; CommandMap
+        = new Dictionary&lt;string, Action&gt;()
+        {
+            [&quot;help&quot;] = () =&gt; PrintHelp(),
+            [&quot;quit&quot;] = () =&gt; ExitProgram(),
+            [&quot;shutdown&quot;] = () =&gt; ShutdownSystem(),
+        }.ToImmutableDictionary();
+
+    ...
+    private static IEnumerable&lt;string&gt; CommandList { get; }
+        = new[] { &quot;help&quot;, &quot;reboot&quot;, &quot;shutdown&quot; };
+
+    private static void FixMe()
+    {
+        var list = CommandList
+            // TryGetValue(TKey, out TVaue) の戻り値が false のときは
+            // null に変換
+            .Select(n =&gt; CommandMap.TryGetValue(n, out var action)
+                ? action
+                : null)
+            .Where(a =&gt; a is {});
+        ...
+    }
+    ...
+</code></pre>
+<blockquote>
+<p><a href="https://dotnetfiddle.net/QZYAdJ">実行結果</a></p>
+</blockquote>
+<h3>演習2 Swift 5</h3>
+<p><code>fixMe</code>関数をリファクタリングして、<code>nil</code>との比較を行う<code>filter</code>を取り除いてください。</p>
+<pre><code class="language-swift">...
+
+let commandMap = [
+  &quot;help&quot;: { printHelp() },
+  &quot;quit&quot;: { exitProgram() },
+  &quot;shutdown&quot;: { shutdownSystem() }]
+
+func getCommandList() -&gt; [String] {
+  return [&quot;help&quot;, &quot;reboot&quot;, &quot;shutdown&quot;]
+}
+
+func fixMe() {
+  let list = getCommandList().map { commandMap[$0] }
+    .filter { $0 != nil }
+  ...
+}
+</code></pre>
+<blockquote>
+<p><a href="https://repl.it/@maroontress/The-Insanity-Beyond-Null-Exercise-2">実行結果</a></p>
+</blockquote>
+<h3>演習2 Kotlin 1.3</h3>
+<p><code>fixMe</code>関数をリファクタリングして、<code>filterNotNull</code>を取り除いてください。</p>
+<pre><code class="language-kotlin">val commandMap = mapOf(
+    &quot;help&quot; to { printHelp() },
+    &quot;quit&quot; to { exitProgram() },
+    &quot;shutdown&quot; to { shutdownSystem() })
+
+...
+
+fun getCommandList(): List&lt;String&gt; {
+    return listOf(&quot;help&quot;, &quot;reboot&quot;, &quot;shutdown&quot;)
+}
+
+fun fixMe() {
+    val list = getCommandList()
+        .map { commandMap.get(it) }
+        .filterNotNull()
+    ...
+}
+</code></pre>
+<blockquote>
+<p><a href="https://play.kotlinlang.org/#eyJ2ZXJzaW9uIjoiMS4zLjUwIiwiY29kZSI6InZhbCBjb21tYW5kTWFwID0gbWFwT2YoXG4gICAgXCJoZWxwXCIgdG8geyBwcmludEhlbHAoKSB9LFxuICAgIFwicXVpdFwiIHRvIHsgZXhpdFByb2dyYW0oKSB9LFxuICAgIFwic2h1dGRvd25cIiB0byB7IHNodXRkb3duU3lzdGVtKCkgfSlcblxuZnVuIHByaW50SGVscCgpIHsgcHJpbnRsbihcInByaW50SGVscFwiKSB9XG5cbmZ1biBleGl0UHJvZ3JhbSgpIHsgcHJpbnRsbihcImV4aXRQcm9ncmFtXCIpIH1cblxuZnVuIHNodXRkb3duU3lzdGVtKCkgeyBwcmludGxuKFwic2h1dGRvd25TeXN0ZW1cIikgfVxuXG5mdW4gZ2V0Q29tbWFuZExpc3QoKTogTGlzdDxTdHJpbmc+IHtcbiAgICByZXR1cm4gbGlzdE9mKFwiaGVscFwiLCBcInJlYm9vdFwiLCBcInNodXRkb3duXCIpXG59XG5cbmZ1biBmaXhNZSgpIHtcblx0dmFsIGxpc3QgPSBnZXRDb21tYW5kTGlzdCgpXG4gICAgICAgIC5tYXAgeyBjb21tYW5kTWFwLmdldChpdCkgfVxuICAgICAgICAuZmlsdGVyTm90TnVsbCgpXG4gICAgbGlzdC5mb3JFYWNoIHsgaXQoKSB9XG59XG5cbmZ1biBtYWluKCkge1xuICAgIGZpeE1lKClcbn0iLCJwbGF0Zm9ybSI6ImphdmEiLCJhcmdzIjoiIn0=">実行結果</a></p>
+</blockquote>
+<h2>演習2 解答例</h2>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Language</th>
+<th style="text-align:left">URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Java 11</td>
+<td style="text-align:left"><a href="https://ideone.com/K86qGn">Here</a></td>
+</tr>
+<tr>
+<td style="text-align:left">C# 8</td>
+<td style="text-align:left"><a href="https://dotnetfiddle.net/8Ux5nB">Here</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Swift 5</td>
+<td style="text-align:left"><a href="https://repl.it/@maroontress/The-Insanity-Beyond-Null-Exercise-2-sample-fix">Here</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Kotlin 1.3</td>
+<td style="text-align:left"><a href="https://play.kotlinlang.org/#eyJ2ZXJzaW9uIjoiMS4zLjUwIiwiY29kZSI6InZhbCBjb21tYW5kTWFwID0gbWFwT2YoXG4gICAgXCJoZWxwXCIgdG8geyBwcmludEhlbHAoKSB9LFxuICAgIFwicXVpdFwiIHRvIHsgZXhpdFByb2dyYW0oKSB9LFxuICAgIFwic2h1dGRvd25cIiB0byB7IHNodXRkb3duU3lzdGVtKCkgfSlcblxuZnVuIHByaW50SGVscCgpIHsgcHJpbnRsbihcInByaW50SGVscFwiKSB9XG5cbmZ1biBleGl0UHJvZ3JhbSgpIHsgcHJpbnRsbihcImV4aXRQcm9ncmFtXCIpIH1cblxuZnVuIHNodXRkb3duU3lzdGVtKCkgeyBwcmludGxuKFwic2h1dGRvd25TeXN0ZW1cIikgfVxuXG5mdW4gZ2V0Q29tbWFuZExpc3QoKTogTGlzdDxTdHJpbmc+IHtcbiAgICByZXR1cm4gbGlzdE9mKFwiaGVscFwiLCBcInJlYm9vdFwiLCBcInNodXRkb3duXCIpXG59XG5cbi8vIHRoaXPjgYxudWxs44Gu44Go44GN56m644Gu44Oq44K544OI44CB44Gd44GG44Gn44Gq44GR44KM44GwdGhpc+OBruOCt+ODs+OCsOODq+ODiOODs+ODquOCueODiOOCkui/lOOBmVxuZnVuIDxUPiBUPy50b1NpbmdsZXRvbkxpc3QoKTogTGlzdDxUPiB7XG4gICAgcmV0dXJuIGlmICh0aGlzID09IG51bGwpIGVtcHR5TGlzdCgpIGVsc2UgbGlzdE9mKHRoaXMpXG59XG5cbmZ1biBmaXhNZSgpIHtcbiAgICB2YWwgbGlzdCA9IGdldENvbW1hbmRMaXN0KClcbiAgICAgICAgLmZsYXRNYXAgeyBjb21tYW5kTWFwLmdldChpdCkudG9TaW5nbGV0b25MaXN0KCkgfVxuXG5cdC8vIEtvdGxpbueahOOBq+OBr+asoeOBjOato+inozpcbiAgICAvL1xuICAgIC8vIHZhbCBsaXN0ID0gZ2V0Q29tbWFuZExpc3QoKVxuICAgIC8vICAgICAubWFwTm90TnVsbCB7IGNvbW1hbmRNYXAuZ2V0KGl0KSB9XG5cbiAgICAvLyDmrKHjgafjgoLjgojjgYTjgYzopoHntKDmlbDjga/nlbDjgarjgos6XG4gICAgLy9cbiAgICAvLyB2YWwgbGlzdCA9IGdldENvbW1hbmRMaXN0KClcbiAgICAvLyAgICAgLm1hcCB7IGNvbW1hbmRNYXAuZ2V0T3JEZWZhdWx0KGl0LCB7fSkgfVxuXG4gICAgbGlzdC5mb3JFYWNoIHsgaXQoKSB9XG59XG5cbmZ1biBtYWluKCkge1xuICAgIGZpeE1lKClcbn0iLCJwbGF0Zm9ybSI6ImphdmEiLCJhcmdzIjoiIn0=">Here</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">The Insanity Beyond Null</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="Part-0-Null.html">0. Null</a>
+    </li>
+    <li>
+      <a href="Part-1-Java-11.html">1. Java 11のnull</a>
+    </li>
+    <li>
+      <a href="Part-2-CSharp-8.html">2. C# 8のnull</a>
+    </li>
+    <li>
+      <a href="Part-3-Others.html">3. そのほかのnull</a>
+    </li>
+    <li class="selected">
+      4. 演習問題
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="Part-5-Epilog.html">5. 結び</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

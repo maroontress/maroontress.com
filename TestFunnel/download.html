@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Download | Test Funnel</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Test Funnel</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Download</h1>
+<p>最新版は<a href="testfunnel-20081116.tar.bz2">testfunnel-20081116.tar.bz2</a>です。リリースノートと過去のリリースは<a href="relnotes.html">Release Notes</a>から取得してください。</p>
+<h2>必要な構成</h2>
+<h3>ビルドできたプラットフォーム</h3>
+<p>以下のプラットフォームでビルドを確認しました（i386アーキテクチャのみ）。</p>
+<ul>
+<li>FreeBSD 6.3<a href="#1">†1</a></li>
+<li>Ubuntu 9.04</li>
+<li>openSUSE 10.3</li>
+</ul>
+<h3>ビルドに必要なもの</h3>
+<p>ビルドは次のものに依存しています。</p>
+<ul>
+<li><a href="http://www.gnu.org/software/make/make.html">GNU Make 3.81</a></li>
+<li><a href="http://java.sun.com/javase/downloads/index.jsp">Java SE Development Kit（JDK）6</a></li>
+<li><a href="http://www.gnu.org/software/binutils/">GNU Binutils</a><a href="#2">†2</a></li>
+<li><a href="https://www.maroontress.com/Sanctuary/">Sanctuary 2.0</a></li>
+<li><a href="https://www.maroontress.com/Libstd/">libstd 20080903</a></li>
+</ul>
+<p>各プラットフォームではそれぞれ次のように準備するのが簡単です。</p>
+<h4>FreeBSD 6.3</h4>
+<p>Sanctuary 2.0、libstdと以下のportsをインストールしておきます。</p>
+<ul>
+<li>devel/libbfd<a href="#2">†2</a></li>
+<li>devel/gnulibiberty</li>
+<li>devel/gettext</li>
+<li>devel/gmake</li>
+<li>java/jdk16</li>
+</ul>
+<h4>Ubuntu 9.04</h4>
+<p>一般的な開発環境に加え、Sanctuary 2.0、libstdと次のパッケージをインストールしておきます。</p>
+<ul>
+<li>sun-java6-jdk</li>
+<li>binutils-dev<a href="#2">†2</a></li>
+</ul>
+<h4>openSUSE 10.3</h4>
+<p>一般的な開発環境に加え、Sanctuary 2.0、libstdと次のRPMをインストールしておきます。</p>
+<ul>
+<li>java-1_6_0-sun-devel-1.6.0.u7-1.1</li>
+<li>binutils-devel-2.17.50.20070726-14<a href="#2">†2</a></li>
+</ul>
+<h3>実行に必要なもの</h3>
+<p>コンソールサーバ（auditor）の実行には次のものが必要です（スタンドアロンモードでファンネルを使用する場合は不要です）。</p>
+<ul>
+<li><a href="http://java.sun.com/javase/downloads/index.jsp">Java SE Runtime Environment（JRE）6</a></li>
+</ul>
+<p class="footnote"><a name="1">&dagger;1</a>FreeBSDではlibthrを使用するように<code>/etc/libmap.conf</code>を修正する必要があります。具体的には次のようなエントリを<wbr><code>/etc/libmap.conf</code>に追加してください。</p>
+<pre><code class="language-plaintext">[funnel.bin]
+libpthread.so   libthr.so
+libpthread.so.2 libthr.so.2
+</code></pre>
+<p class="footnote"><a name="2">&dagger;2</a>GNU Binutils 2.18またはそれ以前のバージョンを利用する場合、<a href="http://sourceware.org/bugzilla/show_bug.cgi?id=868">GNU Binutilsのバグ</a>でメモリリークが発生します。<a href="http://sourceware.org/bugzilla/attachment.cgi?id=2697&action=view">パッチ</a>を適用してからビルドしてください。GNU Binutils 2.19では、そのバグは修正されましたが、新たな別の<a href="http://sourceware.org/ml/binutils/2008-11/msg00081.html">バグ</a>によってメモリリークが発生します。<a href="ftp://sourceware.org/pub/binutils/snapshots/">スナップショット</a>または<a href="http://www.gnu.org/software/binutils/">匿名CVS</a>から最新のソースツリーを取得してビルドすることを推奨します。</p>
+<h2>ビルドとインストール</h2>
+<p>コマンドラインから<code>java</code>を実行したとき、<strong>SunのJVMを</strong>実行するように環境を設定したあと<a href="#4">†4</a>、次の手順でビルド、インストールします。</p>
+<pre><code class="nohighlight">% tar jxf testfunnel-<i>YYYYMMDD</i>.tar.bz2
+% cd testfunnel-<i>YYYYMMDD</i>
+% ./configure
+% make<a href="#5">&dagger;5</a>
+% su
+# make install<a href="#5">&dagger;5</a><a href="#6">&dagger;6</a></code></pre>
+<p class="footnote"><a name="4">&dagger;4</a> FreeBSDでは<code>javavm(1)</code>を参照の上、環境変数<code>JAVA_HOME</code>（または<code>JAVA_VENDOR</code>と<code>JAVA_VERSION</code>）を適切に設定してください。Linuxではディストリビューションによって異なりますが、少なくても環境変数<code>PATH</code>を適切に設定することで実行するJVMを切り替えることができます。その後、次のように表示されることを確認してください。</p>
+<pre><code class="language-plaintext">% java -version
+java version &quot;1.6.0_13&quot;
+Java(TM) SE Runtime Environment (build 1.6.0_13-b06)
+Java HotSpot(TM) Client VM (build 1.6.0_13-b06, mixed mode)
+</code></pre>
+<p class="footnote"><a name="5">&dagger;5</a> FreeBSDではmakeの代わりにgmakeを使用してください。</p>
+<p class="footnote"><a name="6">&dagger;6</a> インストールされるファイルは次の通りです（<code><i>path</i></code>はconfigureのオプション<code>--prefix=<i>path</i></code>で指定したパスです）。</p>
+<pre><code class="nohighlight"><i>path</i>/bin/auditor
+<i>path</i>/bin/funnel
+<i>path</i>/include/com/maroontress/testfunnel/funnel/Auditor.h
+<i>path</i>/include/tf/TestFunnel.h
+<i>path</i>/lib/testfunnel/auditor.jar
+<i>path</i>/lib/testfunnel/funnel.bin</code></pre>
+<h2>デモ</h2>
+<p><code>example</code>ディレクトリにTest Funnelを使用したテストのデモを用意してあります。ディレクトリの構成は次のようになっています。</p>
+<dl style="background-color: var(--pre-background); padding: 16px;">
+<dt><code>example/target</code></dt>
+<dd>ターゲットとなる共有ライブラリです。スタックを操作するAPIを提供します。配列とリストによる2つの実装があり、ファクトリーメソッドで実装クラスを選択してインスタンスを生成します。</dd>
+<dt><code>example/testsuite/ArrayStack</code></dt>
+<dd>配列による実装クラスをテストするユニットテストです。</dd>
+<dt><code>example/testsuite/ListStack</code></dt>
+<dd>リストによる実装クラスをテストするユニットテストです。</dd>
+<dt><code>example/testsuite/Stack</code></dt>
+<dd><code>ArrayStack</code>と<code>ListStack</code>の共通部分のコードです。</dd>
+<dt><code>example/testsuite/tutorial</code></dt>
+<dd>ユニットテストのAPIの使用方法を紹介するためのサンプルです。</dd>
+</dl>
+<h3>スタンドアロンモード</h3>
+<p>スタンドアロンモードのデモを実行するには、ビルドしたディレクトリで次のようにコマンドを入力します。</p>
+<pre><code class="language-plaintext">% make standalone-demo
+</code></pre>
+<p>すべてのテストを順に実行していきます。<code>tutorial</code>に「必ず失敗するテストメソッド」が含まれるので、そのテストが失敗したところでスタックトレースを表示して終了します。また、テスト終了後にカバレッジの結果を表示します。コンソールの表示は次のようになります。</p>
+<pre><code class="language-plaintext">% make standalone-demo
+...
+funnel.bin: tutorial.c:tf_initialize
+funnel.bin: tutorial.c:memory_leak
+funnel.bin: hello:world
+funnel.bin: tutorial.c:tf_finalize
+
+allocate: [pid=40335 tid=0xbf936fe8] 0x80b9210 (6 bytes)
+/.../funnel/com/maroontress/libld/Tracer.c:278: in funciton `malloc`
+(null):0: in funciton `strdup`
+/.../example/testsuite/tutorial/tutorial.c:91: in funciton `memory_leak`
+/.../funnel/com/maroontress/testfunnel/funnel/Auditor.c:87: in funciton `run`
+(null):0: in funciton `_pthread_create`
+
+1 memory leak(s) found.
+*** Error code 1
+
+Stop in /.../example/testsuite.
+cd example/target &amp;&amp; make coverage
+for c in Stack.c ListStack.c ArrayStack.c ; do gcov $c ; done
+File `Stack.c'
+Lines executed:100.00% of 12
+Stack.c:creating `Stack.c.gcov'
+
+File `ListStack.c'
+Lines executed:93.75% of 48
+ListStack.c:creating `ListStack.c.gcov'
+
+File `ArrayStack.c'
+Lines executed:90.00% of 30
+ArrayStack.c:creating `ArrayStack.c.gcov'
+%
+</code></pre>
+<h3>クライアントモード</h3>
+<p>クライアントモードのデモを実行するには、ビルドしたディレクトリで次のようにコマンドを入力します。</p>
+<pre><code class="language-plaintext">% java -jar auditor/auditor.jar &amp;
+</code></pre>
+<p>Auditorのサーバウィンドウが画面に表示されたら、続けて次のようにコマンドを入力します。</p>
+<pre><code class="language-plaintext">% make demo
+</code></pre>
+<p>Auditorのコンソールウィンドウが表示されるので、メニューバーのRunからGoを選択してください。Auditorの詳しい操作方法は<a href="manual.html#auditor_usage">Auditor（コンソールサーバ）の使用方法</a>を参照してください。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat May  6 05:20:44 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Thu May  7 00:43:56 JST 2009
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Test Funnel</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li class="selected">
+      Download
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="manual.html">Manual</a>
+    </li>
+    <li>
+      <a href="reference.html">Reference</a>
+    </li>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+    <li>
+      <a href="bugs.html">Bugs</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

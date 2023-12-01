@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>2. 乱数の度数分布 | モンテカルロシミュレーション</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown_light.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">モンテカルロシミュレーション</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<script src="https://fred-wang.github.io/TeXZilla/TeXZilla-min.js"></script>
+<script src="https://fred-wang.github.io/TeXZilla/examples/customElement.js"></script>
+<h1>2. 乱数の度数分布</h1>
+<p><a name="design"></a></p>
+<h2>2.1. 設計</h2>
+<p>ここで課題の内容を確認します。課題は「Cの標準ライブラリーを用いて実際に乱数を発生し、その度数分布を調べよ。また、この一様乱数の平均、分散についても考察せよ。」です。では、どのようにプログラムを作成したらよいでしょうか。</p>
+<p>一つのアプローチは、上のたくさんある要求を全部ミックスしたような、ごちゃごちゃして作った本人さえ正しく動くかどうかもわからないような、たった一つのプログラムを作ることです。</p>
+<p>もう少しかしこいアプローチは、要求を分解することです。つまり、乱数を発生させるプログラム、度数分布を調べるプログラム、平均を調べるプログラム、分散を調べるプログラムの4つにわけてみる、ということです。そうすることで、それぞれは簡単で、間違いの混入しにくいプログラムとなるでしょう。</p>
+<p>今回の実験では後者のアプローチをとります。そのためには、組み合わせて動作できるように、それぞれのプログラムの具体的な仕様（動作イメージ）を決めておく必要があります。</p>
+<h3>2.1.1. randコマンド</h3>
+<p>まず最初に、乱数を発生するプログラムを考えることから始めます。ここではそれをrandコマンドという名前で呼ぶことにします。randコマンドは、指定回数の乱数<la-tex>x</la-tex>（ただし<la-tex>x</la-tex>は0以上1未満）を標準出力に書き出す、という動作をするものとします。つまり、例えば指定回数が5回だったら、次のような動作をするものであると（頭の中で）イメージします。（下記の内容を入力しようとした人に注意。まだ作ってないコマンドを実行することはできません。上記の説明をよく読んでください。）</p>
+<div class="horizontal-scroll">
+<pre><code class="nohighlight">foo[bar]% <u>./rand 5</u> <span class="nocode"><i>Enter</i></span>
+0.513870
+0.175741
+0.308652
+0.534534
+0.947628
+foo[bar]% </code></pre>
+</div>
+<h3>2.1.2. countコマンド</h3>
+<p>次に度数分布を調べるプログラムにとりかかります。このプログラムはcountコマンドと呼ぶことにします。countコマンドは、値<la-tex>x</la-tex>を標準入力からなくなるまで読み込んで、指定された範囲に<la-tex>x</la-tex>の値があればカウンタの値を増加させていきます。そして入力が全部なくなったら、カウンタの値を表示して終了します。例えば、指定範囲が0.1以上0.2未満である<la-tex>x</la-tex>の個数を求めるとして、次のような動作をするものであるとイメージします。</p>
+<div class="horizontal-scroll">
+<pre><code class="nohighlight">foo[bar]% <u>./rand 5 | ./count 0.1 0.2</u> <span class="nocode"><i>Enter</i></span>
+1
+foo[bar]% </code></pre>
+</div>
+<p>5個の乱数のうち、0.1以上0.2未満のものは1つだけだったことを示しています。この例では、前述したrandコマンドの出力結果を、countコマンドの入力として渡した場合を想定しています。</p>
+<h3>2.1.3. averageコマンドとvarianceコマンド</h3>
+<p>最後に平均、分散を求めるコマンドを考えます。これらをそれぞれaverage、varianceコマンドと呼ぶことにします。これらのコマンドは、値<la-tex>x</la-tex>を標準入力から読み込んで、それぞれそのときの平均、分散を出力し、読み込むものがなくなったら終了するものとします。イメージ的には、次のような動作をするものと考えます。</p>
+<div class="horizontal-scroll">
+<pre><code class="nohighlight">foo[bar]% <u>./rand 5 | ./average</u> <span class="nocode"><i>Enter</i></span>
+1 0.513870 <span class="nocode" style="color: red">...1番目の乱数の平均</span>
+2 0.344806 <span class="nocode" style="color: red">...1番目と2番目の乱数の平均</span>
+3 0.332754 <span class="nocode" style="color: red">...1番目から3番目までの乱数の平均</span>
+4 0.383199 <span class="nocode" style="color: red">...1番目から4番目までの乱数の平均</span>
+5 0.496085 <span class="nocode" style="color: red">...1番目から5番目までの乱数の平均</span>
+foo[bar]% <u>./rand 5 | ./variance</u> <span class="nocode"><i>Enter</i></span>
+1 0.000000 <span class="nocode" style="color: red">...1番目の乱数の分散</span>
+2 0.028583 <span class="nocode" style="color: red">...1番目と2番目の乱数の分散</span>
+3 0.019346 <span class="nocode" style="color: red">...1番目から3番目までの乱数の分散</span>
+4 0.022143 <span class="nocode" style="color: red">...1番目から4番目までの乱数の分散</span>
+5 0.068687 <span class="nocode" style="color: red">...1番目から5番目までの乱数の分散</span>
+foo[bar]% </code></pre>
+</div>
+<p>やはりこの例でも、前述したrandコマンドの出力結果を、両方のコマンドの入力として渡した場合を想定しています。</p>
+<h3>2.1.4. データ型（Summation型）</h3>
+<p>平均を計算するプログラムは、次のような疑似コードで表現できます。</p>
+<pre><code class="language-c">‘総和’ = 0;
+‘加えた回数’ = 0;
+ 
+while (‘値’ を入力から読み込むのに成功した?)
+{
+    ‘値’ を ‘総和’ に加える;
+    ‘加えた回数’ を1つ増やす;
+ 
+    ‘加えた回数’ と平均（‘総和’ / ‘加えた回数’）を出力する;
+}
+</code></pre>
+<p>‘総和’, ‘加えた回数’, ‘値’ をそれぞれ<code>s</code>, <code>n</code>, <code>x</code>と表記することにすれば、上記のコードはC言語では次のようになります。</p>
+<pre><code class="language-c">s = 0;
+n = 0;
+
+while (x を入力から読み込むのに成功した?)
+{
+    s += x;
+    ++n;
+
+    n と (s / n) を出力する;
+}
+</code></pre>
+<p>これでもいいのですが、これからわかるように、<code>s</code>と<code>n</code>が実際には独立した変数ではないことがわかります。つまり、<code>s</code>と<code>n</code>は同時に初期化され、<code>s</code>に値<code>x</code>が加えられると<code>n</code>が1つ増えるという関係があります。したがって、これらの変数を抽象的な1変数で表現した方が、扱いやすくなります。その変数を<code>Summation</code>型の<code>sum</code>として、上記のコードを疑似コードで書き直してみます。</p>
+<pre><code class="language-c">sumを初期化;
+
+while (x を入力から読み込むのに成功した?)
+{
+    sumにxを加える。
+
+    ‘sumの加えた回数’ と ‘sumの平均’ を出力する;
+}
+</code></pre>
+<p><code>sum</code>に対する作用 ‘初期化’, ‘加える’ をそれぞれ関数<code>ClearSummation()</code>, <code>AddSummaion()</code>という形で表現し、<code>sum</code>から取り出せる値 ‘加えた回数’, ‘平均’ をそれぞれ関数<code>CountOfSummation()</code>, <code>AverageOfSummation()</code>という形で表現すれば、上記のコードは次のようになります。</p>
+<pre><code class="language-c">ClearSummation(&amp;sum);
+
+while (x を入力から読み込むのに成功した?)
+{
+    AddSummaion(&amp;sum, x);
+
+    CountOfSummation(&amp;sum) と AverageOfSummation(&amp;sum) を出力する;
+}
+</code></pre>
+<p>今回の実験では、これらの<code>Summation</code>型のデータ型の宣言や、<code>Summation</code>型を操作する関数を初めから用意してありますので、実際にこれらを作成する必要はありません。利用する上で、どのように<code>Summation</code>型を実装してあるのか興味のある人は、付属のソース<a href="skel/rand-distribution/Summation.c">Summation.c</a>と<a href="skel/rand-distribution/Summation.h">Summation.h</a>を読んでみてください。</p>
+<p><a name="tcsh"></a></p>
+<h2>2.2. tcshの起動</h2>
+<p>それでは方針が決まったところで、実際に作業を始めます。</p>
+<p>ここの計算機センターでは標準でシェルがcsh（Cシェル）になっています。しかし、この実験のように対話的にシェルを使用する場合はtcsh（TCシェル）の方が劇的に使いやすくなっています。そこで、ktermで次のように入力してtcshを実行します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>exec tcsh</u> <span class="nocode"><i>Enter</i></span>
+foo[bar]% </code></pre>
+<p>（下線部分をドラッグしてマークしたあと、ktermにフォーカスをおいて、マウスの第2ボタンでペーストすることもできます。）</p>
+<p>見ためには何も違いはありませんが、行の編集、入力履歴の再利用やファイル名の補完の機能などが追加されています。以降ではこれらの機能を随時紹介しながら作業を進めて行きます。</p>
+<p>ここでは触れませんが、ログインする度にいちいち上記のような入力をしなくてもいいように、「ログインシェル」を変更することもできます。詳しくは<a href="bib.html">参考文献</a>をみてください。</p>
+<p><a name="work"></a></p>
+<h2>2.3. 作業用ディレクトリの作成</h2>
+<p>次のようにpwdコマンドを入力して、現在自分がどこのディレクトリにいるか（カレントディレクトリ）を確認してください。</p>
+<pre><code class="nohighlight">foo[bar]% <u>pwd</u> <span class="nocode"><i>Enter</i>（カレントディレクトリを表示する）</span>
+/home/appi/foo <span class="nocode" style="color: red;">...カレントディレクトリが表示されます。人によって異なります。</span>
+foo[bar]% </code></pre>
+<p>もしカレントディレクトリがホームディレクトリと違っていたら、cdコマンドでホームディレクトリに移動します。（ホームディレクトリがどこか知らない人は、移動後にpwdコマンドで表示させ、覚えてください。）</p>
+<pre><code class="nohighlight">foo[bar]% <u>cd</u> <span class="nocode"><i>Enter</i>（ホームディレクトリに移動する）</span>
+foo[bar]% <u>pwd</u> <span class="nocode"><i>Enter</i>（確認のため）</span>
+/home/appi/foo <span class="nocode" style="color: red;">...あなたのホームディレクトリになります。人によって異なります。</span>
+foo[bar]% </code></pre>
+<p>このホームディレクトリですべての作業を行うと、ファイルが散らばって面倒です。一般的には、一つのプログラムを作成するために、一つの作業用ディレクトリを準備します。そこで乱数の度数分布のプログラムを作成するためのディレクトリを次のように作ります。</p>
+<pre><code class="nohighlight">foo[bar]% <u>mkdir rand-distribution</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>次にこのディレクトリに移ります。そのためには次のように入力しなければなりません。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cd rand-distribution</u> <span class="nocode"><i>Enter</i> <span style="color: red;">...実際に入力する前に下記を参照すること（以下同様）。</span></span></code></pre>
+<p>このとき「<code>rand-distribution</code>」を全部タイプするのは面倒です。ここでtcshのファイル名補完機能を用いると、タイプ量を減らすことができます。次のように途中までタイプした後、<em>Tab</em> を入力（Tabと表記されたキーを押す）してみます。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cd r</u> <span class="nocode"><i>Tab</i></span></code></pre>
+<p>すると次のように展開されます。</p>
+<pre><code class="nohighlight">foo[bar]% cd rand-distribution/</code></pre>
+<p>あとは<em>Enter</em> を入力するだけで、タイプミスもなく簡単に入力できます（最後のスラッシュ ‘<code>/</code>’ はあってもなくてもいいので、消す必要はありません）。基本的にtcshを使用している場合、面倒だと思ったら<em>Tab</em> を入力してみるといいでしょう。</p>
+<p>もし<em>Tab</em> を入力したときに「ピッ」と音がして何も展開されない場合は、名前が<code>r</code>で始まるファイルやディレクトリが他にいくつかあるはずです。その場合は次のように<em>Control</em>-dを入力して、<code>r</code>で始まるものを表示します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cd r</u> <span class="nocode"><i>Control</i>-d</span>
+rand-distribution/  result
+foo[bar]% cd r</code></pre>
+<p>この例では、「<code>result</code>」というファイルがホームディレクトリにあった場合を想定しています。このような場合、次のように「<code>ra</code>」までタイプしてから<em>Tab</em> を入力すれば、</p>
+<pre><code class="nohighlight">foo[bar]% <u>cd r</u> <span class="nocode"><i>Control</i>-d</span>
+rand-distribution/  result
+foo[bar]% cd r<u>a</u> <span class="nocode"><i>Tab</i></span></code></pre>
+<p>次のように展開されてうまくいきます。</p>
+<pre><code class="language-plaintext">foo[bar]% cd rand-distribution/
+</code></pre>
+<p>どちらにしろ、最後に念のためpwdコマンドでカレントディレクトリを確認します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>pwd</u> <span class="nocode"><i>Enter</i></span>
+/home/appi/foo/rand-distribution
+foo[bar]% </code></pre>
+<p><a name="copy"></a></p>
+<h2>2.4. ソースの雛型のコピー</h2>
+<p>プログラムをゼロから作成するのは面倒なことです。この実験ではプログラムを何も準備してこなかった人のために、その雛型を用意してあります。その雛型を変更することで、比較的容易にプログラムを作成できるかもしれません。</p>
+<p>ファイルのコピーにはcpコマンドを用います。次のように入力してファイルを自分のホームディレクトリにコピーします。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cp ~yoshiko/skel/rand-distribution/* .</u> <span class="nocode"><i>Enter</i></span>
+foo[bar]% </code></pre>
+<p>このときもtcshのファイル名補完機能を用いると、タイプ量を減らすことができます。次のように途中までタイプした後、<em>Tab</em> を入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cp ~yoshiko/s</u> <span class="nocode"><i>Tab</i></span></code></pre>
+<p>すると次のように展開されます。</p>
+<pre><code class="language-plaintext">foo[bar]% cp ~yoshiko/skel/
+</code></pre>
+<p>さらに途中まで入力し、</p>
+<pre><code class="nohighlight">foo[bar]% cp ~yoshiko/skel/<u>r</u> <span class="nocode"><i>Tab</i></span></code></pre>
+<p>もう一段展開します。</p>
+<pre><code class="language-plaintext">foo[bar]% cp ~yoshiko/skel/rand-distribution/
+</code></pre>
+<p>あとは「<code>* .</code>」だけを入力します。</p>
+<p>ファイルをコピーしたら、念のためlsコマンドで確認してみてください。</p>
+<p><a name="edit"></a></p>
+<h2>2.5. ソースの編集</h2>
+<p>それでは実際にプログラムを編集します。プログラムを編集するにはエディタと呼ばれるものを使います。今回の実験ではMule（多言語版Emacs）という名前のものを使います。</p>
+<h3>2.5.1. Muleの起動</h3>
+<p>次のように入力してMuleを実行してください（最後に<code>&amp;</code>を付けることに注意してください）。</p>
+<pre><code class="nohighlight">foo[bar]% <u>mule &</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>もし最後の<code>&amp;</code>を付けずに<em>Enter</em> 入力した場合は、そのktermにフォーカスがある状態で、<em>Control</em>-zを入力します。すると次のようにシェルのプロンプトが表示されます。</p>
+<pre><code class="language-plaintext">^Z
+Suspended
+foo[bar]%
+</code></pre>
+<p>そこでさらに続けて次のように入力してください。</p>
+<pre><code class="nohighlight">foo[bar]% <u>bg</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>どちらにしてもNetscapeのときと同様に、ウィンドウマネージャが次のような枠を表示して、どこにMuleを配置するか聞いてくるので、適当な場所にマウスで移動させ、クリックして決定します。</p>
+<div class="horizontal-scroll">
+<img src="relocate.gif">
+</div>
+<p>決定すると、次のようにMuleが起動します。</p>
+<div class="horizontal-scroll">
+<img src="mule.gif">
+</div>
+<h3>2.5.2. Muleの外観</h3>
+<p>Muleのウィンドウの一番上の部分には、マウスで操作できるメニューバーがあります。中央の領域は、バッファと呼ばれる編集対象の内容を表示、編集する編集領域です。下部に表示されている領域（反転表示されたモード行と最下部のエコー領域）は次のようなことを表しています。</p>
+<div class="horizontal-scroll">
+<img src="mule-mode-echo.gif">
+</div>
+<p>今回の実験で、このうち重要なのはバッファの名前と、エコー領域だけです。それぞれについての詳細を知りたい人は<a href="bib.html">参考文献</a>を読んでください。</p>
+<h3>2.5.3. Muleのコマンド</h3>
+<p>Muleにコマンドを入力するには、バッファにフォーカスがある状態で、特有な表記のコマンドを入力します。例えばMuleを終了させるコマンドは<code>C-x C-c</code>と表記されますが、これは次のことを意味しています。</p>
+<ol>
+<li><em>Control</em>-xを入力する。</li>
+<li>続けて<em>Control</em>-cを入力する。</li>
+</ol>
+<p><code>C-x</code>と<code>C-c</code>の間にスペースは入れません。なお、実際には<em>Control</em>-xと<em>Control</em>-cの間にコントロールキーを離して押し直す必要はなく、押し続けたままでx、cと押しても同じことになります。</p>
+<p>また、<code>M-x</code>と表記されたコマンドは、<em>Meta</em>-xを入力（メタキーを押しながらxを入力）することを意味しています。もしキーボードにメタキーがない場合は、代わりに次のようにして<code>M-x</code>を入力することもできます。</p>
+<ol>
+<li><em>Escape</em> を入力する（Escと表記されたキーを押す）。</li>
+<li>続けてxを入力する。</li>
+</ol>
+<h3>2.5.4. C-g “コマンドの中断” — 最初に知っておくべきコマンド</h3>
+<p>キーを押し間違えてなにか間違ったコマンドを入力してしまい、Muleがおかしくなってしまったときは、とにかく<code>C-g</code>を入力します。これを入力すると、エコー領域に</p>
+<pre><code class="language-plaintext">Quit
+</code></pre>
+<p>と表示されて元の状態に戻ります。もしこのコマンドを入力してもMuleがおかしいままなら、教員やTAに相談してください。</p>
+<h3>2.5.5. C-x C-f “バッファを新しく作成してファイルを読み込む”</h3>
+<p>前置きが長くなりましたが、それでは実際にファイル<code>rand.c</code>を編集してみます。現在、バッファの名前は<code>*scratch*</code>と表示されているはずです。そこで<code>C-x C-f</code>を入力します。するとエコー領域に</p>
+<pre><code class="nohighlight">Find file: ~/rand-distribution/&#x25ae;</code></pre>
+<p>と表示され、カーソルがエコー領域に移動します。</p>
+<p>あとは<code>rand.c</code>とタイプすればいいのですが、Muleはtcshのようにファイル名補完機能をもっています。そこで</p>
+<pre><code class="nohighlight">Find file: ~/rand-distribution/<u>r</u>&#x25ae; <span class="nocode"><i>Tab</i></span></code></pre>
+<p>と入力してみると、</p>
+<pre><code class="nohighlight">Find file: ~/rand-distribution/rand.c&#x25ae;</code></pre>
+<p>と展開されます。あとは<em>Enter</em> を入力するだけです。</p>
+<p>ファイル<code>rand.c</code>が読み込まれると、バッファの名前が<code>*scratch*</code>から<code>rand.c</code>になるなどモード行の表示が変化し、カーソルは編集領域に戻ります。</p>
+<h3>2.5.6. バッファの編集</h3>
+<p>バッファの内容を編集するには、変更したい箇所にカーソルを移動させ、キーボードから入力します。カーソルを上下左右に移動させるには、対応する方向の矢印キーを押す（矢印キーが使えない場合は<code>C-p</code>, <code>C-n</code>, <code>C-b</code>, <code>C-f</code>がそれぞれ上下左右に対応します）か、その箇所をマウスでクリックします。</p>
+<p>文字を消去するには<code>C-d</code>か<em>Delete</em> を入力します。<code>C-d</code>はカーソルの右側の一文字を消去します。<em>Delete</em> は左側の一文字を消去します。</p>
+<p>Muleは間違いなく世界一高機能なエディタであり、今回説明する機能以外にも、覚えきれないほどの数々の便利な機能が用意されています（それゆえ複雑で巨大なものになっているという欠点もあります）。今後もワークステーションを利用したり、プログラムを作成する人は<a href="bib.html">参考文献</a>を読んで実践的な機能を修得することをお勧めします。</p>
+<h3>2.5.7. C-x C-s “バッファの内容をファイルに書き込む”</h3>
+<p>バッファの内容をファィルに書き込むには、<code>C-x C-s</code>を入力します。書き込まれるとエコー領域に</p>
+<pre><code class="language-plaintext">Wrote ~/rand-distribution/rand.c
+</code></pre>
+<p>と表示されます。バッファの内容を変更しても、このコマンドを入力しなければ、ファイルの内容に変更が反映されないことに注意してください。</p>
+<h3>2.5.8. C-x C-c “Muleの終了”</h3>
+<p>Muleを終わらせるには、<code>C-x C-c</code>を入力します。今回の実験では、基本的に実験終了までMuleを実行したままの方が便利です。</p>
+<h3>2.5.9. 残りのファイルの編集</h3>
+<p><code>rand.c</code>だけではなく、残りのファイル（<code>count.c</code>, <code>average.c</code>, <code>variance.c</code>など）も編集します。</p>
+<p><a name="build"></a></p>
+<h2>2.6. 実行ファイルの構築</h2>
+<p>作成したプログラムをコンパイルします。今回の実験ではgccというCコンパイラを使います。</p>
+<p>作成した4つのプログラムのうちの一つ、例えばrandコマンドを作成するにためは、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>gcc -o rand rand.c</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>入力後、ファイル<code>rand.c</code>がコンパイルされて、実行ファイル<code>rand</code>を得ることができます。しかし、普通は上記のような方法をとりません。</p>
+<p>プログラムの開発では、「編集しコンパイルする」という作業が一回で済むことはまれです。コンパイルでエラーがでたり、あるいはコンパイルはエラー無しで通っても実行した結果が意図通りでないことが多いので、編集とコンパイルは何度も繰り返されるのが普通です。本来の用途とは少し異なりますが、ここではタイプを減らすためにmakeコマンドを使います。</p>
+<p>makeコマンドは、カレントディレクトリにある<code>Makefile</code>というファイルの内容にしたがって、プログラムを作成するコマンドを自動的に実行してくれます。今回は時間の関係で<code>Makefile</code>の内容については説明しませんが、それほど難しいものではないので計算機でプログラムを作ることに興味のある人は<a href="bib.html">参考文献</a>を読んでみてください。</p>
+<p>実際にmakeで構築するには、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>make</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>プログラムに間違いがなければ次のように出力され、自動的に4つの実行ファイル<code>rand</code>、<code>count</code>、<code>average</code>、<code>variance</code>が構築されます。</p>
+<pre><code class="language-plaintext">foo[bar]% make
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c rand.c
+gcc -o rand rand.o -lm
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c count.c
+gcc -o count count.o -lm
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c average.c
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c Summation.c
+gcc -o average average.o Summation.o -lm
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c variance.c
+gcc -o variance variance.o Summation.o -lm
+foo[bar]% 
+</code></pre>
+<p>間違いや（コンパイラにとって）怪しい部分が検出されると、次のように表示されます。</p>
+<pre><code class="language-plaintext">foo[bar]% make
+gcc -Wall -O2 -pipe -c ファイル名
+ファイル名: In function `関数の名前':
+ファイル名:行: warning: 警告の内容
+ファイル名:行: エラーの内容
+.
+.
+.
+foo[bar]% 
+</code></pre>
+<p>このような場合はエラーや警告の内容を調べ、Muleで修正し、もう一度makeしてみます。</p>
+<p>正常に構築できたようであれば、次に進みます。</p>
+<p><a name="exec"></a></p>
+<h2>2.7. プログラムの実行テスト</h2>
+<h3>2.7.1. randコマンドのテスト</h3>
+<p>ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 5</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>正常にプログラムができていれば、次のように乱数が5つ表示されます（乱数の値は異なるかもしれません）。</p>
+<pre><code class="language-plaintext">foo[bar]% ./rand 5
+0.513870
+0.175741
+0.308652
+0.534534
+0.947628
+foo[bar]% 
+</code></pre>
+<p>正常に動作しなかったり、値がめちゃくちゃだったりした場合は、Muleで修正して再びmakeします。</p>
+<h3>2.7.2. countコマンドのテスト</h3>
+<p>次のように入力し、正しい値が表示されるかチェックします。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 5 | ./count 0.1 0.2</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>また範囲をいくつか変えて確認してみてください。</p>
+<h3>2.7.3. averageコマンドとvarianceコマンドのテスト</h3>
+<p>averageコマンドに関しては、次のように入力し、正しい値が表示されるかチェックします。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 5 | ./average</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>varianceコマンドについては、最初の3つくらいで確認してみてください（手で検算するには大変です）。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 3 | ./variance</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p><a name="bargraph"></a></p>
+<h2>2.8. 度数分布グラフの作成</h2>
+<p>例として10000個の（0以上1未満の）乱数の度数分布を考えてみます。もし、そのうち0以上0.1未満の範囲にある乱数の個数はと尋ねられたら、たぶん1000個くらいだろうと答えることができます。おそらく0.1以上0.2未満の乱数の個数も、0.2以上0.3未満の個数も、そして同様に0.9以上1.0未満の個数もそうなるでしょう。そこでこれらのことを実際に試してみます。そのためには次のようにコマンドを入力すればよいことがわかると思います。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10000 | ./count 0.0 0.1</u> <span class="nocode"><i>Enter</i></span>
+975 <span class="nocode" style="color: red;">...10000個の乱数のうち0.0以上0.1未満のものは975個だった</span>
+foo[bar]% <u>./rand 10000 | ./count 0.1 0.2</u> <span class="nocode"><i>Enter</i></span>
+1010 <span class="nocode" style="color: red;">...10000個の乱数のうち0.1以上0.2未満のものは1010個だった</span>
+.
+.
+.</code></pre>
+<p>もちろん、これらの値を紙に写してグラフ用紙にプロットして、度数分布グラフを描くこともできます。今回は、グラフを作成するためのシェルスクリプト<code>bargraph.sh</code>を用意してありますので、これを利用します。</p>
+<h3>2.8.1. グラフの表示</h3>
+<p>ktermで次のように入力すればグラフを作成することができます。</p>
+<pre><code class="nohighlight">foo[bar]% <u>sh bargraph.sh 試行回数</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>もし試行回数が10000回ならば、次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>sh bargraph.sh 10000</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>入力後、シェルスクリプトからxgraphというグラフ表示用のアプリケーションが呼び出されます。ウィンドウマネージャが次のような枠を表示して、どこにxgraphを配置するか聞いてくるので、適当な場所にマウスで移動させ、クリックして決定します。</p>
+<div class="horizontal-scroll">
+<img src="relocate.gif">
+</div>
+<p>決定すると次のようなxgraphのウィンドウが現れます。</p>
+<div class="horizontal-scroll">
+<img src="xgraph.gif">
+</div>
+<h3>2.8.2. グラフの印刷</h3>
+<p>グラフを印刷するには、xgraphのウィンドウの左上にある領域 <img style="vertical-align: middle; height: 1em;" src="xgraph-button-hardcopy.gif"> をクリックします。すると次のようなウィンドウが現れます。</p></p>
+<div class="horizontal-scroll">
+<img src="xgraph-hardcopy.gif">
+</div>
+<p>今回の実験では、そのままウィンドウ下部の領域 <img style="vertical-align: middle; height: 1em;" src="xgraph-button-hardcopy-ok.gif"> をクリックしてください。しばらくすると計算機室のプリンタに出力されます。</p>
+<h3>2.8.3. xgraphの終了</h3>
+<p>xgraphのウィンドウの左上にある領域 <img style="vertical-align: middle; height: 1em;" src="xgraph-button-close.gif"> をクリックすると、xgraphは終了します。</p>
+<p><a name="graph"></a></p>
+<h2>2.9. 平均と分散のグラフの作成</h2>
+<h3>2.9.1. 平均のグラフの作成</h3>
+<p>乱数の平均値が試行回数<la-tex>n</la-tex>が増加するにしたがってどのように収束するか、グラフにプロットしてみます。これについてもシェルスクリプト<code>graph.sh</code>が用意してあります。試行回数が10000回ならば、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10000 | ./average | sh graph.sh -0 average</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>度数分布グラフのときと同様に次のようなウィンドウが現れます（最後の「<code>-0 average</code>」は、ウィンドウの右上にあるレジェンドの指定になります）。</p>
+<div class="horizontal-scroll">
+<img src="average.gif">
+</div>
+<p>平均値が収束している様子を確認したら、印刷して終了します。</p>
+<p>また、試行回数10000回目での乱数の平均を数値で知りたい場合は、次のように入力することで知ることができます。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10000 | ./average | tail</u> <span class="nocode"><i>Enter</i></span>
+9991 0.502505
+9992 0.502488
+9993 0.502467
+9994 0.502435
+9995 0.502442
+9996 0.502450
+9997 0.502454
+9998 0.502437
+9999 0.502477
+10000 0.502515
+foo[bar]% </code></pre>
+<h3>2.9.2. 分散のグラフの作成</h3>
+<p>同様に、乱数の分散についても同様なグラフを作成します。ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10000 | ./variance | sh graph.sh -0 variance</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>分散が収束している様子を確認したら、印刷して終了します。</p>
+<p>また、試行回数10000回目での乱数の分散を数値で知りたい場合は、次のように入力することで知ることができます。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10000 | ./variance | tail</u> <span class="nocode"><i>Enter</i></span>
+9991 0.083176
+9992 0.083171
+9993 0.083167
+9994 0.083169
+9995 0.083161
+9996 0.083153
+9997 0.083145
+9998 0.083140
+9999 0.083147
+10000 0.083154
+foo[bar]% </code></pre>
+<footer>
+<!-- Created: Mon Sep 14 04:45:35 JST 1998 -->
+<!-- hhmts start -->
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">モンテカルロシミュレーション</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="mc1.html">1. 作業を始めるまで</a>
+    </li>
+    <li class="selected">
+      2. 乱数の度数分布
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="mc3.html">3. Buffonの針</a>
+    </li>
+    <li>
+      <a href="mc4.html">4. f(x)の求積問題</a>
+    </li>
+    <li>
+      <a href="mc5.html">5. 酔歩問題（時間が余った場合）</a>
+    </li>
+    <li>
+      <a href="mc6.html">6. あとかたづけ</a>
+    </li>
+    <li>
+      <a href="bib.html">参考文献</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

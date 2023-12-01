@@ -1,0 +1,59 @@
+diff -cr src.orig/event-Xt.c src/event-Xt.c
+*** src.orig/event-Xt.c	Mon Jan 31 11:55:10 2005
+--- src/event-Xt.c	Mon May 21 00:59:13 2007
+***************
+*** 1077,1082 ****
+--- 1077,1084 ----
+              ev->timestamp	    = event->time;
+              ev->event.key.modifiers = 0;
+              ev->event.key.keysym    = make_char (ch);
++ 	    if (ch == ' ')
++ 		ev->event.key.keysym = QKspace;
+              enqueue_Xt_dispatch_event (emacs_event);
+            }
+  	Lstream_close (istr);
+***************
+*** 3466,3468 ****
+--- 3468,3509 ----
+    shellClassRec.core_class.initialize = ShellVisualPatch;
+  
+  }
++ 
++ #if defined(HAVE_XIM)
++ #include <dlfcn.h>
++ #include "window.h"
++ #include "commands.h"
++ 
++ Bool
++ XFilterEvent(XEvent *event, Window w)
++ {
++     static Bool (*realXFilterEvent)(XEvent *, Window) = NULL;
++     static int self = 0;
++     Lisp_Object device, frame;
++ 
++     if (realXFilterEvent == NULL)
++ 	realXFilterEvent = dlsym(RTLD_NEXT, "XFilterEvent");
++ 
++     device = Fselected_device(Qnil);
++     frame = DEVICE_SELECTED_FRAME(XDEVICE(device));
++     
++     if (event->type != KeyPress
++ 	|| NILP(frame)
++ 	|| EQ(minibuf_window, Fselected_window(Qnil))
++ 	|| event_chain_count(Vthis_command_keys) < 1
++ 	|| cursor_in_echo_area) {
++ 	self = 0;
++ 	return realXFilterEvent(event, w);
++     }
++     if (EQ(Vthis_command, Qself_insert_command)) {
++ 	self = 1;
++ 	return realXFilterEvent(event, w);
++     }
++     if (self) {
++ 	self = 0;
++ 	return realXFilterEvent(event, w);
++     }
++     self = 0;
++     return False;
++ }
++ #endif

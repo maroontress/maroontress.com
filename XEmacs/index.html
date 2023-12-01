@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | XEmacsのXIM</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">XEmacsのXIM</div>
+<div id="toc-level" data-values="H2"></div>
+<p>以降の説明はXEmacs 21.1系のものですが、21.4系でも同じことが当てはまります。21.4系では、この<a href="xemacs-21.4.20-xim-patch-1.diff">パッチ</a>を適用してください（FreeBSDのXEmacs 21.4.20で動作確認済み）。</p>
+<h1>XEmacs 21.1.xのXIMを改良する</h1>
+<p><a name="2"></a></p>
+<h2>2. ミニバッファ入力中のXIMオフ</h2>
+<h3>概要</h3>
+<p>複数ストロークのコマンド入力が面倒。</p>
+<h3>詳細</h3>
+<p>xemacs-21.1.14でXIMを利用し、日本語入力オンの状態で<code>M-w</code>や<code>M-&gt;</code>などをエスケープキーに続けて複数ストロークで入力すると、エスケープだけがXEmacsに渡り、続く文字は前編集文字列になってしまう。そのほか、<code>C-x b</code>などの複数ストローク入力も同様である。</p>
+<h3>原因</h3>
+<p>複数ストロークのコマンドを入力するときにXIMの日本語入力をオフにできない（してない）ため。内部的には入力しているコマンドが未完であることは判定されているが、XIMの制御には活用されていない。</p>
+<h3>修正の例</h3>
+<p>以下の<a href="xemacs-21.1.14-xim-patch-2.diff">パッチ</a>を適用する。FreeBSDで動作確認した。</p>
+<pre><code class="language-diff">diff -c -r -d src.orig/event-Xt.c src/event-Xt.c
+*** src.orig/event-Xt.c Thu Jan  2 21:18:00 2003
+--- src/event-Xt.c      Thu Jan  2 21:24:27 2003
+***************
+*** 3003,3005 ****
+--- 3003,3037 ----
+    shellClassRec.core_class.initialize = ShellVisualPatch;
+  
+  }
++ 
++ #if defined(HAVE_XIM)
++ #include &lt;dlfcn.h&gt;
++ #include &quot;window.h&quot;
++ 
++ Bool
++ XFilterEvent(XEvent *event, Window w)
++ {
++     static Bool (*realXFilterEvent)(XEvent *, Window) = NULL;
++     static int self = 0;
++ 
++     if (realXFilterEvent == NULL)
++         realXFilterEvent = dlsym(RTLD_NEXT, &quot;XFilterEvent&quot;);
++ 
++     if (event-&gt;type != KeyPress || EQ(minibuf_window, Fselected_window(Qnil))
++         || event_chain_count(Vthis_command_keys) &lt; 1
++         || cursor_in_echo_area) {
++         self = 0;
++         return realXFilterEvent(event, w);
++     }
++     if (EQ(Vthis_command, Qself_insert_command)) {
++         self = 1;
++         return realXFilterEvent(event, w);
++     }
++     if (self) {
++         self = 0;
++         return realXFilterEvent(event, w);
++     }
++     self = 0;
++     return False;
++ }
++ #endif
+</code></pre>
+<p><a name="1"></a></p>
+<h2>1. 空白のコミット</h2>
+<h3>概要</h3>
+<p>空白をコミットできない。</p>
+<h3>詳細</h3>
+<p>xemacs-21.1.14でXIMを利用し、空白文字列を含む文字列をコミット（確定）した場合、空白文字の直前まで入力されて、ベル音が鳴り、空白文字以降の文字列が入力されない。</p>
+<h3>原因</h3>
+<p>コミットされる文字列に、空白、改行などの文字コードが含まれていることを考慮してないため。スペースキーを変換キーに割り当てることが多く、気付きにくい。</p>
+<h3>修正の例</h3>
+<p>以下の<a href="xemacs-21.1.14-xim-patch-1.diff">パッチ</a>を適用する。ただし、このパッチでは空白文字に関する問題しか考慮されていない。</p>
+<pre><code class="language-diff">diff -c -r -d src.orig/event-Xt.c src/event-Xt.c
+*** src.orig/event-Xt.c Sun Dec 17 11:08:49 2000
+--- src/event-Xt.c      Mon Feb 26 04:32:54 2001
+***************
+*** 880,885 ****
+--- 880,887 ----
+              ev-&gt;timestamp           = event-&gt;time;
+              ev-&gt;event.key.modifiers = 0;
+              ev-&gt;event.key.keysym    = make_char (ch);
++             if (ch == ' ')
++                 ev-&gt;event.key.keysym = QKspace;
+              enqueue_Xt_dispatch_event (emacs_event);
+            }
+          Lstream_close (istr);
+</code></pre>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jun 23 02:29:40 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Sun May 11 09:28:48 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">XEmacsのXIM</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

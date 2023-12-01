@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Manual | Mad Angler</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Mad Angler</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>管理コンソールの使い方</h1>
+<h2>1. プロジェクト一覧</h2>
+<div class="horizontal-scroll"><img src="images/man1.png"/></div>
+<dl>
+<dt>A) プロジェクト一覧の更新</dt>
+<dd>アイコンをクリックすると、テーブルの内容を再読み込みします。</dd>
+<dt>B) 公開鍵の表示</dt>
+<dd>アイコンをクリックすると、SSHの公開鍵をダイアログに表示します。</dd>
+<dt>C) プロジェクトのビルド一覧の表示</dt>
+<dd>Project IDのリンクをクリックすると、ビルドの一覧を表示します。</dd>
+<dt>D) プロジェクトの設定</dt>
+<dd>"Edit" のリンクをクリックすると、プロジェクト設定の画面を表示します。</dd>
+<dt>E) プロジェクトの消去</dt>
+<dd>"Delete" のリンクをクリックすると、プロジェクトを削除します。</dd>
+<dt>F) 新規プロジェクトの作成</dt>
+<dd>"New project" のリンクをクリックすると、新規プロジェクトを作成します。</dd>
+</dl>
+<h2>2. プロジェクト作成</h2>
+<div class="horizontal-scroll"><img src="images/man2.png"/></div>
+<dl>
+<dt>A) Project ID</dt>
+<dd>プロジェクトIDを入力します。</dd>
+<dt>B) Initial Configuration</dt>
+<dd>"Empty" を選択すると、設定が空の状態でプロジェクトを生成します。</dd>
+<dd>既存のプロジェクトがすでに1つ以上登録されている場合は、"Copied from another project" を選択することができます。その場合、選択したプロジェクトから初期設定をコピーした状態でプロジェクトを生成します。</dd>
+</dl>
+<h2>3. プロジェクト設定</h2>
+<p>設定項目はタブによって次のように分割されています。</p>
+<dl>
+<dt>Generic</dt>
+<dd>一般設定を表示します。</dd>
+<dt>Platform</dt>
+<dd>プラットフォーム設定を表示します。</dd>
+<dt>Mail</dt>
+<dd>メール設定を表示します。</dd>
+</dl>
+<h3>3.1. 一般設定</h3>
+<div class="horizontal-scroll"><img src="images/man3.png"/></div>
+<dl>
+<dt>A) Description</dt>
+<dd>プロジェクトの概要を入力します。</dd>
+<dt>B) Notification URL</dt>
+<dd>ビルドを開始するためのURLを表示します。パラメータの<i>REVISION</i>にはビルド対象となるリビジョンを指定します。<i>AUTHOR</i>はコミットしたユーザ名を指定します（ビルド一覧で表示するときに使用されるだけで、ビルドには影響しません）。</dd>
+</dl>
+<h3>3.2. プラットフォーム設定</h3>
+<div class="horizontal-scroll"><img src="images/man4.png"/></div>
+<dl>
+<dt>A) Platform ID</dt>
+<dd>プラットフォーム一覧を表示します。選択されているプラットフォームの内容が右側に表示されます。</dd>
+<dt>B) Add..</dt>
+<dd>プラットフォームを追加します。</dd>
+<dt>C) Delete</dt>
+<dd>選択されているプラットフォームを削除します。</dd>
+<dt>D) Edit...</dt>
+<dd>選択されているプラットフォームを編集します。</dd>
+<dt>E) Rename...</dt>
+<dd>選択されているプラットフォームIDを変更します。</dd>
+<dt>F) Clone</dt>
+<dd>選択されているプラットフォームを複製します。</dd>
+<dt>G) 上下の矢印</dt>
+<dd>選択されているプラットフォームを上下に移動します。</dd>
+</dl>
+<h3>3.3. プラットフォーム追加・編集のダイアログ</h3>
+<div class="horizontal-scroll"><img src="images/man5.png"/></div>
+<dl>
+<dt>A) Platform ID</dt>
+<dd>プラットフォームを識別するための名前を入力します。</dd>
+<dt>B) User@Hostname</dt>
+<dd>sshでリモートコマンドを実行するユーザ名とホスト名を@で連結したものを入力します。</dd>
+<dt>C) Command</dt>
+<dd>リモートコマンドのパスを入力します（引数は指定できません）。</dd>
+<dt>D) Charset</dt>
+<dd>リモートコマンドの出力するログの文字セットを選択します。</dd>
+</dl>
+<h3>3.4. メール設定</h3>
+<div class="horizontal-scroll"><img src="images/man6.png"/></div>
+<dl class="box">
+<dt>A) Enable sending mails</dt>
+<dd>オンにするとメールでビルドの結果を通知します。</dd>
+<dt>B) Sender (From)</dt>
+<dd>通知するメールの差し出し人の名前を入力します。</dd>
+<dt>C) Recipient</dt>
+<dd>通知するメールの受け取り先となるメールアドレスを入力します。</dd>
+</dl>
+<h2>4. ビルド一覧</h2>
+<div class="horizontal-scroll"><img src="images/man7.png"/></div>
+<dl>
+<dt>A) ビルド一覧の更新</dt>
+<dd>アイコンをクリックすると、テーブルの内容を再読み込みします。</dd>
+<dt>B) ビルド一覧のテーブル</dt>
+<dd>ビルド一覧を10行ずつ表示します。ログを確認したいビルドの行をクリックすると、下部にビルドログを表示します。</dd>
+<dt>C) ページ切り替え</dt>
+<dd>ビルド一覧の表示を前のページ、次のページに切り替えます。</dd>
+<dt>D) 選択されたビルドの情報</dt>
+<dd>選択されているビルドの日付、リビジョン、著者、ビルド結果を表示します。</dd>
+<dt>E) Display only the last part</dt>
+<dd>チェックをオンにするとログの最終部分（最後の20行）だけを表示します。オフにするとログ全体を表示します。</dd>
+<dt>F) ログ表示</dt>
+<dd>アイコンをクリックすると、ログだけを表示します。</dd>
+<dt>G) プラットフォームの切り替えのタブ</dt>
+<dd>タブを選択してプラットフォームを切り替えます。</dd>
+<dt>H) ログ</dt>
+<dd>選択されているビルドのプラットフォーム毎のログを表示します。</dd>
+</dl>
+<h2>5. ビルドログ</h2>
+<div class="horizontal-scroll"><img src="images/man8.png"/></div>
+<dl class="box">
+<dt>A) ビルドの情報</dt>
+<dd>ビルドの日付、リビジョン、著者、ビルド結果を表示します。</dd>
+<dt>B) Display only the last part</dt>
+<dd>チェックをオンにするとログの最終部分（最後の20行）だけを表示します。オフにするとログ全体を表示します。</dd>
+<dt>C) プラットフォームの切り替えのタブ</dt>
+<dd>タブを選択してプラットフォームを切り替えます。</dd>
+<dt>D) ログ</dt>
+<dd>プラットフォーム毎のログを表示します。</dd>
+</dl>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon May  5 12:33:20 JST 2008 -->
+<!-- hhmts start -->
+Last modified: Tue May  6 07:23:12 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Mad Angler</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="tutorial.html">Tutorial</a>
+    </li>
+    <li class="selected">
+      Manual
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="reference.html">Reference</a>
+    </li>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

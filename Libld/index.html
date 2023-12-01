@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | Leak Detector</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Leak Detector</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p>Leak Detector is the tool set for a test of memory leaks, for an application using memory allocation functions like malloc(), free(), and so on.</p>
+<h2>News</h2>
+<h3>2004-01-18</h3>
+<p><a href="leakdetector-20040118.tar.gz">leakdetector-20040118.tar.gz</a> released. POSIX threads supported.</p>
+<h3>2003-12-29</h3>
+<p><a href="leakdetector-20031229.tar.gz">leakdetector-20031229.tar.gz</a> released. Creation of a new process with fork(2) supported.</p>
+<h3>2003-09-24</h3>
+<p><a href="leakdetector-20030924.tar.gz">leakdetector-20030924.tar.gz</a> released.</p>
+<h2>Requirements</h2>
+<ul>
+<li>FreeBSD or Linux</li>
+<li>Berkeley DB (only for Linux)</li>
+<li>GNU binutils (only for FreeBSD)</li>
+<li>gcc</li>
+<li>imake</li>
+</ul>
+<h2>How to build</h2>
+<pre><code class="nohighlight">% tar zxf <i>anywhere</i>/leakdetector-<i>yyyymmdd</i>.tar.gz
+% cd leakdetector
+% vi Config.h
+% xmkmf -a
+% make
+% make install</code></pre>
+<h2>Components</h2>
+<dl style="background-color: var(--pre-background); padding: 16px;">
+<dt>libld</dt>
+<dd>the library to hack calls to memory allocation functions (malloc(3), calloc(3), realloc(3), free(3)) of the application, and writes them and the stack trace to a log file. This should be statically linked with the application you want to test.</dd>
+<dt>ldbrowse</dt>
+<dd>the program to read the file that libld(3) creates, and write it in the human-readable format to the standard output.</dd>
+<dt>ldcollect</dt>
+<dd>the program to collect garbages in the file that libld(3) creates, writing them to the standard output in the same format.</dd>
+</dl>
+<h2>Document</h2>
+<ul>
+<li><a href="README.eucJP">README.eucJP</a> (in Japanese)</li>
+<li><a href="libld.html">libld(3)</a></li>
+<li><a href="ldbrowse.html">ldbrowse(1)</a></li>
+<li><a href="ldcollect.html">ldcollect(1)</a></li>
+</ul>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">Tomohisa Tanaka</a></address>
+<!-- Created: Wed Sep 24 01:43:08 JST 2003 -->
+<!-- hhmts start -->
+Last modified: Sun May 11 09:25:09 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Leak Detector</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

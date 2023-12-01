@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Reference | Mad Angler</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Mad Angler</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>REST API Reference</h1>
+<h2>ビルド</h2>
+<dl>
+<dt>Parameters</dt>
+<dd>
+<code>projectId</code>=<i>プロジェクトID</i>
+</dd>
+<dd>
+<code>&amp;</code><code>revision</code>=<i>リビジョン</i>
+</dd>
+<dd>
+<code>&amp;</code><code>author</code>=<i>作成者</i>
+</dd>
+</dl>
+<dl>
+<dt>Return</dt>
+<dd>XMLドキュメント</dd>
+</dl>
+<dl>
+<dt>Description</dt>
+<dd>
+<p>ビルドを要求します。</p>
+<p>次の形式のXMLドキュメントを返します。</p>
+<pre><code class="nohighlight">&lt;status code="..." message="..." /&gt;</code></pre>
+<p>status要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>code</code>: 成功した場合は0、エラーの場合は&minus;1</li>
+<li>
+<code>message</code>: 可読なメッセージ</li>
+</ul>
+</dd>
+</dl>
+<h2>ビルドログの取得</h2>
+<dl>
+<dt>Parameters</dt>
+<dd><code>method=getBuildLog</code></dd>
+<dd>
+<code>&amp;</code><code>projectId</code>=<i>プロジェクトID</i>
+</dd>
+<dd>
+<code>&amp;</code><code>serial</code>=<i>シリアル</i>
+</dd>
+<dd>
+<code>&amp;</code><code>platformCode</code>=<i>プラットフォームコード</i>
+</dd>
+<dd>[<code>&amp;</code><code>tail</code>=<i>true</i>]</dd>
+</dl>
+<dl>
+<dt>Return</dt>
+<dd>成功した場合はHTMLドキュメント、そうでなければXMLドキュメント</dd>
+</dl>
+<dl>
+<dt>Description</dt>
+<dd>
+<p>ビルドログを取得します。</p>
+<p>成功した場合はログをHTMLドキュメントとして返します。そうでない場合は次の形式のXMLドキュメントを返します。</p>
+<pre><code class="nohighlight">&lt;status code="-1" message="..." /&gt;</code></pre>
+<p>属性は次のようになります。</p>
+<ul>
+<li>
+<code>message</code>: 可読なメッセージ</li>
+</ul>
+</dd>
+</dl>
+<h2>ビルド一覧</h2>
+<dl>
+<dt>Parameters</dt>
+<dd><code>method=listBuilds</code></dd>
+<dd>
+<code>&amp;</code><code>projectId</code>=<i>プロジェクトID</i>
+</dd>
+<dd>[<code>&amp;</code><code>startKey</code>=<i>開始シリアル</i>]</dd>
+</dl>
+<dl>
+<dt>Return</dt>
+<dd>XMLドキュメント</dd>
+</dl>
+<dl>
+<dt>Description</dt>
+<dd>
+<p>ビルド一覧を取得します。startKeyが指定されていなけば最新のビルドを最大10件を取得します。startKeyが指定されている場合はstartKeyから最大10件取得します。</p>
+<p>次の形式のXMLドキュメントを返します。</p>
+<pre><code class="nohighlight">&lt;status code="..." message="..."&gt;
+  &lt;build serial="..." revision="..." author="..." date="..." status="..." /&gt;
+  ...
+  &lt;next serial="..." /&gt;
+  &lt;prev serial="..." /&gt;
+&lt;/status&gt;</code></pre>
+<p>status要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>code</code>: 成功した場合は0、エラーの場合は&minus;1</li>
+<li>
+<code>message</code>: 可読なメッセージ</li>
+</ul>
+<p>build要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>serial</code>: シリアル</li>
+<li>
+<code>revision</code>: リビジョン</li>
+<li>
+<code>author</code>: 作成者</li>
+<li>
+<code>date</code>: 日付</li>
+<li>
+<code>status</code>: ステータス不明は0、成功は1、失敗は2</li>
+</ul>
+<p>取得したビルド一覧に次のページ、前のページがある場合は、それぞれnext、prev要素が付加されます。next/prev要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>serial</code>: 次または前のページの開始位置となるstartKey。</li>
+</ul>
+</dd>
+</dl>
+<h2>ビルド詳細の取得</h2>
+<dl>
+<dt>Parameters</dt>
+<dd><code>method=getBuildDetail</code></dd>
+<dd>
+<code>&amp;</code><code>projectId</code>=<i>プロジェクトID</i>
+</dd>
+<dd>
+<code>&amp;</code><code>serial</code>=<i>シリアル</i>
+</dd>
+</dl>
+<dl>
+<dt>Return</dt>
+<dd>XMLドキュメント</dd>
+</dl>
+<dl>
+<dt>Description</dt>
+<dd>
+<p>ビルド詳細を取得します。</p>
+<p>次の形式のXMLドキュメントを返します。</p>
+<pre><code class="nohighlight">&lt;status code="..." message="..."&gt;
+  &lt;detail date="..." revision="..." author="..." status="..." /&gt;
+  &lt;platform id="..." code="..." status="..." /&gt;
+  ...
+&lt;/status&gt;</code></pre>
+<p>status要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>code</code>: 成功した場合は0、エラーの場合は&minus;1</li>
+<li>
+<code>message</code>: 可読なメッセージ</li>
+</ul>
+<p>detail要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>date</code>: 日付</li>
+<li>
+<code>revision</code>: リビジョン</li>
+<li>
+<code>author</code>: 作成者</li>
+<li>
+<code>status</code>: ステータス不明は0、成功は1、失敗は2</li>
+</ul>
+<p>platform要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>id</code>: プラットフォームID</li>
+<li>
+<code>code</code>: プラットフォームコード（ビルドログの取得で使用する）</li>
+<li>
+<code>status</code>: 成功は1、失敗は2</li>
+</ul>
+</dd>
+</dl>
+<h2>プロジェクトプロパティの取得</h2>
+<dl>
+<dt>Parameters</dt>
+<dd><code>method=getProperty</code></dd>
+<dd>
+<code>&amp;</code><code>projectId</code>=<i>プロジェクトID</i>
+</dd>
+</dl>
+<dl>
+<dt>Return</dt>
+<dd>XMLドキュメント</dd>
+</dl>
+<dl>
+<dt>Description</dt>
+<dd>
+<p>プロジェクトプロパティを取得します。</p>
+<p>次の形式のXMLドキュメントを返します。</p>
+<pre><code class="nohighlight">&lt;status code="..." message="..."&gt;
+  &lt;property description="..." mailEnabled="..." smtpServer="..."
+    sender="..." receipient="..." /&gt;
+  &lt;platform id="..." host="..." command="..." charset="..." /&gt;
+  ...
+&lt;/status&gt;</code></pre>
+<p>status要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>code</code>: 成功した場合は0、エラーの場合は&minus;1</li>
+<li>
+<code>message</code>: 可読なメッセージ</li>
+</ul>
+<p>property要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>description</code>: プロジェクトの説明</li>
+<li>
+<code>mailEnabled</code>: メールで通知する場合は1、そうでなければ0</li>
+<li>
+<code>smtpServer</code>: 未使用</li>
+<li>
+<code>sender</code>: メールの送信元</li>
+<li>
+<code>receipient</code>: メールの宛先</li>
+</ul>
+<p>platform要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>id</code>: プラットフォームID</li>
+<li>
+<code>host</code>: ユーザ名@ホスト名</li>
+<li>
+<code>command</code>: リモートコマンドのパス</li>
+<li>
+<code>charset</code>: ログの文字セット名（UTF-8, EUC-JPなど）</li>
+</ul>
+</dd>
+</dl>
+<h2>プロジェクトプロパティの設定</h2>
+<dl>
+<dt>Parameters</dt>
+<dd><code>method=setProperty</code></dd>
+<dd>
+<code>&amp;</code><code>projectId</code>=<i>プロジェクトID</i>
+</dd>
+<dd>
+<code>&amp;</code><code>projectConfig</code>=<i>プロジェクトプロパティ</i>
+</dd>
+</dl>
+<dl>
+<dt>Return</dt>
+<dd>XMLドキュメント</dd>
+</dl>
+<dl>
+<dt>Description</dt>
+<dd>
+<p>プロジェクトプロパティを設定します。</p>
+<p><code>projectConfig</code>には次の形式のXMLドキュメントを指定します。</p>
+<pre><code class="nohighlight">&lt;projectConfig&gt;
+  &lt;property description="..." mailEnabled="..." smtpServer="..."
+    sender="..." receipient="..." /&gt;
+  &lt;platform id="..." host="..." command="..." charset="..." /&gt;
+  ...
+&lt;/projectConfig&gt;</code></pre>
+<p>property要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>description</code>: プロジェクトの説明</li>
+<li>
+<code>mailEnabled</code>: メールで通知する場合は1、そうでなければ0</li>
+<li>
+<code>smtpServer</code>: 未使用</li>
+<li>
+<code>sender</code>: メールの送信元</li>
+<li>
+<code>receipient</code>: メールの宛先</li>
+</ul>
+<p>platform要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>id</code>: プラットフォームID</li>
+<li>
+<code>host</code>: ユーザ名@ホスト名</li>
+<li>
+<code>command</code>: リモートコマンドのパス</li>
+<li>
+<code>charset</code>: ログの文字セット名（UTF-8, EUC-JPなど）</li>
+</ul>
+<p>次の形式のXMLドキュメントを返します。</p>
+<pre><code class="nohighlight">&lt;status code="..." message="..." /&gt;</code></pre>
+<p>status要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>code</code>: 成功した場合は0、エラーの場合は&minus;1</li>
+<li>
+<code>message</code>: 可読なメッセージ</li>
+</ul>
+</dd>
+</dl>
+<h2>プロジェクト一覧</h2>
+<dl>
+<dt>Parameters</dt>
+<dd><code>method=listProjects</code></dd>
+</dl>
+<dl>
+<dt>Return</dt>
+<dd>XMLドキュメント</dd>
+</dl>
+<dl>
+<dt>Description</dt>
+<dd>
+<p>プロジェクト一覧を取得します。</p>
+<p>次の形式のXMLドキュメントを返します。</p>
+<pre><code class="nohighlight">&lt;projectList&gt;
+  &lt;project name="..." description="..." /&gt;
+  ...
+&lt;/projectList&gt;</code></pre>
+<p>属性は次のようになります。</p>
+<ul>
+<li>
+<code>name</code>: プロジェクトID</li>
+<li>
+<code>description</code>: プロジェクトの説明</li>
+</ul>
+</dd>
+</dl>
+<h2>プロジェクト作成</h2>
+<dl>
+<dt>Parameters</dt>
+<dd><code>method=createProject</code></dd>
+<dd>
+<code>&amp;</code><code>projectId</code>=<i>プロジェクトID</i>
+</dd>
+</dl>
+<dl>
+<dt>Return</dt>
+<dd>XMLドキュメント</dd>
+</dl>
+<dl>
+<dt>Description</dt>
+<dd>
+<p>プロジェクトを作成します。</p>
+<p>次の形式のXMLドキュメントを返します。</p>
+<pre><code class="nohighlight">&lt;status code="..." message="..." /&gt;</code></pre>
+<p>status要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>code</code>: 成功した場合は0、エラーの場合は&minus;1</li>
+<li>
+<code>message</code>: 可読なメッセージ</li>
+</ul>
+</dd>
+</dl>
+<h2>プロジェクト削除</h2>
+<dl>
+<dt>Parameters</dt>
+<dd><code>method=deleteProject</code></dd>
+<dd>
+<code>&amp;</code><code>projectId</code>=<i>プロジェクトID</i>
+</dd>
+</dl>
+<dl>
+<dt>Return</dt>
+<dd>XMLドキュメント</dd>
+</dl>
+<dl>
+<dt>Description</dt>
+<dd>
+<p>プロジェクトを削除します。</p>
+<p>次の形式のXMLドキュメントを返します。</p>
+<pre><code class="nohighlight">&lt;status code="..." message="..." /&gt;</code></pre>
+<p>status要素の属性は次のようになります。</p>
+<ul>
+<li>
+<code>code</code>: 成功した場合は0、エラーの場合は&minus;1</li>
+<li>
+<code>message</code>: 可読なメッセージ</li>
+</ul>
+</dd>
+</dl>
+<h2>公開鍵の取得</h2>
+<dl>
+<dt>Parameters</dt>
+<dd><code>method=getPublicKey</code></dd>
+</dl>
+<dl>
+<dt>Return</dt>
+<dd>成功した場合はHTMLドキュメント、そうでければXMLドキュメント</dd>
+</dl>
+<dl>
+<dt>Description</dt>
+<dd>
+<p>公開鍵を取得します。</p>
+<p>成功した場合は公開鍵をHTMLドキュメントとして返します。そうでない場合は次の形式のXMLドキュメントを返します。</p>
+<pre><code class="nohighlight">&lt;status code="-1" message="..." /&gt;</code></pre>
+<p>属性は次のようになります。</p>
+<ul>
+<li>
+<code>message</code>: 可読なメッセージ</li>
+</ul>
+</dd>
+</dl>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Mad Angler</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="tutorial.html">Tutorial</a>
+    </li>
+    <li>
+      <a href="manual.html">Manual</a>
+    </li>
+    <li class="selected">
+      Reference
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

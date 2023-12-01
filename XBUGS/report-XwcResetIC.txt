@@ -1,0 +1,42 @@
+XwcResetIC()が不正なアドレスをfree()に渡す。
+
+- 症状
+  XwcResetIC()を呼び出すと次のメッセージが表示される。
+  in free(): warning: junk pointer, too high to make sense
+
+- 確認できるリリース
+  R6.3p3 (XFree86-3.3.x)
+  R6.4p3
+  R6.5.1
+  R6.6
+
+- 修正されているリリース
+  XFree86-4.2.0 (コードの共通化によって結果的に修正された?)
+
+- 回避策
+  XmbResetIC()を使用する。
+
+- 修正方法
+  R6.6に次のパッチを適用する。
+
+diff -c -r -d xc.orig/lib/X11/imDefIc.c xc/lib/X11/imDefIc.c
+*** xc.orig/lib/X11/imDefIc.c	Sun Jan  5 06:53:51 2003
+--- xc/lib/X11/imDefIc.c	Sun Jan  5 06:55:30 2003
+***************
+*** 1299,1305 ****
+  
+      commit = _XimCommitedWcString(im, ic, (XPointer)&buf_s[2]);
+  
+!     Xfree(preply);
+      return commit;
+  }
+  
+--- 1299,1306 ----
+  
+      commit = _XimCommitedWcString(im, ic, (XPointer)&buf_s[2]);
+  
+!     if (reply != preply)
+! 	Xfree(preply);
+      return commit;
+  }
+  

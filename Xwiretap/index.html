@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | Xwiretap</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Xwiretap</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p>Xプロトコルを盗聴してユーザに表示している文字列を推測し、それらを<a href="../Imserver/">日本語XIMサーバ</a>の<a href="../Imserver/feature.html#referenceMode">参照辞書</a>に登録、更新する<strong>Xサーバのプロキシ</strong>です。</p>
+<div class="cover-image" style="text-align: center;"><a href="Xwiretap.pdf"><img src="Xwiretap.pdf.png" width="160" height="120"><br><small>PDF 270 KB</small></a></div>
+<h2>出力履歴を利用した予測入力</h2>
+<h3>コンセプト</h3>
+<p>予測入力では、入力履歴や与えられたコンテキスト辞書から予測候補を提示、補完することができますが、ユーザが初めて入力する（計算機の知らない）語句を補完することは当然できません。</p>
+<p>XwiretapはXサーバとXクライアントの通信を盗聴して、アプリケーションが画面に表示した文字列を<strong>出力履歴</strong>に記録し、それを<a href="../Imserver/">日本語XIMサーバ</a>の予測候補として利用できるようにします。結果として、ユーザが読み書きした経験を計算機と共有できるようになります。</p>
+<h3>使用例</h3>
+<div class="horizontal-scroll"><iframe width="320" height="240" src="https://www.youtube.com/embed/l337KU0RBNU?rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<h3>関連研究・製品</h3>
+<p><a href="http://www.taiyaki.org/pobox/nanashiki.html">七色</a>（Nanashiki）はEmacsのdabbrev-expand（dynamic abbreviation）を日本語の文書に<strong>実用的に</strong>適用できるようにして、「入力している文章の周辺の単語を検索し、予測候補として提示する機能」を実現しています。</p>
+<p><a href="http://www.taiyaki.org/doc/wiss2002/">句倉</a>（Kukura）はウェブブラウザ、端末エミュレータ、Emacsに表示した文字列を外部文書として蓄積し、それらの外部文書に含まれる文字列を予測候補として提示する機能を実現しています。</p>
+<p>auの携帯電話<a href="http://www.sanyo-keitai.com/html/au/w22sa/use/input.html">W22SA</a>（SANYO製）は「返信自動学習機能」を搭載しています。返信メール作成時に、もとのメールに含まれていた単語を予測変換の候補として利用できます。オムロンソフトウェアの<a href="http://www.omronsoft.co.jp/SP/mobile/advanced/indexv2.html">Advanced Wnn V2</a>に追加された形態素解析機能を利用しているようです。</p>
+<p>七色はEmacs/POBoxで利用できますが、Emacsの世界で閉じてしまっています。</p>
+<p>句倉は文書を蓄積する方法をアプリケーションの種類毎に用意する必要があります。またウェブブラウザの場合、文書の一部を「閲覧」した場合でも、その文書全体から予測候補を生成するため、<strong>ユーザが見ていない部分</strong>の単語まで予測候補の対象になってしまいます。</p>
+<h2>動作概要</h2>
+<h3>1. プロトコルを盗聴</h3>
+<p>Xサーバのとしてプロキシとして、ディスプレイ接続を転送します。リクエストPolyText8, PolyText16, ImageText16, ImageText8の内容から、表示文字列を推測します。</p>
+<h3>2. 読み文字列の取得</h3>
+<p><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">MeCab</a>を使用して形態素解析を行い、読み文字列と文節の区切りを取得します。</p>
+<h3>3. 参照辞書への登録</h3>
+<p>表示文字列の先頭から文節を削りながら参照辞書に登録します。さらに、各文節をひとつずつ登録します。</p>
+<h2>予測入力の候補の優先度</h2>
+<p>入力履歴は入力時のタイムスタンプを、出力履歴は出力時のタイムスタンプを保持しています。日本語XIMサーバは入力履歴、出力履歴に関わらず、タイムスタンプの新しい予測候補を優先します。そのため、参照したい文書を画面に表示するだけで、その表示している部分の内容が優先的に予測入力の候補となります。</p>
+<p>また、日本語XIMサーバにはAutisticモードとReferenceモードがあり、Autisticモードのときは入力履歴だけを、Referenceモードのときは入力履歴と出力履歴の両方を使用します。ユーザがモードを切り替えることで、状況に適した予測入力ができるようになります。</p>
+<h2>既知の問題点</h2>
+<ul>
+<li><em>On-The-Spot</em>方式のアプリケーションを盗聴すると、入力途中の文字列（前編集文字列）を出力履歴に登録してしまいます。</li>
+<li>出力履歴（参照辞書）が早いペースでどんどん大きくなります。</li>
+<li>箇条書を行の折り返しとして判断してしまいます。</li>
+<li>日本語以外の2バイト文字を表示すると、文字化けした文字列を出力履歴に登録してしまいます。</li>
+<li>アンチエイリアシングを用いて文字を描画するアプリケーション（PostScriptやPDFのビューワ、xdvi、<strong>Xftを利用するもの</strong>など）には無力です。</li>
+</ul>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Wed May  5 04:05:34 JST 2004 -->
+<!-- hhmts start -->
+Last modified: Fri Dec 24 06:27:20 JST 2004
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Xwiretap</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="news.html">News</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

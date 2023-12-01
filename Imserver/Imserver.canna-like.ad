@@ -1,0 +1,425 @@
+!!! Cannaライクなリソースの例
+
+!!! 0. 入力切替え
+
+! 「コントロール + \」で、日本語入力のon/off
+imserver.onTriggerKey: keysym backslash modifier Control mask Control
+imserver.offTriggerKey: keysym backslash modifier Control mask Control
+
+!!! 1. なにも入力してない状態
+
+! 「無変換キー」で直前の前編集文字列を復活させる
+imserver.undofix.undo: Muhenkan
+
+! 空白文字はそのまま確定する
+imserver.undofix.passImmediately: space
+
+! 「Meta-Control-l」で初期入力モードを「英」モードにする
+imserver.undofix.directInputMode: Meta-Control-l
+
+! 「Meta-Control-j」で初期入力モードを「ローマ字ひらがな変換」モードにする
+imserver.undofix.singlePreconversionMode: Meta-Control-j
+
+! 「Meta-Control-k」で初期入力モードを「ローマ字カタカナ変換」モードにする
+imserver.undofix.doublePreconversionMode: Meta-Control-k
+
+!!! 2. 入力してるが変換してない状態
+
+! 「space」で変換する
+imserver.preedit.convert: space
+
+! 「Meta-space」で単文節変換する（通常は使わないだろう）
+imserver.preedit.convertAsSinglePhrase: Meta-space
+
+! 「Return」と「Control-m」で確定する
+imserver.preedit.commit: Return, Control-m
+
+! 「Meta-Return」で確定後改行する（通常は使わないだろう）
+imserver.preedit.newline: Meta-Return
+
+! 「Control-j」でひらがなに変換する
+imserver.preedit.translateIntoHiragana: Control-j
+
+! 「Control-k」でカタカナに変換する
+imserver.preedit.translateIntoKatakana: Control-k
+
+! 「Control-l」で全角文字に変換する
+imserver.preedit.translateIntoZenkaku: Control-l
+
+! 「Control-u」で半角文字に変換する
+imserver.preedit.translateIntoHankaku: Control-u
+
+!!! 3. 変換した状態
+
+! 「space」「Tab」「Down」「Control-n」で次候補に変換する
+imserver.convert.nextChoice: space, Tab, Down, Control-n
+
+! 「Shift-Tab」「Up」「Control-p」で前候補に変換する
+imserver.convert.previousChoice: Shift-Tab, Up, Control-p
+
+! 「Shift-Left」「Control-i」で注目文節を縮める
+imserver.convert.shortenPhrase: Shift-Left, Control-i
+
+! 「Shift-Right」「Control-o」で注目文節を伸ばす
+imserver.convert.extendPhrase: Shift-Right, Control-o
+
+! 「Return」と「Control-m」で確定する
+imserver.convert.commit: Return, Control-m
+
+! 「Meta-Return」で確定後改行する（通常は使わないだろう）
+imserver.convert.newline: Meta-Return
+
+! 「Control-j」でひらがなに変換する
+imserver.convert.translateIntoHiragana: Control-j
+
+! 「Control-k」でカタカナに変換する
+imserver.convert.translateIntoKatakana: Control-k
+
+! 「Control-l」で全角文字に変換する
+imserver.convert.translateIntoZenkaku: Control-l
+
+! 「Control-u」で半角文字に変換する
+imserver.convert.translateIntoHankaku: Control-u
+
+!!! 4. そのほか
+
+! 状態表示領域に表示する文字列の指定
+imserver.directMode: \ 英
+imserver.singleMode: Rあ
+imserver.doubleMode: Rア
+imserver.activeLabel: %s%p
+imserver.inactiveLabel: %s
+
+! 最初はローマ字変換で「ひらがな」入力モード
+imserver.preconversion: single
+
+! ローマ字かな変換用の前変換基本規則
+imserver.preconversionBasicRule: \
+","	= "、" \n\
+"."	= "。" \n\
+"-"	= "ー" \n\
+"la"	= "ぁ" \n\
+"xa"	= "ぁ" \n\
+"a"	= "あ" \n\
+"li"	= "ぃ" \n\
+"xi"	= "ぃ" \n\
+"i"	= "い" \n\
+"ye"	= "いぇ" \n\
+"lu"	= "ぅ" \n\
+"xu"	= "ぅ" \n\
+"u"	= "う" \n\
+"whi"	= "うぃ" \n\
+"wi"	= "うぃ" \n\
+"we"	= "うぇ" \n\
+"whe"	= "うぇ" \n\
+"who"	= "うぉ" \n\
+"le"	= "ぇ" \n\
+"xe"	= "ぇ" \n\
+"e"	= "え" \n\
+"lo"	= "ぉ" \n\
+"xo"	= "ぉ" \n\
+"o"	= "お" \n\
+"ka"	= "か" \n\
+"ga"	= "が" \n\
+"ki"	= "き" \n\
+"kya"	= "きゃ" \n\
+"kyu"	= "きゅ" \n\
+"kyo"	= "きょ" \n\
+"gi"	= "ぎ" \n\
+"gya"	= "ぎゃ" \n\
+"gyu"	= "ぎゅ" \n\
+"gyo"	= "ぎょ" \n\
+"ku"	= "く" \n\
+"kwa"	= "くぁ" \n\
+"qa"	= "くぁ" \n\
+"kwi"	= "くぃ" \n\
+"qi"	= "くぃ" \n\
+"kwe"	= "くぇ" \n\
+"qe"	= "くぇ" \n\
+"kwo"	= "くぉ" \n\
+"qo"	= "くぉ" \n\
+"gu"	= "ぐ" \n\
+"gwa"	= "ぐぁ" \n\
+"ke"	= "け" \n\
+"ge"	= "げ" \n\
+"ko"	= "こ" \n\
+"go"	= "ご" \n\
+"sa"	= "さ" \n\
+"za"	= "ざ" \n\
+"shi"	= "し" \n\
+"si"	= "し" \n\
+"she"	= "しぇ" \n\
+"sye"	= "しぇ" \n\
+"sha"	= "しゃ" \n\
+"sya"	= "しゃ" \n\
+"shu"	= "しゅ" \n\
+"syu"	= "しゅ" \n\
+"sho"	= "しょ" \n\
+"syo"	= "しょ" \n\
+"ji"	= "じ" \n\
+"zi"	= "じ" \n\
+"je"	= "じぇ" \n\
+"zye"	= "じぇ" \n\
+"ja"	= "じゃ" \n\
+"zya"	= "じゃ" \n\
+"ju"	= "じゅ" \n\
+"zyu"	= "じゅ" \n\
+"jo"	= "じょ" \n\
+"zyo"	= "じょ" \n\
+"su"	= "す" \n\
+"zu"	= "ず" \n\
+"se"	= "せ" \n\
+"ze"	= "ぜ" \n\
+"so"	= "そ" \n\
+"zo"	= "ぞ" \n\
+"ta"	= "た" \n\
+"da"	= "だ" \n\
+"chi"	= "ち" \n\
+"ti"	= "ち" \n\
+"che"	= "ちぇ" \n\
+"tye"	= "ちぇ" \n\
+"cha"	= "ちゃ" \n\
+"tya"	= "ちゃ" \n\
+"chu"	= "ちゅ" \n\
+"tyu"	= "ちゅ" \n\
+"cho"	= "ちょ" \n\
+"tyo"	= "ちょ" \n\
+"di"	= "ぢ" \n\
+"dya"	= "ぢゃ" \n\
+"dyu"	= "ぢゅ" \n\
+"dyo"	= "ぢょ" \n\
+"ltu"	= "っ" \n\
+"xtu"	= "っ" \n\
+"bb"	= "っb" \n\
+"cc"	= "っc" \n\
+"dd"	= "っd" \n\
+"ff"	= "っf" \n\
+"gg"	= "っg" \n\
+"hh"	= "っh" \n\
+"jj"	= "っj" \n\
+"kk"	= "っk" \n\
+"ll"	= "っl" \n\
+"mm"	= "っm" \n\
+"pp"	= "っp" \n\
+"qq"	= "っq" \n\
+"rr"	= "っr" \n\
+"ss"	= "っs" \n\
+"tt"	= "っt" \n\
+"vv"	= "っv" \n\
+"ww"	= "っw" \n\
+"xx"	= "っx" \n\
+"yy"	= "っy" \n\
+"zz"	= "っz" \n\
+"tsu"	= "つ" \n\
+"tu"	= "つ" \n\
+"tsa"	= "つぁ" \n\
+"tsi"	= "つぃ" \n\
+"tse"	= "つぇ" \n\
+"tso"	= "つぉ" \n\
+"du"	= "づ" \n\
+"te"	= "て" \n\
+"thi"	= "てぃ" \n\
+"thu"	= "てゅ" \n\
+"de"	= "で" \n\
+"dhi"	= "でぃ" \n\
+"dhu"	= "でゅ" \n\
+"to"	= "と" \n\
+"twu"	= "とぅ" \n\
+"do"	= "ど" \n\
+"dwu"	= "どぅ" \n\
+"na"	= "な" \n\
+"ni"	= "に" \n\
+"nya"	= "にゃ" \n\
+"nyu"	= "にゅ" \n\
+"nyo"	= "にょ" \n\
+"nu"	= "ぬ" \n\
+"ne"	= "ね" \n\
+"no"	= "の" \n\
+"ha"	= "は" \n\
+"ba"	= "ば" \n\
+"pa"	= "ぱ" \n\
+"hi"	= "ひ" \n\
+"hya"	= "ひゃ" \n\
+"hyu"	= "ひゅ" \n\
+"hyo"	= "ひょ" \n\
+"bi"	= "び" \n\
+"bya"	= "びゃ" \n\
+"byu"	= "びゅ" \n\
+"byo"	= "びょ" \n\
+"pi"	= "ぴ" \n\
+"pya"	= "ぴゃ" \n\
+"pyu"	= "ぴゅ" \n\
+"pyo"	= "ぴょ" \n\
+"fu"	= "ふ" \n\
+"hu"	= "ふ" \n\
+"fa"	= "ふぁ" \n\
+"fi"	= "ふぃ" \n\
+"fe"	= "ふぇ" \n\
+"fo"	= "ふぉ" \n\
+"fyu"	= "ふゅ" \n\
+"bu"	= "ぶ" \n\
+"pu"	= "ぷ" \n\
+"he"	= "へ" \n\
+"be"	= "べ" \n\
+"pe"	= "ぺ" \n\
+"ho"	= "ほ" \n\
+"bo"	= "ぼ" \n\
+"po"	= "ぽ" \n\
+"ma"	= "ま" \n\
+"mi"	= "み" \n\
+"mya"	= "みゃ" \n\
+"myu"	= "みゅ" \n\
+"myo"	= "みょ" \n\
+"mu"	= "む" \n\
+"me"	= "め" \n\
+"mo"	= "も" \n\
+"lya"	= "ゃ" \n\
+"xya"	= "ゃ" \n\
+"ya"	= "や" \n\
+"lyu"	= "ゅ" \n\
+"xyu"	= "ゅ" \n\
+"yu"	= "ゆ" \n\
+"lyo"	= "ょ" \n\
+"xyo"	= "ょ" \n\
+"yo"	= "よ" \n\
+"ra"	= "ら" \n\
+"ri"	= "り" \n\
+"rya"	= "りゃ" \n\
+"ryu"	= "りゅ" \n\
+"ryo"	= "りょ" \n\
+"ru"	= "る" \n\
+"re"	= "れ" \n\
+"ro"	= "ろ" \n\
+"lwa"	= "ゎ" \n\
+"xwa"	= "ゎ" \n\
+"wa"	= "わ" \n\
+"wyi"	= "ゐ" \n\
+"wye"	= "ゑ" \n\
+"wo"	= "を" \n\
+"n "	= "ん " \n\
+"n!"	= "ん!" \n\
+"n\\""	= "ん\\"" \n\
+"n#"	= "ん#" \n\
+"n$"	= "ん$" \n\
+"n%"	= "ん%" \n\
+"n&"	= "ん&" \n\
+"n'"	= "ん" \n\
+"n("	= "ん(" \n\
+"n)"	= "ん)" \n\
+"n*"	= "ん*" \n\
+"n+"	= "ん+" \n\
+"n,"	= "ん、" \n\
+"n-"	= "んー" \n\
+"n."	= "ん。" \n\
+"n/"	= "ん/" \n\
+"n0"	= "ん0" \n\
+"n1"	= "ん1" \n\
+"n2"	= "ん2" \n\
+"n3"	= "ん3" \n\
+"n4"	= "ん4" \n\
+"n5"	= "ん5" \n\
+"n6"	= "ん6" \n\
+"n7"	= "ん7" \n\
+"n8"	= "ん8" \n\
+"n9"	= "ん9" \n\
+"n:"	= "ん:" \n\
+"n;"	= "ん;" \n\
+"n<"	= "ん<" \n\
+"n="	= "ん=" \n\
+"n>"	= "ん>" \n\
+"n?"	= "ん?" \n\
+"n@"	= "ん@" \n\
+"nA"	= "んA" \n\
+"nB"	= "んB" \n\
+"nC"	= "んC" \n\
+"nD"	= "んD" \n\
+"nE"	= "んE" \n\
+"nF"	= "んF" \n\
+"nG"	= "んG" \n\
+"nH"	= "んH" \n\
+"nI"	= "んI" \n\
+"nJ"	= "んJ" \n\
+"nK"	= "んK" \n\
+"nL"	= "んL" \n\
+"nM"	= "んM" \n\
+"nN"	= "んN" \n\
+"nO"	= "んO" \n\
+"nP"	= "んP" \n\
+"nQ"	= "んQ" \n\
+"nR"	= "んR" \n\
+"nS"	= "んS" \n\
+"nT"	= "んT" \n\
+"nU"	= "んU" \n\
+"nV"	= "んV" \n\
+"nW"	= "んW" \n\
+"nX"	= "んX" \n\
+"nY"	= "んY" \n\
+"nZ"	= "んZ" \n\
+"n["	= "ん[" \n\
+"n\\\\"	= "ん\\\\" \n\
+"n]"	= "ん]" \n\
+"n^"	= "ん^" \n\
+"n_"	= "ん_" \n\
+"n`"	= "ん`" \n\
+"nb"	= "んb" \n\
+"nc"	= "んc" \n\
+"nd"	= "んd" \n\
+"nf"	= "んf" \n\
+"ng"	= "んg" \n\
+"nh"	= "んh" \n\
+"nj"	= "んj" \n\
+"nk"	= "んk" \n\
+"nl"	= "んl" \n\
+"nm"	= "んm" \n\
+"nn"	= "ん" \n\
+"np"	= "んp" \n\
+"nq"	= "んq" \n\
+"nr"	= "んr" \n\
+"ns"	= "んs" \n\
+"nt"	= "んt" \n\
+"nv"	= "んv" \n\
+"nw"	= "んw" \n\
+"nx"	= "んx" \n\
+"nz"	= "んz" \n\
+"n{"	= "ん{" \n\
+"n|"	= "ん|" \n\
+"n}"	= "ん}" \n\
+"n~"	= "ん~" \n\
+"va"	= "ヴぁ" \n\
+"vi"	= "ヴぃ" \n\
+"vu"	= "ヴぅ" \n\
+"ve"	= "ヴぇ" \n\
+"vo"	= "ヴぉ" \n\
+"vyu"	= "ヴゅ" \n\
+"lka"	= "ヵ" \n\
+"xka"	= "ヵ" \n\
+"lke"	= "ヶ" \n\
+"xke"	= "ヶ"
+
+! ローマ字かな変換用の前変換基本規則
+imserver.preconversionFinalRule: \
+"n"	= "ん"
+
+! ひらがなカタカナ変換
+imserver.symbolSystemMapping: \
+"ぁあぃいぅうぇえぉお" = "ァアィイゥウェエォオ" \n\
+"かがきぎくぐけげこご" = "カガキギクグケゲコゴ" \n\
+"さざしじすずせぜそぞ" = "サザシジスズセゼソゾ" \n\
+"ただちぢっつづてでとど" = "タダチヂッツヅテデトド" \n\
+"なにぬねの" = "ナニヌネノ" \n\
+"はばぱひびぴふぶぷへべぺほぼぽ" = "ハバパヒビピフブプヘベペホボポ" \n\
+"まみむめも" = "マミムメモ" \n\
+"ゃやゅゆょよ" = "ャヤュユョヨ" \n\
+"らりるれろ" = "ラリルレロ" \n\
+"ゎわゐゑをん" = "ヮワヰヱヲン"
+
+! 半角全角変換
+imserver.symbolWidthMapping: \
+",.:;?!^_/\\\\~|`'\\"()[]{}+-=<>$%#&*@" \
+ = "，．：；？！＾＿／＼〜｜’‘”（）［］｛｝＋−＝＜＞＄％＃＆＊＠" \n\
+"0123456789" \
+ = "０１２３４５６７８９" \n\
+"abcdefghijklmnopqrstuvwxyz" \
+ = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ" \n\
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ" \
+ = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"

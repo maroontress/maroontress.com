@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd">
+<class package="com_example" name="Integer0">
+  <define name="com_example_Integer0_MAX">
+    <macro>0x7fffffff</macro>
+  </define>
+
+  <define name="com_example_Integer0_MIN">
+    <macro>(-0x7fffffff - 1)</macro>
+  </define>
+
+  <typedef type="int" name="com_example_Integer0_t"/>
+
+  <struct tag="com_example_Integer0">
+    <member type="com_example_Integer0_t" name="value"/>
+  </struct>
+
+  <method name="com_example_Integer0_new">
+    <param type="com_example_Integer0_t" name="i"/>
+    <return type="struct com_example_Integer0 *"/>
+  </method>
+
+  <method name="com_example_Integer0_delete">
+    <param type="struct com_example_Integer0 *" name="i"/>
+  </method>
+
+  <method name="com_example_Integer0_set">
+    <param type="struct com_example_Integer0 *" name="i"/>
+    <param type="com_example_Integer0_t" name="value"/>
+  </method>
+
+  <method name="com_example_Integer0_get">
+    <param type="struct com_example_Integer0 *" name="i"/>
+    <return type="com_example_Integer0_t"/>
+  </method>
+</class>

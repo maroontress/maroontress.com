@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Thread - bar_Thread</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package bar</h3>
+    <h1>class Thread</h1>
+#define bar_Thread_IMPORT<br>
+#include &lt;bar/Thread.h&gt;<br>
+    <dl><dd>アブストラクトメソッドの例を提供します。</dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="bar_Thread.html#struct bar_Thread">struct Thread</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;スレッドの実体となる構造体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#bar_Thread_new"><b>Thread_<wbr>new</b></a>(<a href="bar_Thread.html#struct bar_Thread">struct Thread</a> *&nbsp;<i>thread</i>, void (*<i>run</i>)(<a href="bar_Thread.html#struct bar_Thread">struct Thread</a> *))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;スレッドのインスタンスを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#bar_Thread_start"><b>Thread_<wbr>start</b></a>(<a href="bar_Thread.html#struct bar_Thread">struct Thread</a> *&nbsp;<i>thread</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新しいスレッドによる<a href="bar_Thread.html#bar_Thread_run">Thread_<wbr>run</a>()の実行を開始します。</td>
+</tr>
+    </table>
+<h2>Abstract Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#bar_Thread_run"><b>Thread_<wbr>run</b></a>(<a href="bar_Thread.html#struct bar_Thread">struct Thread</a> *&nbsp;<i>thread</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;スレッドが実行する処理を実装します。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct bar_Thread"></a>
+<font size="+1"><b>struct Thread</b></font></p>
+<dl><dd>スレッドの実体となる構造体です。<p>不透明な構造体です。</p></dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="bar_Thread_new"></a><font size="+1"><b>Thread_<wbr>new</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Thread_new</b>(</td>
+    <td nowrap><a href="bar_Thread.html#struct bar_Thread">struct Thread</a> *&nbsp;<i>thread</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>void (*<i>run</i>)(<a href="bar_Thread.html#struct bar_Thread">struct Thread</a> *))</td>
+  </tr>
+</table>
+<dl>
+<dd>スレッドのインスタンスを生成します。</dd>
+
+<dl>Parameters:<dd>
+<i>thread</i> - Threadクラスのインスタンス<br>
+
+<i>run</i> - see <a href="bar_Thread.html#bar_Thread_run">Thread_<wbr>run</a>()<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="bar_Thread_start"></a><font size="+1"><b>Thread_<wbr>start</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Thread_start</b>(</td>
+    <td nowrap><a href="bar_Thread.html#struct bar_Thread">struct Thread</a> *&nbsp;<i>thread</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>新しいスレッドによる<a href="bar_Thread.html#bar_Thread_run">Thread_<wbr>run</a>()の実行を開始します。</dd>
+
+<dl>Parameters:<dd>
+<i>thread</i> - Threadクラスのインスタンス<br>
+
+</dd></dl>
+</dl>
+<hr>
+<h2>Abstract Method Detail</h2>
+<p><a name="bar_Thread_run"></a><font size="+1"><b>Thread_<wbr>run</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Thread_run</b>(</td>
+    <td nowrap><a href="bar_Thread.html#struct bar_Thread">struct Thread</a> *&nbsp;<i>thread</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>スレッドが実行する処理を実装します。</dd>
+
+<dl>Parameters:<dd>
+<i>thread</i> - Threadクラスのインスタンス<br>
+
+</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

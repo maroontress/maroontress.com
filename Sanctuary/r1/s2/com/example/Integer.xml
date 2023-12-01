@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd" [
+  <!ENTITY thisParam '
+    <param type="struct @ *" name="i">
+      <desc>Integerクラスのインスタンス</desc>
+    </param>
+  '>
+]>
+<class package="com_example" name="Integer">
+  <namespace/>
+
+  <define name="MAX">
+    <macro>0x7fffffff</macro>
+    <desc><brief>整数の最大値です。</brief></desc>
+  </define>
+
+  <define name="MIN">
+    <macro>(-0x7fffffff - 1)</macro>
+    <desc><brief>整数の最小値です。</brief></desc>
+  </define>
+
+  <typedef type="int" name="t">
+    <desc><brief>整数値を表す型です。</brief></desc>
+  </typedef>
+
+  <struct tag="@">
+    <member type="@_t" name="value">
+      <desc><brief>現在の整数値を保持します。</brief></desc>
+    </member>
+
+    <desc>
+      <brief>Integerクラスのインスタンスとなる構造体です。</brief>
+      <p>整数を保持します。</p>
+    </desc>
+  </struct>
+
+  <method name="new">
+    <param type="@_t" name="i">
+      <desc>インスタンスの初期化</desc>
+    </param>
+
+    <return type="struct @ *">
+      <desc>生成したインスタンス、または<code>NULL</code></desc>
+    </return>
+
+    <desc>
+      <brief>Integerクラスのインスタンスを生成します。</brief>
+      <p>生成できないときはNULLを返します。</p>
+    </desc>
+  </method>
+
+  <method name="delete">
+    &thisParam;
+
+    <desc>
+      <brief>Integerクラスのインスタンスを破壊します。</brief>
+      <p><arg>i</arg>が<code>NULL</code>のときは何もしません。</p>
+    </desc>
+  </method>
+
+  <method name="set">
+    &thisParam;
+
+    <param type="@_t" name="value">
+      <desc>整数値</desc>
+    </param>
+
+    <desc><brief>整数値を設定します。</brief></desc>
+  </method>
+
+  <method name="get">
+    &thisParam;
+
+    <return type="@_t">
+      <desc>整数値</desc>
+    </return>
+
+    <desc><brief>整数値を取得します。</brief></desc>
+  </method>
+
+  <desc>
+    <brief>整数値を表す型と、その型への操作を提供します。</brief>
+    <p>チュートリアル以外に用途はありません。</p>
+  </desc>
+</class>

@@ -1,0 +1,234 @@
+To: xbugs@x.org
+Subject: Xlib: A part of XIC attributes has not been implemented.
+
+     VERSION:
+
+R6.6
+
+     CLIENT MACHINE and OPERATING SYSTEM:
+
+FreeBSD 4.7
+
+     DISPLAY TYPE:
+
+XFree86
+
+     WINDOW MANAGER:
+
+qvwm
+
+     COMPILER:
+
+gcc version 2.95.4
+
+     AREA:
+
+Xlib
+
+     SYNOPSIS:
+
+A part of XIC attributes has not been implemented.
+
+     DESCRIPTION:
+
+The XIM specifications "The Input Method Protocol version 1.0" (seen
+in xc/doc/hardcopy/XIM/xim.PS.gz) in pages 6--7 describe `type of the
+value (*2)' of XICATTR.  They define "value type" of XIMPreeditState
+as #18, and "value type" of XIMResetState as #19.
+
+    XICATTR
+      2  CARD16     attibute ID (*1)
+      2  CARD16     type of the value (*2)
+      2  n          length of ic-attribute
+      n  STRING8    ic-attribute
+      p             unused, p = Pad(2+n)
+    ...
+
+    (*2) The value types are defined as follows
+
+         values  data              format
+         ...
+         #3      long data         CARD32
+         ...
+         #18     XIMPreeditState   XIMPREEDITSTATE
+         #19     XIMResetState     XIMRESETSTATE
+         ...
+
+However, "value type" #18 and #19 have not been implemented in Xlib.
+(Note: kinput2 version 3.1, which is one of famous Japanese XIM
+servers, appears to avoid this problem by defining "value type" of
+them as #3 (CARD32). But it is not conforming to the specifications.)
+
+     REPEAT BY:
+
+To repeat, you need an XIM server which supports XIMPreeditState and
+XIMResetState of XIC attributes (conforming to the specifications).
+You must have the server running, and set the environment variable
+XMODIFIERS appropriately.
+
+$ cat Imakefile
+LOCAL_LIBRARIES = $(XONLYLIB)
+SRCS            = ic-attribute.c
+OBJS            = $(SRCS:.c=.o)
+
+ComplexProgramTarget(ic-attribute)
+$ cat ic-attribute.c
+#include <X11/Xlib.h>
+#include <X11/Xlocale.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <err.h>
+
+#define FONTSET "-*-fixed-medium-r-normal--*-*-*-*-*-*-*-*"
+#define XICCallback XIMCallback
+#define XICProc XIMProc
+
+int
+main(void)
+{
+    Display *dpy;
+    Window w;
+    XIM im;
+    XIMStyle style;
+    XIMStyles *supported;
+    XIC ic;
+    XVaNestedList preedit, status, list;
+    XICCallback null;
+    XFontSet fs;
+    int n_missing_sets;
+    char **missing_set, *alternate_font;
+    XPoint Origin = {0, 0};
+
+    if ((dpy = XOpenDisplay("")) == NULL) {
+        errx(1, "cannot open display.");
+    }
+    if (setlocale(LC_ALL, "") == NULL) {
+        errx(1, "cannot set locale.");
+    }
+    if (XSupportsLocale() == False) {
+        errx(1, "locale not supported.");
+    }
+    if (XSetLocaleModifiers("") == NULL) {
+        errx(1, "cannot set locale modifiers.");
+    }
+    if ((fs = XCreateFontSet(dpy, FONTSET, &missing_set, &n_missing_sets,
+                             &alternate_font)) == NULL) {
+        errx(1, "cannot create font set.");
+    }
+    if ((im = XOpenIM(dpy, NULL, NULL, NULL)) == NULL) {
+        errx(1, "cannot open input method.");
+    }
+    if (XGetIMValues(im, XNQueryInputStyle, &supported, NULL) != NULL) {
+        errx(1, "XNQueryInputStyle not supported.");
+    }
+    if (supported->count_styles < 1) {
+        errx(1, "no style available.");
+    }
+    style = supported->supported_styles[0];
+    XFree(supported);
+
+    null.client_data = NULL;
+    null.callback = (XICProc)NULL;
+    preedit = XVaCreateNestedList(0,
+                                  XNFontSet, fs,
+                                  XNSpotLocation, &Origin,
+                                  XNPreeditStartCallback, &null,
+                                  XNPreeditDoneCallback, &null,
+                                  XNPreeditDrawCallback, &null,
+                                  XNPreeditCaretCallback, &null,
+                                  NULL);
+    status = XVaCreateNestedList(0,
+                                 XNFontSet, fs,
+                                 XNStatusStartCallback, &null,
+                                 XNStatusDoneCallback, &null,
+                                 XNStatusDrawCallback, &null,
+                                 NULL);
+    w = DefaultRootWindow(dpy);
+    if ((ic = XCreateIC(im,
+                        XNInputStyle, style,
+                        XNClientWindow, w,
+                        XNPreeditAttributes, preedit,
+                        XNStatusAttributes, status,
+                        NULL)) == NULL) {
+        errx(1, "cannot create input context.");
+    }
+    XFree(preedit);
+    XFree(status);
+
+    if (XSetICValues(ic, XNResetState, XIMPreserveState, NULL) != NULL) {
+        warnx("XNResetState not supported.");
+    }
+    list = XVaCreateNestedList(0, XNPreeditState, XIMPreeditEnable, NULL);
+    if (XSetICValues(ic, XNPreeditAttributes, list, NULL) != NULL)
+        warnx("XNPreeditState not supported.");
+    XFree(list);
+
+    exit(0);
+    return 0;
+}
+$ xmkmf -a ; make
+...
+$ ./ic-attribute
+ic-attribute: XNResetState not supported.
+ic-attribute: XNPreeditState not supported.
+$
+
+Note: no messages of warnx() should be printed out.
+
+     SAMPLE FIX:
+
+diff -c -r xc.orig/lib/X11/XimProto.h xc/lib/X11/XimProto.h
+*** xc.orig/lib/X11/XimProto.h  Mon Apr 28 03:47:27 2003
+--- xc/lib/X11/XimProto.h       Sun May 11 05:51:33 2003
+***************
+*** 1,4 ****
+--- 1,5 ----
+  /* $Xorg: XimProto.h,v 1.3 2000/08/17 19:45:05 cpqbld Exp $ */
++ /* SAMPLE FIX: 2003/05/11 */
+  /******************************************************************
+  
+             Copyright 1992, 1993 by FUJITSU LIMITED
+***************
+*** 164,169 ****
+--- 165,172 ----
+  #define XimType_XIMHotKeyTriggers     15
+  #define XimType_XIMHotKeyState                16
+  #define XimType_XIMStringConversion   17
++ #define XimType_XIMPreeditState         18
++ #define XimType_XIMResetState           19
+  #define       XimType_NEST                    0x7fff
+  
+  /*
+diff -c -r xc.orig/lib/X11/imRmAttr.c xc/lib/X11/imRmAttr.c
+*** xc.orig/lib/X11/imRmAttr.c  Mon Apr 28 03:47:28 2003
+--- xc/lib/X11/imRmAttr.c       Sun May 11 05:49:05 2003
+***************
+*** 1,4 ****
+--- 1,5 ----
+  /* $Xorg: imRmAttr.c,v 1.4 2000/08/17 19:45:15 cpqbld Exp $ */
++ /* SAMPLE FIX: 2003/05/11 */
+  /******************************************************************
+  
+             Copyright 1992, 1993, 1994 by FUJITSU LIMITED
+***************
+*** 222,227 ****
+--- 223,230 ----
+      case XimType_CARD32:
+      case XimType_Window:
+      case XimType_XIMHotKeyState:
++     case XimType_XIMPreeditState:
++     case XimType_XIMResetState:
+        _XCopyToArg((XPointer)data, (XPointer *)&value, data_len);
+        break;
+  
+***************
+*** 622,627 ****
+--- 625,632 ----
+      case XimType_CARD32:
+      case XimType_Window:
+      case XimType_XIMHotKeyState:
++     case XimType_XIMPreeditState:
++     case XimType_XIMResetState:
+        ret_len = sizeof(CARD32);
+        if (buf_size < ret_len + XIM_PAD(ret_len)) {
+            *len = -1;

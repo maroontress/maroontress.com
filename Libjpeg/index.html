@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | libjpegのエンコードを高速化する</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">libjpegのエンコードを高速化する</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p><code>jpeg-6b.tar.gz</code>に含まれる<code>jchuff.c</code>の関数<code>encode_one_block()</code>は、DCT変換と量子化を終えたブロックを引数にとり、DC/AC成分の係数をハフマン符号にエンコードして出力する。このうち、63個のAC成分の係数をハフマン符号化する部分では、1つの係数につき、先行して0が続く個数（0ランレングス）の符号、係数のビット長の符号、係数そのものを連続してビットストリームに出力する。0ランレングスの符号と係数のビット長の符号については、事前に用意したテーブルから求めて<code>emit_bits()</code>でまとめて出力し、続けて係数そのものを再度<code>emit_bits()</code>で出力する。したがって、0ランレングスが16以上になる特別な場合を除き、ループ1回につき<code>emit_bits()</code>を2回呼び出すことになる。</p>
+<pre><code class="language-c">LOCAL(boolean)
+encode_one_block (working_state * state, JCOEFPTR block, int last_dc_val,
+                  c_derived_tbl *dctbl, c_derived_tbl *actbl)
+{
+  ...
+  r = 0;                        /* r = run length of zeros */
+
+  for (k = 1; k &lt; DCTSIZE2; k++) {
+    if ((temp = block[jpeg_natural_order[k]]) == 0) {
+      r++;
+    } else {
+      /* if run length &gt; 15, must emit special run-length-16 codes (0xF0) */
+      while (r &gt; 15) {
+        if (! emit_bits(state, actbl-&gt;ehufco[0xF0], actbl-&gt;ehufsi[0xF0]))
+          return FALSE;
+        r -= 16;
+      }
+
+      temp2 = temp;
+      if (temp &lt; 0) {
+        temp = -temp;           /* temp is abs value of input */
+        /* This code assumes we are on a two's complement machine */
+        temp2--;
+      }
+
+      /* Find the number of bits needed for the magnitude of the coefficient */
+      nbits = 1;                /* there must be at least one 1 bit */
+      while ((temp &gt;&gt;= 1))
+        nbits++;
+      /* Check for out-of-range coefficient values */
+      if (nbits &gt; MAX_COEF_BITS)
+        ERREXIT(state-&gt;cinfo, JERR_BAD_DCT_COEF);
+
+      /* Emit Huffman symbol for run length / number of bits */
+      i = (r &lt;&lt; 4) + nbits;
+      if (! emit_bits(state, actbl-&gt;ehufco[i], actbl-&gt;ehufsi[i]))
+        return FALSE;
+
+      /* Emit that number of bits of the value, if positive, */
+      /* or the complement of its magnitude, if negative. */
+      if (! emit_bits(state, (unsigned int) temp2, nbits))
+        return FALSE;
+
+      r = 0;
+    }
+  }
+  ...
+</code></pre>
+<p><code>jpeg-6b.tar.gz</code>に含まれる<code>jchuff.c</code>の関数<code>encode_one_block()</code>は、DCT変換と量子化を終えたブロックを引数にとり、DC/AC成分の係数をハフマン符号にエンコードして出力する。このうち、63個のAC成分の係数をハフマン符号化する部分では、1つの係数につき、先行して0が続く個数（0ランレングス）の符号、係数のビット長の符号、係数そのものを連続してビットストリームに出力する。0ランレングスの符号と係数のビット長の符号については、事前に用意したテーブルから求めて<code>emit_bits()</code>でまとめて出力し、続けて係数そのものを再度<code>emit_bits()</code>で出力する。したがって、0ランレングスが16以上になる特別な場合を除き、ループ1回につき<code>emit_bits()</code>を2回呼び出すことになる。</p>
+<p>0ランレングスの符号、係数のビット長の符号、係数そのものを、1度に取得できるように別のテーブルを事前に作成しておけば、<code>emit_bits()</code>を呼ぶ回数を1回減らすことができて、性能を改善できるはずである。問題はテーブルのサイズと、1度に取得するビット数であるが、これはデータ精度によって変わってくる。</p>
+<p>libjpegは、<code>jmorecfg.h</code>のマクロ<code>BITS_IN_JSAMPLE</code>でデータ精度に8ビット、または12ビットをコンパイル時に指定できる。デフォルトは8ビットであり、YUVの各成分は0から255の値をとるが、ソースコードそのものは各成分が12ビット（0から4095）でも動作するようになっている。</p>
+<p>データ精度が8ビットの場合は、DCT変換と量子化を終えたブロックの係数の絶対値は最大10ビット（マクロ<code>MAX_COEF_BITS</code>で定義される）になる。ただし、普通の量子化テーブルなら、量子化のときに1で割ることはほとんどないので、係数の絶対値が10ビットになることは滅多にない。係数が8ビットに収まる場合（−128から127）は、テーブルから出力する符合を取り出すことにして、それ以外の場合は従来通りに計算することにする。データ精度が12ビットの場合は、ブロックの係数の絶対値は最大14ビットになるが、同様に係数が8ビットに収まる場合だけテーブルを使用すれば、実装を共通化できる。</p>
+<p>0ランレングスのパターン（0から15）とブロックの係数（−128から127）から、出力すべき符号とその符号長を取り出せるテーブルを用意することにする。計算してみると、係数を1つ出力するとき、符号の最大長は24ビットになるので、32ビット整数の上位24ビットに符号、下位8ビットに符号長を格納することにすると、せいぜい16kバイトのテーブルを新たに用意すればよいことがわかる。</p>
+<p>もし、係数の絶対値が10ビットに収まるすべての場合について、テーブルに符合を格納することになると、テーブルのサイズが8倍になる。それだけではなく、テーブルに格納する符合の最大長は26ビットになり、ビットストリームへ出力する関数<code>emit_bits()</code>も修正が必要になる。</p>
+<p><a href="use_actbl.patch">パッチ</a>をあてた場合は、2560×1440の画像を<code>cjpeg</code>でエンコードしたとき、10%程度高速化できた。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon Jan 12 03:50:20 JST 2009 -->
+<!-- hhmts start -->
+Last modified: Mon Jan 12 23:59:49 JST 2009
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">libjpegのエンコードを高速化する</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

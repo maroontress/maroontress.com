@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | Coverture</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Coverture</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p>gccが生成するgcno/gcdaファイルをパースし、結果をXMLで出力します。また、gcov互換のgcovファイルを生成します。</p>
+<h2>gcnoファイル</h2>
+<p>gcovでカバレッジするときに、gccのコンパイルオプションに<code>-ftest-coverage</code>を追加します。このオプションを指定してソースファイルをコンパイルすると、gccはソースファイルの拡張子を<code>.gcno</code>に変更したノーツファイルを生成します。</p>
+<p>gcnoファイルには何が記録されているのでしょうか。gcnoファイルの構造については、gccのソースコードに含まれる<code>gcov-io.h</code>（FreeBSDなら<code>/usr/src/contrib/gcc/gcov-io.h</code>）に次のような説明があります。</p>
+<pre><code class="language-plaintext">The basic block graph file contains the following records
+    note: unit function-graph*
+    unit: header int32:checksum string:source
+    function-graph: announce_function basic_blocks {arcs | lines}*
+    announce_function: header int32:ident int32:checksum
+            string:name string:source int32:lineno
+    basic_block: header int32:flags*
+    arcs: header int32:block_no arc*
+    arc:  int32:dest_block int32:flags
+    lines: header int32:block_no line*
+            int32:0 string:NULL
+    line:  int32:line_no | int32:0 string:filename
+</code></pre>
+<p>フォーマットに関する詳細は<code>gcov-io.h</code>を参照してください。gcnoファイルには、対応するソースコードの関数（C++ならメソッド）のフローグラフに関する情報が保存されています。この有向グラフは、グラフのノードである基本ブロックと、グラフのエッジであるアークで構成されます。また、基本ブロックそれぞれに対応するソースコードのファイル名とその行番号も保存されています。</p>
+<p>具体的に、次のプログラムをコンパイルしてgcnoファイル（<code>foo.gcno</code>）を作成してみます。</p>
+<pre><code class="language-plaintext">% cat foo.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;err.h&gt;
+
+void bar(FILE *fp);
+
+void foo(const char *path)
+{
+    FILE *fp;
+
+    if (path == NULL) {
+        abort();
+    }
+    if ((fp = fopen(path, &quot;r&quot;)) == NULL) {
+        warn(&quot;fopen: %s&quot;, path);
+        return;
+    }
+    bar(fp);
+    fclose(fp);
+}
+% gcc -Wall -W -ftest-coverage -O0 -c foo.c
+% ls -1 foo.*
+foo.c
+foo.gcno
+foo.o
+</code></pre>
+<p>Covertureで<code>foo.gcno</code>をパースした出力<a href="s/foo.gcno.xml"><code>foo.gcno.xml</code></a>をみると、関数<code>foo</code>は次の図のような12個の基本ブロックと、17のアークで構成されていることがわかります。</p>
+<div class="horizontal-scroll"><img class="fit" src="images/foo.png"></div>
+<p>また、行番号の情報から、基本ブロックの番号とソースコードの対応は次のようになっています（<code>bb</code>は基本ブロックのID）。</p>
+<pre><code class="language-plaintext">bb   #
+-- ---
+     1  #include &lt;stdio.h&gt;
+     2  #include &lt;stdlib.h&gt;
+     3  #include &lt;err.h&gt;
+     4
+     5  void bar(FILE *fp);
+     6
+     7  void foo(const char *path)
+ 1   8  {
+ 1   9      FILE *fp;
+    10
+ 1  11      if (path == NULL) {
+ 2  12          abort();
+    13      }
+ 3  14      if ((fp = fopen(path, &quot;r&quot;)) == NULL) {
+ 5  15          warn(&quot;fopen: %s&quot;, path);
+ 6  16          return;
+    17      }
+ 7  18      bar(fp);
+ 8  19      fclose(fp);
+    20  }
+</code></pre>
+<p>また、アークには属性があり、<code>gcov-io.h</code>には次のような定数が定義されています。</p>
+<pre><code class="language-c">#define GCOV_ARC_ON_TREE        (1 &lt;&lt; 0)
+#define GCOV_ARC_FAKE           (1 &lt;&lt; 1)
+#define GCOV_ARC_FALLTHROUGH    (1 &lt;&lt; 2)
+</code></pre>
+<p>上の図では、FAKEのアークは波線で表現されています。関数<code>foo</code>から外部の関数を呼び出すところは、FAKEのアークで最終ブロック（関数の出口）に分岐しています。これは、呼び出した外部の関数が<code>longjmp(3)</code>や（C++での）例外のスローなど、非局所分岐を実行し、現在の関数から抜ける経路を表しています。</p>
+<p><code>exit(3)</code>や<code>abort(3)</code>など、戻らない関数の呼び出しには、関数から戻る経路はありません。ただし、外部関数の呼び出しのため、FAKEのアークの経路は存在します。</p>
+<h2>McCabeのcyclomatic complexity</h2>
+<p>gcnoファイルをパースすることで、McCabeのcyclomatic complexity（以下、CCと記述します）を計算することができます。定義に従うと、次の式で求めることになります。</p>
+<pre><code class="language-plaintext">複雑度 = アーク総数 - 基本ブロック総数 + 2
+</code></pre>
+<p>上の例では、関数<code>foo</code>の複雑度は17 − 12 + 2 = 7ということになります。しかし、この値はFAKEのアークも考慮しているので、外部関数の呼び出し数の分だけ余計な複雑度が加えられたことになります。したがって、通常の複雑度は次のように計算するべきです。</p>
+<pre><code class="language-plaintext">複雑度 = アーク総数 - FAKEのアーク数 - 基本ブロック総数 + 2
+</code></pre>
+<p>この場合、関数<code>foo</code>の複雑度は2になり、実線のフローグラフの複雑度と等しくなります。これらの値は<a href="s/foo.gcno.xml"><code>foo.gcno.xml</code></a></a>では、<code>functionGraph</code>要素の<code>complexity</code>属性と、<code>complexityWithFake</code>属性の値として記録されています。</p>
+<p>Cの場合はこれで終わりですが、C++の場合はさらに考慮すべきことがあります。gcnoファイルからCCとNPATHを計算する<a href="http://sourceforge.net/project/showfiles.php?group_id=197216">gnocchi</a>は、FAKEのアークが最終ブロックに向かうことを利用して、最終ブロックを除外して複雑度を計算します。実際C++では、上記のCのケースの説明とは異なり、FAKEのアークが最終ブロックだけに向かうとは限りません。FAKEのアークが最終ブロック以外の基本ブロックに入るケースもあります（例えば、<code>catch</code>に対応する基本ブロックに入ります）。したがって、「最終ブロックに入るFAKEのアーク」だけを除外する必要があります。最終的に、複雑度は次のようになります。</p></p>
+<pre><code class="language-plaintext">複雑度 = アーク総数 - 最終ブロックに入るFAKEのアーク数 - 基本ブロック総数 + 2
+</code></pre>
+<p>これでC++でもCCを求めることができるようになりましたが、釈然としない点もあります。例えば、どこで例外をスローしたのかとは関係無く、<code>catch</code>の数だけ複雑度が増加することや、例外をスローしても複雑度が増えないことなどは、直感的には理解できません<a href="#1">†</a>。これは、McCabeのCCがもともと構造化プログラミングの要素を対象に考案されたものであり、例外などの非局所分岐を考慮していないことに起因します。つまり、例外というメカニズムがもたらす複雑さはCCでは表現できません。<code>catch</code>の数だけ複雑度が増加するのは、例外の静的な側面だけを考慮するからにすぎません。例外とCCは概念的に相性が悪いのでしょう。</p>
+<h2>gcdaファイル</h2>
+<p>gcnoファイルの次にgcdaファイルを調べてみます。実際にgcovでカバレッジするときには、前述の<code>-ftest-coverage</code>に加え、<code>-fprofile-arcs</code>をgccのコンパイルオプションに追加します。これらのオプションを指定してソースファイルをコンパイルし、そのプログラムを実行します。すると、プログラムの終了時<a href="#2">‡</a>に、ソースファイルの拡張子を<code>.gcda</code>に変更したデータファイルが生成されます。</p>
+<p>gcnoの構造と同様、gcdaの構造に関しても、<code>gcov-io.h</code>に次のような説明があります。</p>
+<pre><code class="language-plaintext">The data file contains the following records.
+    data: {unit function-data* summary:object summary:program*}*
+    unit: header int32:checksum
+    function-data:  announce_function arc_counts
+    announce_function: header int32:ident int32:checksum
+    arc_counts: header int64:count*
+    summary: int32:checksum {count-summary}GCOV_COUNTERS
+    count-summary:  int32:num int32:runs int64:sum
+                    int64:max int64:sum_max
+</code></pre>
+<p>gcdaファイルには主に各アークの実行回数が記録されます。ただし、ON_TREEのアークの実行回数は含まれません。gccのソースコードに含まれる<code>profile.c</code>（FreeBSDなら<code>/usr/src/contrib/gcc/profile.c</code>）によると、ON_TREEの属性は「そのアークが関数フローグラフのスパニングツリーを構成する」ことを表すようですが、ここではON_TREEではないアークだけが実行回数の測定対象になることが重要です。</p>
+<p>前述のフローグラフを書き直し、ON_TREEのアークを青色で描画すると、次のようになります。</p>
+<div class="horizontal-scroll"><img src="images/foo-tree.png"></div>
+<p>関数<code>foo()</code>を呼び出すプログラムを作成、実行して、<code>foo.gcda</code>を出力してみます。</p>
+<pre><code class="language-plaintext">% gcc -O0 -ftest-coverage -fprofile-arcs foo.c main.c
+% ls foo.*
+foo.c           foo.gcno
+% ./a.out
+...
+% ls foo.*
+foo.c           foo.gcda        foo.gcno
+</code></pre>
+<p><code>foo.gcda</code>をパースすることで、フローグラフのON_TREEではないアークの実行回数がわかります。例えば、ここでは次のような結果を入手できたとします。</p>
+<div class="horizontal-scroll"><img src="images/foo-tree-unsolved.png"></div>
+<p>gccのソースコードに含まれる<code>gcov.c</code>（FreeBSDなら<code>/usr/src/contrib/gcc/gcov.c</code>）の関数<code>solve_flow_graph()</code>の手順で、このフローグラフを解いてみると、最終的に次のような結果を得ることができます。</p>
+<div class="horizontal-scroll"><img src="images/foo-tree-solved.png"></div>
+<p>Covertureで<code>foo.gcno</code>と<code>foo.gcda</code>をパースした出力<a href="s/foo.gcda.xml"><code>foo.gcda.xml</code></a>からも、同様な結果を得ることができます。</p>
+<h2>フローグラフを解く手順</h2>
+<p>関数<code>solve_flow_graph()</code>がどのようにフローグラフを解くのか、簡単に説明しておきます。次の図のように、ブロックの実行回数は「ブロックに入るアークの実行回数の和」または「ブロックから出るアークの実行回数の和」に等しくなります。ただし、入口のブロック（入るアークは0個）と出口のブロック（出るアークは0個）は除きます。</p>
+<div class="horizontal-scroll"><img class="fit" src="images/sfg1.png"></div>
+<p>最初に、すべてのブロックを、片側（入る側または出る側）のアークの実行回数がすべてわかるものと、そうではないもの（つまり両側に実行回数の不明なアークがある）ものに分けます。片側のアークの実行回数がすべてわかるブロックは実行回数を求めます。</p>
+<p>次に、実行回数がわかったブロックすべてについて、それぞれ次のように処理します。</p>
+<ul>
+<li>
+<p>片側のアークの実行回数はすべてわかっているので、その反対側のアークで実行回数がわからないものがいくつあるのか調べます。2つ以上あるか、まったくない場合は、次のブロックに進みます。そうではなく、1つだけある場合は、次の図のようにブロック<em>v</em>の実行回数から、わかっているアークの実行回数を減算することで、そのアークの実行回数を求めます。</p>
+<div class="horizontal-scroll"><img class="fit" src="images/sfg2.png"></div>
+</li>
+<li>
+<p>さらに、そのアークと接続するブロック<em>v</em>の反対側のブロック<em>w</em>について考えます。そのアークが<em>v</em>から<em>w</em>に向かうものとします。ブロック<em>w</em>の実行回数がすでにわかっている場合は、<em>w</em>から出るアークの実行回数は既にわかっていたことになります。<em>w</em>に入るアークで実行回数がわからないものがいくつあるのか調べ、次の図のように1つだけある場合は、上記の処理を再帰的に繰り返します（アークが<em>w</em>から<em>v</em>に向かう場合も同様）。</p>
+<div class="horizontal-scroll"><img class="fit" src="images/sfg3.png"></div>
+</li>
+<li>
+<p>反対にブロック<em>w</em>の実行回数が不明な場合は、<em>w</em>に入るアークの実行回数は、少なくても1つ以上わかっていなかったことになります（直前まで両側に実行回数が不明なアークがあったので）。<em>w</em>に入るアークで実行回数がわからないものがいくつあるのか調べます。次の図のように0になった場合は、<em>w</em>の実行回数が求まります。<em>w</em>は実行回数がわかったブロックとなったので、再帰的に上記の処理を繰り返します（アークが<em>w</em>から<em>v</em>に向かう場合も同様）。</p>
+<div class="horizontal-scroll"><img class="fit" src="images/sfg4.png"></div>
+</li>
+</ul>
+<p>実際には、関数<code>solve_flow_graph()</code>は再帰呼び出しを使わず、「invalid but inferable」と「valid but unpropagated」という2つのリストとループで、同様な処理を実現しています。</p></p>
+<p class="footnote"><a name="1">&dagger;</a> `catch`節のカバレッジを測定することはできますが、その対応する`try`節が例外をスローする個所を複数含んでいる場合、どこで例外が発生したのか、しなかったのか、をgcovは測定してくれません。例外を全て自分で`throw`する場合はそのカバレッジを調べればわかりますが、標準ライブラリなどカバレッジ対象外のライブラリから例外がスローされる場合は、例外をスローする可能性がある全ての個所で非局所分岐を発生させているかどうかを知ることはできません。
+<p class="footnote"><a name="2">&ddagger;</a> atexit(3)のフックによってgcdaファイルを出力しているので、exit(3)の呼び出しかmain関数から戻ることで終了する必要があります。シグナルやabort(3)でプロセスが終了する場合、あるいは_exit(2)で終了する場合は、gcdaファイルは生成、更新されません。ユニットテストとカバレッジを併用する場合は注意する必要があります。
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon Sep  8 00:37:05 JST 2008 -->
+<!-- hhmts start -->
+Last modified: Sun Jul  4 03:42:22 JST 2010
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Coverture</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+    <li>
+      <a href="appendix.html">Appendix</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

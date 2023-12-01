@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Union - foo_Union</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package foo</h3>
+    <h1>class Union</h1>
+#define foo_Union_IMPORT<br>
+#include &lt;foo/Union.h&gt;<br>
+    <dl><dd>
+    intとdouble、unsigned intとunsigned charのビットマップを相互に変換する機能を提供します。
+  </dd></dl>
+    <hr>
+    <h2>Union Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="foo_Union.html#union foo_Union_IntDouble">union Union_<wbr>IntDouble</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intの配列（要素数2）とdoubleの共用体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int [2]</font>
+  </td>
+  <td valign="top"><a href="#union foo_Union_IntDouble.i"><b>i</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int型の配列としてアクセスします。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;double</font>
+  </td>
+  <td valign="top"><a href="#union foo_Union_IntDouble.d"><b>d</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double型としてアクセスします。</td>
+</tr>
+      </tr>
+    </table><br>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="foo_Union.html#foo_Union_UCharUInt">Union_<wbr>UCharUInt</a></b> (union)</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unsigned charの配列（要素数4）とunsigned intの共用体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;unsigned char [4]</font>
+  </td>
+  <td valign="top"><a href="#foo_Union_UCharUInt.c"><b>c</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unsigned char型の配列としてアクセスします。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;unsigned int</font>
+  </td>
+  <td valign="top"><a href="#foo_Union_UCharUInt.i"><b>i</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unsigned int型としてアクセスします。</td>
+</tr>
+      </tr>
+    </table><br>
+    <h2>Union Detail</h2>
+<p><a name="union foo_Union_IntDouble"></a>
+<font size="+1"><b>union Union_IntDouble</b></font></p>
+<dl><dd>intの配列（要素数2）とdoubleの共用体です。
+<hr>
+<p><a name="union foo_Union_IntDouble.i"></a><font size="+1"><b>i</b></font></p>
+<p>int  <b>i</b>[2]</p>
+<dl>
+<dd>int型の配列としてアクセスします。</dd>
+</dl>
+<hr>
+<p><a name="union foo_Union_IntDouble.d"></a><font size="+1"><b>d</b></font></p>
+<p>double <b>d</b></p>
+<dl>
+<dd>double型としてアクセスします。</dd>
+</dl>
+</dd></dl>
+<hr>
+<p><a name="foo_Union_UCharUInt"></a>
+<font size="+1"><b>Union_UCharUInt</b> (union)</font></p>
+<dl><dd>unsigned charの配列（要素数4）とunsigned intの共用体です。
+<hr>
+<p><a name="foo_Union_UCharUInt.c"></a><font size="+1"><b>c</b></font></p>
+<p>unsigned char  <b>c</b>[4]</p>
+<dl>
+<dd>unsigned char型の配列としてアクセスします。</dd>
+</dl>
+<hr>
+<p><a name="foo_Union_UCharUInt.i"></a><font size="+1"><b>i</b></font></p>
+<p>unsigned int <b>i</b></p>
+<dl>
+<dd>unsigned int型としてアクセスします。</dd>
+</dl>
+</dd></dl>
+<hr>
+  </body>
+</html>

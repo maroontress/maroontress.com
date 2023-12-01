@@ -1,0 +1,77 @@
+XCreateFontSet()/XFreeFontSet()によりメモリリークが発生する。
+
+- 症状
+  XCreateFontSet()で生成したフォントセットをXFreeFontset()で解放すると、
+  次の3個所でメモリリークが生じる。
+
+  1. フォントセット生成の際、_XlcLocaleDirName()においてresolve_name()の
+     戻り値を解放していない。
+  2. フォントセット解放の際、load_fontdata()で生成したXFontStruct構造体
+     を解放していない。
+
+  1.と2.はXFree86 4.3.0で修正されている。  
+
+- 再現
+  省略。
+
+- 確認できるリリース
+  R6.6 (XFree86-4.2.x)
+
+- 回避策
+  XCreateFontSet()で生成したフォントセットは解放しない。アプリケーション
+  がフォントセットのリファレンスカウンタを管理して、フォントセットを使い
+  回すようにする。
+
+- 修正方法
+  R6.6に次のパッチを適用する。
+
+diff -c -r xc.orig/lib/X11/lcFile.c xc/lib/X11/lcFile.c
+*** xc.orig/lib/X11/lcFile.c	Mon Apr 28 03:47:28 2003
+--- xc/lib/X11/lcFile.c	Sun Sep 21 05:37:01 2003
+***************
+*** 1,4 ****
+--- 1,5 ----
+  /* $Xorg: lcFile.c,v 1.5 2000/12/12 12:44:05 coskrey Exp $ */
++ /* SAMPLE FIX: 2003/09/21 */
+  /*
+   *
+   * Copyright IBM Corporation 1993
+***************
+*** 413,417 ****
+--- 414,422 ----
+    strcpy(dir_name, target_dir);
+    strcat(dir_name, "/");
+    strcat(dir_name, target_name);
++   if (name != NULL)
++       Xfree(name);
++   if (target_name != NULL)
++       Xfree(target_name);
+    return dir_name;
+  }
+diff -c -r xc.orig/lib/X11/omGeneric.c xc/lib/X11/omGeneric.c
+*** xc.orig/lib/X11/omGeneric.c	Mon Apr 28 03:47:29 2003
+--- xc/lib/X11/omGeneric.c	Sun Sep 21 05:22:24 2003
+***************
+*** 1,4 ****
+--- 1,5 ----
+  /* $Xorg: omGeneric.c,v 1.6 2000/08/17 19:45:21 cpqbld Exp $ */
++ /* SAMPLE FIX: 2003/09/21 */
+  /*
+   * Copyright 1992, 1993 by TOSHIBA Corp.
+   *
+***************
+*** 1441,1446 ****
+--- 1442,1454 ----
+  	font_set = gen->font_set;
+  	font_set_num = gen->font_set_num;
+  	for( ; font_set_num-- ; font_set++) {
++ 	    if (font_set->font) {
++ 		if (font_set->font->fid)
++ 		    XFreeFont(dpy, font_set->font);
++ 		else
++ 		    XFreeFontInfo(NULL, font_set->font, 1);
++ 		font_set->font = NULL;
++ 	    }
+  	    if(font_set->font_data) {
+  		free_fontdataOC(dpy,
+  			font_set->font_data, font_set->font_data_count);

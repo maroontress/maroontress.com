@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Download | Sanctuary | Version 1.0</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Sanctuary 1.0</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Download</h1>
+<p>最新版は<a href="../sanctuary-1.0.7.tar.bz2">sanctuary-1.0.7.tar.bz2</a>です。リリースノートと過去のリリースは<a href="../relnotes.html">Release Notes</a>から取得してください。</p>
+<h2>必要な構成</h2>
+<h3>ビルドできたプラットフォーム</h3>
+<p>以下のプラットフォームでビルドを確認しました（i386アーキテクチャのみ）。</p>
+<ul>
+<li>FreeBSD 6.2/5.5</li>
+<li>Red Hat Linux 9</li>
+<li>SUSE Linux 10.1/9.1</li>
+</ul>
+<p>imake、AntのどちらかでSanctuaryをビルドできます。</p>
+<h3>ビルドに必要なもの（Ant編）</h3>
+<p>ビルドは次のものに依存しています。</p>
+<ul>
+<li><a href="http://java.sun.com/javase/downloads/index.jsp">J2SE Development Kit (JDK) 5.0</a></li>
+<li><a href="http://ant.apache.org/bindownload.cgi">Apache Ant 1.7/1.6</a></li>
+</ul>
+<p>各プラットフォームではそれぞれ次のように準備するのが簡単です。</p>
+<h4>FreeBSD</h4>
+<p>以下のportsをインストールしておきます。</p>
+<ul>
+<li>java/jdk15</li>
+<li>devel/apache-ant</li>
+</ul>
+<h4>Red Hat Linux 9</h4>
+<p>一般的な開発環境に加え、次のRPMをインストールしておきます。</p>
+<ul>
+<li><a href="https://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/ViewProductDetail-Start?ProductRef=jdk-1.5.0_15-oth-JPR@CDS-CDS_Developer">jdk-1.5.0_15-fcs</a></li>
+</ul>
+<p>Antは<a href="http://ant.apache.org/bindownload.cgi">Apache Ant</a>から<code>apache-ant-1.7.0-bin.tar.bz2</code>をダウンロードしてインストールしておきます。</p>
+<h4>SUSE Linux 10.1</h4>
+<p>一般的な開発環境に加え、次のRPMをインストールしておきます。</p>
+<ul>
+<li>java-1_5_0-sun-devel-1.5.0_07-1.1</li>
+</ul>
+<p>Antは<a href="http://ant.apache.org/bindownload.cgi">Apache Ant</a>から<code>apache-ant-1.7.0-bin.tar.bz2</code>をダウンロードしてインストールしておきます。</p>
+<h4>SUSE Linux 9.1</h4>
+<p>一般的な開発環境に加え、次のRPMをインストールしておきます。</p>
+<ul>
+<li><a href="https://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/ViewProductDetail-Start?ProductRef=jdk-1.5.0_15-oth-JPR@CDS-CDS_Developer">jdk-1.5.0_15-fcs</a></li>
+<li>apache-ant-1.6.0-42</li>
+</ul>
+<h3>ビルドに必要なもの（imake編）</h3>
+<p>ビルドは次のものに依存しています。</p>
+<ul>
+<li><a href="http://java.sun.com/javase/downloads/index.jsp">J2SE Development Kit (JDK) 5.0</a></li>
+<li>imake (X.Org/XFree86)</li>
+<li>libxslt 1.1</li>
+</ul>
+<p>各プラットフォームではそれぞれ次のように準備するのが簡単です。</p>
+<h4>FreeBSD</h4>
+<p>以下のportsをインストールしておきます。</p>
+<ul>
+<li>java/jdk15</li>
+<li>devel/imake-4 または devel/imake-6</li>
+<li>textproc/libxslt</li>
+</ul>
+<h4>Red Hat Linux 9</h4>
+<p>一般的な開発環境に加え、次のRPMをインストールしておきます。</p>
+<ul>
+<li><a href="https://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/ViewProductDetail-Start?ProductRef=jdk-1.5.0_15-oth-JPR@CDS-CDS_Developer">jdk-1.5.0_15-fcs</a></li>
+<li>XFree86-devel-4.3.0-2</li>
+<li>libxslt-1.0.27-3</li>
+</ul>
+<h4>SUSE Linux 10.1</h4>
+<p>一般的な開発環境に加え、次のRPMをインストールしておきます。</p>
+<ul>
+<li>java-1_5_0-sun-devel-1.5.0_07-1.1</li>
+<li>xorg-x11-devel-6.9.0-48</li>
+<li>libxslt-1.1.15-13</li>
+</ul>
+<h4>SUSE Linux 9.1</h4>
+<p>一般的な開発環境に加え、次のRPMをインストールしておきます。</p>
+<ul>
+<li><a href="https://cds.sun.com/is-bin/INTERSHOP.enfinity/WFS/CDS-CDS_Developer-Site/en_US/-/USD/ViewProductDetail-Start?ProductRef=jdk-1.5.0_15-oth-JPR@CDS-CDS_Developer">jdk-1.5.0_15-fcs</a></li>
+<li>XFree86-devel-4.3.99.902-40</li>
+<li>libxslt-1.1.2-58</li>
+</ul>
+<h3>実行に必要なもの</h3>
+<p>実行するには次のものをインストールしておく必要があります。</p>
+<ul>
+<li>J2SE Runtime Environment (JRE) 5.0</li>
+</ul>
+<h2>ビルドとインストール</h2>
+<p>コマンドラインから<code>java</code>を実行したとき、<strong>SunのJVMを</strong>実行するように環境変数<code>PATH</code>を設定しておきます。特にLinuxでは次のように表示されることを確認します。</p>
+<pre><code class="language-plaintext">% java -version
+java version &quot;1.5.0_15&quot;
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.5.0_15-b03)
+Java HotSpot(TM) Client VM (build 1.5.0_15-b03, mixed mode, sharing)
+</code></pre>
+<p>この後はビルドツールによって手順が異なります。</p>
+<h3>Antでビルドする場合</h3>
+<p>次の手順でビルド、インストールします。</p>
+<pre><code class="nohighlight">% tar xf sanctuary-<i>YYYYMMDD</i>.tar.bz2 <a href="#1">★1</a>
+% cd sanctuary
+% ant <a href="#2">★2</a>
+% su
+# ant -Dprefix=<i>path</i> install <a href="#3">★3</a></code></pre>
+<h3>imakeでビルドする場合</h3>
+<p>次の手順でビルド、インストールします。</p>
+<pre><code class="nohighlight">% tar xf sanctuary-<i>YYYYMMDD</i>.tar.bz2 <a href="#1">★1</a>
+% cd sanctuary
+% xmkmf -a
+% make
+% su
+# make DESTDIR=<i>path</i> install <a href="#3">★3</a></code></pre>
+<p class="footnote"><a name="1">★1</a> プラットフォームによっては、<code>tar(1)</code>のオプションは<code>yxf</code>または<code>jxf</code>かもしれません。</p>
+<p class="footnote"><a name="2">★2</a> SUSE Linux 9.1でRPM（apache-ant-1.6.0-42）を使用してAntをインストールした場合、AntがJDK 5.0を使用するようにするため、次のようにして<code>ant</code>を実行してください。</p>
+<pre><code class="language-plaintext">% export JAVA_HOME=/usr/java/jdk1.5.0_15
+% /usr/share/ant/bin/ant
+</code></pre>
+<p class="footnote"><a name="3">★3</a> <code><i>path</i></code>には絶対パス（<code>/usr/local</code>や<code>/home/foo</code>など）を指定します。インストールされるファイルは次の通りです。</p>
+<pre><code><i>path</i>/bin/sanctuary
+<i>path</i>/lib/sanctuary/sanctuary.jar</code></pre>
+<h2>使用方法</h2>
+<h3>ヘッダファイルの生成</h3>
+<p>次のようにXMLファイルを指定してコマンドを実行するとヘッダファイルを生成します。</p>
+<pre><code class="nohighlight">% sanctuary --code <i>XMLファイル...</i></code></pre>
+<p>コマンドを実行したディレクトリを起点として、生成するヘッダファイルのパスは<code><i>パッケージ名</i>/<i>クラス名</i>.h</code>になります。ただし、パッケージ名に含まれるアンダースコア（<code>_</code>）はスラッシュ（<code>/</code>）に展開されます。</p>
+<p>C++からインクルードできるヘッダファイルを生成する場合は、次のようにオプション<code>--code=c++</code>を指定します。</p>
+<pre><code class="nohighlight">% sanctuary --code=c++ <i>XMLファイル...</i></code></pre>
+<h3>HTMLファイルの生成</h3>
+<p>次のようにXMLファイルを指定してコマンドを実行するとHTMLファイルを生成します。</p>
+<pre><code>% sanctuary --html <i>XMLファイル...</i></code></pre>
+<p>コマンドを実行したディレクトリに<code><i>パッケージ名</i>_<i>クラス名</i>.html</code>を生成します。さらに、インデックスとなるページとして<code>index.html</code>を生成します。</p>
+<h3>TeXファイルの生成</h3>
+<p>次のようにXMLファイルを指定してコマンドを実行するとTeXのソースファイルを生成します。</p>
+<pre><code class="nohighlight">% sanctuary --tex <i>XMLファイル...</i></code></pre>
+<p>コマンドを実行したディレクトリに<code><i>パッケージ名</i>_<i>クラス名</i>.tex</code>を生成します。さらに、<code>sanctuary.tex</code>と<code>sanctuary.sty</code>を生成します。</p>
+<p>dviファイルを生成するには、同じディレクトリに<code>sanctuary.tex</code>と<code>sanctuary.sty</code>を読み込むTeXファイルを用意する必要があります。配布物に含まれている<code>sample.tex</code>を用いてdviファイルを生成するには、次のようにコマンドを実行します。</p>
+<pre><code class="nohighlight">% cp <i>どこか</i>/sanctuary/sample.tex .
+% platex sample.tex</code></pre>
+<p><code>sample.tex</code>と<a href="tutorial.html">Tutorial</a>で紹介したサンプルから生成した<a href="s2/sample.pdf">PDFファイル</a>のサンプルを用意しておきました。</p>
+<p><a name="usage:stub"></a></p>
+<h3>スタブの生成</h3>
+<p>次のようにXMLファイルを指定してコマンドを実行するとスタブとなるソースコードを生成します。</p>
+<pre><code class="nohighlight">% sanctuary --stub <i>XMLファイル...</i></code></pre>
+<p>コマンドを実行したディレクトリを起点として、生成するスタブのソースファイルのパスは<code>stub/<i>パッケージ名</i>/<i>クラス名</i>.c</code>（と<code>.h</code>）になります。ただし、パッケージ名に含まれるアンダースコア（<code>_</code>）はスラッシュ（<code>/</code>）に展開されます。</p>
+<h3>バージョンの表示</h3>
+<p>次のようにコマンドを実行するとバージョンを表示します。</p>
+<pre><code class="language-plaintext">% sanctuary --version
+</code></pre>
+<p>バージョンは<em>メジャー</em>.<em>マイナー</em>.<em>リビジョン</em>の形式で、DTDに互換性がなくなるとメジャー番号が増加して、マイナー番号とリビジョン番号は0に戻ります。DTDが後方互換性を保ったまま変更された場合はマイナー番号が増加して、リビジョン番号は0に戻ります。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Wed Mar 22 00:11:13 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Sun Sep 16 22:40:32 JST 2007
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="../index.html">Sanctuary</a></span>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="../index.html#%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88">Version 1.0</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Download
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="tutorial.html">Tutorial</a>
+    </li>
+    <li>
+      <a href="reference.html">Reference</a>
+    </li>
+    <li>
+      <a href="dtd.html">DTD</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Reference | Test Funnel</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Test Funnel</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Reference</h1>
+<p>テストを記述するためのAPIについては<a href="api/index.html">APIリファレンス</a>を参照してください。</p>
+<p><a name="auditor"></a></p>
+<h2>auditor</h2>
+<dl>
+<dt>名称</dt>
+<dd>auditor &mdash; コンソールサーバ</dd>
+<dt>書式</dt>
+<dd style="white-space: nowrap">
+<code>autditor</code><wbr>
+<code>&nbsp;</code>[<code>--port=</code><i>ポート番号</i> ]
+</dd>
+<dt>詳説</dt>
+<dd>コンソールサーバを実行し、指定されたポート番号でクライアントからの接続を待ちます。</dd>
+<dd><code>--port</code>オプションを省略した場合、デフォルトのポート番号として30000を使用します。</dd>
+</dl>
+<p><a name="funnel"></a></p>
+<h2>funnel</h2>
+<dl>
+<dt>名称</dt>
+<dd>funnel &mdash; ファンネル</dd>
+<dt>書式</dt>
+<dd style="white-space: nowrap">
+<code>funnel&nbsp;</code><i>共有ライブラリのパスリスト</i><wbr>
+<code>&nbsp;</code>[<code>-s</code>]<wbr>
+<code>&nbsp;</code>[<code>-m</code>]<wbr>
+<code>&nbsp;</code>[<code>-t </code><i>秒数</i> ]<wbr>
+<code>&nbsp;</code>[<code>-d </code><i>ホスト名</i> [<code>:</code><i>ポート番号</i> ]]<wbr>
+<code>&nbsp;</code><i>テストクラスのパス</i><wbr>
+<code>&nbsp;</code>[...]
+</dd>
+<dt>詳説</dt>
+<dd>テスト対象とそのスタブである共有ライブラリをロードして、指定されたテストを実行します。</dd>
+<dd><i>共有ライブラリのパスリスト</i> には、テスト対象とスタブの共有ライブラリのパスをコロンで連結したものを指定します。</dd>
+<dd><code>-s</code>オプションを指定した場合、スタンドアロンモード（後述）で処理を開始します。そうでなければ、<code>-d</code>オプションが指定するコンソールサーバに接続して、コンソールサーバ経由でユーザと対話します。</dd>
+<dd><code>-m</code>オプションを指定した場合、メモリリークの検出を有効にします。</dd>
+<dd><code>-t</code>オプションはテストのタイムアウト時間を指定します。テストメソッドの呼び出しが<code>-t</code>オプションで指定した<i>秒数</i> を経過しても戻ってこない場合、そのテストメソッドは失敗します。<i>秒数</i> は正の整数でなければなりません。<code>-t</code>オプションを省略した場合、5秒を指定したとみなします。</dd>
+<dd><code>-d</code>オプションと環境変数<code>TF_DISPLAY</code>の値で接続するコンソールサーバを選択できます。環境変数<code>TF_DISPLAY</code>の値は <i>ホスト名</i> [<code>:</code><i>ポート番号</i> ]という（<code>-d</code>オプションの引数と同じ）形式で指定します。</dd>
+<dd>接続するコンソールサーバは次の順序で決定します。
+<ol>
+<li><code>-d</code>オプションが指定された場合、その値
+<li>環境変数<code>TF_DISPLAY</code>が定義されていた場合、その値
+<li>ローカルホストのデフォルトポート
+</ol>
+<dd>ポート番号を省略した場合はデフォルトのポート番号（30000）を使用します。</dd>
+<dd>共有ライブラリは環境変数<code>LD_PRELOAD</code>を使用して起動時にファンネルとリンクされます。テストクラスはdlopen(3)でダイナミックリンクされます。</dd>
+<dt>スタンドアロンモード</dt>
+<dd>スタンドアロンモードでは、環境変数<code>TF_DISPLAY</code>や<code>-d</code>オプションの値を無視して、指定された順にテストクラスのテストメソッドをすべて実行します（テストクラスに含まれるテストメソッドの実行順序は不定です）。</dd>
+<dd>すべてのテストに成功するとステータスコード0で終了します。そうでなれば、速やかにステータスコード1で終了します。<code>-m</code>オプションが指定される場合、テストに成功しても、メモリリークが検出された場合は、テストは失敗したものとしてみなされます。</dd>
+<dt>制限事項</dt>
+<dd>gccのコンパイルオプション<code>-fomit-frame-pointer</code>を指定してコンパイルした共有ライブラリは使用できません。</dd>
+</dl>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat May 27 21:13:18 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Mon Oct 20 04:51:30 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Test Funnel</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="manual.html">Manual</a>
+    </li>
+    <li class="selected">
+      Reference
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+    <li>
+      <a href="bugs.html">Bugs</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

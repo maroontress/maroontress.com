@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>String - std_lang_String</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package std_lang</h3>
+    <h1>class String</h1>
+#define std_lang_String_IMPORT<br>
+#include &lt;std/lang/String.h&gt;<br>
+    <dl><dd>
+正準化文字列を扱うクラスです。
+<p>正準化文字列はクラス内部の文字列プールで管理される文字列のインスタンスです。正準化文字列のポインタを<span class="code">==</span>演算子で比較した場合、その内容は等しいことが保証されます。正準化文字列は参照カウンタを用いて管理され、参照のない正準化文字列は適当なタイミングで解放されます。</p>
+  </dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="std_lang_String.html#struct std_lang_String">struct String</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正準化文字列の実装となる構造体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#std_lang_String_staticInitialize"><b>String_<wbr>staticInitialize</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;このクラスを初期化します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#std_lang_String_staticEconomize"><b>String_<wbr>staticEconomize</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;このクラスが割り当てたメモリを整理します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_lang_String.html#struct std_lang_String">struct String</a> *</font>
+  </td>
+  <td valign="top"><a href="#std_lang_String_intern"><b>String_<wbr>intern</b></a>(const char *&nbsp;<i>str</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正準化文字列を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#std_lang_String_free"><b>String_<wbr>free</b></a>(<a href="std_lang_String.html#struct std_lang_String">struct String</a> *&nbsp;<i>s</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正準化文字列を解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;char *</font>
+  </td>
+  <td valign="top"><a href="#std_lang_String_getData"><b>String_<wbr>getData</b></a>(<a href="std_lang_String.html#struct std_lang_String">struct String</a> *&nbsp;<i>s</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正準化文字列のC文字列を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#std_lang_String_getLength"><b>String_<wbr>getLength</b></a>(<a href="std_lang_String.html#struct std_lang_String">struct String</a> *&nbsp;<i>s</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正準化文字列の文字数を取得します。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct std_lang_String"></a>
+<font size="+1"><b>struct String</b></font></p>
+<dl><dd>
+正準化文字列の実装となる構造体です。
+<p>実装の詳細は隠蔽されています。</p>
+    </dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_lang_String_staticInitialize"></a><font size="+1"><b>String_<wbr>staticInitialize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>String_staticInitialize</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+このクラスを初期化します。
+<p>クラスが所有する文字列プールを初期化します。共有ライブラリでリンクした場合は、このメソッドは自動的に呼び出されます。静的ライブラリでリンクした場合は、このクラスの他のメソッドを呼び出す前に少なくても1回呼び出す必要があります。このメソッドを複数回呼び出した場合、最初の呼び出し以外ではなにもしません。</p>
+<p>このメソッドはMTセーフです。</p>
+    </dd>
+
+</dl>
+<hr>
+<p><a name="std_lang_String_staticEconomize"></a><font size="+1"><b>String_<wbr>staticEconomize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>String_staticEconomize</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+このクラスが割り当てたメモリを整理します。
+<p>クラスが所有する文字列プールのために割り当てたメモリのうち、可能なメモリを解放します。通常、メモリ割り当てと解放のオーバヘッドを回避するために、割り当てたメモリは不要になってもクラス内部にプールされることがあります。このメソッドはそのプールで管理されているメモリを強制的に解放します。</p>
+    </dd>
+
+</dl>
+<hr>
+<p><a name="std_lang_String_intern"></a><font size="+1"><b>String_<wbr>intern</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_lang_String.html#struct std_lang_String">struct String</a> * <b>String_intern</b>(</td>
+    <td nowrap>const char *&nbsp;<i>str</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+正準化文字列を取得します。
+<p>文字列プールに<span class="arg">str</span>と内容が等しい正準化文字列が存在する場合は、その正準化文字列を返します。存在しない場合は<span class="arg">str</span>と内容が等しい正準化文字列を新しく生成し、それを返します。</p>
+<p>このメソッドで正準化文字列を取得すると、その参照カウントは1つ増加します。戻り値が参照するオブジェクトは<a href="std_lang_String.html#std_lang_String_free">String_<wbr>free</a>()で解放しなければなりません。</p>
+<p>新しい正準化文字列を生成できなかった場合は<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>str</i> - C文字列<br>
+
+</dd></dl>
+<dl>Returns:<dd>正準化文字列、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_lang_String_free"></a><font size="+1"><b>String_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>String_free</b>(</td>
+    <td nowrap><a href="std_lang_String.html#struct std_lang_String">struct String</a> *&nbsp;<i>s</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+正準化文字列を解放します。
+<p>正準化文字列の参照カウントは1つ減少します。参照カウントが0の正準化文字列は適当なタイミングで、クラス内部の文字列プールから取り除かれます。</p>
+<p><span class="arg">s</span>が<span class="code">NULL</span>のときはなにもしません。呼び出し後は<span class="arg">s</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>s</i> - 正準化文字列<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="std_lang_String_getData"></a><font size="+1"><b>String_<wbr>getData</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>char * <b>String_getData</b>(</td>
+    <td nowrap><a href="std_lang_String.html#struct std_lang_String">struct String</a> *&nbsp;<i>s</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+正準化文字列のC文字列を取得します。
+<p>戻り値が参照するオブジェクトは<span class="arg">s</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、解放してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>s</i> - 正準化文字列<br>
+
+</dd></dl>
+<dl>Returns:<dd>正準化文字列のC文字列</dd></dl>
+</dl>
+<hr>
+<p><a name="std_lang_String_getLength"></a><font size="+1"><b>String_<wbr>getLength</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>String_getLength</b>(</td>
+    <td nowrap><a href="std_lang_String.html#struct std_lang_String">struct String</a> *&nbsp;<i>s</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+正準化文字列の文字数を取得します。
+<p>取得した値はstrlen(<a href="std_lang_String.html#std_lang_String_getData">String_<wbr>getData</a>(<span class="arg">s</span>))の戻り値と同じ値になります。ただし、通常はstrlen(3)よりもこのメソッドの方が高速です。</p>
+<dl><dt>See:</dt><dd>strlen(3)</dd></dl>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>s</i> - 正準化文字列<br>
+
+</dd></dl>
+<dl>Returns:<dd>正準化文字列の文字数（終端のヌル文字を含まない）</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

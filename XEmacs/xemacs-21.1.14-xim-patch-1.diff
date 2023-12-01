@@ -1,0 +1,14 @@
+diff -c -r -d src.orig/event-Xt.c src/event-Xt.c
+*** src.orig/event-Xt.c	Sun Dec 17 11:08:49 2000
+--- src/event-Xt.c	Mon Feb 26 04:32:54 2001
+***************
+*** 880,885 ****
+--- 880,887 ----
+              ev->timestamp	    = event->time;
+              ev->event.key.modifiers = 0;
+              ev->event.key.keysym    = make_char (ch);
++ 	    if (ch == ' ')
++ 		ev->event.key.keysym = QKspace;
+              enqueue_Xt_dispatch_event (emacs_event);
+            }
+  	Lstream_close (istr);

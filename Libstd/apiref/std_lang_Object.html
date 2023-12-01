@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Object - std_lang_Object</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_lang_Object"/>
+    <h3>package std_lang</h3>
+    <h1>extensible class Object</h1>
+<b>std_lang_Object</b><br>
+<br>
+<dl><b>Direct Known Subclasses:</b><dd>
+<a href="std_db_BTree.html">std_db_BTree</a>
+, <a href="std_io_File.html">std_io_File</a>
+, <a href="std_io_FileDescriptor.html">std_io_FileDescriptor</a>
+, <a href="std_io_InputTube.html">std_io_InputTube</a>
+, <a href="std_io_OutputTube.html">std_io_OutputTube</a>
+, <a href="std_util_ArraySet.html">std_util_ArraySet</a>
+, <a href="std_util_LinkedHeap.html">std_util_LinkedHeap</a>
+, <a href="std_util_LinkedList.html">std_util_LinkedList</a>
+, <a href="std_util_Pool.html">std_util_Pool</a>
+</dd></dl>
+#define std_lang_Object_IMPORT<br>
+#include &lt;std/lang/Object.h&gt;<br>
+#include &lt;std/lang/impl/Object.h&gt;<br>
+    <dl><dd>
+基底クラスです。
+<p>現在のところ基底クラスに機能はありません。</p>
+  </dd></dl>
+    <hr>
+    <h2>Macro Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td><a href="#std_lang_Object_NULL"><b>Object_NULL</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;無効なオブジェクトを表します。</td>
+</tr>
+    </table>
+    <h2>Macro Detail</h2>
+<p><a name="std_lang_Object_NULL"></a><font size="+1"><b>Object_NULL</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><b>Object_NULL</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+無効なオブジェクトを表します。
+<p>インスタンスにキャストして代入できる値のマクロです。次の例では<span class="code">foo.impl</span>は<span class="code">NULL</span>になります。</p>
+<pre>
+union Foo foo = (union Foo)Object_<wbr>NULL;
+</pre>
+    </dd>
+</dl>
+<hr>
+  </body>
+</html>

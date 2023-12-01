@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Feature | Japanese XIM Server</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo"><img src="imserver-icon.png" alt="アイコン" style="width: 32px; height: 32px; vertical-align: bottom;"/>日本語XIMサーバ</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>特徴</h1>
+<h2>各種入力スタイルのサポート</h2>
+<p><em>On-The-Spot</em>スタイルをサポートするのはもちろん、<a href="../Imreceiver/index.html">XIMレシーバ</a>と併用することで<em>Over-The-Spot</em>や<em>On-The-Root</em>スタイルにも対応します。</p>
+<h3>予測入力のサポート</h3>
+<p>POBoxなどで有名な<a href="#predict">予測入力</a>をサポートします（入力に対して逐次的に予測候補を表示するにはXIMレシーバが必要です）。</p>
+<h3>日本語変換エンジンとしてSJ3とCannaをサポート</h3>
+<p>コンパイル時にSJ3またはCanna<a href="#1">†1</a>のどちらかを指定します（予めSJ3またはCannaをインストールしておく必要があります）。</p>
+<h3>ローマ字かな変換入力・かな入力のサポート</h3>
+<p><a href="news.html#2003-03-16-preconv">前変換処理</a>を使用してローマ字かな変換などの機能を柔軟に実現できます。また<a href="../KanaKey/index.html">かな入力</a>もサポートしています。</p>
+<p>リソースによるカスタマイズ</p>
+<p>各種キー定義、前変換規則などを自由に設定できます。</p>
+<h3>代表的なクライアントでの動作確認</h3>
+<p><em>On-The-Spot</em>ではOpenOffice 1.1、Mozilla 1.6、Konqueror 3.1（KDE 3.1/Qt 3.2）など、<em>Over-The-Spot</em>ではXEmacs 21.4、Emacs 21.3、kterm 6.2などで動作を確認しています。</p>
+<h3>クライアント毎の動作最適化</h3>
+<p>XIMの実装に<a href="#optimize">問題があるクライアントの対策</a>として、クライアント毎に動作を最適化することができます。クライアントを修正することなく、より快適に（あるいは正常に）入力できるようになります。</p>
+<p><a name="1">†1</a> Cannaを選択した場合はRKライブラリ（低レベルAPI）を使用するので、<code>~/.canna</code>などの設定は不要です。</p>
+<p><a name="predict"></a></p>
+<h2>予測入力</h2>
+<h3>予測入力とは</h3>
+<p>POBoxやWnn7で採用されている予測（例示）入力と呼ばれる機能に相当するものです。</p>
+<p>この種の予測入力の考え方は、「以前の確定結果」をデータベースに記録しておき、文字が入力されるたびに「入力文字列」をそのデータベースに対してインクリメンタルに検索して、検索結果を候補として選ばせるというものです。予測というよりも、シェルの補完入力や、Emacsのdabbrev-expand（dynamic abbreviation）、SKKの補完機能に近いものと言えます。</p>
+<h3>予測入力の方法</h3>
+<p>例えば「お世話になっております」という文字列を入力したいとします。まず「お」と入力すると、XIMレシーバは「お」で始まる予測候補をいくつか表示します。その予測候補のなかに入力したい文字列があれば、Tabキー（デフォルトのキー割り当て）を入力することで、変換状態に移行し、予測候補が変換候補として選択できるようになります。</p>
+<p>予測候補のなかに期待しているものがなければ、さらに「せ」を入力します。すると、XIMレシーバは「おせ」で始まる予測候補をいくつか表示します。このように文字を入力するにつれて、予測候補の範囲は徐々に限定されていきます。つまり、文字をいくつか入力してから予測候補を選択することで、キーを押す回数を減らすことができます。</p>
+<h3>2次予測入力</h3>
+<p>例えば「ひがし」と入力して変換したとき、変換候補が「東」であったとします。このとき、XIMレシーバは「東」で始まる2次予測候補（例えば「東京」「東海道」など）をいくつか表示します。その予測候補のなかに入力したい文字列があれば、Control-Tabキー（デフォルトのキー割り当て）を入力することで、予測候補が変換候補として選択できるようになります。</p>
+<h3>予測候補の展開</h3>
+<p>変換状態でEscapeキー（デフォルトのキー割り当て）を入力すると、その予測候補の読み文字列を前編集文字列に展開して、前編集状態に移行します。ただし、通常の変換候補、2次予測候補を展開した場合は、変換のキャンセルとして扱われます。</p>
+<p><a name="optimize"></a></p>
+<h2>問題があるクライアントの対策</h2>
+<p>世の中のXIMクライアントのなかにはXIM仕様に従っていない「不完全な実装」のものがあります。メジャーなアプリケーションでも正しく実装されているとは限りません。しかし、XIMサーバがクライアント毎に動作を最適化すれば、そのようなクライアントを<strong>救済</strong>することも可能です。</p>
+<p>クライアント毎に動作を最適化するためには、リソースimserver.clientOptimizationを次のような形式で指定します<a href="#2">†2</a>。</p>
+<pre><code class="language-plaintext">imserver.clientOptimization: \
+  &quot;foo&quot; 動作指定1; \n\
+  &quot;Bar&quot; 動作指定2, 動作指定3;
+</code></pre>
+<p><code>&quot;foo&quot;</code>や<code>&quot;Bar&quot;</code>には実際のクライアントのリソース名（resource name）やリソースクラス（resource class）を指定します。動作指定はカンマで区切り、同時に複数指定することができます。また、リソースの値の途中に改行コードが含まれているのは、記述ミスがあったときに分かりやすくするためであり、本質的には不要です。</p>
+<p>以下、クライアント別に問題と対策を説明します。</p>
+<h3>OpenOffice 1.1の<em>On-The-Spot</em>スタイル</h3>
+<p>OpenOfficeはフィードバック（XIMFeedbackの値）の仕様の解釈について、<a href="feedback-impl.html#openoffice">独特な考え</a>をもっているようです。また、フィードバックと文字属性の対応が1.1.0で変更されています。</p>
+<p>OpenOffice 1.1.0に適したフィードバックを使用するには、次のように<code>Feedback</code>に<code>OpenOffice_1_1</code>を指定します。</p>
+<pre><code class="language-plaintext">imserver.clientOptimization: \
+  &quot;OpenOffice.org 1.1.0&quot; Feedback=OpenOffice_1_1;
+</code></pre>
+<h3>Mozilla 1.3の<em>On-The-Spot</em>スタイル</h3>
+<p>Mozilla 1.4（Firebird 0.6）以降では、フィードバックと文字属性の対応が変更されました。詳しくは<a href="feedback-impl.html#mozilla">ここ</a>を参照してください。</p>
+<p>Mozillaは前編集文字列のキャレットを描画しません。キャレットを移動すると実際に挿入位置は移動するのですが、キャレットが描画されていないので、どこに挿入されるか見た目にはわからなくなります。</p>
+<p>次のように<code>ReverseCaret</code>を指定すると、入力状態で挿入位置の文字のフィードバックをXIMReverse（反転文字）として描画するので、挿入位置がわかるようになります。</p>
+<pre><code class="language-plaintext">imserver.clientOptimization: \
+  &quot;OpenOffice.org 1.1.0&quot; Feedback=OpenOffice_1_1; \n\
+  &quot;Mozilla&quot; ReverseCaret;
+</code></pre>
+<h3>Konqueror 3.1の<em>On-The-Spot</em>スタイル</h3>
+<p>Konquerorではフィードバックの実装がXIM仕様に従ったものになっていません。フィードバックとしてXIMReverse（反転文字）だけを理解しますが、これを指定した文字は黒く塗りつぶされてしまいます。さらに、反転文字を指定できる領域にも制約があるようです。</p>
+<p>KDEのアプリケーションで<em>On-The-Spot</em>スタイルを使用する場合は、Konquerorに限らずKEditなどでも同様の問題があるようです。</p>
+<p>次のように<code>NoFeedback</code>を指定すると、フィードバックを使用しなくなります。その代わり、変換状態では文節は空白で区切られ、注目文節は&quot;&lt;&quot;と&quot;&gt;&quot;で囲まれるようになります。</p>
+<pre><code class="language-plaintext">imserver.clientOptimization: \
+  &quot;OpenOffice.org 1.1.0&quot; Feedback=OpenOffice_1_1; \n\
+  &quot;Mozilla&quot; ReverseCaret; \n\
+  &quot;konqueror&quot; NoFeedback;
+</code></pre>
+<p>なお、Qtは必ず<strong>Qt 3.1.2以降のバージョン</strong>を使用してください。3.1.1では正常に動作しないようです。</p>
+<h3>そのほかのアプリケーション</h3>
+<p>ソースコードに付属しているファイル<code>Optimization.ad</code>を参考にしてください。</p>
+<p class="footnote"><a name="2">&dagger;2</a> ウィンドウマネージャのなかにはクライアント別に動作や装飾スタイルを設定できるものがありますが、そのような設定と同様なものであると考えていいと思います。</p>
+<p><a name="context"></a></p>
+<h2>予測辞書の切り替え</h2>
+<p>クライアント毎に予測辞書（入力履歴）を切り替えることができます<a href="#3">†3</a>。</p>
+<p>リソースimserver.clientOptimizationを次のような形式で指定すると、クライアント毎に予測辞書を指定することができます。</p>
+<pre><code class="language-plaintext">imserver.clientOptimization: \
+  &quot;Mozilla&quot; PredictionDatabase=&quot;/home/foo/.imserver/mozilla.db&quot;; \n\
+  &quot;Emacs&quot; PredictionDatabase=&quot;/home/foo/.imserver/emacs.db&quot;;
+</code></pre>
+<p>この例では、予測辞書としてMozillaでは<code>/home/foo/.imserver/mozilla.db</code>を、Emacsでは<code>/home/foo/.imserver/emacs.db</code>を使用します。また、それ以外のクライアントでは（リソースimserver.predictionDatabaseで指定された）デフォルトの予測辞書を使用します。</p>
+<p>なお、この指定は<a href="#optimize">問題があるクライアントの対策</a>で説明した動作指定と併用できます。詳しくはソースコードに付属のファイル<code>Optimization.ad</code>を参照してください。</p>
+<p class="footnote"><a name="3">&dagger;3</a> 使用するクライアントによって入力する内容が異なる場合、予測辞書を別々にした方が便利なことがあります。</p>
+<p><a name="referenceMode"></a></p>
+<h2>自閉モードと参照モード</h2>
+<p>状況に応じて、自閉（Autistic）モードと参照（Reference）モードを切り替えることができます。</p>
+<h3>自閉モード</h3>
+<p>デフォルトのモードです。このモードは、従来通り、指定した予測辞書だけを使用して、予測候補を提示します。</p>
+<p>自閉モードに切り替えるキー割り当ては、入力状態ではリソースimserver.preedit.autisticMode、無入力状態ではリソースimserver.undofix.autisticModeで指定できます（デフォルトはControl-Alt-a）。</p>
+<p>このモードでは、状態文字列（入力モードオンのときはリソースimserver.activeLabel、入力モードオフのときはリソースimserver.inactiveLabel）に含まれる「<code>%r</code>」を、リソースimserver.autisticModeで指定する文字列に置換します。</p>
+<h3>参照モード</h3>
+<p>このモードは、指定した予測辞書に加えて<strong>参照辞書</strong>を併用して、予測候補を提示します。参照辞書のパスはリソースimserver.referenceDatabaseで指定することができます（指定しない場合は<code>~/.imserver-reference.db</code>を使用します）。</p>
+<p>参照辞書の生成については<a href="../Xwiretap/index.html">Xwiretap</a>を参照してください。</p>
+<p>参照モードに切り替えるキー割り当ては、入力状態ではリソースimserver.preedit.referenceMode、無入力状態ではリソースimserver.undofix.referenceModeで指定できます（デフォルトはControl-Alt-r）。</p>
+<p>このモードでは、状態文字列（入力モードオンのときはリソースimserver.activeLabel、入力モードオフのときはリソースimserver.inactiveLabel）に含まれる「<code>%r</code>」を、リソースimserver.referenceModeで指定する文字列に置換します。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sun Mar 30 07:25:38 JST 2003 -->
+<!-- hhmts start -->
+Last modified: Sun May 16 06:41:47 JST 2004
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Japanese XIM Server</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="news.html">News</a>
+    </li>
+    <li class="selected">
+      Feature
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="screenshot.html">Screenshot</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="document.html">Document</a>
+    </li>
+    <li>
+      <a href="bug.html">Bug</a>
+    </li>
+    <li>
+      <a href="xim-server.html">on-the-spot対応日本語XIMサーバ 機能と実装の比較</a>
+    </li>
+    <li>
+      <a href="bug-xcreatefontset.html">XCreate<wbr>Font<wbr>Set()のバグ</a>
+    </li>
+    <li>
+      <a href="feedback-impl.html">XIMFeedbackの仕様解釈と実装</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | 間違ったコードはコンパイルできないようにする</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">間違ったコードはコンパイル<br>できないようにする</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p><a href="http://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%B3%E3%82%AC%E3%83%AA%E3%82%A2%E3%83%B3%E8%A8%98%E6%B3%95">ハンガリアン記法</a>に関する間違った意見をよく目にする。<a href="http://www.joelonsoftware.com/articles/Wrong.html">Making Wrong Code Look Wrong</a>
+（<a href="https://web.archive.org/web/20190317182904/http://local.joelonsoftware.com:80/wiki/%E9%96%93%E9%81%95%E3%81%A3%E3%81%9F%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AF%E9%96%93%E9%81%95%E3%81%A3%E3%81%A6%E8%A6%8B%E3%81%88%E3%82%8B%E3%82%88%E3%81%86%E3%81%AB%E3%81%99%E3%82%8B">間違ったコードは間違って見えるようにする</a>）の記事では、ハンガリアン記法でもアプリケーションハンガリアンは有用だと主張している。もちろん、わかりやすい変数名を使用することには賛成だが、変数名を人間が目で見て正しいかどうかを判断しなければならないようなルールに価値はないと確信している。ワインバーグではないが、計算機が得意なことは計算機にやらせればよいのであって、人間がやることではないのだ。ソフトウェア工学的に正しいのは、間違ったコードはコンパイルエラーになるようにする、ということだ。</p>
+<p>アプリケーションハンガリアンが善だと思い込んでる素人は、この続きを読まずにマンガ喫茶にでも行って時間を過ごして欲しい。</p>
+<h2>本当のソリューションは静的解析で正しさを証明すること</h2>
+<p>前述の記事では、アプリケーションハンガリアンの例として、安全な文字列の変数名にはプレフィックス<code>s</code>を、安全でない文字列の変数名にはプレフィックス<code>us</code>をつけるルールを紹介している。こうしたルールを用いれば、間違いが一目でわかるという主旨だ。しかし、この手のことは静的解析でできることがわかっている。C言語なら静的解析ツールで<a href="http://www.splint.org/">Splint</a>というものがある。Splintではコメントによるアノテーションで型を修飾することで、伝統的なlintよりも強力にコードを検証できる。<a href="http://www.splint.org/manual/html/sec10.html">Splintのマニュアルのセクション10</a>ではアノテーションの拡張例として、taintednessを扱うアノテーションを記述する方法を説明している。これはアノテーションにtainted属性、untainted属性を追加して、次のようにコードを検証できるようにする。</p>
+<pre><code class="language-c">int printf (/*@untainted@*/ char *fmt, ...);
+char *fgets (char *s, int n, FILE *stream) /*@ensures tainted s@*/ ;
+char *strcat (/*@returned@*/ char *s1, char *s2)
+  /*@ensures s1:taintedness = s1:taintedness | s2:taintedness @*/
+</code></pre>
+<p>日本語によるSplintの解説としては<a href="https://www.ipa.go.jp/archive/security/vuln/programming/t6hhco00000023x9-att/000013694.pdf">オープンソース・ソフトウェアのセキュリティ確保に関する調査報告書 第2部オープンソース・ソフトウェアの効率的な検査技術の調査</a>が参考になる。また他の言語でも、例えばPerlではtaintモードで同様なことを実現できる。</p>
+<p>もう少しわかりやすい話をしよう。例えばC言語で、「指すメモリを書き換え可能なポインタの変数名にはプレフィックス<code>c</code>を付け、そうでなければプレフィックス<code>uc</code>をつける」というルールがあったら、それはすばらしいだろうか。そんなことをするよりも変数の型に<code>const</code>修飾子を指定したほうがマシだろう。次のコードのように、<code>const</code>属性をもつポインタを<code>const</code>属性のないポインタに代入すれば、コンパイラが間違いを教えてくれる。</p>
+<pre><code class="language-c">void
+func(const char *name)
+{
+    const char *s;
+    char *t;
+
+    s = name;
+    t = name; /* 警告 */
+    ...
+}
+</code></pre>
+<p>とはいえ、<code>const</code>修飾子のように標準のものならともかく、taintednessのようなアノテーションをコードに埋め込むことは非常にコストが高くつく。もうちょっと簡単にできないのか、と考えるのが普通のエンジニアだ。</p>
+<h2>同一シグニチャのクラスを異なる名前で複数定義する</h2>
+<p>分散型バージョン管理システムの<a href="https://www.monotone.ca/">monotone</a>も興味深いソリューションを使用している。同じ文字列であっても、文字列の種類ごとにそれぞれ異なるクラスを用意して、ちょっとしたタイプセーフティを提供している。</p>
+<p>具体的には<code>vocab_terms.hh</code>で定義されている次のようなクラスで、同一シグニチャのクラスを異なる名前でいくつも定義している。</p>
+<pre><code class="language-c++">ATOMIC_NOVERIFY(external);    // &quot;external&quot; string in unknown system charset
+ATOMIC_NOVERIFY(utf8);        // unknown string in UTF8 charset
+...
+ATOMIC_NOVERIFY(id);          // hash of data
+ATOMIC_NOVERIFY(data);        // meaningless blob
+ATOMIC_NOVERIFY(delta);       // xdelta between 2 datas
+ATOMIC_NOVERIFY(inodeprint);  // fingerprint of an inode
+</code></pre>
+<p><code>external</code>や<code>utf8</code>などはクラスである。<wbr><code>ATOMIC_<wbr>NOVERIFY()</code>マクロは<code>vocab.hh</code>と<code>vocab_macros.hh</code>でかなり複雑に展開され、最終的にヘッダファイルでは次のような形に展開される。</p>
+<pre><code class="language-c++">#define hh_ATOMIC(ty)                                  \
+class ty {                                             \
+  immutable_string s;                                  \
+public:                                                \
+  bool ok;                                             \
+  ty() : ok(false) {}                                  \
+  explicit ty(std::string const &amp; str);                \
+  ty(ty const &amp; other);                                \
+  std::string const &amp; operator()() const               \
+    { return s.get(); }                                \
+  bool operator&lt;(ty const &amp; other) const               \
+    { return s.get() &lt; other(); }                      \
+  ty const &amp; operator=(ty const &amp; other);              \
+  bool operator==(ty const &amp; other) const              \
+    { return s.get() == other(); }                     \
+  bool operator!=(ty const &amp; other) const              \
+    { return s.get() != other(); }                     \
+  friend void verify(ty &amp;);                            \
+  friend void verify_full(ty &amp;);                       \
+  friend std::ostream &amp; operator&lt;&lt;(std::ostream &amp;,     \
+                                   ty const &amp;);        \
+  struct symtab                                        \
+  {                                                    \
+    symtab();                                          \
+    ~symtab();                                         \
+  };                                                   \
+};                                                     \
+std::ostream &amp; operator&lt;&lt;(std::ostream &amp;, ty const &amp;); \
+template &lt;&gt;                                            \
+void dump(ty const &amp;, std::string &amp;);                  \
+inline void verify(ty &amp;t)                              \
+  { if(!t.ok) verify_full(t); };
+</code></pre>
+<p>また、<code>vocab.cc</code>内部では次のような定義に展開される。</p>
+<pre><code class="language-c++">#define cc_ATOMIC(ty)                        \
+                                             \
+static symtab_impl ty ## _tab;               \
+static size_t ty ## _tab_active = 0;         \
+                                             \
+ty::ty(string const &amp; str) :                 \
+  s((ty ## _tab_active &gt; 0)                  \
+    ? (ty ## _tab.unique(str))               \
+    : str),                                  \
+  ok(false)                                  \
+{ verify(*this); }                           \
+                                             \
+ty::ty(ty const &amp; other) :                   \
+            s(other.s), ok(other.ok)         \
+{ verify(*this); }                           \
+                                             \
+ty const &amp; ty::operator=(ty const &amp; other)   \
+{ s = other.s; ok = other.ok;                \
+  verify(*this); return *this; }             \
+                                             \
+  std::ostream &amp; operator&lt;&lt;(std::ostream &amp; o,\
+                            ty const &amp; a)    \
+  { return (o &lt;&lt; a.s.get()); }               \
+                                             \
+template &lt;&gt;                                  \
+void dump(ty const &amp; obj, std::string &amp; out) \
+{ out = obj(); }                             \
+                                             \
+ty::symtab::symtab()                         \
+{ ty ## _tab_active++; }                     \
+                                             \
+ty::symtab::~symtab()                        \
+{                                            \
+  I(ty ## _tab_active &gt; 0);                  \
+  ty ## _tab_active--;                       \
+  if (ty ## _tab_active == 0)                \
+    ty ## _tab.clear();                      \
+}
+</code></pre>
+<p>つまり、<code>utf8</code>クラスも<code>external</code>クラスも定義は一緒だ。しかし、<code>utf8</code>クラスのインスタンスを生成するときはUTF-8でエンコードされた文字列をコンストラクタに渡すように運用する（ルール化する）。同様に、<code>external</code>クラスのインスタンスを生成するときは現在のロケールでエンコードされた文字列をコンストラクタに渡すようにする。このようにすれば、UTF-8でエンコードされた文字列と、現在のロケールの文字列を間違って連結したり、比較したりするようなバグを防止できる。間違えばコンパイラが教えてくれるのだ。より詳しいことは<a href="https://wiki.monotone.ca/I18nL10n/">monotone wikiのI18nL10n</a>とmonotoneのコードを参照して欲しい。</p>
+<p>例えば、アプリケーションハンガリアンなら次のように書くコードがあったとする。</p>
+<pre><code class="language-c++">string uMessage, eCommand;
+</code></pre>
+<p>これを<code>vocab.hh</code>の仕組みを利用して書くと次のようになるだろう。</p>
+<pre><code class="language-c++">utf8 message;
+external command;
+</code></pre>
+<p>上の2つのどちらが嬉しいのか、素人でなければすぐわかるだろう。</p>
+<p>ただし、こうしたことを実現するためにマクロを使わなければならない、ということは残念なことだ。言語でサポートして欲しい機能だろう（単純に<code>string</code>を継承して<code>utf8</code>や<code>external</code>を定義するだけでは意味がないことはわかるよね?）。</p>
+<h2>重要なのは型</h2>
+<p>もう少し言わせてもらう。アプリケーションハンガリアン、システムハンガリアンに関わらず、ハンガリアン記法それ自体に価値がないことを示そう。例えば、次のコードはアプリケーションハンガリアンだろう。</p>
+<pre><code class="language-c">int celsiusTemp, fahrenheitTemp;
+int mileLength, meterLength;
+</code></pre>
+<p>そして、次のコードもアプリケーションハンガリアンなのかもしれない。</p>
+<pre><code class="language-c">Celsius celsiusTemp;
+Fahrenheit fahrenheitTemp;
+
+Mile mileLength;
+Meter meterLength;
+</code></pre>
+<div class="cover-image"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00081MXTW/sanchappikeio-22"><img width="180px" src="https://m.media-amazon.com/images/I/414SB8HR50L._AC_.jpg"/></a></div>
+<p>それとも、後者はクラス（あるいは型）が組み込みのものならシステムハンガリアンと呼ぶのだろうか。問題は変数名の記法ではなく、変数の型だ。同じ数値でも型を与えることで異なる意味をもつことを思い出して欲しい。</p>
+<p>摂氏と華氏、マイルとメートルなど、ただの整数にプレフィックスを付けて区別することに工学的な価値はないことが理解できたと思う。そんなことに意味があるとすれば変数のプレフィックスをひたすら比較する非人道的な労働に意味があることになる。</p>
+<p>本当にバカばっかりで疲れる。ハンガリー人はハンガリーにいればよかったんだよ。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon Dec 31 03:07:58 JST 2007 -->
+<!-- hhmts start -->
+Last modified: Sun May 25 21:30:09 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">間違ったコードはコンパイルできないようにする</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd">
+<class package="foo" name="File">
+  <namespace/>
+
+  <include file="stdio.h"/>
+
+  <struct alias="@">
+    <member type="FILE *" name="file">
+      <desc><brief>標準入出力ライブラリのFILE型へのポインタです。</brief></desc>
+    </member>
+
+    <desc><brief>Fileクラスのインスタンスとなる構造体です。</brief></desc>
+  </struct>
+
+  <method name="new">
+    <param type="FILE *" name="file">
+      <desc>標準入出力ライブラリのFILE型へのポインタ</desc>
+    </param>
+
+    <return type="@ *">
+      <desc>Fileクラスのインスタンス、またはNULL</desc>
+    </return>
+
+    <desc>
+      <brief>Fileクラスのインスタンスを生成します。</brief>
+      <p>生成できないときはNULLを返します。</p>
+    </desc>
+  </method>
+
+  <desc>
+    <brief>include要素の使用例を提供します。</brief>
+    <p>include要素はドキュメントに影響を与えません。</p>
+  </desc>
+</class>

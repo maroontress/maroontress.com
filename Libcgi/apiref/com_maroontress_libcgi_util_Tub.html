@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Tub - com_maroontress_libcgi_util_Tub</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_maroontress_libcgi_util</h3>
+    <h1>class Tub</h1>
+#define com_maroontress_libcgi_util_Tub_IMPORT<br>
+#include &lt;com/maroontress/libcgi/util/Tub.h&gt;<br>
+    <dl><dd>
+バイトストリームを貯めるためのタブです。
+<p>貯めたバイトストリームをバイト配列として取り出すことができます。</p>
+  </dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブの実装となる構造体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_create"><b>Tub_<wbr>create</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブのインスタンスを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_writeCString"><b>Tub_<wbr>writeCString</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>, const char *&nbsp;<i>str</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブに文字列を書きます。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_writeByte"><b>Tub_<wbr>writeByte</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>, unsigned int&nbsp;<i>byte</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブに符号無し8ビット整数を書きます。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_writeU16"><b>Tub_<wbr>writeU16</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>, unsigned int&nbsp;<i>u16</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブに符号無し16ビット整数を書きます。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_writeU32"><b>Tub_<wbr>writeU32</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>, unsigned int&nbsp;<i>u32</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブに符号無し32ビット整数を書きます。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_write"><b>Tub_<wbr>write</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>, const void *&nbsp;<i>data</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブにデータを書きます。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_getSize"><b>Tub_<wbr>getSize</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブのサイズを取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_setSize"><b>Tub_<wbr>setSize</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブのサイズを設定します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_free"><b>Tub_<wbr>free</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブのインスタンスを解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_clear"><b>Tub_<wbr>clear</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブの内容を消去します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_createByteArray"><b>Tub_<wbr>createByteArray</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブの内容をもつバイト配列を生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_util_Tub_hasError"><b>Tub_<wbr>hasError</b></a>(<a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;タブのエラー状態を取得します。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct com_maroontress_libcgi_util_Tub"></a>
+<font size="+1"><b>struct Tub</b></font></p>
+<dl><dd>
+タブの実装となる構造体です。
+<p>実装の詳細は隠蔽されています。</p>
+    </dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="com_maroontress_libcgi_util_Tub_create"></a><font size="+1"><b>Tub_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> * <b>Tub_create</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブのインスタンスを生成します。
+<p>生成したインスタンスは空の状態です。</p>
+<p>戻り値が参照するオブジェクトは<a href="com_maroontress_libcgi_util_Tub.html#com_maroontress_libcgi_util_Tub_free">Tub_<wbr>free</a>()で解放しなければなりません。</p>
+<p>生成できなかった場合は<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Returns:<dd>タブのインスタンス、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_writeCString"></a><font size="+1"><b>Tub_<wbr>writeCString</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>Tub_writeCString</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>str</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブに文字列を書きます。
+<p>文字列<span class="arg">str</span>を<span class="arg">tub</span>に書きます（終端のヌル文字は除きます）。</p>
+<p>書き込みに失敗した場合は<span class="arg">tub</span>にエラー状態を設定し、&minus;1を返します。その場合、途中までのデータがタブに書かれたかもしれません。</p>
+<p>次の呼び出しと同様です。</p>
+<pre>
+<a href="com_maroontress_libcgi_util_Tub.html#com_maroontress_libcgi_util_Tub_write">Tub_<wbr>write</a>(tub, str, strlen(str));
+</pre>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+<i>str</i> - 文字列<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_writeByte"></a><font size="+1"><b>Tub_<wbr>writeByte</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>Tub_writeByte</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>unsigned int&nbsp;<i>byte</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブに符号無し8ビット整数を書きます。
+<p><span class="arg">byte</span>の値を<span class="arg">tub</span>に書きます。</p>
+<p>書き込みに失敗した場合は<span class="arg">tub</span>にエラー状態を設定し、&minus;1を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+<i>byte</i> - 符号無し8ビット整数<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_writeU16"></a><font size="+1"><b>Tub_<wbr>writeU16</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>Tub_writeU16</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>unsigned int&nbsp;<i>u16</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブに符号無し16ビット整数を書きます。
+<p><span class="arg">u16</span>の値をネットワークバイトオーダで<span class="arg">tub</span>に書きます。</p>
+<p>書き込みに失敗した場合は<span class="arg">tub</span>にエラー状態を設定し、&minus;1を返します。その場合、途中までのデータがタブに書かれたかもしれません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+<i>u16</i> - 符号無し16ビット整数<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_writeU32"></a><font size="+1"><b>Tub_<wbr>writeU32</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>Tub_writeU32</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>unsigned int&nbsp;<i>u32</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブに符号無し32ビット整数を書きます。
+<p><span class="arg">u32</span>の値をネットワークバイトオーダで<span class="arg">tub</span>に書きます。</p>
+<p>書き込みに失敗した場合は<span class="arg">tub</span>にエラー状態を設定し、&minus;1を返します。その場合、途中までのデータがタブに書かれたかもしれません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+<i>u32</i> - 符号無し32ビット整数<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_write"></a><font size="+1"><b>Tub_<wbr>write</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>Tub_write</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const void *&nbsp;<i>data</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブにデータを書きます。
+<p><span class="arg">data</span>が指すポインタから<span class="arg">size</span>バイトのデータを<span class="arg">tub</span>に書きます。</p>
+<p>書き込みに失敗した場合は<span class="arg">tub</span>にエラー状態を設定し、&minus;1を返します。その場合、途中までのデータがタブに書かれたかもしれません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+<i>data</i> - データの先頭を指すポインタ<br>
+
+<i>size</i> - データのサイズ<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_getSize"></a><font size="+1"><b>Tub_<wbr>getSize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>Tub_getSize</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブのサイズを取得します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+</dd></dl>
+<dl>Returns:<dd>タブの内容のサイズ</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_setSize"></a><font size="+1"><b>Tub_<wbr>setSize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Tub_setSize</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブのサイズを設定します。
+<p>このメソッドはタブの内容を切り捨てます。タブの実際のサイズよりも<span class="arg">size</span>が小さくなければなりません。</p>
+<p>呼び出しの前後で、タブの内容の先頭から<span class="arg">size</span>バイトは変化しません。</p>
+<p>タブの実際のサイズよりも<span class="arg">size</span>が大きい場合はなにもしません。このとき、タブのエラー状態は変化しません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+<i>size</i> - タブの内容のサイズ<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_free"></a><font size="+1"><b>Tub_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Tub_free</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブのインスタンスを解放します。
+<p><span class="arg">tub</span>が<span class="code">NULL</span>のときはなにもしません。呼び出し後は<span class="arg">tub</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_clear"></a><font size="+1"><b>Tub_<wbr>clear</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Tub_clear</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブの内容を消去します。
+<p>エラー状態もクリアします。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_createByteArray"></a><font size="+1"><b>Tub_<wbr>createByteArray</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void * <b>Tub_createByteArray</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブの内容をもつバイト配列を生成します。
+<p><span class="code">malloc(3)</span>で領域を確保し、タブの内容をその領域にコピーします。戻り値が参照するオブジェクトは<span class="code">free(3)</span>で解放しなければなりません。</p>
+<p>バイト配列を生成できなかった場合は<span class="code">NULL</span>を返します。このとき、タブのエラー状態は変化しません。</p>
+<p>呼び出しの前後でタブの内容は変化しません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+</dd></dl>
+<dl>Returns:<dd>タブの内容のバイト配列、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_util_Tub_hasError"></a><font size="+1"><b>Tub_<wbr>hasError</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>Tub_hasError</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_util_Tub.html#struct com_maroontress_libcgi_util_Tub">struct Tub</a> *&nbsp;<i>tub</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+タブのエラー状態を取得します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tub</i> - タブのインスタンス<br>
+
+</dd></dl>
+<dl>Returns:<dd>エラーが発生した場合は非0、そうでなければ0</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

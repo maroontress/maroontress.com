@@ -1,0 +1,64 @@
+XIMのIC属性が仕様に従って実装されていない
+
+- 症状
+  The Input Method Protocol version 1.0 (xc/doc/hardcopy/XIM/xim.PS.gz) の
+  6--7ページでは、XICATTRの `type of the value (*2)' として、
+  XIMPreeditStateの `value type' を#18、XIMResetStateの `value type' を
+  #19と定義している。しかし、Xlibの実装では#18と#19は未定義であり、実装
+  されていない。
+
+- 確認できるリリース
+  R6.3p3 (+ XFree86-3.3.x)
+  R6.4p3
+  R6.5.1
+  R6.6 (+ XFree86-4.2.1)
+
+- 修正されているリリース
+  なし
+
+- 回避策
+  XIMサーバがXIMPreeditStateとXIMResetStateの `value type' を#3 (long
+  data) として定義する。
+
+- 修正方法
+  R6.6に次のパッチを適用する。
+
+diff -c -r -d xc.orig/lib/X11/XimProto.h xc/lib/X11/XimProto.h
+*** xc.orig/lib/X11/XimProto.h	Sat Jan  4 03:09:49 2003
+--- xc/lib/X11/XimProto.h	Sun Jan  5 06:31:58 2003
+***************
+*** 164,169 ****
+--- 164,171 ----
+  #define XimType_XIMHotKeyTriggers	15
+  #define XimType_XIMHotKeyState		16
+  #define XimType_XIMStringConversion	17
++ #define XimType_XIMPreeditState		18
++ #define XimType_XIMResetState		19
+  #define	XimType_NEST			0x7fff
+  
+  /*
+diff -c -r -d xc.orig/lib/X11/imRmAttr.c xc/lib/X11/imRmAttr.c
+*** xc.orig/lib/X11/imRmAttr.c	Sat Jan  4 03:09:46 2003
+--- xc/lib/X11/imRmAttr.c	Sun Jan  5 06:32:55 2003
+***************
+*** 223,228 ****
+--- 223,230 ----
+      case XimType_CARD32:
+      case XimType_Window:
+      case XimType_XIMHotKeyState:
++     case XimType_XIMPreeditState:
++     case XimType_XIMResetState:
+  	_XCopyToArg((XPointer)data, (XPointer *)&value, data_len);
+  	break;
+  
+***************
+*** 623,628 ****
+--- 625,632 ----
+      case XimType_CARD32:
+      case XimType_Window:
+      case XimType_XIMHotKeyState:
++     case XimType_XIMPreeditState:
++     case XimType_XIMResetState:
+  	ret_len = sizeof(CARD32);
+  	if (buf_size < ret_len + XIM_PAD(ret_len)) {
+  	    *len = -1;

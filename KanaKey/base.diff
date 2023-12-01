@@ -1,0 +1,13 @@
+diff -cr xkb.orig/rules/base xkb/rules/base
+*** xkb.orig/rules/base	Sun Aug 19 09:28:10 2007
+--- xkb/rules/base	Sun Aug 19 09:34:14 2007
+***************
+*** 835,840 ****
+--- 835,841 ----
+    nbsp:level4           =	+nbsp(level4)
+    nbsp:level4n          =	+nbsp(level4n)
+    japan:nicola_f_bs    =	+jp(nicola_f_bs)
++   japan:kana            =	+jp(kana):2
+  
+  ! option	=	compat
+    grp_led:num		=	+lednum(group_lock)

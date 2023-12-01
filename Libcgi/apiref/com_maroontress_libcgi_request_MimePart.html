@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>MimePart - com_maroontress_libcgi_request_MimePart</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_maroontress_libcgi_request</h3>
+    <h1>class MimePart</h1>
+#define com_maroontress_libcgi_request_MimePart_IMPORT<br>
+#include &lt;com/maroontress/libcgi/request/MimePart.h&gt;<br>
+    <dl><dd>
+MIMEマルチパート形式のファイルの1パートを表すクラスです。
+  </dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パートの実体となる構造体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_MimePart_create"><b>MimePart_<wbr>create</b></a>(FILE *&nbsp;<i>file</i>, const <a href="com_maroontress_libcgi_request_FileSegment.html#struct com_maroontress_libcgi_request_FileSegment">struct FileSegment</a> *&nbsp;<i>segment</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MIMEマルチパート形式のファイルの特定の区間からパートを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_MimePart_free"><b>MimePart_<wbr>free</b></a>(<a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *&nbsp;<i>mp</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パートを解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>mime_<wbr>ContentType</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_MimePart_getContentType"><b>MimePart_<wbr>getContentType</b></a>(<a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *&nbsp;<i>mp</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コンテンツタイプを取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>mime_<wbr>ContentType</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_MimePart_getDisposition"><b>MimePart_<wbr>getDisposition</b></a>(<a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *&nbsp;<i>mp</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ディスポジションを取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;char *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_MimePart_getContent"><b>MimePart_<wbr>getContent</b></a>(<a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *&nbsp;<i>mp</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コンテンツを文字列として取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;off_t</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_MimePart_write"><b>MimePart_<wbr>write</b></a>(<a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *&nbsp;<i>mp</i>, union std_<wbr>io_<wbr>OutputTube&nbsp;<i>out</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コンテンツを出力ストリームに書きます。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct com_maroontress_libcgi_request_MimePart"></a>
+<font size="+1"><b>struct MimePart</b></font></p>
+<dl><dd>パートの実体となる構造体です。</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="com_maroontress_libcgi_request_MimePart_create"></a><font size="+1"><b>MimePart_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> * <b>MimePart_create</b>(</td>
+    <td nowrap>FILE *&nbsp;<i>file</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const <a href="com_maroontress_libcgi_request_FileSegment.html#struct com_maroontress_libcgi_request_FileSegment">struct FileSegment</a> *&nbsp;<i>segment</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+MIMEマルチパート形式のファイルの特定の区間からパートを生成します。
+<p>戻り値が参照するオブジェクトを解放するまで<span class="arg">file</span>が参照するオブジェクトは有効でなければなりません。また、それまで<span class="arg">file</span>が参照するオブジェクトにアクセスしてもいけません。</p>
+<p>生成できなかった場合は<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>file</i> - ファイル<br>
+
+<i>segment</i> - ファイルの区間<br>
+
+</dd></dl>
+<dl>Returns:<dd>パート、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_request_MimePart_free"></a><font size="+1"><b>MimePart_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>MimePart_free</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *&nbsp;<i>mp</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パートを解放します。
+<p>生成のときに指定したファイルはクローズされません。</p>
+<p><span class="arg">mp</span>が<span class="code">NULL</span>のときはなにもしません。呼び出し後は<span class="arg">mp</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>mp</i> - パート<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_request_MimePart_getContentType"></a><font size="+1"><b>MimePart_<wbr>getContentType</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>mime_<wbr>ContentType</a> *</td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>MimePart_getContentType</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *&nbsp;<i>mp</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+コンテンツタイプを取得します。
+
+     <p>戻り値が参照するオブジェクトは<span class="arg">mp</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、解放してはなりません。</p>
+  
+    </dd>
+
+<dl>Parameters:<dd>
+<i>mp</i> - パート<br>
+
+</dd></dl>
+<dl>Returns:<dd>コンテンツタイプ</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_request_MimePart_getDisposition"></a><font size="+1"><b>MimePart_<wbr>getDisposition</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>mime_<wbr>ContentType</a> *</td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>MimePart_getDisposition</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *&nbsp;<i>mp</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ディスポジションを取得します。
+
+     <p>戻り値が参照するオブジェクトは<span class="arg">mp</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、解放してはなりません。</p>
+  
+    </dd>
+
+<dl>Parameters:<dd>
+<i>mp</i> - パート<br>
+
+</dd></dl>
+<dl>Returns:<dd>ディスポジション</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_request_MimePart_getContent"></a><font size="+1"><b>MimePart_<wbr>getContent</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>char * <b>MimePart_getContent</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *&nbsp;<i>mp</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+コンテンツを文字列として取得します。
+
+     <p>戻り値が参照するオブジェクトは<span class="arg">mp</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、解放してはなりません。</p>
+  
+<p>コンテンツを返せない場合は<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>mp</i> - パート<br>
+
+</dd></dl>
+<dl>Returns:<dd>コンテンツ、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_request_MimePart_write"></a><font size="+1"><b>MimePart_<wbr>write</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>off_t <b>MimePart_write</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_request_MimePart.html#struct com_maroontress_libcgi_request_MimePart">struct MimePart</a> *&nbsp;<i>mp</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>union std_<wbr>io_<wbr>OutputTube&nbsp;<i>out</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+コンテンツを出力ストリームに書きます。
+<p>コンテンツを<span class="arg">out</span>に完全に出力できた場合はコンテンツのサイズを返します。そうでなければ&minus;1を返します。その場合、途中までのデータが<span class="arg">out</span>に書かれたかもしれません。</p>
+<p>この呼び出しは<span class="arg">out</span>をクローズしません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>mp</i> - パート<br>
+
+<i>out</i> - 出力ストリーム<br>
+
+</dd></dl>
+<dl>Returns:<dd>出力したサイズ、または&minus;1</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

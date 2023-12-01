@@ -1,0 +1,222 @@
+仕様上は不要な属性をXCreateIC()で指定しなければならない
+
+- 症状
+XCreateIC()で入力スタイルがPreedit PositionのICを生成する場合、
+SpotLocation属性とFontSet属性を指定しない失敗する。また、Preedit Areaと
+Status AreaでもFontSet属性の指定が必要になる。Xlib（R6以降）の仕様では、
+これらの属性は指定しなくても良いことになっている(下表参照)。
+
+  R6.6: ftp://ftp.x.org/pub/R6.6/xc/doc/hardcopy/X11/xlib.PS.gz in
+  pages 298--299.
+
+                                     Input Style
+  XIC Value     Geometry   Preedit   Preedit   Preedit   Preedit   Preedit
+               Management  Callback  Position   Area     Nothing    None 
+  ------------------------------------------------------------------------
+  ...
+  Preedit
+  ...
+  SpotLocation             ignored    D-S-G    ignored   ignored   ignored
+  ...                                 ^^^^^
+  FontSet          GN      ignored    D-S-G     D-S-G     D-S-G    ignored
+  ...                                 ^^^^^     ^^^^^
+  
+  
+                                       Input Style
+  XIC Value     Geometry    Status    Status    Status    Status
+               Management  Callback    Area     Nothing    None
+  ------------------------------------------------------------------------
+  ...
+  Status
+  ...
+  FontSet          GN      ignored    D-S-G     D-S-G    ignored
+  ...                                 ^^^^^
+
+しかし、この動作はR5のXlibの仕様そのものである(下表参照)。どうやら、R5か
+らR6の間に仕様は変更されたが、実装は変更されなかったようである。
+
+  R5: mit/hardcopy/Xlib/xlib.PS.Z (in
+  ftp://ftp.x.org/pub/R5/mit-4.tar.Z) in pages 241--242.
+
+                                       Input Style
+  XIC Value     Geometry   Preedit   Preedit   Preedit   Preedit   Preedit
+               Management  Callback  Position   Area     Nothing    None 
+  ------------------------------------------------------------------------
+  ...
+  Preedit
+  ...
+  SpotLocation             ignored    C-S-G    ignored   ignored   ignored
+  ...                                 ^^^^^
+  FontSet          GN      ignored    C-S-G     C-S-G     D-S-G    ignored
+  ...                                 ^^^^^     ^^^^^
+  
+  
+                                       Input Style
+  XIC Value     Geometry    Status    Status    Status    Status
+               Management  Callback    Area     Nothing    None
+  ------------------------------------------------------------------------
+  ...
+  Status
+  ...
+  FontSet          GN      ignored    C-S-G     D-S-G    ignored
+  ...                                 ^^^^^
+
+- 再現
+
+% cat Imakefile
+LOCAL_LIBRARIES = $(XONLYLIB)
+SRCS            = xcreateic.c
+OBJS            = $(SRCS:.c=.o)
+
+ComplexProgramTarget(xcreateic)
+% cat xcreateic.c
+#include <X11/Xlib.h>
+#include <X11/Xlocale.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <err.h>
+
+static int
+is_supported_style(XIMStyles *s, XIMStyle style)
+{
+    int k;
+
+    for (k = 0; k < s->count_styles && s->supported_styles[k] != style; ++k)
+        ;
+    return (k < s->count_styles);
+}
+
+static XIC
+create_ic(XIM im, XIMStyle style)
+{
+    XIC ic;
+
+    ic = XCreateIC(im,
+                   XNInputStyle, style,
+                   XNClientWindow, DefaultRootWindow(XDisplayOfIM(im)),
+                   NULL);
+    return ic;
+}
+
+int
+main(void)
+{
+    Display *dpy;
+    XIM im;
+    XIMStyle style;
+    XIMStyles *supported;
+
+    if ((dpy = XOpenDisplay("")) == NULL) {
+        errx(1, "cannot open display.");
+    }
+    if (setlocale(LC_ALL, "") == NULL) {
+        errx(1, "cannot set locale.");
+    }
+    if (XSupportsLocale() == False) {
+        errx(1, "locale not supported.");
+    }
+    if (XSetLocaleModifiers("") == NULL) {
+        errx(1, "cannot set locale modifiers.");
+    }
+    if ((im = XOpenIM(dpy, NULL, NULL, NULL)) == NULL) {
+        errx(1, "cannot open input method.");
+    }
+    if (XGetIMValues(im, XNQueryInputStyle, &supported, NULL) != NULL) {
+        errx(1, "XNQueryInputStyle not supported.");
+    }
+    if (supported->count_styles < 1) {
+        errx(1, "no style available.");
+    }
+
+    printf("style == (XIMPreeditPosition | XIMStatusArea):\n");
+    style = XIMPreeditPosition | XIMStatusArea;
+    if (!is_supported_style(supported, style)) {
+        errx(1, "style not supported.");
+    }
+    if (create_ic(im, style) == NULL) {
+        warnx("cannot create input context.");
+    }
+    
+    printf("style == (XIMPreeditArea | XIMStatusArea):\n");
+    style = XIMPreeditArea | XIMStatusArea;
+    if (!is_supported_style(supported, style)) {
+        errx(1, "style not supported.");
+    }
+    if (create_ic(im, style) == NULL) {
+        warnx("cannot create input context.");
+    }
+
+    exit(0);
+    return 0;
+}
+%
+
+  コンパイルして実行する。
+
+% xmkmf -a ; make
+...
+% setenv XMODIFIERS @im=kinput2
+% ./xcreateic
+style == (XIMPreeditPosition | XIMStatusArea):
+xcreateic: cannot create input context.
+style == (XIMPreeditArea | XIMStatusArea):
+xcreateic: cannot create input context.
+%
+
+- 確認できるリリース
+  R6.3p3 (XFree86-3.3.x)
+  R6.6 (XFree86-4.2.x)
+
+- 回避策
+  SpotLocation属性とFontSet属性を指定する。
+
+- 修正方法
+  R6.6に次のパッチを適用する。
+
+diff -c -r xc.orig/lib/X11/imRm.c xc/lib/X11/imRm.c
+*** xc.orig/lib/X11/imRm.c      Mon Jan 27 01:59:56 2003
+--- xc/lib/X11/imRm.c   Mon Jan 27 02:02:56 2003
+***************
+*** 1866,1872 ****
+                0},
+      {XNSpotLocation, 0,
+                0,
+!               (XIM_MODE_PRE_CREATE | XIM_MODE_PRE_SET | XIM_MODE_PRE_GET),
+                0,
+                0,
+                0,
+--- 1866,1872 ----
+                0},
+      {XNSpotLocation, 0,
+                0,
+!               (XIM_MODE_PRE_DEFAULT | XIM_MODE_PRE_SET | XIM_MODE_PRE_GET),
+                0,
+                0,
+                0,
+***************
+*** 1926,1937 ****
+                0},
+      {XNFontSet, 0,
+                0,
+!               (XIM_MODE_PRE_CREATE | XIM_MODE_PRE_SET | XIM_MODE_PRE_GET),
+!               (XIM_MODE_PRE_CREATE | XIM_MODE_PRE_SET | XIM_MODE_PRE_GET),
+                (XIM_MODE_PRE_DEFAULT | XIM_MODE_PRE_SET | XIM_MODE_PRE_GET),
+                0,
+                0,
+!               (XIM_MODE_STS_CREATE | XIM_MODE_STS_SET | XIM_MODE_STS_GET),
+                (XIM_MODE_STS_DEFAULT | XIM_MODE_STS_SET | XIM_MODE_STS_GET),
+                0},
+      {XNLineSpace, 0,
+--- 1926,1937 ----
+                0},
+      {XNFontSet, 0,
+                0,
+!               (XIM_MODE_PRE_DEFAULT | XIM_MODE_PRE_SET | XIM_MODE_PRE_GET),
+!               (XIM_MODE_PRE_DEFAULT | XIM_MODE_PRE_SET | XIM_MODE_PRE_GET),
+                (XIM_MODE_PRE_DEFAULT | XIM_MODE_PRE_SET | XIM_MODE_PRE_GET),
+                0,
+                0,
+!               (XIM_MODE_STS_DEFAULT | XIM_MODE_STS_SET | XIM_MODE_STS_GET),
+                (XIM_MODE_STS_DEFAULT | XIM_MODE_STS_SET | XIM_MODE_STS_GET),
+                0},
+      {XNLineSpace, 0,

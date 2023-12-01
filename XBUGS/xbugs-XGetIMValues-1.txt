@@ -1,0 +1,267 @@
+From: "Tomohisa Tanaka" <tomohisa@ptl.yh.nec.co.jp>
+To: <xbugs@x.org>
+Cc: <tomohisa@da.jp.nec.com>
+Subject: Xlib: XGetIMValues() frees an invalid pointer, and leaks memory.
+Date: Thu, 23 Jan 2003 11:18:47 +0900
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1106
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+
+     VERSION:
+
+R6.6
+
+     CLIENT MACHINE and OPERATING SYSTEM:
+
+FreeBSD 4.4
+
+     DISPLAY TYPE:
+
+XF86_SVGA
+
+     WINDOW MANAGER:
+
+qvwm
+
+     COMPILER:
+
+gcc version 2.95.3
+
+     AREA:
+
+Xlib
+
+     SYNOPSIS:
+
+XGetIMValues() frees an invalid pointer, and leaks memory.
+
+     DESCRIPTION:
+
+The function XGetIMValues() has two problems (1) and (2) described
+below.  (Note: the problem (1) has been fixed in the release of
+XFree86 4.2.0, but the problem (2) has not.)
+
+(1) When a XIM client (`foo') calls the function XGetIMValues() with
+XNQueryIMValuesList or XNQueryICValuesList in order to get "inner
+resources", the following message is displayed.
+
+  foo in free(): warning: junk pointer, too high to make sense.
+
+In the function _XimProtoGetIMValues() in xc/lib/X11/imDefIm.c, the
+variable `preply' is declared (at the line 1432, shown below).  At the
+line 1475, if the variable `len' is not equal to zero, `preply' is set
+(at the line 1493, 1496, or 1499).  But if `len' is equal to zero,
+`preply' still has no value, and is compared with the variable `reply'
+(at the line 1522).  In many cases, `preply' is not equal to `reply',
+and the function Xfree() tries to release the wrong memory pointed by
+`preply' (at the line 1523).
+
+...
+  1432      XPointer             preply;
+...
+  1475      if (len) {
+...
+  1492          if(ret_code == XIM_TRUE) {
+  1493              preply = reply;
+  1494          } else if(ret_code == XIM_OVERFLOW) {
+  1495              if(len <= 0) {
+  1496                  preply = reply;
+  1497              } else {
+  1498                  buf_size = len;
+  1499                  preply = (XPointer)Xmalloc(buf_size);
+...
+  1506              }
+  1507          } else
+  1508              return arg->name;
+...
+  1518      }
+...
+  1522      if (reply != preply)
+  1523          Xfree(preply);
+
+(2) Furthermore, XGetIMValues() leaks some memory in the above case.
+The function _XimProtoGetIMValues() calls the function Xmalloc() to
+allocate `buf_size' bytes of memory, and have the memory pointed by
+the variable `buf' (at the line 1467).  At the line 1475, if `len' is
+not equal to zero, the memory `buf' points is released (at the line
+1488).  But if `len' is equal to zero, the function
+_XimProtoGetIMValues() returns with the memory unreleased (at the line
+1526 or 1528).
+
+...
+  1467      if (!(buf = (CARD8 *)Xmalloc(buf_size)))
+  1468          return arg->name;
+...
+  1475      if (len) {
+...
+  1488          Xfree(buf);
+...
+  1518      }
+...
+  1525      if (decode_name)
+  1526          return decode_name;
+  1527      else
+  1528          return makeid_name;
+...
+
+     REPEAT BY:
+
+$ cat Imakefile
+LOCAL_LIBRARIES = $(XONLYLIB)
+SRCS            = xgetimvalues.c
+OBJS            = $(SRCS:.c=.o)
+
+ComplexProgramTarget(xgetimvalues)
+$ cat xgetimvalues.c
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xlocale.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int
+main(void)
+{
+    Display *disp;
+    XIM im;
+    XIMValuesList *vl;
+    int k;
+
+    if ((disp = XOpenDisplay("")) == NULL) {
+        errx(1, "cannot open display.\n");
+    }
+    if (setlocale(LC_ALL, "") == NULL) {
+        errx(1, "cannot set locale.\n");
+    }
+    if (XSupportsLocale() == False) {
+        errx(1, "locale not supported.\n");
+    }
+    if (XSetLocaleModifiers("") == NULL) {
+        errx(1, "cannot set locale modifiers.");
+    }
+    if ((im = XOpenIM(disp, NULL, NULL, NULL)) == NULL) {
+        errx(1, "cannot open input method.");
+    }
+
+    printf("XNQueryIMValuesList:\n");
+    if (XGetIMValues(im, XNQueryIMValuesList, &vl, NULL) != NULL) {
+        errx(1, "XGetIMValues() failed. (XNQueryIMValuesList not supported.)");
+    }
+    for (k = 0; k < vl->count_values; ++k) {
+        printf("supported_values[%d]: %s\n", k, vl->supported_values[k]);
+    }
+    XFree(vl);
+
+    exit(0);
+    return 0;
+}
+$ xmkmf -a ; make
+...
+$ ./xgetimvalues
+XNQueryIMValuesList:
+xgetimvalues in free(): warning: junk pointer, too high to make sense.
+supported_values[0]: queryInputStyle
+$ MALLOC_OPTIONS=A ./xgetimvalues
+XNQueryIMValuesList:
+xgetimvalues in free(): error: junk pointer, too high to make sense.
+Abort trap - core dumped
+$ gdb xgetimvalues xgetimvalues.core
+GNU gdb 4.18
+Copyright 1998 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "i386-unknown-freebsd"...
+Core was generated by `xgetimvalues'.
+Program terminated with signal 6, Abort trap.
+Reading symbols from /usr/lib/libc.so.4...done.
+Reading symbols from /usr/libexec/ld-elf.so.1...done.
+#0  0x280e8764 in kill () from /usr/lib/libc.so.4
+(gdb) bt
+#0  0x280e8764 in kill () from /usr/lib/libc.so.4
+#1  0x281247b6 in abort () from /usr/lib/libc.so.4
+#2  0x281232c5 in isatty () from /usr/lib/libc.so.4
+#3  0x281232fb in isatty () from /usr/lib/libc.so.4
+#4  0x281241f2 in isatty () from /usr/lib/libc.so.4
+#5  0x28124461 in free () from /usr/lib/libc.so.4
+#6  0x8079693 in _XimProtoGetIMValues (xim=0x809b200, arg=0x8099a90)
+    at imDefIm.c:1523
+#7  0x804d4c4 in XGetIMValues ()
+#8  0x8049419 in main ()
+#9  0x80492ad in _start ()
+(gdb) up 6
+#6  0x8079693 in _XimProtoGetIMValues (xim=0x809b200, arg=0x8099a90)
+    at imDefIm.c:1523
+1523            Xfree(preply);
+(gdb) list
+1518        }
+1519        decode_name = _XimDecodeIMATTRIBUTE(im, im->core.im_resources,
+1520                            im->core.im_num_resources, data, data_len,
+1521                            arg, XIM_GETIMVALUES);
+1522        if (reply != preply)
+1523            Xfree(preply);
+1524
+1525        if (decode_name)
+1526            return decode_name;
+1527        else
+(gdb)
+
+     SAMPLE FIX:
+
+diff -c -r -d xc.orig/lib/X11/imDefIm.c xc/lib/X11/imDefIm.c
+*** xc.orig/lib/X11/imDefIm.c   Sun Jan  5 07:01:29 2003
+--- xc/lib/X11/imDefIm.c        Sun Jan  5 07:17:39 2003
+***************
+*** 1429,1435 ****
+      INT16              len;
+      CARD32             reply32[BUFSIZE/4];
+      char              *reply = (char *)reply32;
+!     XPointer           preply;
+      int                        buf_size;
+      int                        ret_code;
+      char              *makeid_name;
+--- 1429,1435 ----
+      INT16              len;
+      CARD32             reply32[BUFSIZE/4];
+      char              *reply = (char *)reply32;
+!     XPointer           preply = NULL;
+      int                        buf_size;
+      int                        ret_code;
+      char              *makeid_name;
+***************
+*** 1516,1525 ****
+        data = &buf_s[2];
+        data_len = buf_s[1];
+      }
+      decode_name = _XimDecodeIMATTRIBUTE(im, im->core.im_resources,
+                        im->core.im_num_resources, data, data_len,
+                        arg, XIM_GETIMVALUES);
+!     if (reply != preply)
+        Xfree(preply);
+  
+      if (decode_name)
+--- 1516,1528 ----
+        data = &buf_s[2];
+        data_len = buf_s[1];
+      }
++     else {
++       Xfree(buf);
++     }
+      decode_name = _XimDecodeIMATTRIBUTE(im, im->core.im_resources,
+                        im->core.im_num_resources, data, data_len,
+                        arg, XIM_GETIMVALUES);
+!     if (preply != NULL && reply != preply)
+        Xfree(preply);
+  
+      if (decode_name)
+
+______________________________________________________
+Tomohisa Tanaka
+Development Laboratories, NEC Networks.
+tomohisa@da.jp.nec.com

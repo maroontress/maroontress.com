@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>on-the-spot対応日本語XIMサーバ 機能と実装の比較 | Japanese XIM Server</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo"><img src="imserver-icon.png" alt="アイコン" style="width: 32px; height: 32px; vertical-align: bottom;"/>日本語XIMサーバ</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<style>
+td, th {
+  text-wrap: pretty;
+}
+span.small {
+  font-size: smaller;
+}
+</style>
+<h1>on-the-spot対応日本語XIMサーバ 機能と実装の比較</h1>
+<h2>機能サポート</h2>
+<div class="horizontal-scroll">
+<table cols="7" style="width: 200%;">
+  <tr style="background-color: #777777;">
+    <th rowspan="2"></th>
+    <th colspan="6" style="text-align: center;">XIMサーバ</th>
+  </tr>
+  <tr style="background-color: #777777;">
+    <th>ATOK8<br><span class="small">(Solaris付属)</span></th>
+    <th>xwnmo<br><span class="small">(Wnn6 Ver3付属)</span></th>
+    <th>vje-delta 3.0</th>
+    <th>Kinput2<br><span class="small">(v3 sj3)</span></th>
+    <th>Kinput2<br><span class="small">(v3 canna)</span></th>
+    <th>imserver</th>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">キャレット</th>
+    <td>IMサーバ側(アンダーバー文字で表示)制御/クライアント側キャレットは先頭位置</td>
+    <td>IMサーバ側(リバース表示、末尾では非表示)制御/クライアント側キャレットは末尾位置</td>
+    <td>IMサーバ側(リバース表示、末尾ではスペース文字のリバース表示)制御/クライアント側キャレットは末尾位置</td>
+    <td>クライアント側制御</td>
+    <td>クライアント側制御</td>
+    <td>クライアント側制御</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">かなキー</th>
+    <td>○</td>
+    <td>×(濁点・半濁点に未対応)</td>
+    <td>○</td>
+    <td>○</td>
+    <td>×(~/.canna次第)</td>
+    <td>○</td>
+  </tr>
+</table>
+</div>
+<h2>前編集文字列が存在するときの挙動</h2>
+<div class="horizontal-scroll">
+<table cols="7" style="width: 200%;">
+  <tr style="background-color: #777777;">
+  <th rowspan="2"></th>
+  <th colspan="6">XIMサーバ</th>
+  </tr>
+  <tr style="background-color: #777777;">
+    <th>ATOK8<br><span class="small">(Solaris付属)</span></th>
+    <th>xwnmo<br><span class="small">(Wnn6 Ver3付属)</span></th>
+    <th>vje-delta 3.0</th>
+    <th>Kinput2<br><span class="small">(v3 sj3)</span></th>
+    <th>Kinput2<br><span class="small">(v3 canna)</span></th>
+    <th>imserver</th>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XmbResetIC()の戻り値</th>
+    <td>前編集文字列</td>
+    <td>NULL</td>
+    <td>前編集文字列</td>
+    <td>前編集文字列</td>
+    <td>空文字列(長さ0)</td>
+    <td>前編集文字列(読み文字列)</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XmbResetIC()のあとのIMサーバの行動</th>
+    <td>IMサーバ側文字列消去
+      -> 描画コールバックを呼びクライアントの前編集文字列を消去
+      -> 入力モードoff(<b>終了コールバックは呼ばれない</b>)</td>
+    <td>IMサーバ側文字列消去
+      -> 描画コールバックを呼びクライアントの前編集文字列を消去
+      -> 終了コールバックを呼ぶ
+      -> 入力モードoff</td>
+    <td>描画コールバックを呼びクライアント側文字列を一部再描画(<b>サーバ側とクライアント側の両方の文字列が存続する</b>)</td>
+    <td>IMサーバ側文字列消去のみ</td>
+    <td>IMサーバ側文字列消去のみ</td>
+    <td>IMサーバ側文字列消去
+      -> 描画コールバックを呼びクライアントの前編集文字列を消去</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">入力モードoff</th>
+    <td>描画コールバックを呼びクライアントの前編集文字列を消去
+      -> IMサーバ側文字列をクライアントにコミットして消去
+      -> 終了コールバックを呼ぶ
+      -> 入力モードoff</td>
+    <td>描画コールバックを呼びクライアントの前編集文字列を消去
+      -> 終了コールバックを呼ぶ(<b>コミットは呼ばれない</b>)
+      -> 入力モードoff</td>
+    <td>描画コールバックを呼びクライアントの前編集文字列を消去
+      -> 終了コールバックを呼ぶ(<b>コミットは呼ばれない</b>)
+      -> 入力モードoff
+      -> 開始コールバックを呼ぶ
+      -> 無消去無挿入の描画コールバックを呼ぶ
+      -> 入力モードoff</td>
+    <td>描画コールバックを呼びクライアントの前編集文字列を消去
+      -> IMサーバ側文字列をクライアントにコミットして消去
+      -> 終了コールバックを呼ぶ
+      -> 入力モードoff</td>
+    <td>前編集文字列が存在する状態で入力モードoffは不可</td>
+    <td>描画コールバックを呼びクライアントの前編集文字列を消去
+      -> IMサーバ側文字列をクライアントにコミットして消去
+      -> 終了コールバックを呼ぶ->入力モードoff</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">入力モードoff直後の入力モードon</th>
+    <td>通常の入力モードon</td>
+    <td>開始コールバックを呼ぶ
+      -> 描画コールバックを呼んで直前の前編集文字列を再挿入</td>
+    <td>通常の入力モードon</td>
+    <td>通常の入力モードon</td>
+    <td>通常の入力モードon</td>
+    <td>通常の入力モードon</td>
+  </tr>
+</table>
+</div>
+<h2>そのほか</h2>
+<h3>Kinput2 (v3 canna)</h3>
+<ul>
+<li>クライアントと前編集文字列の同期がとれなくなることがあるなど動作がおかしい。</li>
+<li>canna側のUIライブラリを使用するため、キーバインディングが日本語変換エンジンの機構と強く結合している(そのためにかなキーが使用できない)。</li>
+<li>クライアントに渡されるタブ、改行などのキーイベントのキーコードが0になる不具合がある。</li>
+</ul>
+<table cols="4">
+  <tr style="background-color: #777777;">
+    <th></th>
+    <th>XIMStatusNothing</th>
+    <th>XIMStatusArea</th>
+    <th>XIMStatusCallbacks</th>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditNothing</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">×</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditArea</th>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditPosition</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditCallbacks</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">○</td>
+  </tr>
+</table>
+<h3>Kinput2 (v3 sj3)</h3>
+<ul>
+<li>cannaよりは安定している。</li>
+<li>クライアントに渡されるタブ、改行などのキーイベントのキーコードが0になる不具合がある。</li>
+</ul>
+<table cols="4">
+  <tr style="background-color: #777777;">
+    <th></th>
+    <th>XIMStatusNothing</th>
+    <th>XIMStatusArea</th>
+    <th>XIMStatusCallbacks</th>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditNothing</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">×</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditArea</th>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditPosition</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditCallbacks</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">○</td>
+  </tr>
+</table>
+<h3>ATOK8 (Solaris付属)</h3>
+<ul>
+<li>キーバインディングの変更は可能だが、キーの機能を状態によって区別しないので、ひとつのキーに複数機能を自由に割り当てることはできないようだ。</li>
+</ul>
+<table cols="4">
+  <tr style="background-color: #777777;">
+    <th></th>
+    <th>XIMStatusNothing</th>
+    <th>XIMStatusArea</th>
+    <th>XIMStatusCallbacks</th>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditNothing</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditArea</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditPosition</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditCallbacks</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+  </tr>
+</table>
+<h3>xwnmo (WNN6 Ver3付属)</h3>
+<ul>
+<li>クライアントと前編集文字列の同期がとれなくなることがあるなど動作がおかしい。</li>
+<li>頻繁にXフォントセットを生成・解放しているらしく動きが重い。</li>
+<li>キーバインディングはいくつかのパターンから選ぶことができるだけらしい。</li>
+</ul>
+<table cols="4">
+  <tr style="background-color: #777777;">
+    <th></th>
+    <th>XIMStatusNothing</th>
+    <th>XIMStatusArea</th>
+    <th>XIMStatusCallbacks</th>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditNothing</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">×</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditArea</th>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditPosition</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditCallbacks</th>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+  </tr>
+</table>
+<h3>vje-delta 3.0</h3>
+<ul>
+<li>バージョン2.5ではon-the-spotには対応していなかった。バージョン3ではon-the-spotに対応した。</li>
+</ul>
+<table cols="4">
+  <tr style="background-color: #777777;">
+    <th></th>
+    <th>XIMStatusNothing</th>
+    <th>XIMStatusArea</th>
+    <th>XIMStatusCallbacks</th>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditNothing</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">×</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditArea</th>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditPosition</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+  </tr>
+  <tr>
+    <th style="background-color: #777777;">XIMPreeditCallbacks</th>
+    <td style="text-align: center;">○</td>
+    <td style="text-align: center;">×</td>
+    <td style="text-align: center;">○</td>
+  </tr>
+</table>
+<h3>番外: ASTEC-X経由のIME</h3>
+<ul>
+<li>ASTEC-XのXサーバは、かなキー+コントロールキー+'a'キーを同時に押しても、'コントロール+a'ではなく、'ち'を返してくる('h'の場合はバックスペースを返してくれる)。</li>
+<li>on-the-spotには対応せず。</li>
+</ul>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jan  8 18:57:30 JST 2000 -->
+<!-- hhmts start -->
+Last modified: Thu Aug 31 11:07:05 JST 2006
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Japanese XIM Server</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="news.html">News</a>
+    </li>
+    <li>
+      <a href="feature.html">Feature</a>
+    </li>
+    <li>
+      <a href="screenshot.html">Screenshot</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="document.html">Document</a>
+    </li>
+    <li>
+      <a href="bug.html">Bug</a>
+    </li>
+    <li class="selected">
+      on-the-spot対応日本語XIMサーバ 機能と実装の比較
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="bug-xcreatefontset.html">XCreate<wbr>Font<wbr>Set()のバグ</a>
+    </li>
+    <li>
+      <a href="feedback-impl.html">XIMFeedbackの仕様解釈と実装</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | 国際化エディタ</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo"><img src="editor-icon.gif" alt="アイコン" style="width: 32px; height: 32px; vertical-align: middle;">国際化エディタ
+</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p>開発中のGUI部品である国際化TextArea, TextLine, Buttonと垂直方向Scrollbarオブジェクト、およびレイアウトマネージャ、コントロールマネージャを利用した、実装例としてのエディタです。</p>
+<h2>ニュース</h2>
+<h3>2001-06-25</h3>
+<p><a href="editor-20010625.tar.gz">editor-20010625.tar.gz</a>をリリース（<a href="relnotes.html#latest">リリースノート</a>）。</p>
+<h2>特徴</h2>
+<p>X11R6の環境下で動作する本エディタの特徴は以下の通りです。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt>ロケールにより国際化に対応</dt>
+<dd>現時点では左から右に書く言語のみを扱える（はず）。国際化テキストの入力にはXIMプロトコルを使用するIMサーバ（例えば日本語の場合kinput2やVJE-Deltaなど）が必要。</dd>
+<dt>可変長の文字幅をもつフォントを使用可能</dt>
+<dd>フォントセットが定義されれば、任意のサイズ、可変長の文字幅をもつのフォントが使用可能（ただし、IMサーバはサポートしないかもしれない）。</dd>
+<dt>リソースによりカスタマイズ可能</dt>
+<dd>前景色、背景色などをはじめ、キーバインディングも変更可能。</dd>
+<dt>セレクションによるカットアンドペーストに対応</dt>
+<dd>エディタなら当然の機能（ただしコンパウンドテキストの転送は、お互いのクライアントが同じロケールで動作していないと成功しない）。</dd>
+<dt>スケーラブルな編集記号</dt>
+<dd>改行記号、行連結記号、タブ記号、EOF記号などはスケーリングされる。</dd>
+</dl>
+<h2>スクリーンショット</h2>
+<p>ウィンドウマネージャにはqvwmを使用している。</p>
+<h3>On-The-Spot入力の様子</h3>
+<div class="horizontal-scroll">
+<img src="shot6.gif" alt="スクリーンショット6" width="346" height="295">
+</div>
+<h3>漢字は固定幅のフォントで英数字は可変長の場合</h3>
+<p>フォントにはリコーのTrueTypeWorld平成角ゴシックW3とアドビのHelveticaを使用（16pt）。IMサーバはVJE-Delta（フォントを変更するようにパッチを当てたもの）。</p>
+<div class="horizontal-scroll">
+<img src="shot1.gif" alt="スクリーンショット1" width="332" height="319">
+</div>
+<h3>漢字と英数字の両方が可変長の場合</h3>
+<p>フォントにはリコーのTrueTypeWorld平成角ゴシックW3とアドビのHelveticaを使用（16pt）。</p>
+<div class="horizontal-scroll">
+<img src="shot2.gif" alt="スクリーンショット2" width="332" height="319">
+</div>
+<h3>スクロールバーと領域選択</h3>
+<div class="horizontal-scroll">
+<img src="shot3.gif" alt="スクリーンショット3" width="440" height="217">
+</div>
+<h3>タブ</h3>
+<p>フォントにはリコーのTrueTypeWorld平成角ゴシックW3とアドビのCourierを使用（16pt）。</p>
+<div class="horizontal-scroll">
+<img src="shot4.gif" alt="スクリーンショット4" width="461" height="293">
+</div>
+<h3>背景ピクスマップ</h3>
+<div class="horizontal-scroll">
+<img src="shot5.gif" alt="スクリーンショット5" width="429" height="277">
+</div>
+<h2>ダウンロード・ビルド</h2>
+<p>最新版は<a href="editor-20010625.tar.gz"><code>editor-20010625.tar.gz</code></a>です。動作確認したプラットフォームはFreeBSD 2.2.8だけですが、Solarisでも動くと思います。</p>
+<p>tar ballを展開後、環境に合うように<code>Imakefile</code>を編集してください。アイコンウィンドウを用いる場合は、shape extentionとXpmライブラリを使用するので、<code>Imakefile</code>で次のように定義します。</p>
+<pre><code class="language-plaintext">#define ShapeIcon
+</code></pre>
+<p>あとは<code>xmkmf -a ; make</code>で完了するはずです。</p>
+<p><a name="usage"></a></p>
+<h2>使用法</h2>
+<p>次のように起動します。</p>
+<pre><code class="nohighlight">% setenv LANG</code> <i>ロケール名</i>
+% setenv XMODIFIERS @im=</code><i>IMサーバ名</i>
+% xrdb -merge</code> <i>リソースファイル</i>
+% editor</code> <i>ファイル名</i></code></pre>
+<p>FreeBSDでは、実際には次のようになります。</p>
+<pre><code class="language-plaintext">% setenv LANG ja_JP.EUC
+% setenv XMODIFIERS @im=vje
+% xrdb -merge Editor.ad
+% editor sample.doc
+</code></pre>
+<p>起動後、編集領域をクリックすれば、編集が可能になります。左から1番目のボタンをクリックすると編集テキストを指定のファイル名で保存します。左から2番目のボタンをクリックすると編集テキストを放棄し、指定のファイル名の内容を読み込みます。ウィンドウマネージャから「ウィンドウを閉じる」を選択すると終了します。</p>
+<p><a name="on-the-spot"></a></p>
+<h2>「On-The-Spot入力（その場入力）」の制限</h2>
+<p>Kinput2がバージョン3以降でOn-The-Spotをサポートしたのをきっかけに、この国際化エディタもOn-The-Spot入力をサポートすることにしました。ただし、今のところ次のような制限があります。</p>
+<ul>
+<li>TextArea/TextLineで利用可能。前編集文字列がある場合は、通常のキーイベントを無視するため、カーソルの移動などの操作はXIMサーバ側の操作に依存する。</li>
+<li>前編集文字列が存在する状態でフォーカスが移動（スクロールバーの操作、画面のリサイズなどでポインタがグラブされる場合も含む）すると、その前編集文字列はキャンセルされる。</li>
+<li>前編集文字列が存在する状態では、マウスによるカーソル移動はできない。</li>
+</ul>
+<p>前編集文字列の前景色はリソース</p>
+<ul>
+<li><code>editor.edit.text.preedited</code></li>
+<li><code>editor.filename.text.preedited</code></li>
+</ul>
+<p>で指定します。</p>
+<p>On-The-Spot入力を利用するには、リソース<code>editor.ximStyle</code>に</p>
+<ul>
+<li><code>PreeditCallbacks</code>, <code>StatusNone</code></li>
+<li><code>PreeditCallbacks</code>, <code>StatusNothing</code></li>
+<li><code>PreeditCallbacks</code>, <code>StatusArea</code></li>
+</ul>
+<p>のいずれかを指定します。状態表示領域はOn-The-Spotに対応していないので、</p>
+<ul>
+<li><code>PreeditCallbacks</code>, <code>StatusCallbacks</code></li>
+</ul>
+<p>は利用できません。</p>
+<h2>リソース</h2>
+<p><a href="resource.html">リソース一覧</a>を用意しておきました。</p>
+<p>ボタンのラベル文字列を設定しないと実用的ではないでしょう。それ以外はデフォルトのまま使用しても問題ないでしょう。一応<a href="Editor.ad">サンプルのリソースファイル</a>を用意しておきました。</p>
+<h2>やること</h2>
+<p>以下の課題がある。</p>
+<ol>
+<li>サポートするセレクションターゲットの数を増やす。</li>
+<li>プロパティ名の命名規則を考える。</li>
+<li>Insertキーでセレクションを挿入する。</li>
+<li>背景ピクスマップのビジュアルクラスの確認。</li>
+<li>背景ピクスマップをクリアできるようにする。</li>
+<li>タブの間隔をリソースで指定可能に。</li>
+<li>描画速度を速くする。</li>
+<li>ウィンドウの際の再フォーマットの処理を軽くする。</li>
+<li>コマンドラインオプションから設定を得る。</li>
+<li>エラー処理をもっと丁寧に。</li>
+</ol>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Tue Nov 24 19:22:22 JST 1998 -->
+<!-- hhmts start -->
+Last modified: Sun May 11 09:46:52 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">国際化エディタ</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

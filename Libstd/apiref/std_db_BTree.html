@@ -1,0 +1,693 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>BTree - std_db_BTree</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_db_BTree"/>
+    <h3>package std_db</h3>
+    <h1>extensible class BTree</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<b>std_db_BTree</b><br>
+<br>
+#define std_db_BTree_IMPORT<br>
+#include &lt;std/db/BTree.h&gt;<br>
+#include &lt;std/db/impl/BTree.h&gt;<br>
+    <dl><dd>
+<p>BTree形式のBerkeley DBのラッパーです。Berkeley DBに関してはdbopen(3)を、BTree形式に関してはbtree(3)を参照してください。ただし、dbopen(3)のkey/dataペアを、このAPIドキュメントではkey/valueペア（キーと値のペア）と記述します。</p>
+<p>このラッパーは、APIの型安全性を強化すること、ビルド時にヘッダファイルとライブラリの指定を容易にすること、Berkeley DBバージョン1.85のAPIとBerkeley DBバージョン4系の「1.85互換API」の違いを吸収することを目的にしています。</p>
+
+<h3>型安全性</h3>
+<p>DB構造体に含まれる関数ポインタ、DBT構造体の型定義には、const修飾子に関する型安全性に問題があります。まず、DBT構造体は次のように定義されているので、メンバ<span class="code">data</span>に定数（const属性の変数）のポインタを代入する場合、キャストが必要になります。</p>
+<pre>
+typedef struct {
+        void    *data;                  /* data */
+        size_t   size;                  /* data length */
+} DBT;
+</pre>
+<p>次にDB構造体です。そのメンバ<span class="code">put</span>と<span class="code">seq</span>は次のように定義されています。</p>
+<pre>
+typedef struct __<wbr>db {
+...
+        int (*put)(const struct __<wbr>db *db, DBT *key, const DBT *data,
+                   u_<wbr>int flags);
+        int (*seq)(const struct __<wbr>db *db, DBT *key, DBT *data, u_<wbr>int flags);
+...
+} DB;
+</pre>
+<p><span class="code">put</span>の第2引数<span class="code">key</span>の型は<span class="code">DBT *</span>になっています。これは、<span class="code">DB_<wbr>RECNO</span>形式のデータベースを使用しているとき、<span class="code">put</span>の第4引数<span class="code">flags</span>に<span class="code">R_<wbr>IAFTER</span>または<span class="code">R_<wbr>IBEFORE</span>を指定した場合、キーが書き換えられて呼び出しから戻るからです（<span class="code">key</span>はIN/OUTのパラメータ）。それ以外のケースでは、キーが書き換えられることはありません（<span class="code">key</span>はINのパラメータ）。したがって、ほとんどのケースでは<span class="code">key</span>の型は<span class="code">const DBT *</span>であるべきです。</p>
+<p><span class="code">seq</span>は第4引数<span class="code">flags</span>に<span class="code">R_<wbr>CURSOR</span>を指定すると、第2引数のキーは書き換えられて呼び出しから戻ります（<span class="code">key</span>はIN/OUTのパラメータ）。しかし、<span class="code">flags</span>に<span class="code">R_<wbr>CURSOR</span>以外の値を指定すると、呼び出し前のキーの値は参照されません（<span class="code">key</span>はOUTのパラメータ）。</p>
+
+<h3>ヘッダファイルとライブラリの指定</h3>
+<p>FreeBSDではBerkeley DBバージョン1.85はlibcに含まれるため問題はありませんが、Linuxでは問題があります。Linuxディストリビューションの多くは、そのパッケージ管理システムがBerkeley DBバージョン1.85をサポートしていません。Berkeley DBバージョン4はまずサポートされているので、その「1.85互換API」を使うことになります。</p>
+<p>バージョン1.85をサポートするディストリビューション、バージョン4の互換APIを使えるディストリビューションのどちらにせよ、ヘッダファイルのインストール先や、ライブラリのファイル名がディストリビューションによって異なります。Berkeley DBはpkg-configに対応せず、m4マクロも用意されないため、Berkeley DBを利用するためのインテグレーションが煩雑になります。実際Berkeley DBを利用するプロジェクトはそれぞれ違った方法でこの問題に対応しています。例えば、subversionはソースツリーにBerkeley DBのためのm4マクロを独自に組み込み、configureから利用しています。</p>
+
+<h3>バージョン1.85とバージョン4系の「1.85互換API」の違い</h3>
+<p><a href='https://www.maroontress.com/Libcgi/bdb4-compat185.html'>Berkeley DB 4の1.85互換API</a>を参照してください。</p>
+  </dd></dl>
+    <hr>
+<h2>Field Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;DB *</font>
+  </td>
+  <td valign="top"><a href="#struct std_db_impl_BTree.db"><b>db</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bツリー形式のBerkeley DBです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;unsigned int</font>
+  </td>
+  <td valign="top"><a href="#struct std_db_impl_BTree.flags"><b>flags</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Berkeley DBのバグを回避するためのフラグです。</td>
+</tr>
+    </table>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="std_db_BTree.html#std_db_BTree_seq">BTree_<wbr>seq</a>()に指定するオプションの実装となる構造体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_db_BTree.html#union std_db_BTree">union BTree</a></font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_create"><b>BTree_<wbr>create</b></a>(const char *&nbsp;<i>file</i>, int&nbsp;<i>flags</i>, int&nbsp;<i>mode</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bツリーを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_close"><b>BTree_<wbr>close</b></a>(<a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;クローズして解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_sync"><b>BTree_<wbr>sync</b></a>(<a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ファイルと同期します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_getFileDescriptor"><b>BTree_<wbr>getFileDescriptor</b></a>(<a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ファイルディスクリプタを取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_del"><b>BTree_<wbr>del</b></a>(<a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>, <a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>key</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;キーと値のペアを削除します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_delCursor"><b>BTree_<wbr>delCursor</b></a>(<a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;カーソルが指すペアを削除します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_get"><b>BTree_<wbr>get</b></a>(<a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>, <a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>key</i>, <span class="splint">(out)</span> <a href="std_lang_Chunk.html#struct std_lang_Chunk">struct std_<wbr>lang_<wbr>Chunk</a> *&nbsp;<i>val</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;キーと値のペアを取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_put"><b>BTree_<wbr>put</b></a>(<a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>, <a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>key</i>, <a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>val</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;キーと値のペアを上書きで設定します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_putNoOverwrite"><b>BTree_<wbr>putNoOverwrite</b></a>(<a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>, <a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>key</i>, <a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>val</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;キーが存在しないときに限り、キーと値のペアを設定します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_seqCursor"><b>BTree_<wbr>seqCursor</b></a>(<a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>, <a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>partialkey</i>, <span class="splint">(out)</span> <a href="std_lang_Chunk.html#struct std_lang_Chunk">struct std_<wbr>lang_<wbr>Chunk</a> *&nbsp;<i>key</i>, <span class="splint">(out)</span> <a href="std_lang_Chunk.html#struct std_lang_Chunk">struct std_<wbr>lang_<wbr>Chunk</a> *&nbsp;<i>val</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;指定したキーに等しいか大きい最小のキーと値のペアを取得し、そのペアを指すようにカーソルを初期化します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_seq"><b>BTree_<wbr>seq</b></a>(<a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>, <span class="splint">(out)</span> <a href="std_lang_Chunk.html#struct std_lang_Chunk">struct std_<wbr>lang_<wbr>Chunk</a> *&nbsp;<i>key</i>, <span class="splint">(out)</span> <a href="std_lang_Chunk.html#struct std_lang_Chunk">struct std_<wbr>lang_<wbr>Chunk</a> *&nbsp;<i>val</i>, <span class="splint">(nonnull)</span> const <a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a> *&nbsp;<i>option</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;順番にペアを取得し、そのペアを指すようにカーソルを初期化します。</td>
+</tr>
+    </table>
+<h2>Global Variable Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a> *const</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_FIRST"><b>BTree_FIRST</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最初のキーと値のペアを取得するオプションです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a> *const</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_LAST"><b>BTree_LAST</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最後のキーと値のペアを取得するオプションです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a> *const</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_NEXT"><b>BTree_NEXT</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次のキーと値のペアを取得するオプションです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a> *const</font>
+  </td>
+  <td valign="top"><a href="#std_db_BTree_PREV"><b>BTree_PREV</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前のキーと値のペアを取得するオプションです。</td>
+</tr>
+    </table>
+<h2>Field Detail</h2>
+<p><a name="struct std_db_impl_BTree.db"></a><font size="+1"><b>db</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>DB * <b>db</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+Bツリー形式のBerkeley DBです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_db_impl_BTree.flags"></a><font size="+1"><b>flags</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>unsigned int <b>flags</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+Berkeley DBのバグを回避するためのフラグです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+    <h2>Struct Detail</h2>
+<p><a name="struct std_db_BTree_SeqOption"></a>
+<font size="+1"><b>struct BTree_SeqOption</b></font></p>
+<dl><dd>
+<a href="std_db_BTree.html#std_db_BTree_seq">BTree_<wbr>seq</a>()に指定するオプションの実装となる構造体です。
+<p>実装の詳細は隠蔽されています。</p>
+    </dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_db_BTree_create"></a><font size="+1"><b>BTree_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a> <b>BTree_create</b>(</td>
+    <td nowrap>const char *&nbsp;<i>file</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>int&nbsp;<i>flags</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>int&nbsp;<i>mode</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+Bツリーを生成します。
+<p>
+This method opens file for reading and/or writing.  Files never
+intended to be preserved on disk may be created by setting the
+<span class="arg">file</span> argument to NULL.
+</p>
+<p>
+The <span class="arg">flags</span> and <span class="arg">mode</span> arguments are as specified to
+the open(2) routine, however, only the O_<wbr>CREAT, O_<wbr>EXCL, O_<wbr>EXLOCK,
+O_<wbr>NONBLOCK, O_<wbr>RDONLY, O_<wbr>RDWR, O_<wbr>SHLOCK and O_<wbr>TRUNC flags are
+meaningful.  (Note, opening a database file O_<wbr>WRONLY is not possible.)
+</p>
+<p>
+This method may fail and set errno for any of the errors specified for
+the library routines dbopen(3).
+</p>
+<p>生成するBツリーは内部に重複したキーを許容しません。新しいキーと値のペアを挿入するときに、それと同一のキーをもつペアがあれば、そのペアを上書きするように振る舞います。</p>
+<p>戻り値が参照するオブジェクトは<a href="std_db_BTree.html#std_db_BTree_close">BTree_<wbr>close</a>()で解放しなければなりません。</p>
+<p>生成できなかった場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返します。</p>
+<dl><dt>Note:</dt><dd>実装がBerkeley DBバージョン4を使用している場合、<span class="arg">flags</span>にO_<wbr>CREATとO_<wbr>RDONLYを指定すると、O_<wbr>CREATとO_<wbr>RDWRを指定したことに置き換えます。</dd></dl>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>file</i> - データベースファイル、または<span class="code">NULL</span><br>
+
+<i>flags</i> - open(2)に指定するフラグ<br>
+
+<i>mode</i> - open(2)に指定するモード<br>
+
+</dd></dl>
+<dl>Returns:<dd>Bツリー、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_db_BTree_close"></a><font size="+1"><b>BTree_<wbr>close</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BTree_close</b>(</td>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+クローズして解放します。
+<p>
+This method flushes any cached information to disk, free any allocated
+resources, and close the underlying file(s).  Since key/value pairs
+may be cached in memory, failing to synchronize the file with a
+<a href="std_db_BTree.html#std_db_BTree_close">BTree_<wbr>close</a>() or <a href="std_db_BTree.html#std_db_BTree_sync">BTree_<wbr>sync</a>() method may result in inconsistent or
+lost information.  This method returns &minus;1 on error
+(setting errno) and 0 on success.
+</p>
+<p>クローズに失敗した場合はDB構造体のclose()が設定するエラーをerrnoに設定します。</p>
+<p>クローズに失敗した場合でも<span class="arg">this</span>が参照するオブジェクトは解放されます。</p>
+<p>呼び出し後は<span class="arg">this</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_db_BTree_sync"></a><font size="+1"><b>BTree_<wbr>sync</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BTree_sync</b>(</td>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ファイルと同期します。
+<p>
+This method flushes any cached information to disk.  If the database
+is in memory only, this method has no effect and will always succeed.
+This method returns &minus;1 on error (setting errno) and 0 on
+success.
+</p>
+<p>失敗した場合はDB構造体のsync()が設定するエラーをerrnoに設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_db_BTree_getFileDescriptor"></a><font size="+1"><b>BTree_<wbr>getFileDescriptor</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BTree_getFileDescriptor</b>(</td>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ファイルディスクリプタを取得します。
+<p>
+This method returns a file descriptor representative of the underlying
+database.  A file descriptor referencing the same file will be
+returned to all processes which call dbopen() with the same file name.
+This file descriptor may be safely used as an argument to the fcntl(2)
+and flock(2) locking functions.  The file descriptor is not
+necessarily associated with any of the underlying files used by the
+access method.  No file descriptor is available for in memory
+databases.  This method returns &minus;1 on error (setting
+errno), and the file descriptor on success.
+</p>
+<p>失敗した場合はDB構造体のfd()が設定するエラーをerrnoに設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>ファイルディスクリプタ、または&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_db_BTree_del"></a><font size="+1"><b>BTree_<wbr>del</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BTree_del</b>(</td>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>key</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+キーと値のペアを削除します。
+<p>
+This method removes key/value pairs from the database.  This method
+returns &minus;1 on error (setting errno), 0 on success, and 1
+if the specified <span class="arg">key</span> was not in the file.
+</p>
+<p>失敗した場合はDB構造体のdel()が設定するエラーをerrnoに設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>key</i> - キー<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、キーが存在しない場合は1、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_db_BTree_delCursor"></a><font size="+1"><b>BTree_<wbr>delCursor</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BTree_delCursor</b>(</td>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+カーソルが指すペアを削除します。
+<p>
+This method deletes the record referenced by the cursor.  The cursor
+must have previously been initialized.  This method returns
+&minus;1 on error (setting errno), and 0 on success.
+</p>
+<p>失敗した場合はDB構造体のdel()が設定するエラーをerrnoに設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_db_BTree_get"></a><font size="+1"><b>BTree_<wbr>get</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BTree_get</b>(</td>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>key</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><span class="splint">(out)</span> <a href="std_lang_Chunk.html#struct std_lang_Chunk">struct std_<wbr>lang_<wbr>Chunk</a> *&nbsp;<i>val</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+キーと値のペアを取得します。
+<p>
+This method is the interface for keyed retrieval from the database.
+The address and length of the value associated with the specified
+<span class="arg">key</span> are returned in the structure referenced by
+<span class="arg">val</span>.  This method returns &minus;1 on error (setting
+errno), 0 on success, and 1 if the key was not in the file.
+</p>
+<p><span class="arg">val</span><span class="code">-&gt;data</span>が参照するオブジェクトは、次に<span class="arg">this</span>にアクセスするまで有効です。</p>
+<p>失敗した場合はDB構造体のget()が設定するエラーをerrnoに設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>key</i> - キー<br>
+
+<i>val</i> - 値<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、キーが存在しない場合は1、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_db_BTree_put"></a><font size="+1"><b>BTree_<wbr>put</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BTree_put</b>(</td>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>key</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>val</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+キーと値のペアを上書きで設定します。
+<p>
+This method stores key/value pairs in the database.  This method
+enters the new key/value pair, replacing any previously existing key.
+This method returns &minus;1 on error (setting errno), and 0 on
+success.
+</p>
+<p>失敗した場合はDB構造体のput()が設定するエラーをerrnoに設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>key</i> - キー<br>
+
+<i>val</i> - 値<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_db_BTree_putNoOverwrite"></a><font size="+1"><b>BTree_<wbr>putNoOverwrite</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BTree_putNoOverwrite</b>(</td>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>key</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>val</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+キーが存在しないときに限り、キーと値のペアを設定します。
+<p>
+This method stores key/value pairs in the database.  This method
+enters the new key/value pair only if the key does not previously
+exist.  This method returns &minus;1 on error (setting errno),
+0 on success, and 1 if the key already exists in the file.
+</p>
+<p>失敗した場合はDB構造体のput()が設定するエラーをerrnoに設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>key</i> - キー<br>
+
+<i>val</i> - 値<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、キーが既に存在していた場合は1、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_db_BTree_seqCursor"></a><font size="+1"><b>BTree_<wbr>seqCursor</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BTree_seqCursor</b>(</td>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><a href="std_lang_ImmutableChunk.html#struct std_lang_ImmutableChunk">struct std_<wbr>lang_<wbr>ImmutableChunk</a>&nbsp;<i>partialkey</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><span class="splint">(out)</span> <a href="std_lang_Chunk.html#struct std_lang_Chunk">struct std_<wbr>lang_<wbr>Chunk</a> *&nbsp;<i>key</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><span class="splint">(out)</span> <a href="std_lang_Chunk.html#struct std_lang_Chunk">struct std_<wbr>lang_<wbr>Chunk</a> *&nbsp;<i>val</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+指定したキーに等しいか大きい最小のキーと値のペアを取得し、そのペアを指すようにカーソルを初期化します。
+<p>
+This method is the interface for sequential retrieval from the
+database.  The address and length of the key are returned in the
+structure referenced by <span class="arg">key</span>, and the address and length of
+the value are returned in the structure referenced by
+<span class="arg">value</span>.
+</p>
+<p>
+The data associated with the specified <span class="arg">partialkey</span> is
+returned.  This differs from the <a href="std_db_BTree.html#std_db_BTree_get">BTree_<wbr>get</a>() method in that it sets
+or initializes the cursor to the location of the key as well.  (Note,
+for the returned <span class="arg">key</span> is not necessarily an exact match for
+the specified <span class="arg">partialkey</span>.  The returned <span class="arg">key</span> is
+the smallest key greater than or equal to the specified
+<span class="arg">partialkey</span>, permitting partial key matches and range
+searches.)
+</p>
+<p>
+This method returns &minus;1 on error (setting errno), 0 on
+success and 1 if there are no key/value pairs greater than or equal to
+the specified <span class="arg">partialkey</span>.
+</p>
+<p><span class="arg">key</span><span class="code">-&gt;data</span>、<span class="arg">val</span><span class="code">-&gt;data</span>が参照するオブジェクトは、次に<span class="arg">this</span>にアクセスするまで有効です。</p>
+<p>失敗した場合はDB構造体のseq()が設定するエラーをerrnoに設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>partialkey</i> - 先頭から部分一致するキー<br>
+
+<i>key</i> - キー<br>
+
+<i>val</i> - 値<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_db_BTree_seq"></a><font size="+1"><b>BTree_<wbr>seq</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BTree_seq</b>(</td>
+    <td nowrap><a href="std_db_BTree.html#union std_db_BTree">union BTree</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><span class="splint">(out)</span> <a href="std_lang_Chunk.html#struct std_lang_Chunk">struct std_<wbr>lang_<wbr>Chunk</a> *&nbsp;<i>key</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><span class="splint">(out)</span> <a href="std_lang_Chunk.html#struct std_lang_Chunk">struct std_<wbr>lang_<wbr>Chunk</a> *&nbsp;<i>val</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><span class="splint">(nonnull)</span> const <a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a> *&nbsp;<i>option</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+順番にペアを取得し、そのペアを指すようにカーソルを初期化します。
+<p>
+This method is the interface for sequential retrieval from the
+database.  The address and length of the key are returned in the
+structure referenced by <span class="arg">key</span>, and the address and length of
+the value are returned in the structure referenced by
+<span class="arg">value</span>.
+</p>
+<p>
+Sequential key/value pair retrieval may begin at any time, and the
+position of the “cursor” is not affected by calls to the
+<a href="std_db_BTree.html#std_db_BTree_del">BTree_<wbr>del</a>(), <a href="std_db_BTree.html#std_db_BTree_get">BTree_<wbr>get</a>(), <a href="std_db_BTree.html#std_db_BTree_put">BTree_<wbr>put</a>(), or <a href="std_db_BTree.html#std_db_BTree_sync">BTree_<wbr>sync</a>() methods.
+Modifications to the database during a sequential scan will be
+reflected in the scan, i.e., records inserted behind the cursor will
+not be returned while records inserted in front of the cursor will be
+returned.
+</p>
+<p>
+The <span class="arg">option</span> argument must be set to one of the following
+values: <a href="std_db_BTree.html#std_db_BTree_FIRST">BTree_<wbr>FIRST</a>, <a href="std_db_BTree.html#std_db_BTree_LAST">BTree_<wbr>LAST</a>, <a href="std_db_BTree.html#std_db_BTree_NEXT">BTree_<wbr>NEXT</a>, <a href="std_db_BTree.html#std_db_BTree_PREV">BTree_<wbr>PREV</a>.
+</p>
+<p>
+This method returns &minus;1 on error (setting errno), 0 on
+success, and 1 if there are no key/value pairs less than the current
+key (when the <span class="arg">option</span> is <a href="std_db_BTree.html#std_db_BTree_PREV">BTree_<wbr>PREV</a>), or if there are no
+key/value pairs greater than the current key (when the
+<span class="arg">option</span> is <a href="std_db_BTree.html#std_db_BTree_NEXT">BTree_<wbr>NEXT</a>), or if there are no key/value pairs
+(when the <span class="arg">option</span> is <a href="std_db_BTree.html#std_db_BTree_FIRST">BTree_<wbr>FIRST</a> or <a href="std_db_BTree.html#std_db_BTree_LAST">BTree_<wbr>LAST</a>).
+</p>
+<p><span class="arg">key</span><span class="code">-&gt;data</span>、<span class="arg">val</span><span class="code">-&gt;data</span>が参照するオブジェクトは、次に<span class="arg">this</span>にアクセスするまで有効です。</p>
+<p>失敗した場合はDB構造体のseq()が設定するエラーをerrnoに設定します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>key</i> - キー<br>
+
+<i>val</i> - 値<br>
+
+<i>option</i> - オプション<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<h2>Global Variable Detail</h2>
+<p><a name="std_db_BTree_FIRST"></a><font size="+1"><b>BTree_FIRST</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const <a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a> *const <b>BTree_FIRST</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+最初のキーと値のペアを取得するオプションです。
+<p>
+The first key/value pair of the database is returned, and the cursor is
+set or initialized to reference it.
+</p>
+    </dd>
+</dl>
+<hr>
+<p><a name="std_db_BTree_LAST"></a><font size="+1"><b>BTree_LAST</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const <a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a> *const <b>BTree_LAST</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+最後のキーと値のペアを取得するオプションです。
+<p>
+The last key/value pair of the database is returned, and the cursor is
+set or initialized to reference it.
+</p>
+    </dd>
+</dl>
+<hr>
+<p><a name="std_db_BTree_NEXT"></a><font size="+1"><b>BTree_NEXT</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const <a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a> *const <b>BTree_NEXT</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+次のキーと値のペアを取得するオプションです。
+<p>
+Retrieve the key/value pair immediately after the cursor.  If the
+cursor is not yet set, this is the same as the <a href="std_db_BTree.html#std_db_BTree_FIRST">BTree_<wbr>FIRST</a> option.
+</p>
+    </dd>
+</dl>
+<hr>
+<p><a name="std_db_BTree_PREV"></a><font size="+1"><b>BTree_PREV</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const <a href="std_db_BTree.html#struct std_db_BTree_SeqOption">struct BTree_<wbr>SeqOption</a> *const <b>BTree_PREV</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+前のキーと値のペアを取得するオプションです。
+<p>
+Retrieve the key/value pair immediately before the cursor.  If the
+cursor is not yet set, this is the same as the <a href="std_db_BTree.html#std_db_BTree_LAST">BTree_<wbr>LAST</a> option.
+</p>
+    </dd>
+</dl>
+<hr>
+  </body>
+</html>

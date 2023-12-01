@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Appendix | Coverture</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Coverture</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Appendix</h1>
+<h2>命令カバレッジとソースコードの実行行数</h2>
+<p>gcovの出力であるgcovファイルを参照すれば、ソースコードのどの行を何回実行したのか容易に確認することができます。しかし、関数のすべての行を実行したとしても、その関数の命令カバレッジが100%になっているとは限りません。</p>
+<p>例として、glib-2.20.5の<code>glib/guniprop.c</code>にある関数<code>real_toupper()</code><a href="#1">†</a>をとりあげてみます。FreeBSD 7.1で次のようにビルドして、付属のテストを実行してみます。</p>
+<pre><code class="language-plaintext">% tar jxf glib-2.20.5.tar.bz2
+% cd glib-2.20.5
+% ./configure CFLAGS=&quot;-O0 -fprofile-arcs -ftest-coverage&quot; \
+  CPPFLAGS=&quot;-I/usr/local/include&quot; LDFLAGS=&quot;-L/usr/local/lib -lintl&quot; \
+  --with-libiconv=gnu --disable-shared --enable-static
+% gmake
+% gmake -C tests check
+</code></pre>
+<p>次にgcov、もしくはcovertureを使って、<code>glib/guniprop.c</code>のgcovファイルを出力します。そして、そのgcovファイルを眺めてみると、次のように、関数<code>real_toupper()</code>のカバレッジ結果では、未実行の行は無いことがわかります。</p>
+<pre><code class="language-plaintext">        -:  804:static gsize
+        -:  805:real_toupper (const gchar *str,
+        -:  806:              gssize       max_len,
+        -:  807:              gchar       *out_buffer,
+        -:  808:              LocaleType   locale_type)
+function real_toupper called 6438 returned 100% blocks executed 87%
+     6438:  809:{
+     6438:  810:  const gchar *p = str;
+     6438:  811:  const char *last = NULL;
+     6438:  812:  gsize len = 0;
+     6438:  813:  gboolean last_was_i = FALSE;
+        -:  814:
+    19368:  815:  while ((max_len &lt; 0 || p &lt; str + max_len) &amp;&amp; *p)
+        -:  816:    {
+     6492:  817:      gunichar c = g_utf8_get_char (p);
+     6492:  818:      int t = TYPE (c);
+        -:  819:      gunichar val;
+        -:  820:
+     6492:  821:      last = p;
+     6492:  822:      p = g_utf8_next_char (p);
+        -:  823:
+     6492:  824:      if (locale_type == LOCALE_LITHUANIAN)
+        -:  825:        {
+       40:  826:          if (c == 'i')
+        4:  827:            last_was_i = TRUE;
+        -:  828:          else
+        -:  829:            {
+       36:  830:              if (last_was_i)
+        -:  831:                {
+        -:  832:                  /* Nasty, need to remove any dot above. Though
+        -:  833:                   * I think only E WITH DOT ABOVE occurs in practice
+        -:  834:                   * which could simplify this considerably.
+        -:  835:                   */
+        -:  836:                  gsize decomp_len, i;
+        -:  837:                  gunichar *decomp;
+        -:  838:
+        4:  839:                  decomp = g_unicode_canonical_decomposition (c, &amp;decomp_len);
+       10:  840:                  for (i=0; i &lt; decomp_len; i++)
+        -:  841:                    {
+        6:  842:                      if (decomp[i] != 0x307 /* COMBINING DOT ABOVE */)
+        4:  843:                        len += g_unichar_to_utf8 (g_unichar_toupper (decomp[i]), out_buffer ? out_buffer + len : NULL);
+        -:  844:                    }
+        4:  845:                  g_free (decomp);
+        -:  846:
+        4:  847:                  len += output_marks (&amp;p, out_buffer ? out_buffer + len : NULL, TRUE);
+        -:  848:
+        4:  849:                  continue;
+        -:  850:                }
+        -:  851:
+       32:  852:              if (!ISMARK (t))
+       18:  853:                last_was_i = FALSE;
+        -:  854:            }
+        -:  855:        }
+        -:  856:
+     6490:  857:      if (locale_type == LOCALE_TURKIC &amp;&amp; c == 'i')
+        -:  858:        {
+        -:  859:          /* i =&gt; LATIN CAPITAL LETTER I WITH DOT ABOVE */
+        2:  860:          len += g_unichar_to_utf8 (0x130, out_buffer ? out_buffer + len : NULL);
+        -:  861:        }
+     6486:  862:      else if (c == 0x0345)     /* COMBINING GREEK YPOGEGRAMMENI */
+        -:  863:        {
+        -:  864:          /* Nasty, need to move it after other combining marks .. this would go away if
+        -:  865:           * we normalized first.
+        -:  866:           */
+        4:  867:          len += output_marks (&amp;p, out_buffer ? out_buffer + len : NULL, FALSE);
+        -:  868:
+        -:  869:          /* And output as GREEK CAPITAL LETTER IOTA */
+        4:  870:          len += g_unichar_to_utf8 (0x399, out_buffer ? out_buffer + len : NULL);
+        -:  871:        }
+     6482:  872:      else if (IS (t,
+        -:  873:                   OR (G_UNICODE_LOWERCASE_LETTER,
+        -:  874:                   OR (G_UNICODE_TITLECASE_LETTER,
+        -:  875:                  0))))
+        -:  876:        {
+     3570:  877:          val = ATTTABLE (c &gt;&gt; 8, c &amp; 0xff);
+        -:  878:
+     3570:  879:          if (val &gt;= 0x1000000)
+        -:  880:            {
+      206:  881:              len += output_special_case (out_buffer ? out_buffer + len : NULL, val - 0x1000000, t,
+        -:  882:                                          t == G_UNICODE_LOWERCASE_LETTER ? 0 : 1);
+        -:  883:            }
+        -:  884:          else
+        -:  885:            {
+     3364:  886:              if (t == G_UNICODE_TITLECASE_LETTER)
+        -:  887:                {
+        -:  888:                  unsigned int i;
+       20:  889:                  for (i = 0; i &lt; G_N_ELEMENTS (title_table); ++i)
+        -:  890:                    {
+       20:  891:                      if (title_table[i][0] == c)
+        -:  892:                        {
+        8:  893:                          val = title_table[i][1];
+        8:  894:                          break;
+        -:  895:                        }
+        -:  896:                    }
+        -:  897:                }
+        -:  898:
+        -:  899:              /* Some lowercase letters, e.g., U+000AA, FEMININE ORDINAL INDICATOR,
+        -:  900:               * do not have an uppercase equivalent, in which case val will be
+        -:  901:               * zero. */
+     3364:  902:              len += g_unichar_to_utf8 (val ? val : c, out_buffer ? out_buffer + len : NULL);
+        -:  903:            }
+        -:  904:        }
+        -:  905:      else
+        -:  906:        {
+     2912:  907:          gsize char_len = g_utf8_skip[*(guchar *)last];
+        -:  908:
+     2912:  909:          if (out_buffer)
+     1456:  910:            memcpy (out_buffer + len, last, char_len);
+        -:  911:
+     2912:  912:          len += char_len;
+        -:  913:        }
+        -:  914:
+        -:  915:    }
+        -:  916:
+     6438:  917:  return len;
+        -:  918:}
+</code></pre>
+<p>ところが実際には、命令カバレッジは100%ではありません。注目したいのは、次の行です。</p>
+<pre><code class="nohighlight">function real_toupper called 6438 returned 100% <b>blocks executed 87%</b></code></pre>
+<p>これは基本ブロックのうち87%を実行したことを示しています。つまり、残り13%は実行されていないことになります。いったいどの部分を実行していないでしょうか。</p>
+<p>まず、ソースコードを眺めると、三項演算子がいくつか使われているので、その条件式が常に真、または偽、になっているのでは、ということが思い付きます。しかし、そうだとしても、それで未実行の基本ブロックが13%にもなるのは不自然な気がします。</p>
+<p>ソースコードを眺めるだけでは、これ以上のことは簡単にはわからないでしょう。そこで、covertureの出力結果とgraphvizを使って、次のような基本ブロックのフローグラフを作成してみました（クリックで拡大します）。</p>
+<div class="horizontal-scroll">
+<p><a href="images/glib-2.20.5--real_toupper@guniprop.c.png"><img width="100%" src="images/glib-2.20.5--real_toupper@guniprop.c.small.png"></a></p>
+</div>
+<p>実行した基本ブロックは青で塗っています。また、実行した分岐も青い線で描画しています。ただし、図が煩雑になるので、FAKEのアークは波線で表しています。</p>
+<p>図を眺めて、まず気になる点は、基本ブロック3から8へ向かうアークが未実行で、基本ブロック8から派生する一連のブロックが未実行になっていることです。該当する部分を拡大したものを次に示します。</p>
+<div class="horizontal-scroll"><img src="images/glib-2.20.5--real_toupper@guniprop.c.zoom.png"/></div>
+<p>それらに対応するソースコードはどこになるのでしょうか。図から基本ブロック3が818行に、基本ブロック16が821行に対応していることがわかります。ソースコードの818行～821行は次のようになっています。</p>
+<pre><code class="language-plaintext">     6492:  818:      int t = TYPE (c);
+        -:  819:      gunichar val;
+        -:  820:
+     6492:  821:      last = p;
+</code></pre>
+<p>以上のことから、「基本ブロック3から16までの経路」はすべて818行に対応すると考えられます。これらのことから、<code>TYPE()</code>が怪しそうです。調べてみると、これは同じファイルで定義されている次のようなマクロでした。</p>
+<pre><code class="language-plaintext">        -:   43:#define TTYPE_PART1(Page, Char) \
+        -:   44:  ((type_table_part1[Page] &gt;= G_UNICODE_MAX_TABLE_INDEX) \
+        -:   45:   ? (type_table_part1[Page] - G_UNICODE_MAX_TABLE_INDEX) \
+        -:   46:   : (type_data[type_table_part1[Page]][Char]))
+        -:   47:
+        -:   48:#define TTYPE_PART2(Page, Char) \
+        -:   49:  ((type_table_part2[Page] &gt;= G_UNICODE_MAX_TABLE_INDEX) \
+        -:   50:   ? (type_table_part2[Page] - G_UNICODE_MAX_TABLE_INDEX) \
+        -:   51:   : (type_data[type_table_part2[Page]][Char]))
+        -:   52:
+        -:   53:#define TYPE(Char) \
+        -:   54:  (((Char) &lt;= G_UNICODE_LAST_CHAR_PART1) \
+        -:   55:   ? TTYPE_PART1 ((Char) &gt;&gt; 8, (Char) &amp; 0xff) \
+        -:   56:   : (((Char) &gt;= 0xe0000 &amp;&amp; (Char) &lt;= G_UNICODE_LAST_CHAR) \
+        -:   57:      ? TTYPE_PART2 (((Char) - 0xe0000) &gt;&gt; 8, (Char) &amp; 0xff) \
+        -:   58:      : G_UNICODE_UNASSIGNED))&lt;/pre&gt;
+</code></pre>
+<p><code>TYPE()</code>は三項演算子の盛り合わせのようなマクロであることがわかりました。そして、どうやらこのマクロを命令カバレッジするほどのテストは用意されていないようです。</p>
+<p class="footnote"><a name="1">&dagger;</a> この関数に問題があるわけではありません。</p>
+<h2>実行したソースコード行数の割合とカバレッジ率</h2>
+<p>実行したソースコードの行数の割合をカバレッジ率として扱うことがよくあります。例えば、1000行のソースコードのうち、900行が実行されていれば、90%をカバレッジしたと考えてしまいがちです。</p>
+<p>極端な例をあげてみましょう。次のような3つの基本ブロックに分岐する関数があり、そのうち1つだけが実行され、残りの2つは未実行であるとします。ただし、実行した基本ブロックの行数はソースコード中の98行に相当し、未実行のブロックの行数はそれぞれソースコード中の1行に相当するとします。</p>
+<div class="horizontal-scroll"><img width="100%" src="images/line-based-coverage-rate.png"/></div>
+<p>この関数はカバレッジ率98%のテストを実行したと言えるのでしょうか。それとも、1/3程度しかテストを実行していないのでしょうか。人によって意見は分かれるでしょうが、少なくても行数ベースでカバレッジ率を計算するだけでは、真の姿はわからないということです。</p>
+<h2>FreeBSD 8.0でカバレッジ</h2>
+<p>FreeBSD 8.0でgccにオプション<code>-ftest-coverage -fprofile-arcs</code>、もしくは<code>-coverage</code>を渡してビルドすると、次のように<code>undefined reference to `__stack_chk_fail_local'</code>というエラーを表示して、リンクに失敗する場合があります。</p>
+<pre><code class="language-plaintext">% cat &gt; test.c
+int
+main(void)
+{
+  return 0;
+}
+^D
+% gcc -coverage test.c
+/usr/lib/libgcov.a(_gcov.o)(.text+0x145f): In function `gcov_exit':
+: undefined reference to `__stack_chk_fail_local'
+%
+</code></pre>
+<p>次のようにオプション<code>-fstack-protector</code>を指定すると、ビルドできるようになります。</p>
+<pre><code class="language-plaintext">% gcc -coverage -fstack-protector test.c
+%
+</code></pre>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Tue Nov 17 20:01:42 JST 2009 -->
+<!-- hhmts start -->
+Last modified: Mon Jun 14 21:24:28 JST 2010
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Coverture</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+    <li class="selected">
+      Appendix
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

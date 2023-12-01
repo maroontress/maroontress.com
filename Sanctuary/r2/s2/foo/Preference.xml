@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd" [
+ <!ENTITY maxParameters '3'>
+]>
+<class package="foo" name="Preference">
+  <namespace/>
+
+  <globalvariable type="char *" name="option">
+    <desc><brief>オプションを表す文字列です。</brief></desc>
+  </globalvariable>
+
+  <globalvariable type="int #[&maxParameters;]" name="parameters">
+    <desc>
+      <brief>パラメータを表す整数の配列です。</brief>
+      <p>配列の要素数は&maxParameters;です。</p>
+    </desc>
+  </globalvariable>
+
+  <desc>
+    <brief>globalvariable要素の使用例を提供します。</brief>
+    <p>グローバル変数を使用するべきでありません。設定、取得メソッドをもつシングルトンパターンのクラスを用意すべきです。</p>
+  </desc>
+</class>

@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>FileDescriptor - std_io_FileDescriptor</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_io_FileDescriptor"/>
+    <h3>package std_io</h3>
+    <h1>extensible class FileDescriptor</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<b>std_io_FileDescriptor</b><br>
+<br>
+#define std_io_FileDescriptor_IMPORT<br>
+#include &lt;std/io/FileDescriptor.h&gt;<br>
+#include &lt;std/io/impl/FileDescriptor.h&gt;<br>
+    <dl><dd>
+ファイル記述子に関する操作を提供します。
+  </dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="std_io_FileDescriptor.html#struct std_io_FileDescriptor_Closing">struct FileDescriptor_<wbr>Closing</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;クローズするときの処理を指定する構造体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a></font>
+  </td>
+  <td valign="top"><a href="#std_io_FileDescriptor_createInputTube"><b>FileDescriptor_<wbr>createInputTube</b></a>(int&nbsp;<i>fd</i>, const <a href="std_io_FileDescriptor.html#struct std_io_FileDescriptor_Closing">struct FileDescriptor_<wbr>Closing</a> *&nbsp;<i>closing</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ファイル記述子からストリームの入力端を生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a></font>
+  </td>
+  <td valign="top"><a href="#std_io_FileDescriptor_createOutputTube"><b>FileDescriptor_<wbr>createOutputTube</b></a>(int&nbsp;<i>fd</i>, const <a href="std_io_FileDescriptor.html#struct std_io_FileDescriptor_Closing">struct FileDescriptor_<wbr>Closing</a> *&nbsp;<i>closing</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ファイル記述子からストリームの出力端を生成します。</td>
+</tr>
+    </table>
+<h2>Global Variable Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="std_io_FileDescriptor.html#struct std_io_FileDescriptor_Closing">struct FileDescriptor_<wbr>Closing</a> *const</font>
+  </td>
+  <td valign="top"><a href="#std_io_FileDescriptor_AUTO"><b>FileDescriptor_AUTO</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入出力端をクローズするときにファイル記述子もクローズすることを指定します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="std_io_FileDescriptor.html#struct std_io_FileDescriptor_Closing">struct FileDescriptor_<wbr>Closing</a> *const</font>
+  </td>
+  <td valign="top"><a href="#std_io_FileDescriptor_NONE"><b>FileDescriptor_NONE</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入出力端をクローズするときにファイル記述子をクローズしないことを指定します。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct std_io_FileDescriptor_Closing"></a>
+<font size="+1"><b>struct FileDescriptor_Closing</b></font></p>
+<dl><dd>
+クローズするときの処理を指定する構造体です。
+<p>実装の詳細は隠蔽されています。</p>
+    </dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_io_FileDescriptor_createInputTube"></a><font size="+1"><b>FileDescriptor_<wbr>createInputTube</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a> <b>FileDescriptor_createInputTube</b>(</td>
+    <td nowrap>int&nbsp;<i>fd</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const <a href="std_io_FileDescriptor.html#struct std_io_FileDescriptor_Closing">struct FileDescriptor_<wbr>Closing</a> *&nbsp;<i>closing</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ファイル記述子からストリームの入力端を生成します。
+<p>戻り値が参照するオブジェクトは<a href="std_io_InputTube.html#std_io_InputTube_close">InputTube_<wbr>close</a>()で解放しなければなりません。</p>
+<p>生成できなかった場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>fd</i> - ファイル記述子<br>
+
+<i>closing</i> - <a href="std_io_FileDescriptor.html#std_io_FileDescriptor_AUTO">FileDescriptor_<wbr>AUTO</a>または<a href="std_io_FileDescriptor.html#std_io_FileDescriptor_NONE">FileDescriptor_<wbr>NONE</a><br>
+
+</dd></dl>
+<dl>Returns:<dd>入力端、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_io_FileDescriptor_createOutputTube"></a><font size="+1"><b>FileDescriptor_<wbr>createOutputTube</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union OutputTube</a> <b>FileDescriptor_createOutputTube</b>(</td>
+    <td nowrap>int&nbsp;<i>fd</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const <a href="std_io_FileDescriptor.html#struct std_io_FileDescriptor_Closing">struct FileDescriptor_<wbr>Closing</a> *&nbsp;<i>closing</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ファイル記述子からストリームの出力端を生成します。
+<p>戻り値が参照するオブジェクトは<a href="std_io_OutputTube.html#std_io_OutputTube_close">OutputTube_<wbr>close</a>()で解放しなければなりません。</p>
+<p>生成できなかった場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>fd</i> - ファイル記述子<br>
+
+<i>closing</i> - <a href="std_io_FileDescriptor.html#std_io_FileDescriptor_AUTO">FileDescriptor_<wbr>AUTO</a>または<a href="std_io_FileDescriptor.html#std_io_FileDescriptor_NONE">FileDescriptor_<wbr>NONE</a><br>
+
+</dd></dl>
+<dl>Returns:<dd>出力端、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+<h2>Global Variable Detail</h2>
+<p><a name="std_io_FileDescriptor_AUTO"></a><font size="+1"><b>FileDescriptor_AUTO</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const <a href="std_io_FileDescriptor.html#struct std_io_FileDescriptor_Closing">struct FileDescriptor_<wbr>Closing</a> *const <b>FileDescriptor_AUTO</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+入出力端をクローズするときにファイル記述子もクローズすることを指定します。
+<dl><dt>See:</dt><dd><a href="std_io_FileDescriptor.html#std_io_FileDescriptor_createInputTube">FileDescriptor_<wbr>createInputTube</a>(), <a href="std_io_FileDescriptor.html#std_io_FileDescriptor_createOutputTube">FileDescriptor_<wbr>createOutputTube</a>()</dd></dl>
+    </dd>
+</dl>
+<hr>
+<p><a name="std_io_FileDescriptor_NONE"></a><font size="+1"><b>FileDescriptor_NONE</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>const <a href="std_io_FileDescriptor.html#struct std_io_FileDescriptor_Closing">struct FileDescriptor_<wbr>Closing</a> *const <b>FileDescriptor_NONE</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+入出力端をクローズするときにファイル記述子をクローズしないことを指定します。
+<dl><dt>See:</dt><dd><a href="std_io_FileDescriptor.html#std_io_FileDescriptor_createInputTube">FileDescriptor_<wbr>createInputTube</a>(), <a href="std_io_FileDescriptor.html#std_io_FileDescriptor_createOutputTube">FileDescriptor_<wbr>createOutputTube</a>()</dd></dl>
+    </dd>
+</dl>
+<hr>
+  </body>
+</html>

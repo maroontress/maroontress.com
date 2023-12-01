@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>XCreateFontSet()のバグ | Japanese XIM Server</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo"><img src="imserver-icon.png" alt="アイコン" style="width: 32px; height: 32px; vertical-align: bottom;"/>日本語XIMサーバ</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>XCreateFontSet()のバグ</h1>
+<h2>バグの概要</h2>
+<p>引数として指定されたフォントセットの名前が、XLFD的に完全に指定された（つまり名前に*が含まれない）場合、あるいはエイリアスで指定された場合、フォントセットの生成に余計に時間がかかるようになり、メモリリークが発生する。また、Xlibのバージョンによっては、生成時にsegmentation faultが生じる場合もある。</p>
+<p>バグの詳細については<a href="../XBUGS/index.html">バグレポート</a>を参照して欲しい。</p>
+<h2>対象となるXlib</h2>
+<p>X11R6.5.1よりも古いバージョン。XFree86では4.1.0よりも古いバージョン。</p>
+<h2>バグの再現</h2>
+<p><a href="xfontset.tar.gz">xfontset.tar.gz</a>をダウンロードして、次のようにコマンドを実行する。</p>
+<pre><code class="language-plaintext">% tar zcvf xfontset.tar.gz
+% cd xfontset
+% xmkmf -a ; make
+% setenv LANG ja_JP.EUC
+% make test1
+...
+% make test2
+...
+% make test3
+...
+</code></pre>
+<p><code>test1</code>は省略を含むフォントセット名を、<code>test2</code>はエイリアスを、<code>test3</code>は省略のないフォントセット名を指定して、フォントセットの生成と解放を2回実行する。例えばXFree86 3.3.3では、<code>make test1</code>の出力は次のような結果になる。(a)と(b)の行の値が同一なので、メモリリークがないことがわかる。</p>
+<pre><code class="nohighlight">% <u>make test1</u>
+time ./xfontset "-misc-fixed-medium-r-normal--14-130-75-75-c-*-iso8859-1,-misc-f
+ixed-medium-r-normal--14-130-75-75-c-*-jisx0208.1983-0,-misc-fixed-medium-r-norm
+al--14-130-75-75-c-*-jisx0201.1976-0"
+1 0
+2 89900
+3 94178
+4 197145
+<b>3 94186</b> <--- (a)
+4 197145
+<b>5 94186</b> <--- (b)
+6 89930
+        0.17 real         0.03 user         0.01 sys</code></pre>
+<p>しかし、make test2とmake test3の出力は次のような結果になる。(c)と(d)の行の値の差、および(e)と(f)の行の差がリークしたメモリの量を示している。</p>
+<pre><code class="nohighlight">% <u>make test2</u>
+time ./xfontset a14,k14,r14
+1 0
+2 89900
+3 94178
+4 197484
+<b>3 94693</b> <--- (c)
+4 197783
+<b>5 94992</b> <--- (d)
+6 90528
+        0.61 real         0.01 user         0.03 sys
+% <u>make test3</u>
+time ./xfontset "-misc-fixed-medium-r-normal--14-130-75-75-c-70-iso8859-1,-misc-
+fixed-medium-r-normal--14-130-75-75-c-140-jisx0208.1983-0,-misc-fixed-medium-r-n
+ormal--14-130-75-75-c-70-jisx0201.1976-0"
+1 0
+2 89900
+3 94178
+4 197585
+<b>3 94622</b> <--- (e)
+4 197884
+<b>5 94921</b> <--- (f)
+6 90528
+        6.36 real         0.02 user         0.02 sys</code></pre>
+<h2>XIMサーバへの影響</h2>
+<p>この現象が表面化することは少ないだろう。なぜなら、ほとんどの場合Xクライアントが指定するフォントセット名には<code>*</code>が含まれるからである。</p>
+<p>しかし、XIMサーバにとってこの問題は致命的である。XIMクライアントが使用するフォントセット名をXIMサーバに伝える過程は、次のようなものである。</p>
+<ol>
+<li>XIMクライアントがフォントセットを生成する。このときのフォントセットの名前はXLFD的に省略されていたり、エイリアス名が含まれている。</li>
+<li>XIMクライアントはXICの属性にフォントセットを設定する。</li>
+<li>XIMクライアントのXlibは、指定されたフォントセットから「完全なXLFD表記のフォントセット名」を生成して、XIMサーバに送信する。この時点で省略は補われ、エイリアスも展開されている。</li>
+<li>XIMサーバはXLFD的に完全なフォントセット名を受け取る。</li>
+</ol>
+<div class="horizontal-scroll" style="background-color: white; padding: 8px"><img src="xnfontset.png"></div>
+<p>したがって、次のような実装のXIMサーバを使用している場合、XIMクライアントがXICのフォントセット属性を設定する度に時間がかかったり、メモリリークが生じてしまう。</p>
+<ul>
+<li>XIMクライアントから受け取ったフォントセット名をそのまま使用してフォントセットを生成する。XIMクライアントと接続が切れたら、生成したフォントセットを解放する。</li>
+<li>フォントセット属性が変更されたら、以前のフォントセットを解放して、新しいフォントセットを生成する。</li>
+</ul>
+<p>XIMクライアントのなかにはキャレットを移動する度にフォントセット属性を設定し直すものもあるので、後者の実装では極端に性能が劣化してしまう場合もある。</p>
+<h2>解決策</h2>
+<p>XIMサーバは一度生成したフォントセットを、すべてのXIMクライアントで共有するように実装するべきである。また過去のバージョンのXlibを使用している場合は、XIMクライアントと接続が切れたときに、どのXIMクライアントも使用していないフォントセットがあっても、それを解放しないようにした方がよいだろう。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Sep 22 19:46:49 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Sat Nov 23 21:01:30 JST 2002
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Japanese XIM Server</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="news.html">News</a>
+    </li>
+    <li>
+      <a href="feature.html">Feature</a>
+    </li>
+    <li>
+      <a href="screenshot.html">Screenshot</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="document.html">Document</a>
+    </li>
+    <li>
+      <a href="bug.html">Bug</a>
+    </li>
+    <li>
+      <a href="xim-server.html">on-the-spot対応日本語XIMサーバ 機能と実装の比較</a>
+    </li>
+    <li class="selected">
+      XCreate<wbr>Font<wbr>Set()のバグ
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="feedback-impl.html">XIMFeedbackの仕様解釈と実装</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

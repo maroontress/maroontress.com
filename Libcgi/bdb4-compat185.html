@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Berkeley DB 4の1.85互換API | Libcgi</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">libcgi</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Berkeley DB 4の1.85互換API</h1>
+<p>FreeBSDの<code>dbopen(3)</code>はBerkeley DBバージョン1.85のAPIである。このAPIはBerkeley DBバージョン4系においても「バージョン1.85互換API」として利用可能だが、いくつかの点で両者の振る舞いが異なることがわかった。</p>
+<p>以下の実験は、次の環境でそれぞれ動作を確認した。</p>
+<ul>
+<li>FreeBSD 6.2: OS付属のBerkeley DBバージョン1.85と、バージョン4.5（<code>db45-4.5.20.0</code>）</li>
+<li>openSUSE 10.3: <code>db1-devel-1.85-161</code>と、<code>libdb-4_4-devel-4.4.20-28</code></li>
+</ul>
+<h2>1 dbopen(3)にO_CREATとO_RDONLYを同時に指定したときの振る舞い</h2>
+<p><code>dbopen(3)</code>で、第1引数のデータベースファイルに存在しないパスを指定し、第2引数のフラグに<code>O_RDONLY</code>と<code>O_CREAT</code>を指定してみる。これは、データベースファイルを読み込み専用でオープンするが、指定したファイルが存在しないときは第3引数のモードで生成する、という意味である。</p>
+<h3>1.1 バージョン1.85の場合</h3>
+<p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+<pre><code class="language-c">% cat test-db1.c
+#include &lt;db.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;err.h&gt;
+
+int main(void)
+{
+    DB *db;
+
+    if ((db = dbopen(&quot;./test.db&quot;, O_CREAT | O_RDONLY, 0666, DB_BTREE, NULL))
+        == NULL) {
+        err(1, &quot;dbopen() failed&quot;);
+    }
+    exit(0);
+    return 0;
+}
+</code></pre>
+<p>次のようにコンパイルして実行すると、カレントディレクトリに0バイトのファイル<code>test.db</code>が生成される。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W test-db1.c
+% rm -f test.db
+% ./a.out
+% wc test.db
+       0       0       0 test.db
+</code></pre>
+<h3>1.2 バージョン4.5の場合</h3>
+<p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<code>db.h</code>の代わりに<code>db_185.h</code>をインクルードするように変更しただけで、残りは同じである。</p>
+<pre><code class="language-c">% cat test-db4.c
+#include &lt;db_185.h&gt;
+...
+</code></pre>
+<p>次のようにコンパイルして実行すると、エラーになることがわかる。しかも、空のファイルは生成されない。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% rm -f test.db
+% ./a.out
+a.out: dbopen() failed: Invalid argument
+% wc test.db
+wc: test.db: open: No such file or directory
+</code></pre>
+<h2>2 del()の第3引数にR_CURSORを指定したとき、第2引数を評価するかどうかの振る舞い</h2>
+<p>btreeのデータベースに対し、<code>seq()</code>で最初から最後まで順番にキーとデータのペアを取り出しながら、<code>del()</code>の第3引数に<code>R_CURSOR</code>を指定して、ペアを削除していく。最終的には、すべてのキーとデータのペアが削除され、データベースは空になる。このとき、<code>del()</code>の第2引数に指定するキーは利用されないので、第2引数には<code>NULL</code>を指定する。</p>
+<h3>2.1 バージョン1.85の場合</h3>
+<p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+<pre><code class="language-c">% cat test-db1.c
+#include &lt;db.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;err.h&gt;
+
+static int putString(DB *db, const char *s, DBT *val)
+{
+    DBT key;
+
+    key.data = (char *)s;
+    key.size = strlen(s) + 1;
+    return db-&gt;put(db, &amp;key, val, 0);
+}
+
+int main(void)
+{
+    DB *db;
+    DBT key, val;
+    int s;
+
+    if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+        err(1, &quot;dbopen() failed&quot;);
+    }
+    val.data = NULL;
+    val.size = 0;
+    if (putString(db, &quot;alpha&quot;, &amp;val) &lt; 0
+        || putString(db, &quot;beta&quot;, &amp;val) &lt; 0
+        || putString(db, &quot;gamma&quot;, &amp;val) &lt; 0) {
+        err(1, &quot;db#put() failed&quot;);
+    }
+    for (s = db-&gt;seq(db, &amp;key, &amp;val, R_FIRST); s == 0;
+         s = db-&gt;seq(db, &amp;key, &amp;val, R_NEXT)) {
+        if (db-&gt;del(db, NULL, R_CURSOR) != 0) {
+            err(1, &quot;db#del() failed&quot;);
+        }
+    }
+    if (db-&gt;close(db) &lt; 0) {
+        err(1, &quot;db#close() failed&quot;);
+    }
+    exit(0);
+    return 0;
+}
+</code></pre>
+<p>次のようにコンパイルして実行すると、正常に終了する。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W test-db1.c
+% ./a.out
+</code></pre>
+<!--
+<p>recnoでも同様になる。hashでは<code>R_CURSOR</code>を指定してもエラーにはならないが、<code>R_CURSOR</code>の指定は無視されるため、第2引数が参照される。</p>
+-->
+<h3>2.2 バージョン4.5の場合</h3>
+<p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<code>db.h</code>の代わりに<code>db_185.h</code>をインクルードするように変更しただけで、残りは同じである。</p>
+<pre><code class="language-c">% cat test-db4.c
+#include &lt;db_185.h&gt;
+...
+</code></pre>
+<p>次のようにコンパイルして実行すると、クラッシュすることがわかる。おそらく、第2引数を参照しているようである。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% ./a.out
+Segmentation fault (core dumped)
+</code></pre>
+<p>次のように第2引数に参照しても問題のないキーを指定すると、クラッシュすることはなくなる。また、バージョン1.85でも動作する。</p>
+<pre><code class="language-c">% cat test-db4-fix.c
+...
+    for (s = db-&gt;seq(db, &amp;key, &amp;val, R_FIRST); s == 0;
+         s = db-&gt;seq(db, &amp;key, &amp;val, R_NEXT)) {
+        key.data = NULL;
+        key.size = 0;
+        if (db-&gt;del(db, &amp;key, R_CURSOR) != 0) {
+            err(1, &quot;db#del() failed&quot;);
+        }
+    }
+...
+</code></pre>
+<h2>3 put()の第4引数にR_SETCURSORを指定したときの振る舞い</h2>
+<p>btreeのデータベースに対し、<code>put()</code>でキーとデータのペアを格納する。このとき、第4引数の<code>flags</code>に<code>R_SETCURSOR</code>を指定して、格納したペアの位置にカーソルを設定する。</p>
+<p>さらに、カーソルが正しく設定されたことを確認するため、<code>seq()</code>の第4引数に<code>R_NEXT</code>を指定して、カーソルの位置の次のペアを取得しようとすると、<code>seq()</code>が1を返すか確認する（カーソルが設定されていなければ、<code>R_FIRST</code>を指定したのと同じことになるので、<code>seq()</code>は0を返す）。</p>
+<h3>3.1 バージョン1.85の場合</h3>
+<p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+<pre><code class="language-c">% cat test-db1.c
+#include &lt;db.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;err.h&gt;
+
+static void setString(DBT *t, const char *s)
+{
+    t-&gt;data = (char *)s;
+    t-&gt;size = strlen(s) + 1;
+}
+
+int main(void)
+{
+    DB *db;
+    DBT key, val;
+
+    if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+        err(1, &quot;dbopen() failed&quot;);
+    }
+    setString(&amp;amp;key, &quot;foo&quot;);
+    setString(&amp;amp;val, &quot;bar&quot;);
+    if (db-&gt;put(db, &amp;key, &amp;val, R_SETCURSOR) &lt; 0) {
+        err(1, &quot;db#put() failed&quot;);
+    }
+    if (db-&gt;seq(db, &amp;key, &amp;val, R_NEXT) != 1) {
+        err(1, &quot;db#seq() failed&quot;);
+    }
+    if (db-&gt;close(db) &lt; 0) {
+        err(1, &quot;db#close() failed&quot;);
+    }
+    exit(0);
+    return 0;
+}
+</code></pre>
+<p>次のようにコンパイルして実行すると、<code>put()</code>が<code>EINVAL</code>で失敗する。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W test-db1.c
+% ./a.out
+a.out: db#put() failed: Invalid argument
+%
+</code></pre>
+<p>FreeBSDのソースコードで<code>put()</code>の動作を確認してみる。<code>/usr<wbr>/src<wbr>/lib<wbr>/libc<wbr>/db<wbr>/btree<wbr>/bt<wbr>_put.c</code>の<code>__bt_put()</code>は次のようになっている。</p>
+<pre><code class="language-plaintext">...
+     68 int
+     69 __bt_put(dbp, key, data, flags)
+     70         const DB *dbp;
+     71         DBT *key;
+     72         const DBT *data;
+     73         u_int flags;
+     74 {
+...
+     99         switch (flags) {
+    100         case 0:
+    101         case R_NOOVERWRITE:
+    102                 break;
+    103         case R_CURSOR:
+    104                 /*
+    105                  * If flags is R_CURSOR, put the cursor.  Must already
+    106                  * have started a scan and not have already deleted it.
+    107                  */
+    108                 if (F_ISSET(&amp;t-&gt;bt_cursor, CURS_INIT) &amp;&amp;
+    109                     !F_ISSET(&amp;t-&gt;bt_cursor,
+    110                         CURS_ACQUIRE | CURS_AFTER | CURS_BEFORE))
+    111                         break;
+    112                 /* FALLTHROUGH */
+    113         default:
+    114                 errno = EINVAL;
+    115                 return (RET_ERROR);
+    116         }
+...
+    248 success:
+    249         if (flags == R_SETCURSOR)
+    250                 __bt_setcur(t, e-&gt;page-&gt;pgno, e-&gt;index);
+    251
+    252         F_SET(t, B_MODIFIED);
+    253         return (RET_SUCCESS);
+    254 }
+</code></pre>
+<p>したがって、<code>R_SETCURSOR</code>は必ず<code>EINVAL</code>になるようだ（<code>dbopen(3)</code>の説明と実装は異なる）。ただし、249行目で<code>flags</code>と<code>R_SETCURSOR</code>を比較しているくらいなので、説明が間違っているというよりも、<code>case</code>が1つ不足しているだけのバグなのかもしれない。</p>
+<!--
+<p>recnoでは<code>flags</code>は<code>R_SETCURSOR</code>と比較されている。hashでは<code>flags</code>に<code>R_SETCURSOR</code>を指定することは許されていない。</p>
+-->
+<h3>3.2 バージョン4.5の場合</h3>
+<p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<code>db.h</code>の代わりに<code>db_185.h</code>をインクルードするように変更しただけで、残りは同じである。</p>
+<pre><code class="language-c">% cat test-db4.c
+#include &lt;db_185.h&gt;
+...
+</code></pre>
+<p>次のようにコンパイルして実行すると、正しく実行できることがわかる。バージョン1.85にあったバグは修正されているようだ。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% ./a.out
+%
+</code></pre>
+<h2>4 put()の第4引数にR_CURSORを指定したときの振る舞い</h2>
+<p>btreeのデータベースに対し、いくつかのキーとデータのペアを格納し、そのいずれかのペアにカーソルをセットしておく。次に、<code>put()</code>の第4引数<code>flags</code>に<code>R_CURSOR</code>を指定して、カーソルの位置にキーとデータのペアを格納する。</p>
+<h3>4.1 バージョン1.85の場合</h3>
+<p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+<pre><code class="language-c">% cat test-db1.c
+#include &lt;db.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;err.h&gt;
+
+static void putString(DB *db, const char *k, const char *v, int flags)
+{
+    DBT key, val;
+
+    key.data = (char *)k;
+    key.size = strlen(k) + 1;
+    val.data = (char *)v;
+    val.size = strlen(v) + 1;
+    if (db-&gt;put(db, &amp;key, &amp;val, flags) != 0) {
+        err(1, &quot;db#put() failed&quot;);
+    }
+}
+
+int main(void)
+{
+    DB *db;
+    DBT key, val;
+    int s;
+
+    if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+        err(1, &quot;dbopen() failed&quot;);
+    }
+    putString(db, &quot;a&quot;, &quot;alpha&quot;, 0);
+    putString(db, &quot;b&quot;, &quot;beta&quot;, 0);
+    putString(db, &quot;c&quot;, &quot;gamma&quot;, 0);
+    if (db-&gt;seq(db, &amp;key, &amp;val, R_FIRST) != 0
+        || db-&gt;seq(db, &amp;key, &amp;val, R_NEXT) != 0) {
+        err(1, &quot;db#seq() failed&quot;);
+    }
+    putString(db, &quot;d&quot;, &quot;delta&quot;, R_CURSOR);
+
+    for (s = db-&gt;seq(db, &amp;key, &amp;val, R_FIRST); s == 0;
+         s = db-&gt;seq(db, &amp;key, &amp;val, R_NEXT)) {
+        printf(&quot;%s:%s\n&quot;, (char *)key.data, (char *)val.data);
+    }
+    if (db-&gt;close(db) &lt; 0) {
+        err(1, &quot;db#close() failed&quot;);
+    }
+    exit(0);
+    return 0;
+}
+</code></pre>
+<p>次のようにコンパイルして実行すると、結果が表示される。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W test-db1.c
+% ./a.out
+a:alpha
+d:delta
+c:gamma
+%
+</code></pre>
+<p>カーソルがあった2番目のペアに上書きされることは確認できた。しかし、キーの順序性が破壊されている。<code>R_CURSOR</code>を指定する<code>put</code>を呼び出す直前では、データベースは次のようになっていた。</p>
+<pre><code class="language-plaintext"># CURSOR KEY VALUE
+- ------ --- -----
+1        a   alpha
+2     -&gt; b   beta
+3        c   gamma
+</code></pre>
+<p>ここで<code>put()</code>を呼び出し、カーソルの位置に「キーが<code>d</code>、データが<code>delta</code>」のペアを上書きすることで、データベースは次のようになる。</p>
+<pre><code class="language-plaintext"># CURSOR KEY VALUE
+- ------ --- -----
+1        a   alpha
+2     -&gt; d   delta
+3        c   gamma
+</code></pre>
+<p>このように順序性が破壊されると、正しくデータベースを操作できなくなる。この例では、「キーが<code>c</code>、データが<code>gamma</code>」のペアを<code>get()</code>でデータベースから取り出すことができなくなる。ただし、順序性が破壊されても、<code>seq()</code>で先頭から順番にペアを取り出せば、すべてのペアを取得できるようである。また、カーソルに対する操作も正しく実行できるようだ。</p>
+<!--
+<p>recnoでは未確認。hashでは<code>flags</code>は0か<code>R_NOOVERWRITE</code>のどちらかでないとエラーになる。</p>
+-->
+<h3>4.2 バージョン4.5の場合</h3>
+<p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<code>db.h</code>の代わりに<code>db_185.h</code>をインクルードするように変更しただけで、残りは同じである。</p>
+<pre><code class="language-c">% cat test-db4.c
+#include &lt;db_185.h&gt;
+...
+</code></pre>
+<p>次のようにコンパイルして実行すると、結果が表示される。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% ./a.out
+a:alpha
+b:delta
+c:gamma
+%
+</code></pre>
+<p>カーソルがあった2番目のペアのうち、データだけが置き換わるようだ。したがって、順序性は破壊されない。また、このとき<code>put()</code>の第2引数の値は利用されないようだ（ただし第2引数に<code>NULL</code>を渡すとクラッシュする）。</p>
+<h2>5 fd()の振る舞い</h2>
+<p><code>dbopen(3)</code>の第1引数に<code>NULL</code>を指定してデータベースを作成したあと、<code>fd()</code>でファイルディスクリプタを取得してみる。<code>fd()</code>が−1を返し、<code>errno</code>に<code>ENOENT</code>を設定することを確認する。</p>
+<h3>5.1 バージョン1.85の場合</h3>
+<p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+<pre><code class="language-c">% cat test-db1.c
+#include &lt;db.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;err.h&gt;
+#include &lt;errno.h&gt;
+
+int main(void)
+{
+    DB *db;
+
+    if ((db = dbopen(NULL, O_CREAT | O_RDWR, 0666, DB_BTREE, NULL)) == NULL) {
+        err(1, &quot;dbopen() failed&quot;);
+    }
+    if (db-&gt;fd(db) != -1) {
+        err(1, &quot;db#fd() failed&quot;);
+    }
+    if (errno != ENOENT) {
+        errx(1, &quot;errno is not ENOENT.&quot;);
+    }
+    if (db-&gt;close(db) &lt; 0) {
+        err(1, &quot;db#close() failed&quot;);
+    }
+    exit(0);
+    return 0;
+}
+</code></pre>
+<p>次のようにコンパイルして実行すると、正しく終了することがわかる。</p>
+<pre><code>% gcc -Wall -W test-db1.c
+% ./a.out
+%
+</code></pre>
+<h3>5.2 バージョン4.5の場合</h3>
+<p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<code>db.h</code>の代わりに<code>db_185.h</code>をインクルードするように変更しただけで、残りは同じである。</p>
+<pre><code class="language-c">% cat test-db4.c
+#include &lt;db_185.h&gt;
+...
+</code></pre>
+<p>次のようにコンパイルして実行すると、クラッシュすることがわかる。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% ./a.out
+Segmentation fault (core dumped)
+%
+</code></pre>
+<p>gdbでコアをロードして、バックトレースをみると、Berkeley DBの中でクラッシュしていることがわかる。</p>
+<pre><code>% gdb ./a.out ./a.out.core
+GNU gdb 6.1.1 [FreeBSD]
+Copyright 2004 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type &quot;show copying&quot; to see the conditions.
+There is absolutely no warranty for GDB.  Type &quot;show warranty&quot; for details.
+This GDB was configured as &quot;i386-marcel-freebsd&quot;...(no debugging symbols found)...
+Core was generated by `a.out'.
+Program terminated with signal 11, Segmentation fault.
+Reading symbols from /usr/local/lib/libdb-4.5.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/local/lib/libdb-4.5.so.0
+Reading symbols from /lib/libc.so.6...(no debugging symbols found)...done.
+Loaded symbols for /lib/libc.so.6
+Reading symbols from /lib/libpthread.so.2...(no debugging symbols found)...done.
+Loaded symbols for /lib/libpthread.so.2
+Reading symbols from /libexec/ld-elf.so.1...(no debugging symbols found)...done.
+Loaded symbols for /libexec/ld-elf.so.1
+#0  0x2815b86e in __os_fsync () from /usr/local/lib/libdb-4.5.so.0
+[New LWP 100118]
+(gdb) bt
+#0  0x2815b86e in __os_fsync () from /usr/local/lib/libdb-4.5.so.0
+#1  0x28158330 in __memp_sync_int () from /usr/local/lib/libdb-4.5.so.0
+#2  0x2815882a in __mp_xxx_fh () from /usr/local/lib/libdb-4.5.so.0
+#3  0x28113d9a in __db_fd_pp () from /usr/local/lib/libdb-4.5.so.0
+#4  0x2809de1c in db185_fd () from /usr/local/lib/libdb-4.5.so.0
+#5  0x080485cd in main ()
+(gdb)
+</code></pre>
+<p><code>dbopen(3)</code>の第1引数に<code>NULL</code>を指定しない場合は、正しく動作するので、これはバージョン4のバグだろう。</p>
+<h2>6 O_RDONLYでオープンしたデータベースを変更しようとしたときの振る舞い</h2>
+<p><code>dbopen(3)</code>の第2引数に<code>O_RDONLY</code>を指定してデータベースをオープンし、<code>put()</code>でデータベースを変更をしてみる。<code>put()</code>が−1を返すことと、<code>errno</code>にを設定される値を確認する。</p>
+<h3>6.1 バージョン1.85の場合</h3>
+<p>次のBerkeley DBバージョン1.85用のプログラムを用意する。</p>
+<pre><code class="language-c">% cat test-db1.c
+#include &lt;db.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;err.h&gt;
+#include &lt;errno.h&gt;
+
+static void
+putString(DB *db, const char *k, const char *v)
+{
+    DBT key, val;
+
+    key.data = (char *)k;
+    key.size = strlen(k) + 1;
+    val.data = (char *)v;
+    val.size = strlen(v) + 1;
+    if (db-&gt;put(db, &amp;key, &amp;val, 0) != 0) {
+        err(1, &quot;db#put() failed: %d&quot;, errno);
+    }
+}
+
+int main(void)
+{
+    DB *db;
+
+    if ((db = dbopen(&quot;./test.db&quot;, O_CREAT | O_RDWR | O_TRUNC, 0666,
+                     DB_BTREE, NULL)) == NULL) {
+        err(1, &quot;dbopen() failed&quot;);
+    }
+    putString(db, &quot;a&quot;, &quot;alpha&quot;);
+    putString(db, &quot;b&quot;, &quot;beta&quot;);
+    putString(db, &quot;c&quot;, &quot;gamma&quot;);
+    if (db-&gt;close(db) &lt; 0) {
+        err(1, &quot;db#close() failed&quot;);
+    }
+
+    if ((db = dbopen(&quot;./test.db&quot;, O_RDONLY | O_EXCL, 0666,
+                     DB_BTREE, NULL)) == NULL) {
+        err(1, &quot;dbopen() failed&quot;);
+    }
+    putString(db, &quot;d&quot;, &quot;delta&quot;);
+    exit(0);
+    return 0;
+}
+</code></pre>
+<p>次のようにコンパイルして実行すると、<code>errno</code>には<code>EPERM</code>が設定されることがわかる。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W test-db1.c
+% ./a.out
+a.out: db#put() failed: 1: Operation not permitted
+%
+</code></pre>
+<h3>6.2 バージョン4.5の場合</h3>
+<p>今度は同様のプログラムをバージョン4.5用に用意する。といっても、1行目で<code>db.h</code>の代わりに<code>db_185.h</code>をインクルードするように変更しただけで、残りは同じである。</p>
+<pre><code class="language-c">% cat test-db4.c
+#include &lt;db_185.h&gt;
+...
+</code></pre>
+<p>次のようにコンパイルして実行すると、<code>errno</code>には<code>EACCES</code>が設定されることがわかる。</p>
+<pre><code class="language-plaintext">% gcc -Wall -W -I/usr/local/include/db45 -L/usr/local/lib/db45 -ldb test-db4.c
+% ./a.out
+a.out: db#put() failed: 13: Permission denied
+%
+</code></pre>
+<p><code>put()</code>に限らず、<code>del()</code>でも同様の結果になる。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Libcgi</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+    <li>
+      <a href="documents.html">Documents</a>
+    </li>
+    <li class="selected">
+      Berkeley DB 4の1.85互換API
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

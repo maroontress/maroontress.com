@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd">
+<class package="com_example" name="StringList">
+  <namespace/>
+
+  <struct tag="@" alias="@">
+    <member type="struct @ *" name="next">
+      <desc>
+        <brief>リストの次の構造体を指します。</brief>
+        <p>リストの最後の構造体の場合、NULLになります。</p>
+      </desc>
+    </member>
+
+    <member type="char *" name="value">
+      <desc>
+        <brief>保持している文字列です。</brief>
+      </desc>
+    </member>
+
+    <desc>
+      <brief>文字列のリストとなる構造体です。</brief>
+      <p>構造体のリンクでリストを実現します。</p>
+    </desc>
+  </struct>
+
+  <desc>
+    <brief>自己参照する構造体の例として文字列のリストを表すデータ型を提供します。</brief>
+    <p>操作は省略されています。</p>
+  </desc>
+</class>

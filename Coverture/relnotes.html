@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Release Notes | Coverture</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Coverture</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Release Notes</h1>
+<h2>リリースノート 20100704 (2010-07-04)</h2>
+<p><a href="coverture-20100704.tar.bz2">coverture-20100704.tar.bz2</a>をリリース。</p>
+<h3>バグ修正</h3>
+<ul>
+<li>g++の生成するgcnoファイルを処理したときに、負の複雑度などの正しくない複雑度を出力するバグを修正。</li>
+<li>与えたファイルをすべて正常に処理できない場合、コマンドがブロックして終了しないバグを修正。</li>
+</ul>
+<h2>リリースノート 20100607 (2010-06-07)</h2>
+<p><a href="coverture-20100607.tar.bz2">coverture-20100607.tar.bz2</a>をリリース。</p>
+<h3>新機能と変更</h3>
+<ul>
+<li>--no-sortオプションを指定した場合は、--threadsオプションを無視して、シングルスレッドで処理するようにした。</li>
+<li>--verboseを指定したときにヒープの使用状況を標準エラー出力に表示するタイミングを、処理前と処理後の2回に変更。</li>
+</ul>
+<h2>リリースノート 20100525 (2010-05-25)</h2>
+<p><a href="coverture-20100525.tar.bz2">coverture-20100525.tar.bz2</a>をリリース。</p>
+<h3>新機能と変更</h3>
+<ul>
+<li>--no-sortオプションの追加。</li>
+<li>--verboseを指定したときにヒープの使用状況を標準エラー出力に表示するにした。</li>
+<li>デフォルトのJVMの最大ヒープサイズを256Mバイトに変更。</li>
+<li>環境変数COVERTURE_JVM_OPTIONSでJVMにオプションを渡せるようにした。</li>
+</ul>
+<h3>バグ修正</h3>
+<ul>
+<li>ビックエンディアンのプラットフォームで生成されたgcno/gcdaファイルの64ビット値を正しくパースできないバグを修正。</li>
+<li>XMLファイルに出力するときの改行コードをLFに統一。</li>
+<li>コンソールに改行を出力するときにプラットフォームの改行を出力するように修正。</li>
+</ul>
+<h2>リリースノート 20100404 (2010-04-04)</h2>
+<p><a href="coverture-20100404.tar.bz2">coverture-20100404.tar.bz2</a>をリリース。</p>
+<h3>バグ修正</h3>
+<ul>
+<li>gcovが解ける関数フローグラフを解けないバグを修正。</li>
+<li>コンソールに改行を出力するときにプラットフォームの改行を出力するように修正。</li>
+<li>checkstyleの警告が出ないようにした。</li>
+</ul>
+<h2>リリースノート 20081005 (2008-10-05)</h2>
+<p><a href="coverture-20081005.tar.bz2">coverture-20081005.tar.bz2</a>をリリース。</p>
+<h3>新機能と変更</h3>
+<ul>
+<li>--gcovオプションを追加。gcov互換のカバレッジ結果を生成できるようにした。</li>
+<li>--output-dirオプションを追加。ファイル出力先ディレクトリを指定できるようにした。</li>
+<li>--gcov-file-charsetオプションを追加。出力するカバレッジ結果の文字セットを指定できるようにした。</li>
+<li>--source-file-charsetオプションを追加。入力するソースファイルの文字セットを指定できるようにした。</li>
+<li>ソースファイル毎のカバレッジのサマリをXMLの出力に含めるようにした（sourceList要素とsource要素）。</li>
+<li>XMLの出力でgcno要素の属性にgcnoファイルのパスを含めるようにした。</li>
+<li>--threadsオプションを追加。</li>
+<li>--input-file=-で標準入力からファイルリストを入力できるようにした。</li>
+<li>--verboseオプションを追加。--verboseを指定したときは生成したgcovファイルのファイル名を標準エラー出力に表示するようにした。</li>
+</ul>
+<h3>バグ修正</h3>
+<ul>
+<li>gcnoファイルがgcdaファイルよりも新しい場合と、gcdaファイルに含まれる関数IDがgcnoファイルに存在しない場合に、警告を標準出力に表示するバグを修正。</li>
+<li>XMLの出力で、ファイル名または関数名に「'」が含まれていてもエスケープしないバグを修正。</li>
+<li>--input-fileオプションで指定したファイルに含まれるパスの拡張子が.gcnoでなければ、NullPointerExceptionで終了してしまうバグを修正。</li>
+<li>gcdaファイルの終端に4バイトの0が存在してもパースできるようにした。</li>
+</ul>
+<h2>リリースノート 20080920 (2008-09-20)</h2>
+<p><a href="coverture-20080920.tar.bz2">coverture-20080920.tar.bz2</a>をリリース。</p>
+<h3>新機能と変更</h3>
+<ul>
+<li>引数に指定したgcnoファイルが存在しない場合、次の引数の処理に移るようにした。</li>
+<li>引数に指定したgcnoファイルの拡張子をgcdaに変えたファイルが存在する場合は、そのgcdaファイルからデータを入力するようにした。</li>
+<li>gcdaファイルからデータを入力した場合は、アークと基本ブロックの実行回数を表示できるようにした。</li>
+<li>アークの「無条件分岐」属性を表示できるようにした。</li>
+<li>基本ブロックの「呼び出しからの戻り」属性を表示できるようにした。</li>
+</ul>
+<h3>バグ修正</h3>
+<ul>
+<li>${prefix}/bin/が存在しないとき、ant installが失敗するバグを修正。</li>
+<li>ant install実行後にant install -Dprefix=/anotherを実行すると、/another/bin/にスクリプトが正しくインストールされないバグを修正。</li>
+</ul>
+<h2>リリースノート 20080909 (2008-09-09)</h2>
+<p><a href="coverture-20080909.tar.bz2">coverture-20080909.tar.bz2</a>をリリース。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Coverture</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li class="selected">
+      Release Notes
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="appendix.html">Appendix</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Request - com_maroontress_libcgi_Request</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_maroontress_libcgi</h3>
+    <h1>class Request</h1>
+#define com_maroontress_libcgi_Request_IMPORT<br>
+#include &lt;com/maroontress/libcgi/Request.h&gt;<br>
+    <dl><dd>
+CGIのリクエストです。
+<p>フォームのパラメータの値を取得する機能を提供します。</p>
+  </dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リクエストの実装となる構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;const <a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request_Methods">struct Request_<wbr>Methods</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct com_maroontress_libcgi_Request.methods"><b>methods</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リクエストの実装クラスのメソッドです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct com_maroontress_libcgi_Request.impl"><b>impl</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リクエストの実装クラスのインスタンスです。</td>
+</tr>
+      </tr>
+    </table><br>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request_Methods">struct Request_<wbr>Methods</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リクエストの実装クラスのメソッドです。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top">(*<a href="#struct com_maroontress_libcgi_Request_Methods.free"><b>free</b></a>)(<a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *&nbsp;<i>impl</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リクエストの実装を解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;char *</font>
+  </td>
+  <td valign="top">(*<a href="#struct com_maroontress_libcgi_Request_Methods.getValue"><b>getValue</b></a>)(<a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *&nbsp;<i>impl</i>, const char *&nbsp;<i>name</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータの値を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>mime_<wbr>ContentType</a> *</font>
+  </td>
+  <td valign="top">(*<a href="#struct com_maroontress_libcgi_Request_Methods.getContentType"><b>getContentType</b></a>)(<a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *&nbsp;<i>impl</i>, const char *&nbsp;<i>name</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータの値のコンテンツタイプを取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top">(*<a href="#struct com_maroontress_libcgi_Request_Methods.writeValue"><b>writeValue</b></a>)(<a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *&nbsp;<i>impl</i>, const char *&nbsp;<i>name</i>, union std_<wbr>io_<wbr>OutputTube&nbsp;<i>out</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータの値を出力ストリームに書きます。</td>
+</tr>
+      </tr>
+    </table><br>
+    <h2>Union Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リクエストの実装クラスの実体となる共用体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_Request_create"><b>Request_<wbr>create</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リクエストを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_Request_free"><b>Request_<wbr>free</b></a>(<a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *&nbsp;<i>req</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リクエストを解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_Request_initialize"><b>Request_<wbr>initialize</b></a>(<a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *&nbsp;<i>req</i>, const <a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request_Methods">struct Request_<wbr>Methods</a> *&nbsp;<i>methods</i>, <a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *&nbsp;<i>impl</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リクエストを初期化します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>mime_<wbr>ContentType</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_Request_getContentType"><b>Request_<wbr>getContentType</b></a>(<a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *&nbsp;<i>req</i>, const char *&nbsp;<i>name</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータの値のコンテンツタイプを取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;char *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_Request_getValue"><b>Request_<wbr>getValue</b></a>(<a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *&nbsp;<i>req</i>, const char *&nbsp;<i>name</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータの値を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_Request_writeValue"><b>Request_<wbr>writeValue</b></a>(<a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *&nbsp;<i>req</i>, const char *&nbsp;<i>name</i>, union std_<wbr>io_<wbr>OutputTube&nbsp;<i>out</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータの値を出力ストリームに書きます。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct com_maroontress_libcgi_Request"></a>
+<font size="+1"><b>struct Request</b></font></p>
+<dl><dd>リクエストの実装となる構造体です。
+<hr>
+<p><a name="struct com_maroontress_libcgi_Request.methods"></a><font size="+1"><b>methods</b></font></p>
+<p>const <a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request_Methods">struct Request_<wbr>Methods</a> * <b>methods</b></p>
+<dl>
+<dd>リクエストの実装クラスのメソッドです。</dd>
+</dl>
+<hr>
+<p><a name="struct com_maroontress_libcgi_Request.impl"></a><font size="+1"><b>impl</b></font></p>
+<p><a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> * <b>impl</b></p>
+<dl>
+<dd>リクエストの実装クラスのインスタンスです。</dd>
+</dl>
+</dd></dl>
+<hr>
+<p><a name="struct com_maroontress_libcgi_Request_Methods"></a>
+<font size="+1"><b>struct Request_Methods</b></font></p>
+<dl><dd>リクエストの実装クラスのメソッドです。
+<hr>
+<p><a name="struct com_maroontress_libcgi_Request_Methods.free"></a><font size="+1"><b>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void (*<b>free</b>)(</td>
+    <td nowrap><a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *&nbsp;<i>impl</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+リクエストの実装を解放します。
+<p>呼び出し後は<span class="arg">impl</span>が参照するオブジェクトを参照してはなりません。</p>
+      </dd>
+
+<dl>Parameters:<dd>
+<i>impl</i> - リクエストの実装<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="struct com_maroontress_libcgi_Request_Methods.getValue"></a><font size="+1"><b>getValue</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>char * (*<b>getValue</b>)(</td>
+    <td nowrap><a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *&nbsp;<i>impl</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パラメータの値を取得します。
+<p>戻り値が参照するオブジェクトは<span class="arg">impl</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、解放してはなりません。</p>
+      </dd>
+
+<dl>Parameters:<dd>
+<i>impl</i> - リクエストの実装<br>
+
+<i>name</i> - パラメータ名<br>
+
+</dd></dl>
+<dl>Returns:<dd>値</dd></dl>
+</dl>
+<hr>
+<p><a name="struct com_maroontress_libcgi_Request_Methods.getContentType"></a><font size="+1"><b>getContentType</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>mime_<wbr>ContentType</a> *</td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*<b>getContentType</b>)(</td>
+    <td nowrap><a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *&nbsp;<i>impl</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パラメータの値のコンテンツタイプを取得します。
+<p>戻り値が参照するオブジェクトは<span class="arg">impl</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、解放してはなりません。</p>
+      </dd>
+
+<dl>Parameters:<dd>
+<i>impl</i> - リクエストの実装<br>
+
+<i>name</i> - パラメータ名<br>
+
+</dd></dl>
+<dl>Returns:<dd>コンテンツタイプ</dd></dl>
+</dl>
+<hr>
+<p><a name="struct com_maroontress_libcgi_Request_Methods.writeValue"></a><font size="+1"><b>writeValue</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int (*<b>writeValue</b>)(</td>
+    <td nowrap><a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *&nbsp;<i>impl</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>union std_<wbr>io_<wbr>OutputTube&nbsp;<i>out</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パラメータの値を出力ストリームに書きます。
+<p>エラーが発生した場合は&minus;1を返します。</p>
+      </dd>
+
+<dl>Parameters:<dd>
+<i>impl</i> - リクエストの実装<br>
+
+<i>name</i> - パラメータ名<br>
+
+<i>out</i> - 出力ストリーム<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+</dd></dl>
+<hr>
+    <h2>Union Detail</h2>
+<p><a name="union com_maroontress_libcgi_Request_Impl"></a>
+<font size="+1"><b>union Request_Impl</b></font></p>
+<dl><dd>リクエストの実装クラスの実体となる共用体です。</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="com_maroontress_libcgi_Request_create"></a><font size="+1"><b>Request_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> * <b>Request_create</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+リクエストを生成します。
+<p>戻り値が参照するオブジェクトは<a href="com_maroontress_libcgi_Request.html#com_maroontress_libcgi_Request_free">Request_<wbr>free</a>()で解放しなければなりません。</p>
+    </dd>
+
+<dl>Returns:<dd>リクエスト</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_Request_free"></a><font size="+1"><b>Request_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Request_free</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *&nbsp;<i>req</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+リクエストを解放します。
+<p><span class="arg">req</span>が<span class="code">NULL</span>のときはなにもしません。呼び出し後は<span class="arg">req</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>req</i> - リクエスト<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_Request_initialize"></a><font size="+1"><b>Request_<wbr>initialize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Request_initialize</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *&nbsp;<i>req</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const <a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request_Methods">struct Request_<wbr>Methods</a> *&nbsp;<i>methods</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><a href="com_maroontress_libcgi_Request.html#union com_maroontress_libcgi_Request_Impl">union Request_<wbr>Impl</a> *&nbsp;<i>impl</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>リクエストを初期化します。<p>リクエストの実装クラスが使用するメソッドです。</p></dd>
+
+<dl>Parameters:<dd>
+<i>req</i> - リクエスト<br>
+
+<i>methods</i> - リクエストの実装クラスのメソッド<br>
+
+<i>impl</i> - リクエストの実装クラスのインスタンス<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_Request_getContentType"></a><font size="+1"><b>Request_<wbr>getContentType</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>mime_<wbr>ContentType</a> *</td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Request_getContentType</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *&nbsp;<i>req</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パラメータの値のコンテンツタイプを取得します。
+<p>戻り値が参照するオブジェクトは<span class="arg">req</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、解放してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>req</i> - リクエスト<br>
+
+<i>name</i> - パラメータ名<br>
+
+</dd></dl>
+<dl>Returns:<dd>コンテンツタイプ</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_Request_getValue"></a><font size="+1"><b>Request_<wbr>getValue</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>char * <b>Request_getValue</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *&nbsp;<i>req</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パラメータの値を取得します。
+<p>戻り値が参照するオブジェクトは<span class="arg">req</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、解放してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>req</i> - リクエスト<br>
+
+<i>name</i> - パラメータ名<br>
+
+</dd></dl>
+<dl>Returns:<dd>値</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_Request_writeValue"></a><font size="+1"><b>Request_<wbr>writeValue</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>Request_writeValue</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct Request</a> *&nbsp;<i>req</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>union std_<wbr>io_<wbr>OutputTube&nbsp;<i>out</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>パラメータの値を出力ストリームに書きます。<p>エラーが発生した場合は&minus;1を返します。</p></dd>
+
+<dl>Parameters:<dd>
+<i>req</i> - リクエスト<br>
+
+<i>name</i> - パラメータ名<br>
+
+<i>out</i> - 出力ストリーム<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

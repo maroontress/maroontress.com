@@ -1,0 +1,37 @@
+dl {
+  margin-top: 1em;
+  font-weight: bold;
+}
+
+dd {
+  font-weight: normal;
+}
+
+span.splint {
+  font-style: italic;
+  font-size: xx-small;
+  color: #ff3f3f;
+}
+
+span.em {
+  font-family: palatino linotype, ms pgothic, san-serif;
+  font-weight: bold;
+}
+
+span.code {
+  font-family: courier new, ms gothic, monospace;
+}
+
+span.arg {
+  font-style: italic;
+}
+
+body {
+  font-family: palatino linotype, ms pmincho, serif;
+}
+
+pre {
+  font-family: courier new, ms gothic, monospace;
+  border: thin groove;
+  padding: 1ex;
+}

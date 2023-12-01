@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | Emacs21とXIM</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Emacs21とXIM</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h2>問題点: 複数ストロークのコマンド入力</h2>
+<p>Emacs21ではXIMをサポートするようになりましたが、Emacsのコマンド入力形態がXIMの機構と相性が悪いという点ではXEmacsと変わりません。</p>
+<p>例えば、図1のようにリージョンを選択してコピーする場合を考えます。日本語入力がオンの状態で<code>C-space</code>でリージョンの選択を開始したとします<a href="#1">†1</a>。カーソルを目的の場所に移動して<code>M-w</code>を入力すると、<code>ESC</code>はEmacsに渡りますが、<code>w</code>は図2のように前編集文字列としてXIMサーバ側に渡ります。</p>
+<div class="horizontal-scroll">
+<img src="emacs21-1.png" width="469" height="222"><br>
+<small>図1: 日本語入力オンの状態でリージョンを選択している状態</small>
+</div>
+<div class="horizontal-scroll">
+<img src="emacs21-2.png" width="469" height="222"><br>
+<small>図2: 図1の状態から<code>M-w</code>（<code>ESC</code>の次に<code>w</code>）を入力した状態</small>
+</div>
+<p>そのほか、<code>M-&lt;</code>の入力でも図3のような状態になってしまいます。</p>
+<div class="horizontal-scroll">
+<img src="emacs21-3.png" width="469" height="222"><br>
+<small>図3: <code>M-&lt;</code>（<code>ESC</code>の次に<code>&lt;</code>）を入力した状態</small>
+</div>
+<p>このように<strong>基本的なコマンドを入力する度に日本語入力を一旦オフにしなければならない</strong>わけですから、XIMの利用が普及しないのも当たり前かもしれません。もちろん、<code>M-w</code>を「<code>ESC</code>の次に<code>w</code>」ではなく、「<code>Alt</code>を押しながら<code>w</code>」で入力すれば、このようなことは起きないかも知れません<a href="#2">†2</a></a>。では、<code>C-x b</code>などの複数ストロークのコマンドはどうすればいいのでしょうか。</p>
+<p class="footnote"><a name="1">&dagger;1</a> 日本語入力がオンの状態で<code>C-space</code>を入力できない、あるいはそもそも<code>C-space</code>で日本語入力のオン・オフを切り替えるXIMサーバを使っているなどの問題については、ここでは扱いません。別のXIMサーバを使うか、そのXIMサーバの設定を変更すれば解決すると思います。</p>
+<p class="footnote"><a name="2">&dagger;2</a> XIMサーバによっては<code>Alt</code>を押しながら入力しても、Emacs（XIMクライアント）に渡さないものもあります。それどころか、日本語入力がオンのときは、<code>Tab</code>や<code>Return</code>などの入力を制御コード（0x07や0x0d）として渡すものもあります。</p>
+<h2>解決案: EmacsがXIMサーバを制御する</h2>
+<p>ユーザが複数ストロークのコマンドを入力している途中かどうかを、Emacsは知っています。コマンドの入力が途中のときは日本語入力をオフに（状態を保存）して、コマンドの入力が完了したら日本語入力をオンにする（状態を元に戻す）ようにXIMを制御すれば、前述の問題は解決するはずです。例えば、<code>ESC</code>や<code>C-x</code>が押されたら日本語入力をオフにして、コマンドの入力完了か<code>C-g</code>の入力で日本語入力をオンにするわけです。なぜ、こんな簡単なことが実装されていないのでしょうか<a href="#3">†3</a>。</p>
+<p>次の<a href="emacs-21.2-xim-patch-2.diff">パッチ</a>に修正の例を示します（FreeBSD上のEmacs 21.2で動作を確認しました）。なお、XEmacs 21.1については<a href="../XEmacs/">こちら</a>を参照してください<a href="#4">†4</a>。</p>
+<pre><code class="language-diff">*** src/xterm.c	Sat Mar 16 19:34:56 2002
+--- src.new/xterm.c	Fri Dec 20 16:21:30 2002
+***************
+*** 9954,9959 ****
+--- 9954,9962 ----
+      XNextEvent (dpyinfo-&gt;display, &amp;event);
+
+  #ifdef HAVE_X_I18N
++ #if 1
++ 	  if (this_command_key_count == 0)
++ #endif
+      {
+        /* Filter events for the current X input method.
+           XFilterEvent returns non-zero if the input method has
+</code></pre>
+<p>なお、この修正方法はかなり強引な方法です。たった1行を追加しただけで簡単そうにみえますが、本当にちゃんと直すにはもっといろいろな苦労が必要になりそうです。</p>
+<p><a name="3">&dagger;3 実は難しい問題を含んでいます。</a></p>
+<p><a name="4">&dagger;4 Emacsのソースを読んでからXEmacsのソースを読むと、非常に読みづらいです。</a></p>
+<h2>日本語入力のオン・オフを制御する</h2>
+<p>XIMの仕様では、XIMクライアント（Emacsなど）が自発的に日本語入力のオン・オフを制御するにはXSetICValues()を使用することになっています。例として、日本語入力をオンにするコードを次に示します。</p>
+<pre><code class="language-c">XVaNestedList list;
+
+list = XVaCreateNestedList(0, XNPreeditState, XIMPreeditEnable, NULL);
+if (XSetICValues(ic, XNPreeditAttributes, list, NULL) != NULL)
+    warnx(&quot;XSetICValues() failed. (XNPreeditState not supported.)&quot;);
+XFree(list);
+</code></pre>
+<p><code>XNPreeditState</code>というXIC属性はR6から定義されましたが、多くのXIMサーバはこれをサポートしていません。例えば、Kinput2はv3.1（2002年10月）からサポートするようになったばかりです。</p>
+<h2>サポートしているXIC属性を調べる</h2>
+<p>XIMサーバがどのXIC属性をサポートしているのかを、XIMクライアントは<code>XGetIMValues</code>で調べることができます。コードの例を次に示します。</p>
+<pre><code class="language-c">XIMValuesList *vl;
+
+if (XGetIMValues(im, XNQueryICValuesList, &amp;vl, NULL) != NULL) {
+    warnx(&quot;XGetIMValues() failed. (XNQueryICValuesList not supported.)&quot;);
+    return;
+}
+for (int k = 0; k &lt; vl-&gt;count_values; ++k)
+    printf(&quot;supported_values[%d]: %s\n&quot;, k, vl-&gt;supported_values[k]);
+XFree(vl);
+</code></pre>
+<p>ところが、R6.6（とそれ以前のリリース）の実装にはバグがあり、このコードを実行するとコアダンプします（不定のアドレスを<code>free()</code>で解放してしまうバグなので、そのときコアダンプしなくても、いずれはクラッシュします）。XFree86では4.2.0から修正されているようです（ただし、メモリリークするバグが残っています）。</p>
+<p>したがって、現状ではそれぞれのXIC属性に対して<code>XGetICValues()</code>または<code>XSetICValues()</code>を使用して、<code>NULL</code>が返ってくればサポートされている、返ってこなければサポートされていないと判断するしかなさそうです。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sun Dec 22 01:26:39 JST 2002 -->
+<!-- hhmts start -->
+Last modified: Fri Feb 26 09:33:44 JST 2010
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Emacs21とXIM</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

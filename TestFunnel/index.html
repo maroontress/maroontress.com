@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | Test Funnel</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Test Funnel</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p>GCC専用のC言語ユニットテストフレームワークです。</p>
+<h2>概要</h2>
+<p>Test Funnelはテスト対象となるターゲットと、そのターゲットをテストするユニットテストスイートを、ファンネルで動的にリンクしてテストを実行するというユニットテストフレームワークです。</p>
+<p>ファンネルはそれ単体でもテストを実行できますが、GUIのコンソールサーバとネットワークで接続すれば、テストを選択、実行し、テスト結果を一覧表示することもできます。</p>
+<p>注意: Test FunnelはGCCを前提とし、またソースコードにGCC拡張を使用したテストフレームワークであるので、GCC以外の開発環境では動作しません。</p>
+<div class="cover-image">
+<div style="text-align: center">
+<img src="images/stack.png" alt="Test Funnelの構成"/><br>
+<small>Test Funnelの構成</small>
+</div>
+</div>
+<h2>構成要素</h2>
+<p>Test Funnelはファンネル、ターゲット、テストにより構成されます。オプショナルとしてコンソールサーバを構成に追加することができます。</p>
+<h3>ファンネル</h3>
+<p>ファンネルはシェルから実行するコマンドです。ターゲットとテストをリンクして、テストをバッチ処理で実行します（スタンドアロンモード）。コンソールサーバと接続した場合はコンソールサーバからインタラクティブにテストの実行を管理することもできます（クライアントモード）。</p>
+<p>テストは独立したプロセスで実行されるので、シグナル（<code>SIGSEGV</code>など）を捕捉して終了したテストや、一定時間経過しても終了しないテストを検出することができます。また、テストが成功した場合は、さらにメモリリークを検出できます。</p>
+<h3>ターゲット</h3>
+<p>ターゲットはテストの対象となる任意の共有ライブラリです。</p>
+<p>ターゲットはファンネルが実行時に（環境変数<code>LD_PRELOAD</code>の仕組みを用いて）リンクします。また、ターゲットが必要とするの下位層のライブラリ（またはそのスタブ）も同時にリンクする必要があります。</p>
+<p>カバレッジ可能なターゲットを生成するには<a href="manual.html#shared_library_coverage">共有ライブラリのカバレッジ</a>を参照してください。</p>
+<h3>テスト</h3>
+<p>テストはターゲットのドライバとなるユニットテストです。テストは<a href="api/index.html">Test FunnelのAPI</a>を使用できます。</p>
+<p>それぞれのテストはTest Funnelが規定する形式の共有ライブラリになります。1つの共有ライブラリを<strong>テストクラス</strong>と呼び、1つのテストクラスは複数の<strong>テストメソッド</strong>を含むことができます。</p>
+<p>ファンネルは指定されたテストクラスを必要に応じて<code>dlopen(3)</code>で動的にリンクして、そこに含まれるテストメソッドを呼び出します。テストメソッドはTest FunnelのAPIで定義されるマクロ（<code>TF_AUDIT</code>または<code>TF_METHOD</code>）を用いて宣言した関数で、その共有ライブラリのシンボルテーブルから自動的に発見されます。</p>
+<div class="cover-image">
+<div style="text-align: center">
+<img src="images/console-server-clients.png" alt="複数のクライアントとの接続例"/><br>
+<small>複数のクライアントとの接続例</small>
+</div>
+</div>
+<h2>複数のクライアントとの接続例</h2>
+<h3>コンソールサーバ</h3>
+<p>コンソールサーバはファンネルをGUIで管理するアプリケーションです。</p>
+<p>コンソールサーバとファンネルはネットワーク経由で接続するため、ファンネルを実行する（つまりテストを実行する）ホストと、コンソールサーバを実行するホストを別にすることができます。例えば、ウィンドウシステムのない環境でテストを実行し、そのテストの実行をWindowsから制御することも可能です。また、コンソールサーバは複数のクライアントと接続できるので、複数のプラットフォームでのテストの実行を1つのホストから管理することもできます。</p>
+<p>コンソールサーバAuditorがリリースに含まれます。AuditorはJRE 6（またはJRE 1.5）の実行環境で動作します。</p>
+<div style="text-align: center">
+<img class="100%" src="images/auditor-screenshot.png" alt="Auditorのスクリーンショット"><br>
+<small>Auditorのスクリーンショット</small>
+</div>
+<h2>ワークフロー</h2></h2>
+<p>テストのワークフローには、テストスイートそのものを開発するフェーズと、ターゲットをテストするフェーズがあります。一般的には、これらのフェーズを交互に繰り返すか、または複数のチームで並行して開発を進めます。</p>
+<div style="text-align: center">
+<img class="100%" src="images/workflow.png" alt="テストのワークフローのモデル"><br>
+<small>テストのワークフローのモデル</small>
+</div>
+<p>テストスイートそのものを開発するフェーズでは、ターゲットを固定してテストを実行します。ターゲットのカバレッジを確認したり、テストそのものをデバッグ（またはリファクタリング）します。Test Funnelでは、このフェーズにはクライアントモードが適しています。テストを追加、修正した後、コンソールサーバからテストを（リロードして）再実行する、という作業を繰り返します。</p>
+<p>一方、ターゲットを開発するフェーズでは、テストスイートを固定してテストを実行します。テストに合格するようにターゲットを修正します。このフェーズにはスタンドアロンモードが適しています。ターゲットを再ビルドした後、テストを（makeなどから）再実行する、という作業を繰り返します。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat May  6 04:04:35 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Sun Aug 24 03:42:30 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Test Funnel</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="manual.html">Manual</a>
+    </li>
+    <li>
+      <a href="reference.html">Reference</a>
+    </li>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+    <li>
+      <a href="bugs.html">Bugs</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

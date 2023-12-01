@@ -1,0 +1,114 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta name="Content-Style" content="text/css">
+<title>LDBROWSE</title>
+<style>
+pre {
+  padding-top: 1rem;
+  background-color: black;
+  color: white;
+  overflow-x: auto;
+}
+</style>
+</head>
+<body style="line-height: 2rem;">
+
+<h1 align=center>LDBROWSE</h1>
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+<!-- Creator     : groff version 1.17.2 -->
+<!-- CreationDate: Wed Sep 24 04:04:34 2003 -->
+<a name="NAME"></a>
+<h2>NAME</h2>
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td><td width="90%">
+<b>ldbrowse</b> - browses the log file of libld(3)</td></table>
+<a name="SYNOPSIS"></a>
+<h2>SYNOPSIS</h2>
+
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td><td width="90%">
+<b>ldbrowse</b> <i>program</i> [<i>file</i>]</td></table>
+<a name="DESCRIPTION"></a>
+<h2>DESCRIPTION</h2>
+
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td><td width="90%">
+The <b>ldbrowse</b> program reads <i>file</i> and writes it
+in the human-readable format to the standard output. The
+<i>file</i> should be the log file of libld(3). And the
+<i>program</i> should be the executable file that made the
+<i>file</i>. If <i>file</i> is absent, <b>ldbrowse</b> reads
+from the standard input.</td></table>
+
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td><td width="90%">
+The <i>program</i> should be compiled with <i>-ggdb</i>, or
+<b>ldbrowse</b> will print no symbolic
+information.</td></table>
+<a name="EXAMPLES"></a>
+<h2>EXAMPLES</h2>
+
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td><td width="90%">
+The following entry shows a memory allocation. The first
+line shows that the allocated space is 10 bytes of memory
+that starts from the address 0x804a0f0. The next 6 lines
+(until an empty line) shows the stack trace when the
+allocation occurred. Each line is composed in the format
+<i>source file</i>:<i>line number</i>: in function
+<i>function</i>, but the <i>line number</i> shows the line
+that corresponds to an address where the function
+returns.</td></table>
+
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td><td width="90%">
+<pre>
+  allocate: 0x804a0f0 (10 bytes)
+  /foo/leakdetector/libld/ld.c:126: in function 'malloc'
+  /foo/leakdetector/test/test.c:18: in function 'foo_c'
+  /foo/leakdetector/test/test.c:26: in function 'foo_b'
+  /foo/leakdetector/test/test.c:33: in function 'foo_a'
+  /foo/leakdetector/test/test.c:43: in function 'main'
+  (null):0: in function '_start'
+
+</pre>The following entry shows the allocated memory to be made available for future allocations. The line shows that the allocated space that starts from the 0x804a0d0 is released.</td></table>
+
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td><td width="90%">
+<pre>
+  free: 0x804a0d0
+
+</pre></td></table>
+<a name="SEE ALSO"></a>
+<h2>SEE ALSO</h2>
+
+<table width="100%" border=0 rules="none" frame="void"
+       cols="2" cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="10%"></td><td width="90%">
+ldcollect(1), libld(3)</td></table>
+<hr>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Download | Japanese XIM Server</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo"><img src="imserver-icon.png" alt="アイコン" style="width: 32px; height: 32px; vertical-align: bottom;"/>日本語XIMサーバ</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>ダウンロード</h1>
+<p>最新版は<a href="imserver-20050212.tar.gz"><code>imserver-20050212.tar.gz</code></a>です。主に動作確認したプラットフォームは次の通りです。</p>
+<!--
+- FreeBSD 4.7 + XFree86 4.2.1<sup><a href="#0">★0</a></sup>
+- FreeBSD 4.8 + XFree86 4.3.0
+- FreeBSD 4.9 + XFree86 4.3.0
+
+<p class="footnote"><a name="0">★0</a> XFree86 4.2.1のXlibには、XIMサーバが動作していないときにXIMクライアントを起動するとコアダンプしてしまう問題があります。4.3.0以降（または3.3.6）を使用することをお勧めします。</p>
+-->
+<ul>
+<li>FreeBSD 4.10 + XFree86 4.4.0</li>
+<li>Red Hat Linux 9 + XFree86 4.3.0</li>
+</ul>
+<h2>必要な構成</h2>
+<p>次のものをインストールしておく必要があります。</p>
+<ul>
+<li>SJ3またはCanna</li>
+<li>Berkeley DB（Linuxの場合）</li>
+</ul>
+<p>FreeBSD 4.10では次のportsで動作確認しました。</p>
+<ul>
+<li>ja-Canna-3.7p3</li>
+<li>ja-sj3-2.0.1.20_1<a href="#1">†1</a></li>
+</ul>
+<p>Red Hat Linux 9では次のrpmで動作確認しました。</p>
+<ul>
+<li>Canna-3.6-12</li>
+<li>Canna-devel-3.6-12</li>
+<li>Canna-libs-3.6-12</li>
+<li>db4-4.0.14-20</li>
+<li>db4-devel-4.0.14-20</li>
+</ul>
+<p class="footnote"><a name="1">&dagger;1</a> ja-sj3-2.0.1.20_<b>2</b>以降では<b>ある理由</b>でsj3servが動作しません。FreeBSD 5.3以降（そしておそらく4.11以降）でsj3を使用する場合、portsを利用せず<a href="../Sj3/">ここ</a>からインストールするべきでしょう。</p>
+<h2>ビルドとインストール</h2>
+<p>tar ballを展開後、環境に合うように<code>Imakefile</code>を編集します。<code>Imakefile</code>では、最低限、次の項目について指定する必要があります<a href="#2">†2</a>。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><code>InstallBinDir</code></dt>
+<dd>実行形式ファイルのインストール先ディレクトリを指定します。</dd>
+<dt><code>ConversionEngine</code></dt>
+<dd>日本語変換エンジンとして、<code>SJ3</code>もしくは<code>CANNA</code>を指定します。</dd>
+<dt><code>Sj3IncDir</code>, <code>Sj3LibDir</code></dt>
+<dd>[<code>ConversionEngine</code>に<code>SJ3</code>を指定した場合のみ]
+それぞれ<code>sj3.h</code>, <code>libsj3lib.a</code>があるディレクトリを指定します。</dd>
+<dt><code>CannaIncDir</code>, <code>CannaLibDir</code>, <code>CannaDir</code></dt>
+<dd>[<code>ConversionEngine</code>に<code>CANNA</code>を指定した場合のみ]
+それぞれ<code>canna.h</code>, <code>libcanna.so</code>, <code>dic</code>ディレクトリがあるディレクトリを指定します。</dd>
+<dt><code>BerkeleyDBType</code></dt>
+<dd>[Linuxの場合のみ]
+<code>/usr/include/db1/db.h</code>と<code>/usr/lib/libdb1.so</code>がインストールされている場合は<code>DB1</code>を、<code>/usr/include/db_185.h</code>と<code>/usr/lib/libdb.so</code>がインストールされている場合は<code>DB185</code>を指定します。</dd>
+<dt><code>Debug</code></dt>
+<dd>普通は#undefしてください。</dd>
+</dl>
+<p><code>Imakefile</code>を変更したら、<code>xmkmf -a ; make ; make install</code>で完了します。</p>
+<p class="footnote"><a name="2">&dagger;2</a> FreeBSDを使用していて、SJ3またはCannaをportsでインストールしている場合、基本的に<code>ConversionEngine</code>を選択するだけでビルドできるようになっています。</p>
+<p><a name="usage"></a></p>
+<h2>リソース設定</h2>
+<p>付属のリソースファイル<code>Symbol.ad</code>、<wbr><code>Romaji.ad</code>、<wbr><code>TriggerKey.ad</code>、<wbr><code>Optimization.ad</code>を、<wbr><code>~/.Xdefaults</code>やリソースデータベースの内容に追加、更新します。それぞれのリソースファイル内容は次のようになっています。</p>
+<dl style="background-color: var(--pre-background); padding: 8px;">
+<dt><code>Symbol.ad</code></dt>
+<dd>半角全角変換、ひらがなカタカナ変換を定義するシステムリソースです。定義内容を変更する必要はありません。そのまま現在のリソース設定に追加します。</dd>
+<dt><code>TriggerKey.ad</code></dt>
+<dd>日本語入力モードの切替えキーの設定を定義するリソースの解説と例です。ファイルの内容を参考に、好みに合わせてリソース設定に追加してください。</dd>
+<dt><code>Romaji.ad</code></dt>
+<dd>ローマ字かな変換のための前変換設定を定義するリソースの解説と例です。そのままリソース設定に追加してください<a href="#3">&dagger;3</a>。ローマ字かな変換について調整する必要がある場合は、このファイルを参考にリソースを修正してください。</dd>
+<dt><code>Optimization.ad</code></dt>
+<dd>クライアント毎に動作を最適化するリソースの解説と例です。OpenOffice、Mozillaや、KDEのアプリケーションを使用する場合は、<a href="feature.html#optimize">問題があるクライアントの対策</a>を参考にして設定してください。</dd>
+</dl>
+<p>そのほかのリソースの詳細は<a href="resource.html">リソース一覧</a>を参考にしてください。また、キー割り当ての定義に関しては、<a href="keybind.pdf">キー定義説明書</a>を用意しておきました。</p>
+<p>設定ファイルを0から書くのも大変なので、雛型として<a href="Imserver.canna-like.ad">Cannaライクな設定</a>、<a href="Imserver.skk-like.ad">SKKライクな設定</a>を用意しました。</p>
+<p class="footnote"><a name="3">&dagger;3</a> かな入力の場合、このリソースは不要です。</p>
+<h2>起動</h2>
+<h3>XIMサーバの起動</h3>
+<p>このXIMサーバは<strong>日本語EUCロケールでのみ動作する</strong>ことに注意してください。次のように、日本語EUCロケールを設定、日本語EUCのリソースを読み込んでから、サーバを起動します。</p>
+<pre><code class="nohighlight">% setenv LANG <i>EUCロケール名</i>
+% imserver &</code></pre>
+<p>具体的には、FreeBSDでは次のようにして起動します。</p>
+<pre><code class="language-plaintext">% setenv LANG ja_JP.eucJP
+% imserver &amp;
+</code></pre>
+<p><em>On-The-Root</em>、<em>Over-The-Spot</em>スタイルを使用する場合は、<a href="../Imreceiver/index.html">XIMレシーバ</a>も起動してください。</p>
+<h3>XIMクライアントの起動</h3>
+<p>サーバを起動したら、クライアントからそれを利用できるようにする必要があります。そのためには環境変数<code>XMODIFIERS</code>を次のようにセットしてから、クライアントを起動します。</p>
+<pre><code class="language-plaintext">% setenv XMODIFIERS @im=syl
+</code></pre>
+<p>なお日本語EUCロケールで動作するクライアントだけではなく、<strong>SJISロケールなどの日本語ロケールで動作するクライアントも</strong>、このサーバを利用することができます。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sun Mar 30 07:25:38 JST 2003 -->
+<!-- hhmts start -->
+Last modified: Sat Feb 12 05:19:07 JST 2005
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Japanese XIM Server</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="news.html">News</a>
+    </li>
+    <li>
+      <a href="feature.html">Feature</a>
+    </li>
+    <li>
+      <a href="screenshot.html">Screenshot</a>
+    </li>
+    <li class="selected">
+      Download
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="document.html">Document</a>
+    </li>
+    <li>
+      <a href="bug.html">Bug</a>
+    </li>
+    <li>
+      <a href="xim-server.html">on-the-spot対応日本語XIMサーバ 機能と実装の比較</a>
+    </li>
+    <li>
+      <a href="bug-xcreatefontset.html">XCreate<wbr>Font<wbr>Set()のバグ</a>
+    </li>
+    <li>
+      <a href="feedback-impl.html">XIMFeedbackの仕様解釈と実装</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

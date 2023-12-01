@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>1. 作業を始めるまで | モンテカルロシミュレーション</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown_light.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">モンテカルロシミュレーション</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>1. 作業を始めるまで</h1>
+<p><a name="login"></a></p>
+<h2>1.1. ワークステーションにログイン</h2>
+<p>次のようにアカウント名、パスワードを入力して、計算機センターのワークステーションにログインします。</p>
+<div class="horizontal-scroll">
+<pre><code class="nohighlight">login:&nbsp;<span class="nocode"><u>アカウント名</u> <i>Enter</i></span>
+Password:&nbsp;<span class="nocode"><u>パスワード</u>（入力した文字は表示されません）<i>Enter</i></span></code></pre>
+</div>
+<p>ここで<em>Enter</em> はEnterと表記された改行キーを意味します。以降の説明でも同様です。</p>
+<p>正常にログインすると次のように表示されて、最後にシェルのプロンプト「<code>%</code>」が表示されます。プロンプトが出ているときだけ、シェルは自分のコマンドを受け付けます。プロンプトの直前に表示される「<code>foo</code>」、「<code>bar</code>」はそれぞれ、実際にはそのときの「あなたのアカウント名」、「ログインしたワークステーションの名前」になります。</p>
+<pre><code class="language-plaintext">.
+.
+.
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
++ Network kara no access wa kibo(131.113.10.101),
+  hato(SS-5/110,131.113.10.102),heiwa(131.113.10.103) wo otsukai kudasai.
++ Nao, kibo,hato,heiwa de keisan job nado wo nagashi
+  tsuzukeru koto wa kinshi itashimasu. (moral no mondai desu)
+()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
+
+foo[bar]%
+</code></pre>
+<p>これらの出力メッセージの構成は、ここの計算機センターに特有のものであり、異なるサイト（他の計算機センターやどこかの研究室の計算機）では違う内容が表示されるかもしれません。</p>
+<p><a name="xinit"></a></p>
+<h2>1.2. ウィンドウシステムの起動</h2>
+<p>このままコンソール画面で作業することもできますが、Xというウィンドウシステムを起動して作業する方がなにかと便利です。次のように入力して、Xを起動します。</p>
+<div class="horizontal-scroll">
+<pre><code class="nohighlight">foo[bar]% <u>xinit</u> <span class="nocode"><i>Enter</i></span></code></pre>
+</div>
+<p>Xが起動すると、次のような画面になります。</p>
+<div class="horizontal-scroll">
+<img style="width: 100%;" src="xinit.gif">
+</div>
+<p>loginというタイトルのウィンドウが1つと、ktermというタイトルのウィンドウが2つ現れます。同時にウィンドウマネージャ（後で説明します）が背後で動いています。これらの起動直後の画面の構成はサイト特有のものです。</p>
+<p><a name="twm"></a></p>
+<h2>1.3. ウィンドウマネージャの操作</h2>
+<p>3つのウィンドウとは別に、ウィンドウマネージャと呼ばれるものが動作しています。ここの計算機センターでは、twmという種類のウィンドウマネージャが起動しています。ウィンドウマネージャは、直接的に見えませんが、各ウィンドウへの装飾、ボタンの配置やポップアップメニューなどで、その姿を示しています。</p>
+<p>初期設定でのtwmによるウィンドウの装飾を、次のktermのウィンドウを例にとって説明します。</p>
+<div class="horizontal-scroll">
+<img src="kterm.gif">
+</div>
+<h3>1.3.1. アイコン化</h3>
+<p>ボタン1は、そのウィンドウをアイコン化するボタンです。このボタンの上でマウスのボタンをクリックすると、そのウィンドウがアイコン化されます。アイコン化されたウィンドウは、標準で<img style="vertical-align: baseline; height: 0.8em;" src="kterm-icon.gif">のように表示されます（ただし、そのウィンドウが独自のパターンを用意している場合は、そのパターンが表示されます）。</p>
+<p>アイコン化されたウィンドウをドラッグ（そのアイコン化されたウィンドウの上でマウスのボタンを押し、そのままマウスを動かして、適当なところでマウスのボタンを離す動作）すれば、その位置を変更できます。アイコン化されたウィンドウを元に戻すには、アイコンの上でマウスのボタンをクリックします。</p>
+<h3>1.3.2. 移動と持ち上げ</h3>
+<p>次のようにタイトルバー2をクリックすると、ウィンドウが画面の一番手前にきます。</p>
+<div class="horizontal-scroll">
+<img src="click-to-raise.gif">
+</div>
+<p>またタイトルバー2をドラッグすると、ウィンドウの位置を変更することができます。</p>
+<h3>1.3.3. サイズの変更</h3>
+<p>ボタン3をドラッグするとウィンドウのサイズを変更する事ができます。</p>
+<h3>1.3.4. ウィンドウへの入力</h3>
+<p>特定のウィンドウへ入力するには、マウスを動かしてポインタ（<img style="vertical-align: baseline; width: 0.8em; height: 0.8em;" src="left-ptr.gif">）を操作したいウィンドウの上に置きます（注意: WindowsやMacOSなど、他のウィンドウシステムでは操作したいウィンドウの上でマウスのボタンをクリックする必要がありますが、twmでは単に置くだけです）。この状態を「ウィンドウにフォーカスがある」と表現します。</p>
+<p>ウィンドウにフォーカスがあると、そのウィンドウの枠の装飾が（微妙に）変化します。また、特にktermなどでは、フォーカスがある場合はカーソルが黒く塗りつぶされた<img style="vertical-align: baseline; width: 0.4em; height: 0.8em;" src="focus-in-cursor.gif">になり、ない場合は白抜きの<img style="vertical-align: baseline; width: 0.4em; height: 0.8em;" src="focus-out-cursor.gif">になります。</p>
+<p>ウィンドウにフォーカスがあるときに限り、キーボードの入力がそのウィンドウに伝わります。何かウィンドウに入力するときには、そのウィンドウにポインタを移動させる必要があります。</p>
+<p><a name="netscape"></a></p>
+<h2>1.4. WWWでこのマニュアルを表示する</h2>
+<h3>1.4.1. Netscapeの起動</h3>
+<p>2つのうちどららかのktermのウィンドウにポインタをおき、フォーカスをおいてみます。フォーカスがあることを確認したら、WWWブラウザであるNetscapeを次のように起動します。</p>
+<div class="horizontal-scroll">
+<pre><code class="nohighlight">foo[bar]% <u>jnetscape &</u> <span class="nocode"><i>Enter</i></span></code></pre>
+</div>
+<p>もし最後の<code>&amp;</code>を付けずに<em>Enter</em>を入力した場合は、そのktermにフォーカスがある状態で、<em>Control</em>-zを入力（Ctrlと表記されたキーを押しながらzを押す）します。すると次のようにシェルのプロンプトが表示されます。</p>
+<pre><code class="language-plaintext">^Z
+Suspended
+foo[bar]% 
+</code></pre>
+<p>そこでさらに続けて次のように入力してください。</p>
+<div class="horizontal-scroll">
+<pre><code class="nohighlight">foo[bar]% <u>bg</u> <span class="nocode"><i>Enter</i></span></code></pre>
+</div>
+<p>どちらにしても、ウィンドウマネージャが次のような枠を表示して、どこにNetscapeを配置するか聞いてくるので、適当な場所にマウスで移動させ、クリックして決定します。</p>
+<div class="horizontal-scroll">
+<img src="relocate.gif">
+</div>
+<p>決定すると、次のようにNetscapeが起動します。</p>
+<div class="horizontal-scroll">
+<img src="netscape.gif">
+</div>
+<p>ここで、もし次のようなウィンドウが現れたら、「Accept」の領域をクリックしてください。（初めてNetscapeを起動した場合はライセンスについて承諾するように要求されます。）</p>
+<div class="horizontal-scroll">
+<img src="accept.gif">
+</div>
+<h3>1.4.2. URLの入力</h3>
+<p>Netscapeの「Locationフィールド」に、次のようにこのマニュアルのURLを入力します。</p>
+<div class="horizontal-scroll">
+<pre><code class="nohighlight"><u>http://sanchi.appi.keio.ac.jp/mc</u> <span class="nocode"><i>Enter</i></span></code></pre>
+</div>
+<p>これでこのマニュアルのトップページが表示されます。</p>
+<footer>
+<!-- Created: Mon Sep 14 04:27:19 JST 1998 -->
+<!-- hhmts start -->
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">モンテカルロシミュレーション</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li class="selected">
+      1. 作業を始めるまで
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="mc2.html">2. 乱数の度数分布</a>
+    </li>
+    <li>
+      <a href="mc3.html">3. Buffonの針</a>
+    </li>
+    <li>
+      <a href="mc4.html">4. f(x)の求積問題</a>
+    </li>
+    <li>
+      <a href="mc5.html">5. 酔歩問題（時間が余った場合）</a>
+    </li>
+    <li>
+      <a href="mc6.html">6. あとかたづけ</a>
+    </li>
+    <li>
+      <a href="bib.html">参考文献</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

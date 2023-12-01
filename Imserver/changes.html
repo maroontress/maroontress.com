@@ -1,0 +1,2100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title>CHANGES</title>
+  </head>
+  <body>
+    <ul>
+      <li><b>2005/01/16 18:16:26; syl; imserver.c 1.40</b></li>
+      <ul>
+<li>context.[ch]を追加。</li>
+<li>ConfigureNotifyで通知されたウィンドウが入力コンテキストのclient_windowかどうかをGetContext()で調べるようにした。</li>
+      </ul>
+      <li><b>2005/01/16 18:16:26; syl; context.h 1.1</b></li>
+      <ul>
+<li>context.[ch]を追加。</li>
+<li>ConfigureNotifyで通知されたウィンドウが入力コンテキストのclient_windowかどうかをGetContext()で調べるようにした。</li>
+      </ul>
+      <li><b>2005/01/16 18:16:26; syl; context.c 1.1</b></li>
+      <ul>
+<li>context.[ch]を追加。</li>
+<li>ConfigureNotifyで通知されたウィンドウが入力コンテキストのclient_windowかどうかをGetContext()で調べるようにした。</li>
+      </ul>
+      <li><b>2005/01/16 18:16:25; syl; connection.c 1.23</b></li>
+      <ul>
+<li>context.[ch]を追加。</li>
+<li>ConfigureNotifyで通知されたウィンドウが入力コンテキストのclient_windowかどうかをGetContext()で調べるようにした。</li>
+      </ul>
+      <li><b>2005/01/16 18:16:25; syl; Imakefile 1.30</b></li>
+      <ul>
+<li>context.[ch]を追加。</li>
+<li>ConfigureNotifyで通知されたウィンドウが入力コンテキストのclient_windowかどうかをGetContext()で調べるようにした。</li>
+      </ul>
+      <li><b>2005/01/09 15:10:59; syl; imserver.c 1.39</b></li>
+      <ul>
+<li>XIMクライアントの最上位ウィンドウをリサイズしたとき、候補ウィンドウがリサイズされないバグを修正。</li>
+      </ul>
+      <li><b>2005/01/09 12:29:02; syl; imserver.c 1.38</b></li>
+      <ul>
+<li>XIM_RESET_IC_REPLYメッセージ送信後、前編集文字列を消去してからXIM_SYNCメッセージを送信するコードを元に戻した。</li>
+      </ul>
+      <li><b>2005/01/09 10:39:46; syl; connection.c 1.22</b></li>
+      <ul>
+<li>XIMクライアントが終了してから、そのICを破壊し終わる前に、新しいXIMクライアントと接続するとクラッシュするバグを修正。</li>
+      </ul>
+      <li><b>2005/01/09 10:33:17; syl; connection.c 1.21</b></li>
+      <ul>
+<li>XIMクライアントが終了したときに、予測候補が画面に残るバグを修正。</li>
+      </ul>
+      <li><b>2005/01/09 09:32:19; syl; onthespot_nf.c 1.3</b></li>
+      <ul>
+<li>deleteLineがOpenOfficeとQtで正しく動作するように修正。</li>
+      </ul>
+      <li><b>2005/01/09 09:32:19; syl; onthespot.c 1.11</b></li>
+      <ul>
+<li>deleteLineがOpenOfficeとQtで正しく動作するように修正。</li>
+      </ul>
+      <li><b>2005/01/08 13:54:42; syl; Imakefile 1.29</b></li>
+      <ul>
+<li>Debugが定義されていないときに-ggdbをCFLAGSに含めないようにした。</li>
+      </ul>
+      <li><b>2005/01/08 12:07:06; syl; overthespot.c 1.14</b></li>
+      <ul>
+<li>DEBUGが定義されていないときにunused parameterの警告が出ないようにした。</li>
+      </ul>
+      <li><b>2005/01/08 12:07:06; syl; ontheroot.c 1.13</b></li>
+      <ul>
+<li>DEBUGが定義されていないときにunused parameterの警告が出ないようにした。</li>
+      </ul>
+      <li><b>2005/01/08 08:39:47; syl; resource.desc 1.8</b></li>
+      <ul>
+<li>imserver.preedit.deleteLine, imserver.convert.expandAndStayの説明を追加。</li>
+<li>imserver.convert.expandの説明を補足。</li>
+      </ul>
+      <li><b>2005/01/08 08:37:40; syl; Optimization.ad 1.8</b></li>
+      <ul>
+<li>OpenOffice 1.1.3の設定例を追加。</li>
+      </ul>
+      <li><b>2005/01/04 11:27:37; syl; imserver.c 1.37</b></li>
+      <ul>
+<li>オーバライドしたXエラーハンドラはマクロDEBUGが定義されている場合のみメッセージを出力するようにした。</li>
+<li>XエラーハンドラがXエラーを出力するとき、リソースIDを16進で表示するようにした。</li>
+<li>常にXエラーハンドラをオーバライドするようにした。</li>
+<li>main()が戻らないことを明示した。</li>
+      </ul>
+      <li><b>2004/12/23 21:06:50; syl; preedit.c 1.14</b></li>
+      <ul>
+<li>キャレットの位置から行末までを削除するdeleteLineを追加。</li>
+      </ul>
+      <li><b>2004/12/23 21:06:50; syl; imserverPreedit.keydef 1.8</b></li>
+      <ul>
+<li>キャレットの位置から行末までを削除するdeleteLineを追加。</li>
+      </ul>
+      <li><b>2004/12/23 20:35:12; syl; imserverConvert.keydef 1.5</b></li>
+      <ul>
+<li>expandの後にキャレットの位置を展開後の読み文字列の末尾に移動するように戻した。</li>
+<li>予測変換後に読み文字列に展開し、キャレットの位置を展開前の読み文字列の末尾に移動するexpandAndStayを追加した。</li>
+      </ul>
+      <li><b>2004/12/23 20:35:12; syl; convert.c 1.12</b></li>
+      <ul>
+<li>expandの後にキャレットの位置を展開後の読み文字列の末尾に移動するように戻した。</li>
+<li>予測変換後に読み文字列に展開し、キャレットの位置を展開前の読み文字列の末尾に移動するexpandAndStayを追加した。</li>
+      </ul>
+      <li><b>2004/08/15 13:33:50; syl; Optimization.ad 1.7</b></li>
+      <ul>
+<li>OpenOffice 1.1.2の設定例を追加。</li>
+      </ul>
+      <li><b>2004/05/18 13:46:37; syl; convert.c 1.11</b></li>
+      <ul>
+<li>予測変換後、読み文字列に展開したとき、キャレットの位置を展開前の読み文字列の末尾に相当する位置に移動するようにした。</li>
+      </ul>
+      <li><b>2004/05/11 14:04:25; syl; Imakefile 1.28</b></li>
+      <ul>
+<li>変換エンジンの設定をマクロ定義だけで指定するように変更。</li>
+      </ul>
+      <li><b>2004/05/11 13:40:23; syl; canna.c 1.7</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/05/09 02:54:29; syl; Imakefile 1.27</b></li>
+      <ul>
+<li>コメントの記述を修正。</li>
+      </ul>
+      <li><b>2004/05/09 02:50:51; syl; predict.c 1.20</b></li>
+      <ul>
+<li>DB4のDB1.85互換APIを使用した場合、無入力状態なのに予測候補が提示されてしまうバグを修正。</li>
+      </ul>
+      <li><b>2004/05/06 07:43:08; syl; Imakefile 1.26</b></li>
+      <ul>
+<li>Linuxのときだけcleanターゲットでdb.hを消去するようにした。</li>
+      </ul>
+      <li><b>2004/04/18 20:20:26; syl; Imakefile 1.25</b></li>
+      <ul>
+<li>CCOPTIONS, CFLAGS, DEFINES, LOCAL_LIBRARIESを使い分けた。</li>
+      </ul>
+      <li><b>2004/04/18 20:05:34; syl; ximgen/parse.h 1.2</b></li>
+      <ul>
+<li>const関連の警告が出ないようにした。</li>
+      </ul>
+      <li><b>2004/04/18 20:05:33; syl; ximgen/parse.c 1.4</b></li>
+      <ul>
+<li>const関連の警告が出ないようにした。</li>
+      </ul>
+      <li><b>2004/04/18 20:05:33; syl; ximgen/packet.h 1.2</b></li>
+      <ul>
+<li>const関連の警告が出ないようにした。</li>
+      </ul>
+      <li><b>2004/04/18 20:05:33; syl; ximgen/packet.c 1.2</b></li>
+      <ul>
+<li>const関連の警告が出ないようにした。</li>
+      </ul>
+      <li><b>2004/04/18 20:05:33; syl; ximgen/load.c 1.3</b></li>
+      <ul>
+<li>const関連の警告が出ないようにした。</li>
+      </ul>
+      <li><b>2004/04/18 20:02:24; syl; ximgen/Imakefile 1.3</b></li>
+      <ul>
+<li>CCOPTIONS, CFLAGSを使い分けた。</li>
+      </ul>
+      <li><b>2004/04/13 13:34:16; syl; predict.c 1.19</b></li>
+      <ul>
+<li>予測候補をソートする際、タイムスタンプが同じものは読みをstrcoll()で比較して順序付けるようにした。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:06; syl; ximgen/write.c 1.3</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:06; syl; ximgen/sizeof.c 1.3</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:06; syl; ximgen/recv.c 1.2</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; ximgen/read.c 1.3</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; ximgen/free.c 1.2</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; ximattr.c 1.3</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; xicattr.c 1.3</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; trigger.h 1.2</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; trigger.c 1.3</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; status.h 1.5</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; status.c 1.8</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; sj3.c 1.8</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; preedit.c 1.13</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; predict.h 1.6</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; predict.c 1.18</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; preconv.h 1.4</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; preconv.c 1.10</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; overthespot.h 1.2</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; optimize.h 1.5</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; optimize.c 1.5</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; message.c 1.3</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; imserver.c 1.36</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; engine.h 1.2</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; engine.c 1.3</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; Resource.h 1.3</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; Resource.c 1.5</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 20:34:05; syl; Imakefile 1.24</b></li>
+      <ul>
+<li>警告のコンパイルオプションを増やして、警告が出ないように修正。</li>
+      </ul>
+      <li><b>2004/04/10 18:58:22; syl; imserver.c 1.35</b></li>
+      <ul>
+<li>無入力状態以外ではキーイベントをフォワードしないようにした。</li>
+      </ul>
+      <li><b>2004/02/15 19:39:04; syl; resource.desc 1.7</b></li>
+      <ul>
+<li>imserver.undofix.referenceMode, imserver.undofix.autisticModeの説明を追加。</li>
+<li>imserver.preedit.referenceMode, imserver.preedit.autisticModeの説明を追加。</li>
+<li>imserver.referenceMode, imserver.autisticModeの説明を追加。</li>
+<li>imserver.referenceDatabaseの説明を追加。</li>
+      </ul>
+      <li><b>2004/02/15 19:34:58; syl; imserverUndofix.keydef 1.4</b></li>
+      <ul>
+<li>リソース名をreferenceMode/autisticModeに変更。</li>
+      </ul>
+      <li><b>2004/02/15 19:34:58; syl; imserverPreedit.keydef 1.7</b></li>
+      <ul>
+<li>リソース名をreferenceMode/autisticModeに変更。</li>
+      </ul>
+      <li><b>2004/02/15 19:32:14; syl; status.c 1.7</b></li>
+      <ul>
+<li>AutismModeをAutisticModeに変更。</li>
+      </ul>
+      <li><b>2004/02/15 19:14:03; syl; overthespot.c 1.13</b></li>
+      <ul>
+<li>不要なインクルードを削除。</li>
+      </ul>
+      <li><b>2004/02/15 19:14:03; syl; ontheroot.c 1.12</b></li>
+      <ul>
+<li>不要なインクルードを削除。</li>
+      </ul>
+      <li><b>2004/02/15 19:14:03; syl; onthearea.c 1.5</b></li>
+      <ul>
+<li>不要なインクルードを削除。</li>
+      </ul>
+      <li><b>2004/02/15 19:13:31; syl; status.c 1.6</b></li>
+      <ul>
+<li>リソースimserver.activeLabel/inactiveLabelの値に含まれる%rを、参照、自閉モードのときにリソースimserver.referenceMode、imserver.autismModeの値にそれぞれ置換するようにした。</li>
+      </ul>
+      <li><b>2004/02/15 19:06:26; syl; undofix.c 1.7</b></li>
+      <ul>
+<li>不要なインクルードを削除。</li>
+<li>ファイル間で重複するコードをmode.cに移した。</li>
+      </ul>
+      <li><b>2004/02/15 19:06:26; syl; preedit.c 1.12</b></li>
+      <ul>
+<li>不要なインクルードを削除。</li>
+<li>ファイル間で重複するコードをmode.cに移した。</li>
+      </ul>
+      <li><b>2004/02/15 19:04:21; syl; predict.c 1.17</b></li>
+      <ul>
+<li>PredictedPhrase()の第2引数に参照データベースの使用を指定するようにした。</li>
+<li>参照データベースを使用する場合は、予測データベースと参照データベースから予測変換の候補を生成するようにした。</li>
+<li>リソースimserver.referenceDatabaseで参照データベースのパスを指定できるようにした。</li>
+<li>returnのコーディングスタイルを統一。</li>
+      </ul>
+      <li><b>2004/02/15 18:59:32; syl; predict.h 1.5</b></li>
+      <ul>
+<li>PredictedPhrase()の第2引数に参照データベースの使用を指定するようにした。</li>
+      </ul>
+      <li><b>2004/02/15 18:58:38; syl; imserverUndofix.keydef 1.3</b></li>
+      <ul>
+<li>enableReferenceDatabaseとdisableReferenceDatabaseを追加。</li>
+      </ul>
+      <li><b>2004/02/15 18:58:38; syl; imserverPreedit.keydef 1.6</b></li>
+      <ul>
+<li>enableReferenceDatabaseとdisableReferenceDatabaseを追加。</li>
+      </ul>
+      <li><b>2004/02/15 18:56:38; syl; convert.c 1.10</b></li>
+      <ul>
+<li>不要なインクルードを削除。</li>
+<li>PredictedPhrase()の第2引数に参照データベースの使用を指定するようにした。</li>
+      </ul>
+      <li><b>2004/02/15 18:53:00; syl; connection.h 1.14</b></li>
+      <ul>
+<li>参照データベースを使用するかどうかを示すメンバuse_referenceを追加。</li>
+      </ul>
+      <li><b>2004/02/15 18:53:00; syl; connection.c 1.20</b></li>
+      <ul>
+<li>参照データベースを使用するかどうかを示すメンバuse_referenceを追加。</li>
+      </ul>
+      <li><b>2004/02/15 18:49:06; syl; mode.h 1.1</b></li>
+      <ul>
+<li>mode.[ch]を追加。</li>
+      </ul>
+      <li><b>2004/02/15 18:49:06; syl; mode.c 1.1</b></li>
+      <ul>
+<li>mode.[ch]を追加。</li>
+      </ul>
+      <li><b>2004/02/15 18:49:06; syl; Imakefile 1.23</b></li>
+      <ul>
+<li>mode.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/12/11 16:38:30; syl; connection.c 1.19</b></li>
+      <ul>
+<li>代入先を間違っていたバグを修正。</li>
+      </ul>
+      <li><b>2003/12/10 17:00:52; syl; connection.h 1.13</b></li>
+      <ul>
+<li>UndeferInputContext()を追加。</li>
+<li>遅延コールバックを登録しているICを破壊したとき、そのICを遅延キューから取り除いていなかったバグを修正。</li>
+      </ul>
+      <li><b>2003/12/10 17:00:52; syl; connection.c 1.18</b></li>
+      <ul>
+<li>UndeferInputContext()を追加。</li>
+<li>遅延コールバックを登録しているICを破壊したとき、そのICを遅延キューから取り除いていなかったバグを修正。</li>
+      </ul>
+      <li><b>2003/12/10 16:58:55; syl; preconv.c 1.9</b></li>
+      <ul>
+<li>GetCharPosition()をファイルスコープに変更。</li>
+      </ul>
+      <li><b>2003/12/10 16:58:23; syl; overthespot.c 1.12</b></li>
+      <ul>
+<li>フォントセットを生成してないICではUpdateFontset()が何もしないように変更。</li>
+      </ul>
+      <li><b>2003/12/10 16:57:07; syl; imserver.c 1.34</b></li>
+      <ul>
+<li>Create/Free/StatSylFontSet()を使用するように変更。</li>
+      </ul>
+      <li><b>2003/12/10 16:56:19; syl; Resource.h 1.2</b></li>
+      <ul>
+<li>imreceiverの変更をマージ。</li>
+      </ul>
+      <li><b>2003/12/10 16:56:18; syl; Resource.c 1.4</b></li>
+      <ul>
+<li>imreceiverの変更をマージ。</li>
+      </ul>
+      <li><b>2003/12/10 16:55:13; syl; font.h 1.2</b></li>
+      <ul>
+<li>font.[ch]を削除。</li>
+      </ul>
+      <li><b>2003/12/10 16:55:13; syl; font.c 1.3</b></li>
+      <ul>
+<li>font.[ch]を削除。</li>
+      </ul>
+      <li><b>2003/12/10 16:55:13; syl; Imakefile 1.22</b></li>
+      <ul>
+<li>font.[ch]を削除。</li>
+      </ul>
+      <li><b>2003/11/02 18:44:29; syl; optimize.h 1.4</b></li>
+      <ul>
+<li>クライアント最適化の動作指定AnotherFeedbackを廃止して、代わりに動作指定Feedbackを追加した。</li>
+<li>OpenOffice 1.0.3/1.1.0に適したフィードバックをそれぞれ指定できるようにした。</li>
+      </ul>
+      <li><b>2003/11/02 18:44:29; syl; optimize.c 1.4</b></li>
+      <ul>
+<li>クライアント最適化の動作指定AnotherFeedbackを廃止して、代わりに動作指定Feedbackを追加した。</li>
+<li>OpenOffice 1.0.3/1.1.0に適したフィードバックをそれぞれ指定できるようにした。</li>
+      </ul>
+      <li><b>2003/11/02 18:44:29; syl; imserver.c 1.33</b></li>
+      <ul>
+<li>クライアント最適化の動作指定AnotherFeedbackを廃止して、代わりに動作指定Feedbackを追加した。</li>
+<li>OpenOffice 1.0.3/1.1.0に適したフィードバックをそれぞれ指定できるようにした。</li>
+      </ul>
+      <li><b>2003/11/02 18:44:29; syl; Optimization.ad 1.6</b></li>
+      <ul>
+<li>クライアント最適化の動作指定AnotherFeedbackを廃止して、代わりに動作指定Feedbackを追加した。</li>
+<li>OpenOffice 1.0.3/1.1.0に適したフィードバックをそれぞれ指定できるようにした。</li>
+      </ul>
+      <li><b>2003/07/06 16:42:16; syl; preedit.c 1.11</b></li>
+      <ul>
+<li>PredictedPhrase()のAPI変更に対応。</li>
+      </ul>
+      <li><b>2003/07/06 16:42:16; syl; convert.c 1.9</b></li>
+      <ul>
+<li>PredictedPhrase()のAPI変更に対応。</li>
+      </ul>
+      <li><b>2003/07/06 16:41:32; syl; commit.c 1.8</b></li>
+      <ul>
+<li>RecordCommittedPhrase()のAPI変更に対応。</li>
+      </ul>
+      <li><b>2003/07/06 16:39:35; syl; predict.h 1.4</b></li>
+      <ul>
+<li>関数RecordCommittedPhrase(), PredictedPhrase()のAPIを変更して、予測辞書のパスを指定できるようにした。パスがNULLの場合は（リソースで指定された）デフォルトの予測辞書を使用する。</li>
+      </ul>
+      <li><b>2003/07/06 16:39:35; syl; predict.c 1.16</b></li>
+      <ul>
+<li>関数RecordCommittedPhrase(), PredictedPhrase()のAPIを変更して、予測辞書のパスを指定できるようにした。パスがNULLの場合は（リソースで指定された）デフォルトの予測辞書を使用する。</li>
+      </ul>
+      <li><b>2003/07/06 16:30:22; syl; imserver.c 1.32</b></li>
+      <ul>
+<li>GetOptimization()のAPI変更に対応。</li>
+      </ul>
+      <li><b>2003/07/06 16:28:19; syl; connection.h 1.12</b></li>
+      <ul>
+<li>InputContextにメンバprediction_databaseを追加。</li>
+      </ul>
+      <li><b>2003/07/06 16:28:19; syl; connection.c 1.17</b></li>
+      <ul>
+<li>InputContextにメンバprediction_databaseを追加。</li>
+      </ul>
+      <li><b>2003/07/06 16:25:15; syl; optimize.h 1.3</b></li>
+      <ul>
+<li>動作指定PredictionDatabaseの解析処理を追加。</li>
+<li>GetOptimization()のAPIを変更して、予測辞書のパスも返すようにした。</li>
+      </ul>
+      <li><b>2003/07/06 16:25:15; syl; optimize.c 1.3</b></li>
+      <ul>
+<li>動作指定PredictionDatabaseの解析処理を追加。</li>
+<li>GetOptimization()のAPIを変更して、予測辞書のパスも返すようにした。</li>
+      </ul>
+      <li><b>2003/07/06 16:18:34; syl; Optimization.ad 1.5</b></li>
+      <ul>
+<li>動作指定にPredictionDatabaseを追加。</li>
+<li>PredictionDatabaseの説明と設定例を追加。</li>
+      </ul>
+      <li><b>2003/07/05 19:01:01; syl; Imakefile 1.21</b></li>
+      <ul>
+<li>BerkeleyDBTypeのコメントを修正。</li>
+      </ul>
+      <li><b>2003/07/05 18:59:08; syl; preconv.c 1.8</b></li>
+      <ul>
+<li>文字列トークンを文字列に変換する際、エスケープ文字の処理でバッファオーバランが発生するバグを修正。</li>
+      </ul>
+      <li><b>2003/06/03 15:59:15; syl; onthespot_nf.c 1.2</b></li>
+      <ul>
+<li>変換状態の描画文字数を数える関数を追加。</li>
+<li>描画した文字数をic->last_drawn_lengthに保存しておくようにした。</li>
+<li>前回描画した文字列をすべて消去してから新しい文字列全体を描画するようにResizePhrase()とCancel()を変更。</li>
+<li>文字列全体を再描画するようにMoveCaret()を変更して、qt3のon-the-spotスタイル実装でも動作するようにした。</li>
+      </ul>
+      <li><b>2003/06/03 15:34:21; syl; connection.h 1.11</b></li>
+      <ul>
+<li>InputContextにメンバlast_drawn_lengthを追加。</li>
+      </ul>
+      <li><b>2003/06/03 15:34:21; syl; connection.c 1.16</b></li>
+      <ul>
+<li>InputContextにメンバlast_drawn_lengthを追加。</li>
+      </ul>
+      <li><b>2003/06/03 15:32:19; syl; Optimization.ad 1.4</b></li>
+      <ul>
+<li>AnotherFeedbackの説明を修正。</li>
+<li>keditのリソース例を加えた。</li>
+      </ul>
+      <li><b>2003/06/01 17:36:24; syl; onthespot.c 1.10</b></li>
+      <ul>
+<li>反転文字でキャレットを描画するとき、フィードバックにic->reverse_feedbackの値を使うようにした。</li>
+      </ul>
+      <li><b>2003/06/01 17:33:15; syl; imserver.c 1.31</b></li>
+      <ul>
+<li>NoFeedbackが指定されたICでon-the-spotスタイルを使用する場合、ic->preedit_drawにICPreeditDrawOnTheSpotNFを使用するようにした。</li>
+<li>AnotherFeedbackが指定されたICでon-the-spotスタイルを使用する場合、フィードバックとして通常文字、反転文字にそれぞれXIMReverse、XIMHighlightを使用するようにした。</li>
+      </ul>
+      <li><b>2003/06/01 17:22:48; syl; onthespot_nf.h 1.1</b></li>
+      <ul>
+<li>フィードバックを使用しないon-the-spotスタイルをサポートするonthespot_nf.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/06/01 17:22:47; syl; onthespot_nf.c 1.1</b></li>
+      <ul>
+<li>フィードバックを使用しないon-the-spotスタイルをサポートするonthespot_nf.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/06/01 17:18:47; syl; Optimization.ad 1.3</b></li>
+      <ul>
+<li>動作指定の記法にAnotherFeedbackを追加。</li>
+      </ul>
+      <li><b>2003/06/01 17:17:50; syl; optimize.h 1.2</b></li>
+      <ul>
+<li>動作指定にAnotherFeedbackを追加。</li>
+<li>OPT_ANOTHER_FEEDBACKフラグを追加。</li>
+      </ul>
+      <li><b>2003/06/01 17:17:50; syl; optimize.c 1.2</b></li>
+      <ul>
+<li>動作指定にAnotherFeedbackを追加。</li>
+<li>OPT_ANOTHER_FEEDBACKフラグを追加。</li>
+      </ul>
+      <li><b>2003/06/01 17:14:44; syl; Optimization.ad 1.2</b></li>
+      <ul>
+<li>AnotherFeedbackの説明と使用例を追加。</li>
+<li>ReverseCaret, NoFeedbackの説明をより詳細にした。</li>
+      </ul>
+      <li><b>2003/06/01 17:10:13; syl; convert.c 1.8</b></li>
+      <ul>
+<li>ic->preedit_draw->cancel()を呼び出してからic->headを解放するようにした。</li>
+      </ul>
+      <li><b>2003/06/01 17:04:50; syl; connection.h 1.10</b></li>
+      <ul>
+<li>InputConnectionにメンバnormal_feedback, underline_feedback, reverse_feedbackを追加。</li>
+      </ul>
+      <li><b>2003/06/01 17:04:49; syl; connection.c 1.15</b></li>
+      <ul>
+<li>InputConnectionにメンバnormal_feedback, underline_feedback, reverse_feedbackを追加。</li>
+      </ul>
+      <li><b>2003/06/01 17:01:20; syl; onthespot.c 1.9</b></li>
+      <ul>
+<li>関数CreateFeedback()を削除。</li>
+<li>フィードバックの生成に関数CreatePreeditFeedback(), CreatePhraseFeedback(), CreateSelectedPhraseFeedback()を使うようにした。</li>
+      </ul>
+      <li><b>2003/06/01 16:51:34; syl; overthespot.c 1.11</b></li>
+      <ul>
+<li>フィードバックの生成に関数CreatePreeditFeedback()と関数CreatePhraseFeedback()を使うようにした。</li>
+      </ul>
+      <li><b>2003/06/01 16:49:49; syl; ontheroot.c 1.11</b></li>
+      <ul>
+<li>フィードバックの生成に関数CreatePreeditFeedback()と関数CreatePhraseFeedback()を使うようにした。</li>
+      </ul>
+      <li><b>2003/06/01 16:36:11; syl; phrase.h 1.7</b></li>
+      <ul>
+<li>関数CreateFeedbackFromPhrase()を削除。</li>
+      </ul>
+      <li><b>2003/06/01 16:36:11; syl; phrase.c 1.11</b></li>
+      <ul>
+<li>関数CreateFeedbackFromPhrase()を削除。</li>
+      </ul>
+      <li><b>2003/06/01 16:34:03; syl; feedback.h 1.1</b></li>
+      <ul>
+<li>feedback.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/06/01 16:34:03; syl; feedback.c 1.1</b></li>
+      <ul>
+<li>feedback.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/06/01 16:34:03; syl; Imakefile 1.20</b></li>
+      <ul>
+<li>feedback.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/05/31 16:35:44; syl; resource.desc 1.6</b></li>
+      <ul>
+<li>リソースimserver.clientOptimizationの説明を追加した。</li>
+      </ul>
+      <li><b>2003/05/31 16:35:44; syl; Optimization.ad 1.1</b></li>
+      <ul>
+<li>リソースimserver.clientOptimizationの説明を追加した。</li>
+      </ul>
+      <li><b>2003/05/31 16:31:59; syl; preconv.c 1.7</b></li>
+      <ul>
+<li>トークンを文字列に展開する際、バックスラッシュによるエスケープ文字を考慮していなかったバグを修正。</li>
+      </ul>
+      <li><b>2003/05/31 15:05:39; syl; onthespot.c 1.8</b></li>
+      <ul>
+<li>optimize.hをインクルードするようにした。</li>
+      </ul>
+      <li><b>2003/05/31 14:57:42; syl; imserver.c 1.30</b></li>
+      <ul>
+<li>リソースimserver.clientOptimizationを追加。</li>
+<li>XICのXNClientWindow属性を指定されたときにInputContextのメンバoptimizationを設定する処理を追加。</li>
+      </ul>
+      <li><b>2003/05/31 14:44:51; syl; optimize.h 1.1</b></li>
+      <ul>
+<li>optimize.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/05/31 14:44:51; syl; optimize.c 1.1</b></li>
+      <ul>
+<li>optimize.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/05/31 14:41:21; syl; strparse.h 1.2</b></li>
+      <ul>
+<li>strparse.[ch]を削除。</li>
+<li>Tokenier.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/05/31 14:41:20; syl; strparse.c 1.2</b></li>
+      <ul>
+<li>strparse.[ch]を削除。</li>
+<li>Tokenier.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/05/31 14:41:20; syl; Tokenizer.h 1.1</b></li>
+      <ul>
+<li>strparse.[ch]を削除。</li>
+<li>Tokenier.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/05/31 14:41:20; syl; Tokenizer.c 1.1</b></li>
+      <ul>
+<li>strparse.[ch]を削除。</li>
+<li>Tokenier.[ch]を追加。</li>
+      </ul>
+      <li><b>2003/05/31 14:35:28; syl; connection.h 1.9</b></li>
+      <ul>
+<li>InputContextにメンバoptimizationを追加。</li>
+      </ul>
+      <li><b>2003/05/31 14:35:28; syl; connection.c 1.14</b></li>
+      <ul>
+<li>InputContextにメンバoptimizationを追加。</li>
+      </ul>
+      <li><b>2003/05/31 14:31:27; syl; onthespot.c 1.7</b></li>
+      <ul>
+<li>onthespot.hをインクルードするように修正。</li>
+<li>Send_XIM_PREEDIT_DRAW()を呼び出す所を1つにまとめた。</li>
+<li>InputContextのメンバoptimizationの内容でキャレット描画の方式を選択するようにした。</li>
+      </ul>
+      <li><b>2003/05/31 14:14:29; syl; overthespot.c 1.10</b></li>
+      <ul>
+<li>overthespot.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/05/31 14:12:53; syl; trigger.c 1.2</b></li>
+      <ul>
+<li>strparse.cの代わりにTokenizer.cを使用するように変更。</li>
+      </ul>
+      <li><b>2003/05/31 14:12:53; syl; preconv.c 1.6</b></li>
+      <ul>
+<li>strparse.cの代わりにTokenizer.cを使用するように変更。</li>
+      </ul>
+      <li><b>2003/05/31 14:12:53; syl; Imakefile 1.19</b></li>
+      <ul>
+<li>strparse.cの代わりにTokenizer.cを使用するように変更。</li>
+      </ul>
+      <li><b>2003/05/31 14:04:39; syl; ximgen/parse.c 1.3</b></li>
+      <ul>
+<li>IsPunctuator()のスペルを修正。</li>
+      </ul>
+      <li><b>2003/05/31 14:01:21; syl; Resource.c 1.3</b></li>
+      <ul>
+<li>IsPunctuator()のスペルを修正。</li>
+<li>Group4に "~" を追加して、演算子~と~=の字句解析処理を追加した。</li>
+<li>Group6のコメントを修正。</li>
+      </ul>
+      <li><b>2003/05/20 13:12:57; syl; ximattr.c 1.2</b></li>
+      <ul>
+<li>XIMSetIMValues()と2つのXIM属性XNResourceNameとXNResourceClassに対応。</li>
+      </ul>
+      <li><b>2003/05/20 13:12:57; syl; imserver.c 1.29</b></li>
+      <ul>
+<li>XIMSetIMValues()と2つのXIM属性XNResourceNameとXNResourceClassに対応。</li>
+      </ul>
+      <li><b>2003/05/20 13:03:54; syl; connection.h 1.8</b></li>
+      <ul>
+<li>Connection構造体にメンバresource_nameとresource_classを追加した。</li>
+      </ul>
+      <li><b>2003/05/20 13:03:54; syl; connection.c 1.13</b></li>
+      <ul>
+<li>Connection構造体にメンバresource_nameとresource_classを追加した。</li>
+      </ul>
+      <li><b>2003/05/20 12:53:28; syl; imserver.c 1.28</b></li>
+      <ul>
+<li>XIM_RESET_IC_REPLYメッセージに続けてXIM_SYNCメッセージを送信するコードを削除した（前編集文字列が消去されない問題が再現できないため）。</li>
+      </ul>
+      <li><b>2003/05/20 12:26:47; syl; onthespot.c 1.6</b></li>
+      <ul>
+<li>自前でキャレットを描画しないXIMクライアントのためにリバース属性で疑似的にキャレットを描画するコードを追加した。</li>
+<li>OpenOffice用のキャレット描画処理は無駄なコードを削除して、非同期のキャレット描画処理とまとめた。</li>
+<li>入力状態用のXIMFeedback配列を生成する処理を関数CreateFeedback()にまとめた。</li>
+      </ul>
+      <li><b>2003/05/20 11:45:50; syl; message.h 1.3</b></li>
+      <ul>
+<li>XSetIMValues()に対応するためオペコード#42と#43を追加した。</li>
+      </ul>
+      <li><b>2003/05/20 11:41:47; syl; phrase.c 1.10</b></li>
+      <ul>
+<li>XIMFeedbackの値として即値ではなくXIMReverseを使用するようにした。</li>
+      </ul>
+      <li><b>2003/04/27 18:41:56; syl; xim.protocol 1.3</b></li>
+      <ul>
+<li>XIC属性XNPreeditStateNotifyCallbackに対応。</li>
+      </ul>
+      <li><b>2003/04/27 18:41:56; syl; message.h 1.2</b></li>
+      <ul>
+<li>XIC属性XNPreeditStateNotifyCallbackに対応。</li>
+      </ul>
+      <li><b>2003/04/27 18:41:55; syl; imserver.c 1.27</b></li>
+      <ul>
+<li>XIC属性XNPreeditStateNotifyCallbackに対応。</li>
+      </ul>
+      <li><b>2003/04/23 14:18:12; syl; imserver.c 1.26</b></li>
+      <ul>
+<li>XIM_RESET_IC_REPLYメッセージを送信後にXIM_SYNCメッセージを送信するようにした（ICリセット後の入力状態を保存する場合、クライアント側の前編集文字列がすぐに消去されないバグを修正）。</li>
+      </ul>
+      <li><b>2003/04/23 13:49:11; syl; onthespot.c 1.5</b></li>
+      <ul>
+<li>キャレットコールバックを使用してキャレットを移動するコードを追加した。</li>
+      </ul>
+      <li><b>2003/04/23 13:43:56; syl; imserver.c 1.25</b></li>
+      <ul>
+<li>XIM_PREEDIT_CARET_REPLYメッセージの応答処理を追加した。</li>
+      </ul>
+      <li><b>2003/04/23 13:40:26; syl; xim.protocol 1.2</b></li>
+      <ul>
+<li>XIM_PREEDIT_CARETメッセージとXIM_PREEDIT_CARET_REPLYメッセージの定義を追加した。</li>
+      </ul>
+      <li><b>2003/04/16 16:16:15; syl; onthespot.c 1.4</b></li>
+      <ul>
+<li>1 | 2と書くべきところを1 & 2と書いていたバグを修正。</li>
+<li>OpenOffice 1.0.2でキャレットの移動ができるようにした。</li>
+      </ul>
+      <li><b>2003/03/16 14:18:52; syl; overthespot.c 1.9</b></li>
+      <ul>
+<li>string.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:18:52; syl; ontheroot.c 1.10</b></li>
+      <ul>
+<li>string.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:18:52; syl; onthearea.c 1.4</b></li>
+      <ul>
+<li>string.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:18:52; syl; candidate.c 1.8</b></li>
+      <ul>
+<li>string.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:18:11; syl; message.c 1.2</b></li>
+      <ul>
+<li>stdlib.h、string.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:16:21; syl; ximgen/write.c 1.2</b></li>
+      <ul>
+<li>string.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:16:21; syl; ximgen/sizeof.c 1.2</b></li>
+      <ul>
+<li>string.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:16:20; syl; ximgen/release.c 1.2</b></li>
+      <ul>
+<li>string.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:16:20; syl; ximgen/read.c 1.2</b></li>
+      <ul>
+<li>string.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:16:20; syl; ximgen/prototype.c 1.2</b></li>
+      <ul>
+<li>string.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:15:13; syl; ximgen/ximgen.c 1.2</b></li>
+      <ul>
+<li>stdlib.hをインクルードするように修正。</li>
+      </ul>
+      <li><b>2003/03/16 14:13:37; syl; ximgen/load.c 1.2</b></li>
+      <ul>
+<li>int型を返すLoad()がNULLを返していたバグを修正。</li>
+      </ul>
+      <li><b>2003/03/10 15:54:18; syl; resource.desc 1.5</b></li>
+      <ul>
+<li>リソースimserver.convert.expand, imserver.preconversionBasicRule, imserver.preconversionFinalRule, imserver.symbolSystemMapping, imserver.symbolWidthMappingの説明を追加。</li>
+      </ul>
+      <li><b>2003/03/10 15:35:30; syl; Symbol.ad 1.1</b></li>
+      <ul>
+<li>半角全角変換、ひらがなカタカナ変換のリソースファイルを追加した。</li>
+      </ul>
+      <li><b>2003/03/10 15:33:15; syl; preedit.c 1.10</b></li>
+      <ul>
+<li>前変換を基本規則と最終規則の2つに分割し、関係するリソース名を変更した。</li>
+<li>前編集状態から別の状態に遷移する前に前変換最終規則を適用するようにした。</li>
+<li>ローマ字仮名変換の規則（特に「ん」への変換）を改善した。</li>
+      </ul>
+      <li><b>2003/03/10 15:33:15; syl; preconv.h 1.3</b></li>
+      <ul>
+<li>前変換を基本規則と最終規則の2つに分割し、関係するリソース名を変更した。</li>
+<li>前編集状態から別の状態に遷移する前に前変換最終規則を適用するようにした。</li>
+<li>ローマ字仮名変換の規則（特に「ん」への変換）を改善した。</li>
+      </ul>
+      <li><b>2003/03/10 15:33:15; syl; preconv.c 1.5</b></li>
+      <ul>
+<li>前変換を基本規則と最終規則の2つに分割し、関係するリソース名を変更した。</li>
+<li>前編集状態から別の状態に遷移する前に前変換最終規則を適用するようにした。</li>
+<li>ローマ字仮名変換の規則（特に「ん」への変換）を改善した。</li>
+      </ul>
+      <li><b>2003/03/10 15:33:15; syl; imserver.c 1.24</b></li>
+      <ul>
+<li>前変換を基本規則と最終規則の2つに分割し、関係するリソース名を変更した。</li>
+<li>前編集状態から別の状態に遷移する前に前変換最終規則を適用するようにした。</li>
+<li>ローマ字仮名変換の規則（特に「ん」への変換）を改善した。</li>
+      </ul>
+      <li><b>2003/03/10 15:33:14; syl; Romaji.ad 1.3</b></li>
+      <ul>
+<li>前変換を基本規則と最終規則の2つに分割し、関係するリソース名を変更した。</li>
+<li>前編集状態から別の状態に遷移する前に前変換最終規則を適用するようにした。</li>
+<li>ローマ字仮名変換の規則（特に「ん」への変換）を改善した。</li>
+      </ul>
+      <li><b>2003/03/05 11:29:45; syl; canna.c 1.6</b></li>
+      <ul>
+<li>LinuxではRkGetKanji()が返したマルチバイト文字列をmbstowcs()で変換できない場合があるので、事前に変換できるかどうか確認するようにした。</li>
+      </ul>
+      <li><b>2003/03/04 13:53:33; syl; Romaji.ad 1.2</b></li>
+      <ul>
+<li>thiで「てぃ」を入力できなかったバグを修正。</li>
+      </ul>
+      <li><b>2003/03/04 13:50:06; syl; Imakefile 1.18</b></li>
+      <ul>
+<li>Linuxでビルドしやすいようにコメントを追加した。</li>
+<li>make cleanでdb.hを消去するようにした。</li>
+      </ul>
+      <li><b>2003/03/04 13:03:57; syl; xicattr.c 1.2</b></li>
+      <ul>
+<li>2つのXIC属性XNPreeditStateとXNResetStateに対応。</li>
+      </ul>
+      <li><b>2003/03/04 13:03:56; syl; imserver.c 1.23</b></li>
+      <ul>
+<li>2つのXIC属性XNPreeditStateとXNResetStateに対応。</li>
+      </ul>
+      <li><b>2003/03/04 13:03:56; syl; connection.h 1.7</b></li>
+      <ul>
+<li>2つのXIC属性XNPreeditStateとXNResetStateに対応。</li>
+      </ul>
+      <li><b>2003/03/04 13:03:56; syl; connection.c 1.12</b></li>
+      <ul>
+<li>2つのXIC属性XNPreeditStateとXNResetStateに対応。</li>
+      </ul>
+      <li><b>2003/02/23 19:30:36; syl; preedit.c 1.9</b></li>
+      <ul>
+<li>wchar_tの値に依存した半角全角変換、ひらがなカタカナ変換のコードを消去。</li>
+<li>リソースimserver.symbolSystemMappingで「仮名」変換のルールを、リソースimserver.symbolWidthMappingで「角」変換のルールを記述するようにした。</li>
+<li>前変換モードDoubleが適用される条件を修正。</li>
+      </ul>
+      <li><b>2003/02/23 19:30:36; syl; preconv.h 1.2</b></li>
+      <ul>
+<li>wchar_tの値に依存した半角全角変換、ひらがなカタカナ変換のコードを消去。</li>
+<li>リソースimserver.symbolSystemMappingで「仮名」変換のルールを、リソースimserver.symbolWidthMappingで「角」変換のルールを記述するようにした。</li>
+<li>前変換モードDoubleが適用される条件を修正。</li>
+      </ul>
+      <li><b>2003/02/23 19:30:36; syl; preconv.c 1.4</b></li>
+      <ul>
+<li>wchar_tの値に依存した半角全角変換、ひらがなカタカナ変換のコードを消去。</li>
+<li>リソースimserver.symbolSystemMappingで「仮名」変換のルールを、リソースimserver.symbolWidthMappingで「角」変換のルールを記述するようにした。</li>
+<li>前変換モードDoubleが適用される条件を修正。</li>
+      </ul>
+      <li><b>2003/02/23 19:30:35; syl; phrase.c 1.9</b></li>
+      <ul>
+<li>wchar_tの値に依存した半角全角変換、ひらがなカタカナ変換のコードを消去。</li>
+<li>リソースimserver.symbolSystemMappingで「仮名」変換のルールを、リソースimserver.symbolWidthMappingで「角」変換のルールを記述するようにした。</li>
+<li>前変換モードDoubleが適用される条件を修正。</li>
+      </ul>
+      <li><b>2003/02/23 19:30:35; syl; imserver.c 1.22</b></li>
+      <ul>
+<li>wchar_tの値に依存した半角全角変換、ひらがなカタカナ変換のコードを消去。</li>
+<li>リソースimserver.symbolSystemMappingで「仮名」変換のルールを、リソースimserver.symbolWidthMappingで「角」変換のルールを記述するようにした。</li>
+<li>前変換モードDoubleが適用される条件を修正。</li>
+      </ul>
+      <li><b>2003/02/23 19:15:08; syl; Text.h 1.5</b></li>
+      <ul>
+<li>GetCharPositionInSylText0(), ReplaceCharOfSylText(), GetCharOfSylText()を追加。</li>
+      </ul>
+      <li><b>2003/02/23 19:15:08; syl; Text.c 1.6</b></li>
+      <ul>
+<li>GetCharPositionInSylText0(), ReplaceCharOfSylText(), GetCharOfSylText()を追加。</li>
+      </ul>
+      <li><b>2003/01/03 13:48:35; syl; imserver.c 1.21</b></li>
+      <ul>
+<li>XIMクライアントがXmb/XwcResetIC()を発行したときに日本語入力をオフにするようにした。</li>
+      </ul>
+      <li><b>2003/01/03 13:34:21; syl; predict.c 1.15</b></li>
+      <ul>
+<li>LinuxでのBerkeleyDBのヘッダファイルとライブラリ名の指定方法を変更。</li>
+      </ul>
+      <li><b>2003/01/03 13:34:21; syl; Imakefile 1.17</b></li>
+      <ul>
+<li>LinuxでのBerkeleyDBのヘッダファイルとライブラリ名の指定方法を変更。</li>
+      </ul>
+      <li><b>2002/09/15 17:52:31; syl; imserver.c 1.20</b></li>
+      <ul>
+<li>「かなキー」入力がFreeBSD以外（Linuxなど）で有効にならないバグを修正。</li>
+      </ul>
+      <li><b>2002/09/08 18:48:45; syl; sj3.c 1.7</b></li>
+      <ul>
+<li>二次予測候補を展開したときは、変換キャンセルとして扱うようにした。</li>
+      </ul>
+      <li><b>2002/09/08 18:48:45; syl; preedit.c 1.8</b></li>
+      <ul>
+<li>二次予測候補を展開したときは、変換キャンセルとして扱うようにした。</li>
+      </ul>
+      <li><b>2002/09/08 18:48:45; syl; predict.h 1.3</b></li>
+      <ul>
+<li>二次予測候補を展開したときは、変換キャンセルとして扱うようにした。</li>
+      </ul>
+      <li><b>2002/09/08 18:48:45; syl; predict.c 1.14</b></li>
+      <ul>
+<li>二次予測候補を展開したときは、変換キャンセルとして扱うようにした。</li>
+      </ul>
+      <li><b>2002/09/08 18:48:44; syl; phrase.h 1.6</b></li>
+      <ul>
+<li>二次予測候補を展開したときは、変換キャンセルとして扱うようにした。</li>
+      </ul>
+      <li><b>2002/09/08 18:48:44; syl; convert.c 1.7</b></li>
+      <ul>
+<li>二次予測候補を展開したときは、変換キャンセルとして扱うようにした。</li>
+      </ul>
+      <li><b>2002/09/08 18:48:44; syl; commit.c 1.7</b></li>
+      <ul>
+<li>二次予測候補を展開したときは、変換キャンセルとして扱うようにした。</li>
+      </ul>
+      <li><b>2002/09/08 18:48:44; syl; canna.c 1.5</b></li>
+      <ul>
+<li>二次予測候補を展開したときは、変換キャンセルとして扱うようにした。</li>
+      </ul>
+      <li><b>2002/09/08 17:13:02; syl; sj3.c 1.6</b></li>
+      <ul>
+<li>候補を双方向リストで管理するようにした。</li>
+<li>候補をAddCandidateToPhrase()で追加するようにした。</li>
+      </ul>
+      <li><b>2002/09/08 17:13:01; syl; predict.c 1.13</b></li>
+      <ul>
+<li>候補を双方向リストで管理するようにした。</li>
+<li>候補をAddCandidateToPhrase()で追加するようにした。</li>
+      </ul>
+      <li><b>2002/09/08 17:13:01; syl; phrase.h 1.5</b></li>
+      <ul>
+<li>候補を双方向リストで管理するようにした。</li>
+<li>候補をAddCandidateToPhrase()で追加するようにした。</li>
+      </ul>
+      <li><b>2002/09/08 17:13:01; syl; phrase.c 1.8</b></li>
+      <ul>
+<li>候補を双方向リストで管理するようにした。</li>
+<li>候補をAddCandidateToPhrase()で追加するようにした。</li>
+      </ul>
+      <li><b>2002/09/08 17:13:01; syl; overthespot.c 1.8</b></li>
+      <ul>
+<li>候補を双方向リストで管理するようにした。</li>
+<li>候補をAddCandidateToPhrase()で追加するようにした。</li>
+      </ul>
+      <li><b>2002/09/08 17:13:01; syl; ontheroot.c 1.9</b></li>
+      <ul>
+<li>候補を双方向リストで管理するようにした。</li>
+<li>候補をAddCandidateToPhrase()で追加するようにした。</li>
+      </ul>
+      <li><b>2002/09/08 17:13:01; syl; engine.c 1.2</b></li>
+      <ul>
+<li>候補を双方向リストで管理するようにした。</li>
+<li>候補をAddCandidateToPhrase()で追加するようにした。</li>
+      </ul>
+      <li><b>2002/09/08 17:13:00; syl; convert.c 1.6</b></li>
+      <ul>
+<li>候補を双方向リストで管理するようにした。</li>
+<li>候補をAddCandidateToPhrase()で追加するようにした。</li>
+      </ul>
+      <li><b>2002/09/08 17:13:00; syl; canna.c 1.4</b></li>
+      <ul>
+<li>候補を双方向リストで管理するようにした。</li>
+<li>候補をAddCandidateToPhrase()で追加するようにした。</li>
+      </ul>
+      <li><b>2002/09/08 17:13:00; syl; candidate.c 1.7</b></li>
+      <ul>
+<li>候補を双方向リストで管理するようにした。</li>
+<li>候補をAddCandidateToPhrase()で追加するようにした。</li>
+      </ul>
+      <li><b>2002/09/07 16:48:20; syl; imserverConvert.keydef 1.4</b></li>
+      <ul>
+<li>Escape, Control-g（デフォルトのキー割り当て）で、予測変換の候補の読みを前編集文字列に展開できるようにした。</li>
+      </ul>
+      <li><b>2002/09/07 16:48:20; syl; convert.c 1.5</b></li>
+      <ul>
+<li>Escape, Control-g（デフォルトのキー割り当て）で、予測変換の候補の読みを前編集文字列に展開できるようにした。</li>
+      </ul>
+      <li><b>2002/09/07 16:39:16; syl; commit.c 1.6</b></li>
+      <ul>
+<li>現在選択されている候補をLookupCandidateOfPhrase()で取得するようにした。</li>
+      </ul>
+      <li><b>2002/09/07 16:32:09; syl; sj3.c 1.5</b></li>
+      <ul>
+<li>候補一覧に特定の文字列の候補が含まれているかどうかをHasCandidateOfPhrase()で調べるようにした。</li>
+      </ul>
+      <li><b>2002/09/07 16:32:09; syl; predict.c 1.12</b></li>
+      <ul>
+<li>候補一覧に特定の文字列の候補が含まれているかどうかをHasCandidateOfPhrase()で調べるようにした。</li>
+      </ul>
+      <li><b>2002/09/07 16:32:09; syl; canna.c 1.3</b></li>
+      <ul>
+<li>候補一覧に特定の文字列の候補が含まれているかどうかをHasCandidateOfPhrase()で調べるようにした。</li>
+      </ul>
+      <li><b>2002/09/07 16:24:45; syl; phrase.h 1.4</b></li>
+      <ul>
+<li>APIとしてHasCandidateOfPhrase()、LookupCandidateOfPhrase()を追加した。</li>
+      </ul>
+      <li><b>2002/09/07 16:24:45; syl; phrase.c 1.7</b></li>
+      <ul>
+<li>APIとしてHasCandidateOfPhrase()、LookupCandidateOfPhrase()を追加した。</li>
+      </ul>
+      <li><b>2002/09/05 15:35:08; syl; Imakefile 1.16</b></li>
+      <ul>
+<li>X11R6.6より前のリリースでBUGGY_XFONTSETが定義されるようにした（X11R6.4, 6.5.1, 6.6ではマクロProjectXは604で定義されているのに、ProjectXだけでリリースを区別していたバグを修正）。</li>
+      </ul>
+      <li><b>2002/09/05 15:16:40; syl; ximgen/Imakefile 1.2</b></li>
+      <ul>
+<li>XFree86 4.2.0ではmake installの途中でマニュアルをインストールしようとして失敗するため、Imakefileを修正した。</li>
+      </ul>
+      <li><b>2002/09/05 15:16:39; syl; Imakefile 1.15</b></li>
+      <ul>
+<li>XFree86 4.2.0ではmake installの途中でマニュアルをインストールしようとして失敗するため、Imakefileを修正した。</li>
+      </ul>
+      <li><b>2002/07/22 15:07:28; syl; candidate.c 1.6</b></li>
+      <ul>
+<li>DrawCandidateWindow()で入力コンテキストの状態を確認して、変換状態でないときは何もしないように修正した。TopOfPage()は入力コンテキストが変換状態にあることを想定しているが、Exposeイベントにより候補ウィンドウを再描画するケースでは未変換状態のこともある（イベントが非同期なため）。それによりsegmentation faultが発生するバグを修正。</li>
+      </ul>
+      <li><b>2002/07/22 14:25:39; syl; imserver.c 1.19</b></li>
+      <ul>
+<li>warnx()を使用していたところを、fprintf()で標準エラー出力に表示するように直した。</li>
+      </ul>
+      <li><b>2002/07/22 14:20:43; syl; Imakefile 1.14</b></li>
+      <ul>
+<li>サブディレクトリximgenのターゲット指定方法を変更して、由緒正しいマクロを使うようにした。</li>
+      </ul>
+      <li><b>2002/06/21 13:57:19; syl; predict.c 1.11</b></li>
+      <ul>
+<li>XIMレシーバに送信する予測候補と、予測変換の候補が一致しないバグを修正。</li>
+      </ul>
+      <li><b>2002/06/21 13:55:19; syl; imserver.c 1.18</b></li>
+      <ul>
+<li>IC生成時に不適切なXIMスタイルが指定されていた場合の回復処置を追加。</li>
+      </ul>
+      <li><b>2002/06/19 13:49:14; syl; predict.c 1.10</b></li>
+      <ul>
+<li>XIMレシーバに送信するための予測候補を生成する処理のエラー回復処理を修正した。</li>
+      </ul>
+      <li><b>2002/06/19 13:16:32; syl; predict.c 1.9</b></li>
+      <ul>
+<li>XIMレシーバに送信する予測候補に重複した候補が含まれるバグを修正。予測辞書のエントリの「確定文字列」の長さが0である場合は、そのエントリを無視するようにした。</li>
+<li>XIMレシーバに送信する予測候補を生成する場合も、関数ForEachOfHeap()を使用してヒープ中に残った不用な予測候補を解放するようにした。</li>
+<li>予測変換で表示される候補の数がリソースimserver.maximumPredictionsで指定した数よりも少なくなるバグを修正。</li>
+      </ul>
+      <li><b>2002/04/29 20:01:17; syl; imserver.c 1.17</b></li>
+      <ul>
+<li>XIM_SET_IC_FOCUSとXIM_UNSET_IC_FOCUSの応答処理である遅延コールバックの実行中は、Xlibのデフォルトエラーハンドラを無効化するようにした。</li>
+<li>オーバライドしたXlibのエラーハンドラが呼ばれた場合は、エラーの内容を標準エラー出力に表示するようにした。</li>
+      </ul>
+      <li><b>2002/04/29 19:41:58; syl; Imakefile 1.13</b></li>
+      <ul>
+<li>マクロDebugをデフォルトで定義しないようにした。</li>
+      </ul>
+      <li><b>2002/03/30 22:12:15; syl; font.c 1.2</b></li>
+      <ul>
+<li>"#ifndef BUGGY_XFONTSET" とするべきところを "#ifdef BUGGY_XFONTSET" としていたバグを修正。</li>
+      </ul>
+      <li><b>2002/03/30 21:51:25; syl; WCString.h 1.2</b></li>
+      <ul>
+<li>関数のプロトタイプ宣言でポインタ型の引数には可能な限りconst修飾子を指定するようにした。</li>
+      </ul>
+      <li><b>2002/03/30 21:51:25; syl; WCString.c 1.3</b></li>
+      <ul>
+<li>関数のプロトタイプ宣言でポインタ型の引数には可能な限りconst修飾子を指定するようにした。</li>
+      </ul>
+      <li><b>2002/03/30 21:50:13; syl; Text.h 1.4</b></li>
+      <ul>
+<li>関数のプロトタイプ宣言でポインタ型の引数には可能な限りconst修飾子を指定するようにした。</li>
+<li>マルチバイト文字列、ワイドキャラクタ文字列を保存する領域のサイズの計算方法を修正。MB_LEN_MAX、sizeof(wchar_t)とするべきところをsizeof(MB_LEN_MAX)にしていたバグを修正。</li>
+<li>GetCharPositionInSylText()を追加した。</li>
+<li>DrawSylText(), DrawImageSylText(), DrawImageSylText0を追加した。</li>
+      </ul>
+      <li><b>2002/03/30 21:50:13; syl; Text.c 1.5</b></li>
+      <ul>
+<li>関数のプロトタイプ宣言でポインタ型の引数には可能な限りconst修飾子を指定するようにした。</li>
+<li>マルチバイト文字列、ワイドキャラクタ文字列を保存する領域のサイズの計算方法を修正。MB_LEN_MAX、sizeof(wchar_t)とするべきところをsizeof(MB_LEN_MAX)にしていたバグを修正。</li>
+<li>GetCharPositionInSylText()を追加した。</li>
+<li>DrawSylText(), DrawImageSylText(), DrawImageSylText0を追加した。</li>
+      </ul>
+      <li><b>2001/10/08 17:32:19; syl; predict.c 1.8</b></li>
+      <ul>
+<li>予測辞書を更新している間はSIGINTとSIGHUPを無視するようにした。</li>
+      </ul>
+      <li><b>2001/10/02 12:24:12; syl; imserver.c 1.16</b></li>
+      <ul>
+<li>StatusAreaスタイルの場合、描画用のウィンドウと背景ピクスマップを生成した時点で状態文字列を描画するようにして、XIMクライアントがXIM_RESET_ICリクエストを発行するまで状態が描画されていなかったバグを修正した。</li>
+      </ul>
+      <li><b>2001/10/02 11:31:35; syl; canna.c 1.2</b></li>
+      <ul>
+<li>Cannaの辞書ホームディレクトリのパスをImakefileのCANNA_DIRで指定するようにした。</li>
+      </ul>
+      <li><b>2001/10/02 11:31:35; syl; Imakefile 1.12</b></li>
+      <ul>
+<li>Cannaの辞書ホームディレクトリのパスをImakefileのCANNA_DIRで指定するようにした。</li>
+      </ul>
+      <li><b>2001/09/22 15:04:35; syl; imserver.c 1.15</b></li>
+      <ul>
+<li>フォントセットの生成と解放にそれぞれ関数CreateSharedFontset()と関数FreeSharedFontset()を使用するようにした。</li>
+<li>関数CreateFontset()の定義をfont.cに移した。</li>
+<li>DEBUGを定義した場合は、生成したフォントセットの管理状態を表示するようにした。</li>
+      </ul>
+      <li><b>2001/09/22 14:57:12; syl; connection.c 1.11</b></li>
+      <ul>
+<li>関数XFreeFontSet()を直接呼び出している部分を、関数FreeSharedFontset()を呼び出すように変更した。</li>
+      </ul>
+      <li><b>2001/09/22 14:53:36; syl; font.h 1.1</b></li>
+      <ul>
+<li>フォントセットを共有して管理するモジュールを追加。</li>
+      </ul>
+      <li><b>2001/09/22 14:53:36; syl; font.c 1.1</b></li>
+      <ul>
+<li>フォントセットを共有して管理するモジュールを追加。</li>
+      </ul>
+      <li><b>2001/09/22 14:51:56; syl; Imakefile 1.11</b></li>
+      <ul>
+<li>font.cを追加した。</li>
+<li>X11R6.4以前のバージョンではBUGGY_XFONTSETを定義するようにした。</li>
+      </ul>
+      <li><b>2001/09/21 04:16:17; syl; ximgen/parse.c 1.2</b></li>
+      <ul>
+<li>演算子~と~=の字句解析処理を追加した。</li>
+      </ul>
+      <li><b>2001/09/09 17:51:01; syl; undofix.c 1.6</b></li>
+      <ul>
+<li>Text.cの仕様変更に伴い、呼び出す関数の名前を変更した。</li>
+      </ul>
+      <li><b>2001/09/09 17:51:00; syl; preedit.c 1.7</b></li>
+      <ul>
+<li>Text.cの仕様変更に伴い、呼び出す関数の名前を変更した。</li>
+      </ul>
+      <li><b>2001/09/09 17:51:00; syl; preconv.c 1.3</b></li>
+      <ul>
+<li>Text.cの仕様変更に伴い、呼び出す関数の名前を変更した。</li>
+      </ul>
+      <li><b>2001/09/09 17:51:00; syl; phrase.c 1.6</b></li>
+      <ul>
+<li>Text.cの仕様変更に伴い、呼び出す関数の名前を変更した。</li>
+      </ul>
+      <li><b>2001/09/09 17:51:00; syl; imserver.c 1.14</b></li>
+      <ul>
+<li>Text.cの仕様変更に伴い、呼び出す関数の名前を変更した。</li>
+      </ul>
+      <li><b>2001/09/09 17:46:15; syl; Text.h 1.3</b></li>
+      <ul>
+<li>関数InsertWCharIntoSylText(), InsertWCStringIntoSylText(), InsertSylTextIntoSylText()の仕様を変更し、関数InsertSylTextIntoSylText0()を追加した。</li>
+<li>関数DeleteWCharOfSylText(), DeleteWCStringOfSylText()の名称をそれぞれDeleteCharOfSylText(), DeleteStringOfSylText()に変更し、仕様も変更した。</li>
+<li>コメントとしてAPIの仕様をヘッダファイルに記述した。</li>
+      </ul>
+      <li><b>2001/09/09 17:46:15; syl; Text.c 1.4</b></li>
+      <ul>
+<li>関数InsertWCharIntoSylText(), InsertWCStringIntoSylText(), InsertSylTextIntoSylText()の仕様を変更し、関数InsertSylTextIntoSylText0()を追加した。</li>
+<li>関数DeleteWCharOfSylText(), DeleteWCStringOfSylText()の名称をそれぞれDeleteCharOfSylText(), DeleteStringOfSylText()に変更し、仕様も変更した。</li>
+<li>コメントとしてAPIの仕様をヘッダファイルに記述した。</li>
+      </ul>
+      <li><b>2001/09/09 16:16:56; syl; predict.c 1.7</b></li>
+      <ul>
+<li>ヒープ中に残った不用な予測候補を解放する処理で、ひとつずつ取り出して解放するのではなく、関数ForEachOfHeap()を使用するようにした。</li>
+      </ul>
+      <li><b>2001/09/09 16:10:51; syl; heap.h 1.2</b></li>
+      <ul>
+<li>新しいAPIとして関数ForEachOfHeap()を追加した。</li>
+      </ul>
+      <li><b>2001/09/09 16:10:51; syl; heap.c 1.2</b></li>
+      <ul>
+<li>新しいAPIとして関数ForEachOfHeap()を追加した。</li>
+      </ul>
+      <li><b>2001/09/01 20:14:28; syl; resource.desc 1.4</b></li>
+      <ul>
+<li>imserver.convert.predictの説明を追加した。</li>
+      </ul>
+      <li><b>2001/09/01 20:13:27; syl; Imakefile 1.10</b></li>
+      <ul>
+<li>resource.defaultターゲットを生成するときに、終了ステータスを無視するようにした。</li>
+      </ul>
+      <li><b>2001/06/22 17:03:28; syl; predict.c 1.6</b></li>
+      <ul>
+<li>予測候補のコミットを遅延コールバックで処理するようにした。</li>
+      </ul>
+      <li><b>2001/06/03 18:54:33; syl; imserverConvert.keydef 1.3</b></li>
+      <ul>
+<li>Control-Tab（デフォルトのキー割り当て）で、変換中の文字列を用いて予測入力できるようにした。</li>
+      </ul>
+      <li><b>2001/06/03 18:54:33; syl; convert.c 1.4</b></li>
+      <ul>
+<li>Control-Tab（デフォルトのキー割り当て）で、変換中の文字列を用いて予測入力できるようにした。</li>
+      </ul>
+      <li><b>2001/06/03 18:49:43; syl; preedit.c 1.6</b></li>
+      <ul>
+<li>変換後、変換中の文字列で予測し、予測の内容を更新するようにした。</li>
+      </ul>
+      <li><b>2001/06/03 18:43:53; syl; predict.h 1.2</b></li>
+      <ul>
+<li>予測辞書に登録する「読み文字列」と「確定文字列」が同じ場合、確定文字列を長さ0の文字列にとして登録することにした。また、確定文字列をキーとして検索できるように「確定文字列 + 長さ0の文字列」も登録するようにした。</li>
+<li>逆に予測辞書から「読み文字列」と「確定文字列」を取り出したときに、確定文字列の長さが0であれば、読み文字列と確定文字列が同じものであるとして扱うようにした。</li>
+<li>APIとして変換中の文字列から予測するCommitSecondaryPrediction()を追加した。</li>
+      </ul>
+      <li><b>2001/06/03 18:43:53; syl; predict.c 1.5</b></li>
+      <ul>
+<li>予測辞書に登録する「読み文字列」と「確定文字列」が同じ場合、確定文字列を長さ0の文字列にとして登録することにした。また、確定文字列をキーとして検索できるように「確定文字列 + 長さ0の文字列」も登録するようにした。</li>
+<li>逆に予測辞書から「読み文字列」と「確定文字列」を取り出したときに、確定文字列の長さが0であれば、読み文字列と確定文字列が同じものであるとして扱うようにした。</li>
+<li>APIとして変換中の文字列から予測するCommitSecondaryPrediction()を追加した。</li>
+      </ul>
+      <li><b>2001/06/03 18:39:02; syl; phrase.h 1.3</b></li>
+      <ul>
+<li>APIとしてCreateSylTextFromPhrase()を追加した。</li>
+      </ul>
+      <li><b>2001/06/03 18:39:02; syl; phrase.c 1.5</b></li>
+      <ul>
+<li>APIとしてCreateSylTextFromPhrase()を追加した。</li>
+      </ul>
+      <li><b>2001/06/03 18:08:23; syl; imserver.c 1.13</b></li>
+      <ul>
+<li>XIMStatusAreaスタイルでの状態描画は、イベントによる再描画ではなく、ウィンドウの背景ピクスマップで処理するようにした。</li>
+<li>XIMPreeditPositionスタイルのプロパティ受渡し用のウィンドウをマップしていたバグを修正した。</li>
+      </ul>
+      <li><b>2001/06/02 14:16:42; syl; status.h 1.4</b></li>
+      <ul>
+<li>XIMStatusAreaスタイルでの状態描画は、イベントによる再描画ではなく、ウィンドウの背景ピクスマップで処理するようにした。</li>
+      </ul>
+      <li><b>2001/06/02 14:16:42; syl; status.c 1.5</b></li>
+      <ul>
+<li>XIMStatusAreaスタイルでの状態描画は、イベントによる再描画ではなく、ウィンドウの背景ピクスマップで処理するようにした。</li>
+      </ul>
+      <li><b>2001/06/02 14:16:42; syl; ontheroot.c 1.8</b></li>
+      <ul>
+<li>XIMStatusAreaスタイルでの状態描画は、イベントによる再描画ではなく、ウィンドウの背景ピクスマップで処理するようにした。</li>
+      </ul>
+      <li><b>2001/06/02 14:16:42; syl; onthearea.c 1.3</b></li>
+      <ul>
+<li>XIMStatusAreaスタイルでの状態描画は、イベントによる再描画ではなく、ウィンドウの背景ピクスマップで処理するようにした。</li>
+      </ul>
+      <li><b>2001/06/02 14:16:41; syl; connection.h 1.6</b></li>
+      <ul>
+<li>XIMStatusAreaスタイルでの状態描画は、イベントによる再描画ではなく、ウィンドウの背景ピクスマップで処理するようにした。</li>
+      </ul>
+      <li><b>2001/05/30 13:54:41; syl; predict.c 1.4</b></li>
+      <ul>
+<li>Linuxではopen()のフラグにO_SHLOCK/O_EXLOCKを使えないため、代わりにflock()を使うようにした。</li>
+<li>マクロlinuxが定義されているときは、db.hの代わりにdb_185.hをインクルードするようにした。</li>
+      </ul>
+      <li><b>2001/05/25 17:21:38; syl; Imakefile 1.9</b></li>
+      <ul>
+<li>-lXmu, -lXpm, -lXextはそれぞれ$(XMULIBONLY), $(XPMLIB), $(EXTENSIONLIB)で置き換えた。</li>
+<li>XPMLIBは/usr/X11R6/lib/X11/config/X11.tmplで定義されているので、使わないようにした。</li>
+<li>CCOPTIONSでのマクロ定義はgccmakedepに渡されないので、DEFINESで定義するようにした。</li>
+<li>Linuxでは__unusedをattribute__((__unused__))で定義するようにした。</li>
+<li>Linuxではlibdbをリンクするようにした。</li>
+<li>コメントアウトされていたselectionターゲットの記述を削除した。</li>
+      </ul>
+      <li><b>2001/05/23 16:01:20; syl; connection.c 1.10</b></li>
+      <ul>
+<li>再びIMの破壊（workキューの破壊と解放）を遅延コールバックで処理するようにした（XIMクライアントを強制終了したときに、XIMサーバがXエラーで終了するのを修正）。</li>
+      </ul>
+      <li><b>2001/05/23 15:13:53; syl; phrase.c 1.4</b></li>
+      <ul>
+<li>変換エンジンを抽象化したインタフェイスからアクセスするようにした。</li>
+<li>DuplicateSylText(), InsertSylTextIntoSylText(), CreateWCStringFromSylText0()を使うようにした。</li>
+<li>変換結果の学習機能を engine.cに移した。</li>
+      </ul>
+      <li><b>2001/05/23 15:08:40; syl; preconv.c 1.2</b></li>
+      <ul>
+<li>CreateWCStringFromSylText0()を使うようにした。</li>
+      </ul>
+      <li><b>2001/05/23 15:05:41; syl; predict.c 1.3</b></li>
+      <ul>
+<li>CreateMBStringFromSylText0(), DuplicateSylText()を使うようにした。</li>
+<li>入力予測の内容と予測変換の候補が等しくなるようにした。また、入力予測の内容が空の場合、読み文字列を予測変換の候補にするようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:59:50; syl; sj3.h 1.2</b></li>
+      <ul>
+<li>変換エンジンの共通部分をengine.cに移した。</li>
+<li>変換結果の学習機能をphrase.cから移してきた。</li>
+<li>CreateMBStringFromSylText0()を使うようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:59:50; syl; sj3.c 1.4</b></li>
+      <ul>
+<li>変換エンジンの共通部分をengine.cに移した。</li>
+<li>変換結果の学習機能をphrase.cから移してきた。</li>
+<li>CreateMBStringFromSylText0()を使うようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:56:18; syl; undofix.c 1.5</b></li>
+      <ul>
+<li>InsertSylTextIntoSylText()を使うようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:41:40; syl; overthespot.c 1.7</b></li>
+      <ul>
+<li>CreateWCStringFromSylText0()を使うようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:41:40; syl; onthespot.c 1.3</b></li>
+      <ul>
+<li>CreateWCStringFromSylText0()を使うようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:41:39; syl; ontheroot.c 1.7</b></li>
+      <ul>
+<li>CreateWCStringFromSylText0()を使うようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:38:12; syl; imserver.c 1.12</b></li>
+      <ul>
+<li>変換エンジンを抽象化したインタフェイスからアクセスするようにした。</li>
+<li>XIMStatusNoneスタイルをサポートしていなかったのに、利用可能であるとXIMクライアントに伝えていたバグを修正した。</li>
+<li>CreateWCStringFromSylText0を使うようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:34:52; syl; commit.c 1.5</b></li>
+      <ul>
+<li>CreateWCStringFromSylText0()を使うようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:32:07; syl; candidate.c 1.5</b></li>
+      <ul>
+<li>SylTextEscapement(), SylTextEscapement0(), DrawSylText0()を使うようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:26:44; syl; WCString.c 1.2</b></li>
+      <ul>
+<li>wstrncpy()のコピー元文字列の長さ（ヌル文字を除く）とコピー文字数が等しい場合、コピー先文字列にさらにヌル文字を追加していたバグを修正。</li>
+<li>コピー元文字列の長さよりもコピー文字数が大きい場合の振る舞いを、strncpy()と同様にした。</li>
+      </ul>
+      <li><b>2001/05/23 14:12:07; syl; Text.h 1.2</b></li>
+      <ul>
+<li>以下のAPIを追加した:</li>
+<li>DuplicateSylText()</li>
+<li>CreateWCStringFromSylText0()</li>
+<li>CreateMBStringFromSylText0()</li>
+<li>InsertSylTextIntoSylText()</li>
+<li>SylTextEscapement()</li>
+<li>SylTextEscapement0()</li>
+<li>DrawSylText0()</li>
+      </ul>
+      <li><b>2001/05/23 14:12:07; syl; Text.c 1.3</b></li>
+      <ul>
+<li>以下のAPIを追加した:</li>
+<li>DuplicateSylText()</li>
+<li>CreateWCStringFromSylText0()</li>
+<li>CreateMBStringFromSylText0()</li>
+<li>InsertSylTextIntoSylText()</li>
+<li>SylTextEscapement()</li>
+<li>SylTextEscapement0()</li>
+<li>DrawSylText0()</li>
+      </ul>
+      <li><b>2001/05/23 14:05:00; syl; Imakefile 1.8</b></li>
+      <ul>
+<li>日本語変換エンジンとしてCannaとSJ3を選べるようにした。</li>
+      </ul>
+      <li><b>2001/05/23 14:00:44; syl; engine.h 1.1</b></li>
+      <ul>
+<li>日本語変換エンジンの共通部分を抽象化したモジュールを追加。</li>
+      </ul>
+      <li><b>2001/05/23 14:00:44; syl; engine.c 1.1</b></li>
+      <ul>
+<li>日本語変換エンジンの共通部分を抽象化したモジュールを追加。</li>
+      </ul>
+      <li><b>2001/05/23 13:53:12; syl; canna.h 1.1</b></li>
+      <ul>
+<li>Cannaを利用する日本語変換モジュールを追加。</li>
+      </ul>
+      <li><b>2001/05/23 13:53:11; syl; canna.c 1.1</b></li>
+      <ul>
+<li>Cannaを利用する日本語変換モジュールを追加。</li>
+      </ul>
+      <li><b>2001/05/13 02:47:15; syl; connection.c 1.9</b></li>
+      <ul>
+<li>OnTheSpot以外のスタイルでは、IC破壊時に候補ウィンドウが破壊されないバグを修正した。</li>
+      </ul>
+      <li><b>2001/05/12 13:34:51; syl; predict.c 1.2</b></li>
+      <ul>
+<li>リソース名を変更した。</li>
+<li>マクロRESTRICT_PREDICTION_QUANTITYの定義を廃止した。</li>
+<li>HeapCellのメンバlenを削除し、代わりにメンバrefを追加した。</li>
+<li>予測の候補数の制限がnのとき、候補がn以上の場合にn個目のHeapCellを解放していなかったバグを修正した。</li>
+      </ul>
+      <li><b>2001/05/12 13:21:46; syl; resource.desc 1.3</b></li>
+      <ul>
+<li>予測入力関係のリソース名を変更した。</li>
+      </ul>
+      <li><b>2001/05/12 13:19:36; syl; imserver.c 1.11</b></li>
+      <ul>
+<li>イベントループのXEventsQueued()の引数にQueuedAfterReadingではなくQueuedAfterFlushを使うようにした。</li>
+      </ul>
+      <li><b>2001/05/12 13:15:58; syl; connection.c 1.8</b></li>
+      <ul>
+<li>FreeConnection, FreeInputContextについては遅延コールバックを使わないようにした。</li>
+      </ul>
+      <li><b>2001/05/07 21:16:21; syl; preedit.c 1.5</b></li>
+      <ul>
+<li>読み文字列を編集する度に、予測の内容を更新するようにした。</li>
+<li>変換状態に遷移するときに、予測入力の候補を非表示にするようにした。</li>
+      </ul>
+      <li><b>2001/05/07 21:13:30; syl; phrase.h 1.2</b></li>
+      <ul>
+<li>Phraseにpredictedメンバを追加した。</li>
+<li>Candidateにphoneticメンバを追加し、予測入力の候補を処理する間、候補の完全な読み文字列を保持するようにした。</li>
+      </ul>
+      <li><b>2001/05/07 21:13:30; syl; phrase.c 1.3</b></li>
+      <ul>
+<li>Phraseにpredictedメンバを追加した。</li>
+<li>Candidateにphoneticメンバを追加し、予測入力の候補を処理する間、候補の完全な読み文字列を保持するようにした。</li>
+      </ul>
+      <li><b>2001/05/07 21:09:55; syl; overthespot.c 1.6</b></li>
+      <ul>
+<li>DEBUGが定義されていないときに、unused parameterの警告が出ないようにした。</li>
+      </ul>
+      <li><b>2001/05/07 21:08:58; syl; ontheroot.c 1.6</b></li>
+      <ul>
+<li>DEBUGが定義されていないときに、unused parameterの警告が出ないようにした。</li>
+      </ul>
+      <li><b>2001/05/07 21:06:53; syl; convert.c 1.3</b></li>
+      <ul>
+<li>文節を読み文字列に戻すときに、予測入力の候補を表示するようにした。</li>
+      </ul>
+      <li><b>2001/05/07 21:05:06; syl; commit.c 1.4</b></li>
+      <ul>
+<li>前編集文字列消去の際に、予測入力の候補も消去するようにした。</li>
+<li>文節の数のかかわらず、変換結果の文節関係をXIM_JA_STUDYプロパティに登録するようにした。</li>
+<li>コミット文字列を予測辞書に学習するようにした。</li>
+      </ul>
+      <li><b>2001/05/07 20:54:26; syl; undofix.c 1.4</b></li>
+      <ul>
+<li>再変換の際に予測入力の候補を表示するようにした。</li>
+      </ul>
+      <li><b>2001/05/07 20:48:45; syl; imserverPreedit.keydef 1.5</b></li>
+      <ul>
+<li>予測入力のリソースとデフォルト値を追加した。</li>
+      </ul>
+      <li><b>2001/05/07 20:46:32; syl; imserverConvert.keydef 1.2</b></li>
+      <ul>
+<li>次候補、前候補の切り替えに、それぞれTab, Shift-Tabを追加した。</li>
+      </ul>
+      <li><b>2001/05/07 20:42:40; syl; sj3.c 1.3</b></li>
+      <ul>
+<li>次の候補、前の候補を選択する処理で、共通の部分を関数ChangePhrase()にまとめた。</li>
+<li>文節を生成するときに予測フラグをオフにするようにした。</li>
+      </ul>
+      <li><b>2001/05/07 20:35:59; syl; resource.desc 1.2</b></li>
+      <ul>
+<li>imserver.maximumCandidates, imserver.predictionDictionaryの説明を追加した。</li>
+      </ul>
+      <li><b>2001/05/07 20:34:50; syl; imserver.c 1.10</b></li>
+      <ul>
+<li>フォーカスを得たとき、失ったときに、予測入力の候補をそれぞれ表示、非表示にするようにした。</li>
+<li>起動時に予測入力関係のリソースを読み込むようにした。</li>
+      </ul>
+      <li><b>2001/05/07 20:26:56; syl; candidate.c 1.4</b></li>
+      <ul>
+<li>候補ウィンドウの幅を決定する際、候補文字列のなかから最大幅のものを求めて、それに合わせるようにした。</li>
+      </ul>
+      <li><b>2001/05/07 20:18:38; syl; Imakefile 1.7</b></li>
+      <ul>
+<li>predict.c, heap.cをSRCSに追加した。</li>
+      </ul>
+      <li><b>2001/05/07 20:15:01; syl; heap.h 1.1</b></li>
+      <ul>
+<li>ヒープを実現するためのモジュールを追加した。</li>
+      </ul>
+      <li><b>2001/05/07 20:15:01; syl; heap.c 1.1</b></li>
+      <ul>
+<li>ヒープを実現するためのモジュールを追加した。</li>
+      </ul>
+      <li><b>2001/05/07 20:12:53; syl; predict.h 1.1</b></li>
+      <ul>
+<li>読み文字列から予測入力するためのモジュールを追加した。</li>
+      </ul>
+      <li><b>2001/05/07 20:12:53; syl; predict.c 1.1</b></li>
+      <ul>
+<li>読み文字列から予測入力するためのモジュールを追加した。</li>
+      </ul>
+      <li><b>2001/05/07 19:18:10; syl; resource2html 1.1</b></li>
+      <ul>
+<li>resource.htmlターゲットの生成ルールを追加した。</li>
+<li>環境変数DEFAULT_RESOURCEを定義すると、そのファイルにデフォルトのリソース定義を書き出すようにした。</li>
+      </ul>
+      <li><b>2001/05/07 19:18:10; syl; resource.desc 1.1</b></li>
+      <ul>
+<li>resource.htmlターゲットの生成ルールを追加した。</li>
+<li>環境変数DEFAULT_RESOURCEを定義すると、そのファイルにデフォルトのリソース定義を書き出すようにした。</li>
+      </ul>
+      <li><b>2001/05/07 19:18:09; syl; Resource.c 1.2</b></li>
+      <ul>
+<li>resource.htmlターゲットの生成ルールを追加した。</li>
+<li>環境変数DEFAULT_RESOURCEを定義すると、そのファイルにデフォルトのリソース定義を書き出すようにした。</li>
+      </ul>
+      <li><b>2001/05/07 19:18:09; syl; Imakefile 1.6</b></li>
+      <ul>
+<li>resource.htmlターゲットの生成ルールを追加した。</li>
+<li>環境変数DEFAULT_RESOURCEを定義すると、そのファイルにデフォルトのリソース定義を書き出すようにした。</li>
+      </ul>
+      <li><b>2001/05/07 17:55:27; syl; imserverPreedit.keydef 1.4</b></li>
+      <ul>
+<li>デフォルトの変換キーの割り当てから、Down, Control-nを取り除いた。</li>
+      </ul>
+      <li><b>2001/05/07 17:49:32; syl; onthearea.c 1.2</b></li>
+      <ul>
+<li>IC生成時に状態領域のジオメトリ属性を指定しないXIMクライアント（Netscape 4.7）では、状態領域のウィンドウが生成されないため、フォーカス獲得時にエラーになるバグを修正した。</li>
+      </ul>
+      <li><b>2001/05/07 17:45:28; syl; connection.c 1.7</b></li>
+      <ul>
+<li>未使用のローカル変数の宣言を消去した。</li>
+      </ul>
+      <li><b>2001/05/02 20:07:03; syl; candidate.c 1.3</b></li>
+      <ul>
+<li>候補の個数が「1ページに表示可能な候補数の倍数」のとき、候補ウィンドウのフッタ領域の全候補ページ数が実際よりも1つ余分になってしまうバグを修正した。</li>
+      </ul>
+      <li><b>2001/05/02 20:07:03; syl; Imakefile 1.5</b></li>
+      <ul>
+<li>候補の個数が「1ページに表示可能な候補数の倍数」のとき、候補ウィンドウのフッタ領域の全候補ページ数が実際よりも1つ余分になってしまうバグを修正した。</li>
+      </ul>
+      <li><b>2001/03/10 19:35:42; syl; overthespot.c 1.5</b></li>
+      <ul>
+<li>クライアントの最上位ウィンドウを移動、サイズ変更したときにも前編集領域のスポット位置が追従するように、XIMレシーバに通知するときに座標変換するようにした。</li>
+      </ul>
+      <li><b>2001/03/10 19:34:43; syl; imserver.c 1.9</b></li>
+      <ul>
+<li>ALTキーが押されている場合は前編集文字列に加えずに、そのままクライアントに渡すようにした（XEmacs対応）。</li>
+<li>クライアントの最上位ウィンドウを移動、サイズ変更したときにも前編集領域のスポット位置が追従するように、XIMレシーバに通知するときに座標変換するようにした。</li>
+      </ul>
+      <li><b>2001/03/10 19:11:13; syl; TODO 1.5</b></li>
+      <ul>
+<li>ALTキーの扱いに対応。</li>
+<li>AreaNeededが返す領域のサイズを追加。</li>
+      </ul>
+      <li><b>2001/02/18 19:21:36; syl; overthespot.c 1.4</b></li>
+      <ul>
+<li>ICのdestroy()メソッドに候補ウィンドウを破壊する処理を追加した。</li>
+      </ul>
+      <li><b>2001/02/18 19:20:38; syl; ontheroot.c 1.5</b></li>
+      <ul>
+<li>ICのdestroy()メソッドに候補ウィンドウを破壊する処理を追加した。</li>
+      </ul>
+      <li><b>2001/02/18 19:15:52; syl; phrase.c 1.2</b></li>
+      <ul>
+<li>文節学習の処理で、「文節長が変化したが、表示している文字列と候補が異なる」場合も学習していたのを修正した。</li>
+      </ul>
+      <li><b>2001/02/18 19:08:54; syl; imserver.c 1.8</b></li>
+      <ul>
+<li>CreateFontset()のエラー処理を変更した。</li>
+<li>XIM_SET_IC_FOCUSとXIM_UNSET_IC_FOCUSの応答処理を、ICの遅延コールバックで処理するようにした。</li>
+<li>XIM_TRIGGER_NOTIFYの応答で、入力ONのときにはICのfocus_in()メソッドを呼び出すようにした。</li>
+<li>RespondXIMProtocolWithProperty()でプロパティを取得する際、およびRespondSelectionRequest()でセレクションに応答する際、Xlibのエラーハンドラを無効化するようにした。</li>
+<li>ICの遅延コールバックに対応した。</li>
+      </ul>
+      <li><b>2001/02/18 18:34:53; syl; connection.h 1.5</b></li>
+      <ul>
+<li>ICのstatus_drawメンバを初期化していなかったのを修正した。</li>
+<li>ICの遅延コールバックを追加するために、DeferInputContext()とNiceInputContext()を追加した。</li>
+<li>ICの破壊（idleキューへの移動）とIMの破壊（workキューの破壊と解放）を遅延コールバックで処理するようにした。</li>
+      </ul>
+      <li><b>2001/02/18 18:34:53; syl; connection.c 1.6</b></li>
+      <ul>
+<li>ICのstatus_drawメンバを初期化していなかったのを修正した。</li>
+<li>ICの遅延コールバックを追加するために、DeferInputContext()とNiceInputContext()を追加した。</li>
+<li>ICの破壊（idleキューへの移動）とIMの破壊（workキューの破壊と解放）を遅延コールバックで処理するようにした。</li>
+      </ul>
+      <li><b>2001/02/18 18:14:42; syl; commit.c 1.3</b></li>
+      <ul>
+<li>複数文節の半自動登録に対応するため、確定した文節が2文節以上の場合、ルートウィンドウのXIM_JA_STUDYプロパティに、確定した文字列と読み文字列を設定するようにした。</li>
+      </ul>
+      <li><b>2001/02/18 18:10:27; syl; Text.c 1.2</b></li>
+      <ul>
+<li>CreateMBStringFromSylText()に与えた範囲指定が、文字列の先頭から最後以外の場合、正常に動作していなかったのを修正した。</li>
+      </ul>
+      <li><b>2001/02/18 18:04:57; syl; TODO 1.4</b></li>
+      <ul>
+<li>StatusNothingに対応。</li>
+<li>ALTキーの扱い、Over-The-Spotスタイルのスポット座標を追加。</li>
+      </ul>
+      <li><b>2001/02/18 18:01:53; syl; Imakefile 1.4</b></li>
+      <ul>
+<li>resource.htmlターゲットを追加した。</li>
+<li>selectionターゲットをコメントアウトした（使われていないため）。</li>
+      </ul>
+      <li><b>2001/02/12 12:11:26; syl; onthearea.h 1.1</b></li>
+      <ul>
+<li>StatusNothingスタイルのコードを追加した。</li>
+      </ul>
+      <li><b>2001/02/12 12:11:26; syl; onthearea.c 1.1</b></li>
+      <ul>
+<li>StatusNothingスタイルのコードを追加した。</li>
+      </ul>
+      <li><b>2001/02/12 12:10:24; syl; status.h 1.3</b></li>
+      <ul>
+<li>状態のスタイル依存部分をメソッドに分離した。</li>
+      </ul>
+      <li><b>2001/02/12 12:10:24; syl; status.c 1.4</b></li>
+      <ul>
+<li>状態のスタイル依存部分をメソッドに分離した。</li>
+      </ul>
+      <li><b>2001/02/12 12:04:54; syl; undofix.c 1.3</b></li>
+      <ul>
+<li>使用されていない部分のコードを削除した。</li>
+      </ul>
+      <li><b>2001/02/12 12:02:34; syl; preedit.c 1.4</b></li>
+      <ul>
+<li>unused parameterの警告に対処した。</li>
+      </ul>
+      <li><b>2001/02/12 11:59:32; syl; overthespot.c 1.3</b></li>
+      <ul>
+<li>destroyメソッドの追加と実装。</li>
+      </ul>
+      <li><b>2001/02/12 11:58:44; syl; onthespot.c 1.2</b></li>
+      <ul>
+<li>destroyメソッドの追加と実装。</li>
+      </ul>
+      <li><b>2001/02/12 11:57:01; syl; ontheroot.h 1.2</b></li>
+      <ul>
+<li>StatusNothingスタイルのコードを追加した。</li>
+      </ul>
+      <li><b>2001/02/12 11:57:01; syl; ontheroot.c 1.4</b></li>
+      <ul>
+<li>StatusNothingスタイルのコードを追加した。</li>
+      </ul>
+      <li><b>2001/02/12 11:54:31; syl; imserver.c 1.7</b></li>
+      <ul>
+<li>StatusNothingスタイルに対応した。</li>
+<li>unused parameterの警告に対処した。</li>
+<li>DUMP_DEBUGマクロを追加した。</li>
+<li>StatusAreaスタイルの描画にはピクスマップを利用するようにした。</li>
+      </ul>
+      <li><b>2001/02/12 11:49:48; syl; convert.c 1.2</b></li>
+      <ul>
+<li>unused parameterの警告に対処した。</li>
+      </ul>
+      <li><b>2001/02/12 11:46:09; syl; connection.h 1.4</b></li>
+      <ul>
+<li>StatusAreaスタイルでは、ピクスマップに描画してからウィンドウにコピーするようにした。</li>
+<li>状態描画もスタイル毎にメソッドを切り替えるようにした。</li>
+<li>前編集と状態の両方について、ICを破壊するときに呼ばれるメソッドを用意した。</li>
+      </ul>
+      <li><b>2001/02/12 11:46:08; syl; connection.c 1.5</b></li>
+      <ul>
+<li>StatusAreaスタイルでは、ピクスマップに描画してからウィンドウにコピーするようにした。</li>
+<li>状態描画もスタイル毎にメソッドを切り替えるようにした。</li>
+<li>前編集と状態の両方について、ICを破壊するときに呼ばれるメソッドを用意した。</li>
+      </ul>
+      <li><b>2001/02/12 11:32:34; syl; commit.c 1.2</b></li>
+      <ul>
+<li>CommitString()を呼ぶ側がDrawStatusWindow()も呼ぶように変更した。</li>
+      </ul>
+      <li><b>2001/02/12 11:31:38; syl; Imakefile 1.3</b></li>
+      <ul>
+<li>onthearea.[ch]を追加した。</li>
+      </ul>
+      <li><b>2001/02/04 20:21:23; syl; status.c 1.3</b></li>
+      <ul>
+<li>リソース名のスペルミスを修正した。</li>
+      </ul>
+      <li><b>2001/02/04 18:44:31; syl; undofix.c 1.2</b></li>
+      <ul>
+<li>前変換モードの種類をOn/Offから、Direct/Single/Doubleに変更した。</li>
+      </ul>
+      <li><b>2001/02/04 18:43:17; syl; status.h 1.2</b></li>
+      <ul>
+<li>前変換モードの種類をOn/Offから、Direct/Single/Doubleに変更した。</li>
+<li>状態ウィンドウに描画する文字列をリソースで指定できるようにした。</li>
+      </ul>
+      <li><b>2001/02/04 18:43:17; syl; status.c 1.2</b></li>
+      <ul>
+<li>前変換モードの種類をOn/Offから、Direct/Single/Doubleに変更した。</li>
+<li>状態ウィンドウに描画する文字列をリソースで指定できるようにした。</li>
+      </ul>
+      <li><b>2001/02/04 18:40:45; syl; preedit.c 1.3</b></li>
+      <ul>
+<li>前変換モードの種類をOn/Offから、Direct/Single/Doubleに変更した。</li>
+<li>前変換モードがDoubleの場合は、Singleの場合の処理に加えて、ひらがなをカタカナに変換するようにした。</li>
+      </ul>
+      <li><b>2001/02/04 18:38:35; syl; imserverUndofix.keydef 1.2</b></li>
+      <ul>
+<li>preconversionModeを廃止して、singlePreconversionModeとdoublePreconversionModeを追加した。</li>
+      </ul>
+      <li><b>2001/02/04 18:38:35; syl; imserverPreedit.keydef 1.3</b></li>
+      <ul>
+<li>preconversionModeを廃止して、singlePreconversionModeとdoublePreconversionModeを追加した。</li>
+      </ul>
+      <li><b>2001/02/04 18:35:04; syl; connection.h 1.3</b></li>
+      <ul>
+<li>前変換モードの種類をOn/Offから、Direct/Single/Doubleに変更した。</li>
+<li>入力コンテキストを破壊する直前の前編集文字列の描画（フォーカスアウト）処理をやめた（Over-The-Spotスタイルでは正常に動作しないため）。</li>
+      </ul>
+      <li><b>2001/02/04 18:35:04; syl; connection.c 1.4</b></li>
+      <ul>
+<li>前変換モードの種類をOn/Offから、Direct/Single/Doubleに変更した。</li>
+<li>入力コンテキストを破壊する直前の前編集文字列の描画（フォーカスアウト）処理をやめた（Over-The-Spotスタイルでは正常に動作しないため）。</li>
+      </ul>
+      <li><b>2001/02/04 18:26:19; syl; TODO 1.3</b></li>
+      <ul>
+<li>初期カタカナ入力モード、前編集文字列の全キャンセル、On-The-Rootの項目に対応した。</li>
+      </ul>
+      <li><b>2001/02/04 18:19:08; syl; imserver.c 1.6</b></li>
+      <ul>
+<li>前変換モードの種類をOn/Offから、Direct/Single/Doubleに変更した。</li>
+<li>状態ウィンドウに描画する文字列をリソースで指定できるようにした。</li>
+<li>XRegisterIMInstantiateCallback()を使用するXIMクライアントに対応した。</li>
+      </ul>
+      <li><b>2001/02/04 17:57:12; syl; overthespot.c 1.2</b></li>
+      <ul>
+<li>Over-The-Spotスタイルに伴うXIMレシーバとの通信に関して、プロトコルを変更し、入力コンテキストのフォーカスを設定する際に、ウィンドウをセレクションで通知するようにした。</li>
+      </ul>
+      <li><b>2001/02/04 17:57:12; syl; imserver.c 1.5</b></li>
+      <ul>
+<li>Over-The-Spotスタイルに伴うXIMレシーバとの通信に関して、プロトコルを変更し、入力コンテキストのフォーカスを設定する際に、ウィンドウをセレクションで通知するようにした。</li>
+      </ul>
+      <li><b>2001/02/04 17:33:58; syl; sj3.c 1.2</b></li>
+      <ul>
+<li>候補の文字列がユニークになるようにした（候補に同一文字列が複数含まれる場合、正常に候補を選択できなかった）。</li>
+      </ul>
+      <li><b>2001/01/27 16:50:53; syl; preedit.c 1.2</b></li>
+      <ul>
+<li>前編集文字列を全消去するリソースを追加した。</li>
+      </ul>
+      <li><b>2001/01/27 16:50:53; syl; imserverPreedit.keydef 1.2</b></li>
+      <ul>
+<li>前編集文字列を全消去するリソースを追加した。</li>
+      </ul>
+      <li><b>2001/01/23 15:13:12; syl; ontheroot.c 1.3</b></li>
+      <ul>
+<li>標準出力に前編集文字列とキャレットを表示するのを、DEBUGが定義されている場合だけにした。</li>
+      </ul>
+      <li><b>2001/01/23 15:09:32; syl; imserver.c 1.4</b></li>
+      <ul>
+<li>Over-The-Spotに対応するコードを追加した。</li>
+<li>ICの前編集領域のウィンドウを管理するコンテキストを追加。</li>
+<li>前編集領域または状態領域のフォントセット属性が変更された場合、新しく指定されたフォントセット名が現在のものと同じ場合は何もしないようにした（性能改善のため）。</li>
+<li>前編集領域のスポット位置属性を、ルートウィンドウを基準とした座標に変換してから保存するようにした。</li>
+<li>Over-The-Spotの場合、候補一覧のウィンドウの親をルートウィンドウにした。</li>
+<li>IC生成時に前編集領域のウィンドウを必要であれば生成するようにした。</li>
+<li>XIM_RESET_ICを受け取ったときに前編集文字列を消去するタイミングを、リプライ前からリプライ後に変更した。</li>
+      </ul>
+      <li><b>2001/01/23 14:46:55; syl; connection.h 1.2</b></li>
+      <ul>
+<li>入力コンテキストに前編集領域のウィンドウ属性を保存するフィールドを追加した。</li>
+<li>前編集領域と状態領域のフォントセット属性に加え、フォントセット名を保存するフィールドを追加した。</li>
+      </ul>
+      <li><b>2001/01/23 14:46:55; syl; connection.c 1.3</b></li>
+      <ul>
+<li>入力コンテキストに前編集領域のウィンドウ属性を保存するフィールドを追加した。</li>
+<li>前編集領域と状態領域のフォントセット属性に加え、フォントセット名を保存するフィールドを追加した。</li>
+      </ul>
+      <li><b>2001/01/23 14:37:14; syl; Imakefile 1.2</b></li>
+      <ul>
+<li>overthespot.cを追加した。</li>
+      </ul>
+      <li><b>2001/01/23 14:35:55; syl; TODO 1.2</b></li>
+      <ul>
+<li>井上の要求項目を追加した。</li>
+      </ul>
+      <li><b>2001/01/23 14:31:21; syl; overthespot.h 1.1</b></li>
+      <ul>
+<li>Over-The-Spot対応のコードを追加。</li>
+      </ul>
+      <li><b>2001/01/23 14:31:21; syl; overthespot.c 1.1</b></li>
+      <ul>
+<li>Over-The-Spot対応のコードを追加。</li>
+      </ul>
+      <li><b>2000/12/04 19:33:58; syl; imserver.c 1.3</b></li>
+      <ul>
+<li>PreeditNothingスタイル使用時は、クライアントウィンドウではなくルートウィンドウを候補ウィンドウの親ウィンドウとするようにした。</li>
+      </ul>
+      <li><b>2000/12/04 19:33:58; syl; candidate.c 1.2</b></li>
+      <ul>
+<li>PreeditNothingスタイル使用時は、クライアントウィンドウではなくルートウィンドウを候補ウィンドウの親ウィンドウとするようにした。</li>
+      </ul>
+      <li><b>2000/12/04 18:48:45; syl; connection.c 1.2</b></li>
+      <ul>
+<li>PreeditNothingスタイル使用時に入力コンテキストが破壊された場合、キーボードフォーカスを失った場合の処理をしてから、従来の破壊処理に移るようにした。</li>
+      </ul>
+      <li><b>2000/12/04 18:40:29; syl; ontheroot.c 1.2</b></li>
+      <ul>
+<li>前編集文字列のキャレットの位置をルートウィンドウのXIM_PREEDIT_CARETプロパティにセットするようにした。</li>
+<li>キーボードフォーカスを獲得しているときにだけ候補ウィンドウを表示するようにした。</li>
+      </ul>
+      <li><b>2000/12/04 18:33:39; syl; imserver.c 1.2</b></li>
+      <ul>
+<li>XIM_GET_IC_VALUESのAreaNeededのリプライで、XFontSetを設定されているかどうかの判定が逆だったため、StatusAreaスタイル使用時にステータス領域に状態が描画されないバグを修正した。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:05; syl; ximgen/ximgen.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:05; syl; ximgen/write.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:05; syl; ximgen/write.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:04; syl; ximgen/sizeof.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:04; syl; ximgen/sizeof.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:04; syl; ximgen/send.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:04; syl; ximgen/send.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:04; syl; ximgen/release.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:04; syl; ximgen/release.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:03; syl; ximgen/recv.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:03; syl; ximgen/recv.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:03; syl; ximgen/read.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:03; syl; ximgen/read.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:03; syl; ximgen/prototype.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:03; syl; ximgen/prototype.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:02; syl; ximgen/parse.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:02; syl; ximgen/parse.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:02; syl; ximgen/packet.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:02; syl; ximgen/packet.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:02; syl; ximgen/load.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:01; syl; ximgen/load.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:01; syl; ximgen/free.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:01; syl; ximgen/free.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:46:01; syl; ximgen/Imakefile 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:30; syl; ximattr.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:30; syl; ximattr.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:30; syl; xim.protocol 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:30; syl; xicattr.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:29; syl; xicattr.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:29; syl; undofix.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:29; syl; undofix.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:29; syl; trigger.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:29; syl; trigger.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:29; syl; strparse.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:28; syl; strparse.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:28; syl; status.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:28; syl; status.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:28; syl; sj3.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:28; syl; sj3.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:28; syl; preedit.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:27; syl; preedit.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:27; syl; preconv.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:27; syl; preconv.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:27; syl; phrase.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:27; syl; phrase.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:27; syl; onthespot.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:26; syl; onthespot.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:26; syl; ontheroot.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:26; syl; ontheroot.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:26; syl; message.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:26; syl; message.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:25; syl; leakdetect.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:25; syl; leakdetect.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:25; syl; keydef2h.sh 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:25; syl; imserverUndofix.keydef 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:25; syl; imserverPreedit.keydef 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:25; syl; imserverConvert.keydef 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:24; syl; imserver.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:24; syl; convert.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:24; syl; convert.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:24; syl; connection.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:24; syl; connection.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:24; syl; commit.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:23; syl; commit.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:23; syl; candidate.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:23; syl; candidate.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:23; syl; WCString.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:23; syl; WCString.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:23; syl; TriggerKey.ad 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:22; syl; Text.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:22; syl; Text.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:22; syl; TODO 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:21; syl; Romaji.ad 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:21; syl; Resource.h 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:21; syl; Resource.c 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+      <li><b>2000/10/03 18:45:21; syl; Imakefile 1.1</b></li>
+      <ul>
+<li>インポートされたソース。</li>
+      </ul>
+    </ul>
+  </body>
+</html>

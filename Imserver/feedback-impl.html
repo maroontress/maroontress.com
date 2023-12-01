@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>XIMFeedbackの仕様解釈と実装 | Japanese XIM Server</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo"><img src="imserver-icon.png" alt="アイコン" style="width: 32px; height: 32px; vertical-align: bottom;"/>日本語XIMサーバ</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<style>
+span.reverse {
+  color: var(--body-background);
+  background-color: var(--text);
+}
+</style>
+<h1>XIMFeedbackの仕様解釈と実装</h1>
+<p>XIMFeedbackの仕様には不明瞭な点が多い（XIM仕様そのものもそうだが）。いろいろな開発者が独自に解釈したために、今やさまざまな（XIMクライアントの）実装が存在する。そのうち、わりとマシな仕様解釈と、実装を紹介したい。</p>
+<p><a name="openoffice"></a></p>
+<h2>OpenOffice</h2>
+<p>ここではOpenOffice 1.1.0 RC4 (645) の<code>oo_645_src/vcl/unx/source/app/i18n_cb.cxx</code>を元に説明する<sup><a href="#1">★1</a></sup>。このファイルの中の関数<code>Preedit_FeedbackToSAL()</code>が、XIMFeedbackの値を解釈している。</p>
+<pre><code class="language-c">// Convert the XIM feedback values into appropriate VCL
+// SAL_EXTTEXTINPUT_ATTR values
+// returns an allocate list of attributes, which must be freed by caller
+USHORT*
+Preedit_FeedbackToSAL ( XIMFeedback* pfeedback, int nlength )
+{
+    USHORT *psalattr;
+    USHORT  nval;
+    USHORT  noldval = 0;
+    XIMFeedback nfeedback;
+
+    // only work with reasonable length
+    if (nlength &lt; 0)
+        psalattr = (USHORT*)malloc(nlength * sizeof(USHORT));
+    else
+        return (USHORT*)NULL;
+
+    for (int npos = 0; npos &lt; nlength; npos++)
+    {
+        nval = 0;
+        nfeedback = pfeedback[npos];
+
+        // means to use the feedback of the previous char
+        if (nfeedback == 0)
+        {
+            nval = noldval;
+        }
+        // convert feedback to attributes
+        else
+        {
+            if (nfeedback &amp; XIMReverse)
+                nval |= SAL_EXTTEXTINPUT_ATTR_HIGHLIGHT;
+            if (nfeedback &amp; XIMUnderline)
+                nval |= SAL_EXTTEXTINPUT_ATTR_UNDERLINE;
+            if (nfeedback &amp; XIMHighlight)
+                nval |= SAL_EXTTEXTINPUT_ATTR_HIGHLIGHT;
+            if (nfeedback &amp; XIMPrimary)
+                nval |= SAL_EXTTEXTINPUT_ATTR_DOTTEDUNDERLINE;
+            if (nfeedback &amp; XIMSecondary)
+                nval |= SAL_EXTTEXTINPUT_ATTR_DASHDOTUNDERLINE;
+            if (nfeedback &amp; XIMTertiary) // same as 2ery
+                nval |= SAL_EXTTEXTINPUT_ATTR_DASHDOTUNDERLINE;
+
+#if 0 // visibility feedback not supported now
+            if (   (nfeedback &amp; XIMVisibleToForward)
+                || (nfeedback &amp; XIMVisibleToBackward)
+                || (nfeedback &amp; XIMVisibleCenter) )
+            { }
+#endif
+        }
+        // copy in list
+        psalattr[npos] = nval;
+        noldval = nval;
+    }
+    // return list of sal attributes
+    return psalattr;
+}
+</code></pre>
+<p>この実装の興味深い点は次の通りである。</p>
+<ul>
+<li>XIMFeedbackの値（<code>pfeedback[npos]</code>）が0の場合は特別であり、直前のフィードバックと同じ値をもつ。</li>
+<li>XIMFeedbackの値をビットマスクとして扱う。</li>
+<li>1.0.3と解釈が異なる。</li>
+</ul>
+<p>以下、順に説明する。</p>
+<h3>XIMFeedbackの値が0のときの振る舞い</h3>
+<p>例えば、「<u>今日は</u><span class="reverse">晴れです</span>」（&quot;今日は&quot; は下線、&quot;晴れです&quot; は反転文字）を描画する場合、XIMFeedbackの配列は通常次のような値をもつ。</p></p>
+<pre><code class="language-plaintext">2221111
+</code></pre>
+<p>しかし、OpenOfficeではXIMFeedbackの値が0の場合は直前のフィードバックと同じ値を使用するので、次のような値でも同様な結果が得られるということである。</p>
+<pre><code class="language-plaintext">2001000
+</code></pre>
+<p>他の多くのXIMクライアントでは、この場合「<u>今</u>日は<span class="reverse">晴</span>れです」（&quot;今&quot; は下線、&quot;晴&quot; は反転文字、そのほかは通常文字）と表示するはずである。XIMFeedbackの値が0のときの解釈は、通常表示と同様に（下線や反転などの属性なしで）描画するという解釈が自然ではないだろうか。</p>
+<h3>XIMFeedbackの値をビットマスクとして扱う</h3>
+<p>XIMFeedbackの値と文字属性の対応は次の通りであり、さらに下線と反転の文字属性はビットマスクで同時に指定できる。</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">XIMFeedbackの値</th>
+<th style="text-align:left">文字属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">直前の文字の文字属性を使用</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMReverse</code></td>
+<td style="text-align:left">反転（前景色が白、背景色が青）</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMUnderline</code></td>
+<td style="text-align:left">下線（実線）</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMHighlight</code></td>
+<td style="text-align:left">反転（前景色が白、背景色が青）</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMPrimary</code></td>
+<td style="text-align:left">下線（波線）</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMSecondary</code></td>
+<td style="text-align:left">下線（一点波線）</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMTertiary</code></td>
+<td style="text-align:left">下線（一点波線）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>例えば、XIMFeedbackの値が3の場合、下線と反転の両方の属性で表示されることになる。XIM仕様を素直に解釈すると実に自然な気もするが、Mozillaを始め多くのXIMクライアントはこの値をビットマスクとして解釈していない。</p>
+<p>そのほか、<code>XIMHighlight</code>と<code>XIMReverse</code>が同じ文字属性というのも注意したい点である。</p>
+<h3>1.0.3と解釈が異なる</h3>
+<p>1.0.3では次のような（不思議な）対応だった。<code>XIMReverse</code>を波線に割り当てるところが気になる。</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">XIMFeedbackの値</th>
+<th style="text-align:left">文字属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">直前の文字の文字属性を使用</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMReverse</code></td>
+<td style="text-align:left">下線（波線）</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMUnderline</code></td>
+<td style="text-align:left">下線（実線）</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMHighlight</code></td>
+<td style="text-align:left">反転（前景色が白、背景色が青）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="footnote"><a name="1">★1</a> OpenOfficeのソースは膨大だ。頭から読んでたら一生かかりそうな気がする。ちなみに（インデント幅ではなく）タブ幅が4なので、<code>expand -t 4</code>で処理してからの方が読みやすい。</p>
+<p><a name="mozilla"></a></p>
+<h2>Mozilla</h2>
+<p>Mozilla 1.4（Firebird 0.6）とMozilla 1.3（Firebird 0.5）では、XIMFeedbackの値の解釈が異なる。関係するソースコードで実装を確認する。</p>
+<p>まずはMozilla 1.4の<code>mozilla/widget/src/gtk/nsGtkIMEHelper.cpp</code>（L293）をみる。ここではXIMFeedbackの値を解釈している。</p>
+<pre><code class="language-c">    for (pFeedbackAttr = feedbackAttr;
+         pFeedbackAttr &lt; &amp;feedbackAttr[composeUniStringLen];
+         pFeedbackAttr++) {
+      switch (*preeditFeedback++) {
+      case XIMReverse:
+        *pFeedbackAttr = NS_TEXTRANGE_SELECTEDRAWTEXT;
+        break;
+      case XIMUnderline:
+        *pFeedbackAttr = NS_TEXTRANGE_CONVERTEDTEXT;
+        break;
+      default:
+        *pFeedbackAttr = NS_TEXTRANGE_SELECTEDCONVERTEDTEXT;
+      }
+    }
+</code></pre>
+<p>Mozilla 1.3では、この部分は次のようになっていた。</p>
+<pre><code class="language-c">    for (pFeedbackAttr = feedbackAttr;
+         pFeedbackAttr &lt; &amp;feedbackAttr[composeUniStringLen];
+         pFeedbackAttr++) {
+      switch (*preeditFeedback++) {
+      case XIMReverse:
+        *pFeedbackAttr = NS_TEXTRANGE_SELECTEDRAWTEXT;
+        break;
+      case XIMUnderline:
+        *pFeedbackAttr = NS_TEXTRANGE_CONVERTEDTEXT;
+        break;
+      case XIMHighlight:
+        *pFeedbackAttr = NS_TEXTRANGE_SELECTEDCONVERTEDTEXT;
+        break;
+      default:
+        *pFeedbackAttr = NS_TEXTRANGE_RAWINPUT;
+      }
+    }
+</code></pre>
+<p>ご覧の通り、XIMFeedbackの値はビットマスクとして扱われていない。<code>NS_TEXTRANGE_...</code>の値の意味については後述することにして、結果的に次のような対応であることがわかる。</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">XIMFeedbackの値</th>
+<th style="text-align:left">1.3以前の文字属性</th>
+<th style="text-align:left">1.4以降の文字属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left"><code>NS_TEXTRANGE_RAW_INPUT</code></td>
+<td style="text-align:left"><code>NS_TEXTRANGE_SELECTEDCONVERTEDTEXT</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMReverse</code></td>
+<td style="text-align:left"><code>NS_TEXTRANGE_SELECTEDRAWTEXT</code></td>
+<td style="text-align:left"><code>NS_TEXTRANGE_SELECTEDRAWTEXT</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMUnderline</code></td>
+<td style="text-align:left"><code>NS_TEXTRANGE_CONVERTEDTEXT</code></td>
+<td style="text-align:left"><code>NS_TEXTRANGE_CONVERTEDTEXT</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMHighlight</code></td>
+<td style="text-align:left"><code>NS_TEXTRANGE_SELECTEDCONVERTEDTEXT</code></td>
+<td style="text-align:left"><code>NS_TEXTRANGE_SELECTEDCONVERTEDTEXT</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>次に<code>mozilla/editor/libeditor/base/IMETextTxn.cpp</code>をみると、<code>NS_TEXTRANGE_...</code>の各値は、次のような<code>SELECTION_IME_...</code>で始まる値に変換される。</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">変換前の値</th>
+<th style="text-align:left">変換後の値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>NS_TEXTRANGE_RAW_INPUT</code></td>
+<td style="text-align:left"><code>SELECTION_IME_RAWINPUT</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>NS_TEXTRANGE_SELECTEDRAWTEXT</code></td>
+<td style="text-align:left"><code>SELECTION_IME_SELECTEDRAWTEXT</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>NS_TEXTRANGE_CONVERTEDTEXT</code></td>
+<td style="text-align:left"><code>SELECTION_IME_CONVERTEDTEXT</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>NS_TEXTRANGE_SELECTEDCONVERTEDTEXT</code></td>
+<td style="text-align:left"><code>SELECTION_IME_SELECTEDCONVERTEDTEXT</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>これらの値を用いて描画している部分を順に見てみよう。該当するファイルは<code>mozilla/layout/html/base/src/nsTextFrame.cpp</code>である。</p>
+<p>まず、テキスト属性の定義について知っておく必要がある。L1759付近をみてみよう。</p>
+<pre><code class="language-c">// XXX letter-spacing
+// XXX word-spacing
+#if defined(XP_WIN) || defined(XP_OS2) || defined(XP_UNIX) || defined(XP_MAC)
+#define USE_INVERT_FOR_SELECTION
+#endif
+
+// XXX we should get the following from style sheet or LookAndFeel later
+#define IME_RAW_COLOR NS_RGB(198,33,66)
+#define IME_CONVERTED_COLOR NS_RGB(255,198,198)
+</code></pre>
+<p><code>USE_INVERT_FOR_SELECTION</code>はUNIXでは定義される。また、<code>IME_RAW_COLOR</code>と<code>IME_CONVERTED_COLOR</code>という配色がハードコーディングされていることも注目すべき点である。</p>
+<p>さて、L1929付近には、<code>SELECTION_IME_SELECTEDRAWTEXT</code>の描画方法が記述してある<sup><a href="#2">★2</a></sup>。</p>
+<pre><code class="language-c">          case nsISelectionController::SELECTION_IME_SELECTEDRAWTEXT:{
+#ifdef USE_INVERT_FOR_SELECTION
+              aRenderingContext.SetColor(NS_RGB(255,255,255));
+              aRenderingContext.InvertRect(aX + startOffset, aY, textWidth, rect.height);
+#else
+              aRenderingContext.SetColor(NS_RGB(255,255,128));
+              aRenderingContext.DrawRect(aX + startOffset, aY, textWidth, rect.height);
+#endif
+              aTextStyle.mNormalFont-&gt;GetUnderline(offset, size);
+              aRenderingContext.SetColor(IME_RAW_COLOR);
+              aRenderingContext.FillRect(aX + startOffset+size, aY + baseline - offset, textWidth-2*size, size);
+                                }break;
+</code></pre>
+<p>これから<code>SELECTION_IME_SELECTEDRAWTEXT</code>は「反転 + <code>IME_RAW_COLOR</code>の下線付き」という属性であることがわかる。</p>
+<p>L1946付近には、<code>SELECTION_IME_SELECTEDCONVERTEDTEXT</code>の描画方法が記述してある。</p>
+<pre><code class="language-c">          case nsISelectionController::SELECTION_IME_SELECTEDCONVERTEDTEXT:{
+#ifdef USE_INVERT_FOR_SELECTION
+              aRenderingContext.SetColor(NS_RGB(255,255,255));
+              aRenderingContext.InvertRect(aX + startOffset, aY, textWidth, rect.height);
+#else
+              aRenderingContext.SetColor(NS_RGB(255,255,128));
+              aRenderingContext.DrawRect(aX + startOffset, aY, textWidth, rect.height);
+#endif
+              aTextStyle.mNormalFont-&gt;GetUnderline(offset, size);
+              aRenderingContext.SetColor(IME_CONVERTED_COLOR);
+              aRenderingContext.FillRect(aX + startOffset+size, aY + baseline - offset, textWidth-2*size, size);
+                                }break;
+</code></pre>
+<p>これから<code>SELECTION_IME_SELECTEDCONVERTEDTEXT</code>は「反転 + <code>IME_CONVERTED_COLOR</code>の下線付き」という属性であることがわかる。</p>
+<p>L1958付近には、<code>SELECTION_IME_CONVERTEDTEXT</code>の描画方法が記述してある。</p>
+<pre><code class="language-c">          case nsISelectionController::SELECTION_IME_CONVERTEDTEXT:{
+              aTextStyle.mNormalFont-&gt;GetUnderline(offset, size);
+              aRenderingContext.SetColor(IME_CONVERTED_COLOR);
+              aRenderingContext.FillRect(aX + startOffset+size, aY + baseline - offset, textWidth-2*size, size);
+                                }break;
+</code></pre>
+<p>これから<code>SELECTION_IME_CONVERTEDTEXT</code>は「<code>IME_CONVERTED_COLOR</code>の下線付き」という属性であることがわかる。</p>
+<p>L1941付近には、<code>SELECTION_IME_RAWINPUT</code>の描画方法が記述してある。</p>
+<pre><code class="language-c">          case nsISelectionController::SELECTION_IME_RAWINPUT:{
+              aTextStyle.mNormalFont-&gt;GetUnderline(offset, size);
+              aRenderingContext.SetColor(IME_RAW_COLOR);
+              aRenderingContext.FillRect(aX + startOffset+size, aY + baseline - offset, textWidth-2*size, size);
+                                }break;
+</code></pre>
+<p>これから<code>SELECTION_IME_RAWINPUT</code>は「<code>IME_RAW_COLOR</code>の下線付き」という属性であることがわかる。</p>
+<p>上記をまとめると、次のような対応が得られる。</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">XIMFeedbackの値</th>
+<th style="text-align:left">1.3以前の文字属性</th>
+<th style="text-align:left">1.4以降の文字属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left"><code>IME_RAW_COLOR</code>の下線付き</td>
+<td style="text-align:left">反転 + <code>IME_CONVERTED_COLOR</code>の下線付き</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMReverse</code></td>
+<td style="text-align:left">反転 + <code>IME_RAW_COLOR</code>の下線付き</td>
+<td style="text-align:left">反転 + <code>IME_RAW_COLOR</code>の下線付き</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMUnderline</code></td>
+<td style="text-align:left"><code>IME_CONVERTED_COLOR</code>の下線付き</td>
+<td style="text-align:left"><code>IME_CONVERTED_COLOR</code>の下線付き</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>XIMHighlight</code></td>
+<td style="text-align:left">反転 + <code>IME_CONVERTED_COLOR</code>の下線付き</td>
+<td style="text-align:left">反転 + <code>IME_CONVERTED_COLOR</code>の下線付き</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>この実装の興味深い点は次の通りである。</p>
+<ul>
+<li>（1.4以降では）XIMFeedbackの値が0の場合、<code>XIMHighlight</code>と同じ扱いである。</li>
+<li>XIMFeedbackの値をビットマスクとして扱っていない。</li>
+</ul>
+<p>1.4以降でXIMFeedbackの値0の解釈が変更された理由は、単純にコミッタの質が低いからである。Bonsaiで確認して欲しい。</p>
+<p class="footnote"><a name="2">★2</a> このあたりのソースは品質がかなり低くい。担当者のレベルの低さが伝わってくる。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon Jul  7 01:53:09 JST 2003 -->
+<!-- hhmts start -->
+Last modified: Thu May  7 05:18:33 JST 2009
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Japanese XIM Server</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="news.html">News</a>
+    </li>
+    <li>
+      <a href="feature.html">Feature</a>
+    </li>
+    <li>
+      <a href="screenshot.html">Screenshot</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="document.html">Document</a>
+    </li>
+    <li>
+      <a href="bug.html">Bug</a>
+    </li>
+    <li>
+      <a href="xim-server.html">on-the-spot対応日本語XIMサーバ 機能と実装の比較</a>
+    </li>
+    <li>
+      <a href="bug-xcreatefontset.html">XCreate<wbr>Font<wbr>Set()のバグ</a>
+    </li>
+    <li class="selected">
+      XIMFeedbackの仕様解釈と実装
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

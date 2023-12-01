@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE interface SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd" [
+  <!ENTITY cookieParam '
+    <param type="void *" name="cookie">
+      <desc>このインスタンスのポインタ</desc>
+    </param>'>
+]>
+<interface package="bar" name="Openable">
+  <namespace/>
+
+  <method name="readfn">
+    &cookieParam;
+
+    <param type="char *" name="data">
+      <desc>読み込むデータを格納する領域のポインタ</desc>
+    </param>
+
+    <param type="int" name="size">
+      <desc><arg>data</arg>のサイズ</desc>
+    </param>
+
+    <return type="int">
+      <desc>成功した場合は実際に読み込んだデータのサイズを返します。ファイルの最後の場合は0を返します。そうでなければ<math>-1</math>を返します。</desc>
+    </return>
+
+    <desc><brief>ファイルからデータを読み込みます。</brief></desc>
+  </method>
+
+  <method name="writefn">
+    &cookieParam;
+
+    <param type="const char *" name="data">
+      <desc>書き込むデータを格納した領域のポインタ</desc>
+    </param>
+
+    <param type="int" name="size">
+      <desc><arg>data</arg>のサイズ</desc>
+    </param>
+
+    <return type="int">
+      <desc>成功した場合は書き込んだデータのサイズを返します。そうでなければ<math>-1</math>を返します。</desc>
+    </return>
+
+    <desc><brief>ファイルにデータを書き込みます。</brief></desc>
+  </method>
+
+  <method name="seekfn">
+    &cookieParam;
+
+    <param type="fpos_t" name="offset">
+      <desc>ファイルのオフセット</desc>
+    </param>
+
+    <param type="int" name="whence">
+      <desc><arg>offset</arg>の起点</desc>
+    </param>
+
+    <return type="fpos_t">
+      <desc>成功した場合はファイルの先頭からのオフセットを返します。そうでなければ<math>-1</math>を返します。</desc>
+    </return>
+
+    <desc>
+      <brief>ファイルのオフセットを変更します。</brief>
+      <p><arg>whence</arg>の値には<code>foo_Whence_SET</code>、<code>foo_Whence_SET</code>、<code>foo_Whence_END</code>のいずれかを指定します。</p>
+    </desc>
+  </method>
+
+  <method name="closefn">
+    &cookieParam;
+
+    <return type="int">
+      <desc>成功した場合は0を返します。そうでなければ<math>-1</math>を返します。</desc>
+    </return>
+
+    <desc><brief>ファイルをクローズします。</brief></desc>
+  </method>
+
+  <desc><brief>オープン可能なインタフェースの記述例を提供します。</brief></desc>
+</interface>

@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <script data-ad-client="ca-pub-4691079535294206" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-636163-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-636163-1');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Part 1. Java 11のnull | The Insanity Beyond Null</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="stylesheet" type="text/css" href="next-button.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+    <script src="next-button.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">The Insanity Beyond Null</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>1. Java 11の<code>null</code></h1>
+<p>Javaでは<code>int</code>や<code>boolean</code>などのプリミティブ型の値は<code>null</code>になることはない。
+なので、参照型の値だけを考えれば良い。
+ただし、プリミティブ型のラッパークラス（<code>Integer</code>や<code>Boolean</code>クラスなど）のボクシングやアンボクシングには気をつける必要がある。</p>
+<h2>nullオブジェクトパターン</h2>
+<p>何かキーが押されたら、そのキーに対応した処理を実行する、という例を考えてみよう:</p>
+<pre><code class="language-java">...
+public final class Main {
+
+    private final Map&lt;Character, Runnable&gt; map;
+
+    public Main() {
+        map = new HashMap&lt;&gt;();
+        map.put('h', () -&gt; moveCursorLeft());
+        map.put('j', () -&gt; moveCursorDown());
+        map.put('k', () -&gt; moveCursorUp());
+        map.put('l', () -&gt; moveCursorRight());
+    }
+
+    public void handleKeyInput() {
+        var c = getPressedKey();
+        var action = map.get(c);
+        // actionはnullの可能性があるので、次のメソッド呼び出しは
+        // NullPointerExceptionをスローするかもしれない
+        action.run();
+    }
+
+    /**
+        キーボードの押されたキーの文字を返す.
+        キーが押されてない場合は、押されるまでブロックする.
+
+        @return
+            押されたキーの文字
+    */
+    private char getPressedKey() {
+        ...
+    }
+    ...
+</code></pre>
+<blockquote>
+<p><a href="https://ideone.com/lgH2yN">実行結果</a></p>
+</blockquote>
+<p><code>Map</code>インターフェースの<code>get(Object)</code>メソッドは<code>null</code>を返す可能性があるので、
+戻り値が<code>null</code>かどうかを確認するコード、
+すなわちnullチェックを追加する必要がある:</p>
+<pre><code class="language-java">    private void handleKeyInput() {
+        var c = getPressedKey();
+        var action = map.get(c);
+        if (action == null) {
+            // 登録されてないキーは何もしない
+            return;
+        }
+        action.run();
+    }
+</code></pre>
+<blockquote>
+<p><a href="https://ideone.com/HnA7eL">実行結果</a></p>
+</blockquote>
+<p>このnullチェックは何を表しているのだろうか。
+<code>Map</code>の代わりに<code>if</code>—<code>else if</code>—<code>else</code>や<code>switch</code>を用いて実装すれば、
+そのときに<code>else</code>や<code>default</code>で記述する処理が、
+このnullチェックに相当することがわかる
+（#20「分岐よりサブタイピングを選ぶ」を参照）。</p>
+<blockquote>
+<p>なお、
+<code>if</code>や<code>switch</code>では<ruby>循環<rt>じゅんかん</rt></ruby>的複雑度（cyclomatic
+complexity）が上昇するし、
+テストも面倒になる。
+さらに<code>else</code>や<code>default</code>の書き忘れはコンパイル時も実行時も直ちにはエラーにはならないので、
+間違いに気づきにくい。</p>
+</blockquote>
+<p>さて、このnullチェックは次のように消すことができる:</p>
+<pre><code class="language-java">    private static final Runnable DO_NOTHING = () -&gt; {};
+
+    ...
+
+    private void handleKeyInput() {
+        var c = getPressedKey();
+        // もちろん、DO_NOTHINGの代わりに空のメソッドのメソッド参照を渡してもよい
+        var action = map.getOrDefault(c, DO_NOTHING);
+        action.run();
+        // 実際、actionは不要で次のように書いて良い:
+        //
+        // map.getOrDefault(c, DO_NOTHING)
+        //     .run();
+    }
+</code></pre>
+<blockquote>
+<p><a href="https://ideone.com/uHjPHl">実行結果</a></p>
+</blockquote>
+<p><code>get(Object)</code>の代わりに<code>getOrDefault(Object, V)</code>を用いた。
+対応する操作が存在しない文字に対しては、
+<code>null</code>ではなく、
+<code>DO_NOTHING</code>という<strong>何もしない</strong><code>Runnable</code>が返ってくる。
+文字に操作が関連付けられているかどうかに関わらず、返された操作を実行するだけでよくなった。
+そして、nullチェックのための<code>if</code>はライブラリ側に<strong>おっかぶせる</strong>ことで消失した。</p>
+<p>このように、
+<code>null</code>の代わりに特別なオブジェクトを使う技法を<strong>nullオブジェクトパターン</strong> [<a href="#ref1">1</a>] と呼ぶ。</p>
+<blockquote>
+<p>書籍 <em>Refactoring</em> [<a href="#ref2">2</a>] ではIntroduce Null Objectで紹介されている。</p>
+</blockquote>
+<p><a href="https://www.amazon.co.jp/%E6%96%B0%E8%A3%85%E7%89%88-%E3%83%AA%E3%83%95%E3%82%A1%E3%82%AF%E3%82%BF%E3%83%AA%E3%83%B3%E3%82%B0-%E6%97%A2%E5%AD%98%E3%81%AE%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E5%AE%89%E5%85%A8%E3%81%AB%E6%94%B9%E5%96%84%E3%81%99%E3%82%8B-%EF%BC%AD%EF%BD%81%EF%BD%92%EF%BD%94%EF%BD%89%EF%BD%8E%EF%BC%A6%EF%BD%8F%EF%BD%97%EF%BD%8C%EF%BD%85%EF%BD%92-ebook/dp/B01IGW5MG0/ref=as_li_ss_il?__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&amp;keywords=%E3%83%AA%E3%83%95%E3%82%A1%E3%82%AF%E3%82%BF%E3%83%AA%E3%83%B3%E3%82%B0&amp;qid=1569716236&amp;sr=8-2&amp;linkCode=li3&amp;tag=sanchappikeio-22&amp;linkId=53d576ccbdde08a04ab4d00d0deb8695&amp;language=ja_JP"><img src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&amp;ASIN=B01IGW5MG0&amp;Format=_SL250_&amp;ID=AsinImage&amp;MarketPlace=JP&amp;ServiceVersion=20070822&amp;WS=1&amp;tag=sanchappikeio-22&amp;language=ja_JP" alt=""></a></p>
+<p>いつものことだが、このパターンも銀の弾丸ではない。
+何もしない<code>Runnable</code>や<code>Consumer</code>みたいなオブジェクトが使えるパターンではうまくいくことが多い。
+しかし、<code>Function</code>や<code>Supplier</code>みたいなオブジェクトを使うパターンは向いていないこともある。
+次のような例を考えてみよう:</p>
+<pre><code class="language-java">interface Color {
+
+    /**
+        指定した名前にマッチするColorインスタンスを返す.
+
+        @param name
+            ...
+        @return
+            {@code name}にマッチするものが無ければ{@code null},
+            そうでなければマッチしたインスタンス.
+    */
+    static Color findByName(String name) {
+        ...
+    }
+
+    /**
+        RGBを24ビットで表した整数値を返す.
+
+        @return
+            ...
+    */
+    int getRgb();
+}
+</code></pre>
+<blockquote>
+<p><a href="https://ideone.com/931Rpa">実行結果</a></p>
+</blockquote>
+<p><code>findByName(String)</code>は、
+<code>Map</code>の<code>get(Object)</code>と同様、
+検索系の操作の<ruby>定番<rt>ていばん</rt></ruby>で、
+欲しいものが無かったら<code>null</code>を返す。
+呼び出す側のコードは次のようになる:</p>
+<pre><code class="language-java">var yellow = Color.findByName(&quot;YELLOW&quot;);
+// yellowはnullの可能性があるので、次のメソッド呼び出しは
+// NullPointerExceptionをスローするかもしれない
+var rgb = yellow.getRgb();
+</code></pre>
+<p>nullチェックを追加すれば終わりだが、
+先ほどの<code>Map</code>の例と同様に、
+nullオブジェクトのようなものを導入してみるとどうなるのだろうか:</p>
+<pre><code class="language-java">interface Color {
+
+    /** 不正なカラーを表す. */
+    static final Color INVALID = () -&gt; -1;
+
+    /**
+        指定した名前にマッチするColorインスタンスを返す.
+        @param name
+            ...
+        @return
+            {@code name}にマッチするものが無ければ{@link INVALID},
+            そうでなければマッチしたインスタンス.
+    */
+    static Color findByName(String name) {
+        ...
+    }
+    ...
+</code></pre>
+<blockquote>
+<p><a href="https://ideone.com/yA1wwh">実行結果</a></p>
+</blockquote>
+<p>不正な色のRGB値といってもよくわからないので、
+定番の−1でも返しておくことにした。
+すると、これを使う側は次のようになる:</p>
+<pre><code class="language-java">var yellow = Color.findByName(&quot;YELLOW&quot;);
+var rgb = yellow.getRgb();
+// 結局、rgbが-1かどうかを調べる必要がある
+</code></pre>
+<p><code>rgb</code>が−1かどうかをチェックしなくても、続くコードを実行できてしまう。
+状況によっては、このようなコードはかえって危険である。
+必要なnullチェックが抜けていたら例外をスローし、
+以降のコードを実行しない方が幸せなこともあるからだ。</p>
+<p>そう、問題は<code>null</code>かどうかではなく、必要なチェックをするかどうかだ。
+だが、そのチェックこそ、
+このようなnullオブジェクトパターンもどきがうまくいかない理由である。
+<code>findByName(String)</code>メソッドの中身を想像するに、
+その中で次のような本質的なチェックが既に実装されているはずだ:</p>
+<pre><code class="language-java">interface Color {
+    ...
+    static Color findByName(String name) {
+        ...
+        // 次のifが本質的なチェック
+        if (nameに関連するColorオブジェクトが見つからない) {
+            // パスA
+            return INVALID;
+        }
+        // パスB
+        return 見つかったColorオブジェクト;
+    }
+    ...
+</code></pre>
+<p>そして、呼び出し側のコードのチェックは次のようになっているはずだ:</p>
+<pre><code class="language-java">var yellow = Color.findByName(&quot;YELLOW&quot;);
+var rgb = yellow.getRgb();
+if (rgb == -1) {
+    // 処理Aを実行
+} else {
+    // 処理Bを実行
+}
+</code></pre>
+<p>つまり、<strong>本質的なチェック</strong>でパスAを通過したならば処理Aを、
+パスBならば処理Bを、呼び出し側は決定的に実行する（deterministicである）。
+ここまできたら、もう気が付いたと思うが、
+<code>findByName(String)</code>に追加で「処理A」と「処理B」も渡してしまえば、
+呼び出し側は戻り値もそのチェックも不要になる。
+要するに、次のような形に変えてやればよい:</p>
+<pre><code class="language-java">interface Color {
+    ...
+    static void findByName(String name, 処理A, 処理B) {
+        ...
+        if (nameに関連するColorオブジェクトが見つからない) {
+            // 処理Aを実行
+            return;
+        }
+        // 処理Bを実行 with 見つかったColorオブジェクト
+    }
+    ...
+}
+
+...
+
+// 呼び出し側は戻り値もそのチェックも不要
+Color.findByName(&quot;YELLOW&quot;, 処理A, 処理B);
+</code></pre>
+<h2><code>Optional</code>クラス</h2>
+<p>この手の操作、つまり「値の有無の情報と、
+さらに値がある場合はその値を取得する」操作は、
+次のやり方で記述できる:</p>
+<ul>
+<li>型<code>T</code>の値と値の有無を表す<code>boolean</code>値を保持するインスタンスを戻り値とする</li>
+<li>戻り値をやめて、値を受け取るための<code>Consumer&lt;T&gt;</code>と値が無いことを知らせる<code>Runnable</code>を引数に追加する</li>
+</ul>
+<p>前者は言語によっては例えばタプルを使っても実現できる。
+後者は単にコールバックで結果を得るだけだ。
+仮に<code>Pair&lt;K, V&gt;</code>のような<ruby>酷<rt>ひど</rt></ruby>いクラスを利用可能だとすると、
+先ほどの<code>findByName</code>メソッドは次のようなコードになる:</p>
+<pre><code class="language-java">interface Color {
+
+    static Pair&lt;boolean, Color&gt; findByName(String name) {
+        ...
+    }
+
+    static void findByName(String name,
+                           Consumer&lt;Color&gt; found,
+                           Runnable notFound) {
+        ...
+    }
+    ...
+</code></pre>
+<p>しかし、この調子でAPIを記述していけば、
+コードはすぐにボイラープレートまみれになるだろう。</p>
+<p>幸い、Javaにはこれらの操作をカプセル化した<code>Optional</code>クラス<sup>†1</sup>がある。
+先ほどの例をその<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html"><code>Optional</code></a>クラスを使って書き直してみよう:</p>
+<blockquote>
+<p>†1 <code>Optional</code>はJava 8から追加された。</p>
+</blockquote>
+<pre><code class="language-java"> interface Color {
+
+    /**
+        指定した名前にマッチするColorインスタンスを返す.
+
+        @param name
+            ...
+        @return
+            {@code name}にマッチするColorインスタンスを
+            含む{@link Optional&lt;T&gt; Optional}, または
+            空のOptional (マッチするものがない場合）.
+    */
+    static Optional&lt;Color&gt; findByName(String name) {
+        ...
+    }
+}
+</code></pre>
+<blockquote>
+<p><a href="https://ideone.com/c99XyH">実行結果</a></p>
+</blockquote>
+<p>使う側は次のようになる:</p>
+<pre><code class="language-java">var yellow = Color.findByName(&quot;YELLOW&quot;);
+yellow.ifPresent(c -&gt; {
+    var rgb = c.getRgb();
+    System.out.println(&quot;yellow: rgb=&quot; + rgb);
+});
+
+// あるいは、次のように書いても良いが...
+var blue = Color.findByName(&quot;BLUE&quot;);
+if (blue.isPresent()) {
+    var rgb = blue.get().getRgb();
+    System.out.println(&quot;blue: rgb=&quot; + rgb);
+}
+</code></pre>
+<p><code>ifPresent(Consumer)</code>は値が存在すれば、
+その値をパラメータとして引数の<code>Consumer</code>を実行する。
+存在しなければ何もしない。
+存在のチェックをライブラリ側におっかぶせることで、うまくいく。</p>
+<p>逆に、<code>isPresent()</code>と<code>get()</code>の組み合わせは最悪で、
+結局<code>isPresent()</code>のチェックを忘れると<code>get()</code>で例外をスローするだけだ。
+ただの言葉遊びでしかない。</p>
+<blockquote>
+<p><code>Optional&lt;T&gt;</code>には、
+そのほかにも、
+<code>orElse(T)</code>、
+<code>orElseGet(Supplier)</code>のようなデフォルト値、またはデフォルト値を返すラムダ式、
+を指定して値を取り出すメソッドなど、がある。</p>
+</blockquote>
+<p>この<code>Optional</code>クラスのような型を<strong>選択型</strong><sup>†2</sup>（<strong>option type</strong>）[<a href="#ref3">3</a>]
+と呼ぶ。</p>
+<blockquote>
+<p>†2 <strong>不確実型</strong>（<strong>maybe type</strong>）と呼ぶこともある。</p>
+</blockquote>
+<p>Javaにはないが、
+他の言語の中には<strong>null許容型</strong>（<strong>nullable type</strong>）があるものもある。
+これは選択型と少しだけ異なる。
+選択型では<code>Optional&lt;Optional&lt;T&gt;&gt;</code>とネストできるが、null許容型はそれができない。
+null許容型については次のC#のパートで取り扱う。</p>
+<blockquote>
+<p>少し話を逸らす。YELLOWが見つかったら...、
+BLUEが見つからなかったら...、
+のような<strong>簡単な課題はより簡単に書けるようになった</strong>かもしれない。
+しかし、現実の問題はより難しい。
+YELLOWとBLUEの両方が見つかったら...、となっただけで、
+簡単にはいかなそうな匂いを嗅ぎとれただろうか。
+次のように書けばいい、と考えるかもしれない:</p>
+<pre><code class="language-java">var yellow = Color.findByName(&quot;YELLOW&quot;);
+yellow.ifPresent(c1 -&gt; {
+    var blue = Color.findByName(&quot;BLUE&quot;);
+    blue.ifPresent(c2 -&gt; {
+        // c1, c2を使った処理
+        ...
+    });
+});
+</code></pre>
+<p>確かにそうかもしれないが、では色が2つではなく、
+<em>n</em> 個になったらどうすればよいだろうか。
+この後にヒントもあるので、ちょっと考えてみてほしい。</p>
+</blockquote>
+<!-- `null` in a list -->
+<h2>集合と<code>null</code></h2>
+<p><code>Optional</code>クラスは、所詮nullチェックをカプセル化しただけのクラス、なのだろうか。
+その本質はいったい何か考えてみよう。</p>
+<p>次のストリームAPIの使用例をみてみよう:</p>
+<pre><code class="language-java">var firstFavorite = List.of(&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;)
+    .stream()
+    .filter(matchesFavorite)
+    .findFirst();
+firstFavorite.ifPresent(s -&gt; { ... });
+
+// 結果的に次と同じ
+List.of(&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;)
+    .stream()
+    .filter(matchesFavorite)
+    .findFirst()
+    .ifPresent(s -&gt; { ... });
+</code></pre>
+<blockquote>
+<p><a href="https://ideone.com/NzUvcK">実行結果</a></p>
+</blockquote>
+<p><code>matchesFavorite</code>は適当な<code>Predicate&lt;String&gt;</code>とする。
+<code>Stream</code>インターフェースの<code>findFirst()</code>は（良く考えられていて）この場合<code>Optional&lt;String&gt;</code>のインスタンスを返すので、
+値の有無のチェックが必要になる。
+あえて<code>findFirst()</code>を使わないで同じことをやってみると、
+次のようになる:</p>
+<pre><code class="language-java">var favoriteList = List.of(&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;)
+    .stream()
+    .filter(matchesFavorite)
+    .limit(1)
+    .collect(Collectors.toList());
+</code></pre>
+<p>以前との違いは、戻り値の型が<code>Optional&lt;T&gt;</code>から<code>List&lt;T&gt;</code>になったことだ。
+リストといっても、
+要素の数は0か1、カッコ良く言うと<ruby>高々<rt>たかだか</rt></ruby>1個である。
+したがって、実質的にこの<code>List&lt;T&gt;</code>は<code>Optional&lt;T&gt;</code>と同じだから、
+次のように続けることができる:</p>
+<pre><code class="language-java">favoriteList.forEach(s -&gt; { ... });
+
+// または
+for (var s : favoriteList) {
+    // このループは高々1回しか実行されない
+    ...
+}
+
+// あるいは、次のように書いても良いが...
+if (favoriteList.size() != 0) {
+    var s = favoriteList.get(0);
+    ...
+}
+</code></pre>
+<p>したがって、
+<strong>あえて<code>findFirst()</code>を使わない</strong>バージョンは次のように書けることがわかる:</p>
+<pre><code class="language-java">List.of(&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;)
+    .stream()
+    .filter(matchesFavorite)
+    .limit(1)
+    .forEach(s -&gt; { ... });
+</code></pre>
+<p>もちろん、
+<code>Optional&lt;T&gt;</code>があるJavaでこのようなコードを書いていたら、
+コードレビューで直されるだけだ。
+<code>Optional&lt;T&gt;</code>が<strong>長さが高々1である特殊な<code>List&lt;T&gt;</code>とみなせる</strong>ことがわかれば、
+このようなコードは忘れて良い。</p>
+<blockquote>
+<p><code>Optional</code>の代わりに<code>List</code>を使えるとしても、
+<code>ArrayList</code>でラップしていたらオーバーヘッドが大きい。
+要素が最大1つという制約を用いる<code>List</code>の実装クラスがあれば、
+<code>Optional</code>と同じくらいの軽さで実現できる。
+だが、そのようなものを自前で実装しなくても、
+実は<code>Optional</code>がデビューするずっとから、その目的に合致する
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collections.html#singletonList(T)"><code>Collections.singletonList(T)</code></a>が追加されている。
+これと<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collections.html#emptyList()"><code>Collections.emptyList()</code></a>を使って
+<code>Optional</code>のようなことが実現できる
+（<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collections.html#singleton(T)"><code>Collections.singleton(T)</code></a>と
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collections.html#emptySet()"><code>Collections.emptySet()</code></a>でも良いが、
+<code>Set</code>から要素を取り出すのは面倒なので、ここでの説明には<code>List</code>を用いた）。</p>
+</blockquote>
+<p>さて、これらを書籍 <em>Effective Java</em> [<a href="#ref4">4</a>] の
+Item 43: Return empty arrays or collections, not nulls
+と合わせてまとめると、次のようになる:</p>
+<p><a href="https://www.amazon.co.jp/Effective-Java-%E7%AC%AC3%E7%89%88-%E3%82%B8%E3%83%A7%E3%82%B7%E3%83%A5%E3%82%A2%E3%83%BB%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF-ebook/dp/B07RHX1K53/ref=as_li_ss_il?_encoding=UTF8&amp;qid=1569716636&amp;sr=8-1&amp;linkCode=li3&amp;tag=sanchappikeio-22&amp;linkId=ce35fc21eadc3b8b3f0c3eb2e67b7ba7&amp;language=ja_JP"><img src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&amp;ASIN=B07RHX1K53&amp;Format=_SL250_&amp;ID=AsinImage&amp;MarketPlace=JP&amp;ServiceVersion=20070822&amp;WS=1&amp;tag=sanchappikeio-22&amp;language=ja_JP" alt=""></a></p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th>インスタンスの個数</th>
+<th>型</th>
+<th><code>null</code>/その代わりに...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高々1個</td>
+<td><code>T</code></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td>高々1個</td>
+<td><code>Optional&lt;T&gt;</code></td>
+<td><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html#empty()"><code>Optional&lt;T&gt;.empty()</code></a></td>
+</tr>
+<tr>
+<td>0個以上</td>
+<td><code>T[]</code></td>
+<td><code>public static final T[] EMPTY = {};</code></td>
+</tr>
+<tr>
+<td>0個以上</td>
+<td><code>List&lt;T&gt;</code></td>
+<td><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collections.html#emptyList()"><code>Collections.emptyList()</code></a></td>
+</tr>
+<tr>
+<td>0個以上</td>
+<td><code>Stream&lt;T&gt;</code></td>
+<td><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html#empty()"><code>Stream&lt;T&gt;.empty()</code></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>参照が<code>null</code>かどうか、
+というのは配列の要素数が0かどうかと同じレベルの問題である。
+「<code>int</code>だとメモリもったいないから<code>short</code>にする」のと同じノリで、
+要素数が高々1個の場合、配列だと重たいから参照を使う<sup>†3</sup>にすぎない。
+だから、<code>null</code>を撲滅しようと</p>
+<blockquote>
+<p><em>俺が悪いんじゃない、全部<code>null</code>が悪いんです。
+null安全な言語を使わないからダメなんです。</em></p>
+</blockquote>
+<p>と叫んでる人たちは、
+目的が達成された<ruby>暁<rt>あかつき</rt></ruby>には、
+今度はサイズチェックが必要な固定長配列も撲滅するのだろう。</p>
+<blockquote>
+<p>†3 細かいことを言うと、配列の方が表現力は高い。
+配列の場合は値の有無の情報（配列の長さが0または1）と値そのものは独立しているので、
+配列の要素そのものを<code>null</code>にして、「値有り、値は<code>null</code>」を表現できる。
+一方、値の有無をnull参照か否かで表す場合は、値そのものを<code>null</code>とすることは不可能である。</p>
+</blockquote>
+<p>実際のところ、
+CやC++では<code>NULL</code>ポインタの間接参照
+（indirectionまたはdereferencing）
+は<strong>未定義の振る舞い</strong>だからあってはならないのである（#28「未定義の振る舞い」を参照）。
+Javaは<code>null</code>を間接参照したときに<code>NullPointerException</code>をスローすると定義しているので、
+CやC++の<code>NULL</code>と比べればJavaの<code>null</code>は安全である。
+そういった違いがあるものを同列に扱っても意味はない。</p>
+<h2><code>Optional</code>の問題点</h2>
+<p>では、高々1個には<code>Optional</code>を使えば全てが解決するのか。
+もちろん、そんなわけはない。
+それは<code>null</code>の代わりに空の配列を返すのと同様で、
+次のような問題がある:</p>
+<ol>
+<li><code>Optional</code>はプリミティブ型ではなく、参照型である</li>
+<li><code>isPresent()</code>で確認せずに<code>get()</code>することができてしまう</li>
+<li>標準ライブラリには<code>null</code>を返したり受けとる昔のAPIがたくさん残っている</li>
+<li>すべてを<code>Optional</code>にすると実行時の性能が犠牲になる</li>
+</ol>
+<p>最初の問題はコンパイラが<code>Optional</code>を特別扱いしないことに起因する。
+<code>Optional</code>型と思ったら<code>null</code>だった、ということが普通に起こりうる。
+例えば、次のようなコードはシュールだが実用性はない:</p>
+<pre><code class="language-java">Optional&lt;String&gt; maybeString = null;
+</code></pre>
+<p>あるいは:</p>
+<pre><code class="language-java">public Optional&lt;String&gt; getMaybeString() {
+    return null;
+}
+</code></pre>
+<p>当たり前だが、戻り値の型が<code>Optional&lt;T&gt;</code>であるメソッドが<code>null</code>を返したり、
+<code>Optional&lt;T&gt;</code>型のパラメータを受け取るメソッドに<code>null</code>を渡すこともできる。
+かといって、現状のJavaで<code>null</code>が<code>Optional&lt;T&gt;.empty()</code>にボクシングされてもスッキリはしないが。</p>
+<p>2番目の問題も、コンパイラの問題だ。
+コンパイル時に静的解析で発見できるバグを、
+実行時に<code>NoSuchElementException</code>が発生するまで発見を遅らせる可能性がある。</p>
+<p>3番目の問題は、過去の資産との向き合い方である。
+昔のAPIとは<code>null</code>で、
+最新のAPIとは<code>Optional</code>で正しく統合しなくてはならない。</p>
+<p>最後の問題は、
+いつものことだが、
+実行時の性能を犠牲にすることを許さない人が大勢いる、
+ということだ。</p>
+<h2>コンパイラの静的解析</h2>
+<p>コンパイラの静的解析（データフロー解析）と、
+ソースコードにメタデータをアノテーションすることを組み合わせることで、
+参照型の値のnullチェックが適切であるかをコンパイル時に知ることができる。
+JDKには今のところ含まれていないが、
+静的解析ツールでは次のようなものがある:</p>
+<ul>
+<li><a href="https://checkerframework.org/">Checker Framework</a>
+<ul>
+<li><a href="https://checkerframework.org/manual/#nullness-checker">Chapter 3. Nullness Checker</a></li>
+</ul>
+</li>
+<li>FindBugs
+<ul>
+<li><a href="http://findbugs.sourceforge.net/manual/annotations.html">Chapter 10. Annotations</a></li>
+</ul>
+</li>
+</ul>
+<p>また、次のIDEも同様な仕組みに対応している:</p>
+<ul>
+<li>IntelliJ IDEA
+<ul>
+<li><a href="https://www.jetbrains.com/help/idea/nullable-and-notnull-annotations.html">@Nullable and @NotNull</a></li>
+</ul>
+</li>
+<li>Eclipse
+<ul>
+<li><a href="https://www.ibm.com/support/knowledgecenter/en/SSRTLW_9.5.0/org.eclipse.jdt.doc.user/tasks/task-using_null_annotations.htm">Using null annotations</a></li>
+<li><a href="https://www.ibm.com/support/knowledgecenter/en/SSRTLW_9.5.0/org.eclipse.jdt.doc.user/tasks/task-using_null_type_annotations.htm">Using null type annotations</a></li>
+</ul>
+</li>
+<li>Android Studio
+<ul>
+<li><a href="https://developer.android.com/studio/write/annotations.html">Improve code inspection with annotations</a></li>
+<li><a href="https://developer.android.com/reference/android/support/annotation/NonNull.html">NonNull</a></li>
+<li><a href="https://developer.android.com/reference/android/support/annotation/Nullable.html">Nullable</a></li>
+</ul>
+</li>
+</ul>
+<p>ただし、アノテーションで使用するクラスは今のところ標準化<sup>†4</sup>されていない。
+そのため、各実装で独自の似たようなアノテーションクラス
+（<code>@NonNull</code>、<code>@NotNull</code>、<code>@Nonnull</code>など）
+が定義されており、互換性がないことに注意する必要がある。</p>
+<blockquote>
+<p>†4 JSR-305/308で標準化しようとしている。
+なぜ乱立してるかは次を参照:</p>
+<p>https://stackoverflow.com/questions/4963300/which-notnull-java-annotation-should-i-use</p>
+</blockquote>
+<p>IntelliJ IDEAの実装を例にすると、
+<code>@NotNull</code>と<code>@Nullable</code>で次のようにフィールド、
+パラメータ、
+戻り値などをアノテートする:</p>
+<pre><code class="language-java">public final class ContactInfo {
+
+    private @NotNull String name;
+    private @NotNull List&lt;@NotNull String&gt; mailList;
+    private @Nullable Integer age;
+
+    public ContactInfo(@NotNull String name,
+            @NotNull List&lt;@NotNull String&gt; mailList,
+            @Nullable Integer age) {
+        this.name = name;
+        this.mailList = Collections.unmodifiableList(mailList);
+        this.age = age;
+    }
+    ...
+    public @Nullable String getPrimaryMail() {
+        var list = mailList;
+        return list.size() == 0 ? null : list.get(0);
+    }
+    ...
+    public @Nullable Integer getAge() {
+        return age;
+    }
+}
+</code></pre>
+<p>そして、この<code>ContactInfo</code>クラスを使う次のコードを用意する:</p>
+<pre><code class="language-java">public final class Main {
+
+    private static void sendMail(@NotNull String mailAddress,
+                                 @NotNull String name) {
+        System.out.println(mailAddress + &quot; &quot; + name);
+    }
+
+    public static void main(String[] args) {
+        var listContainingNull = new ArrayList&lt;String&gt;();
+        listContainingNull.add(null);
+        var infoList = List.of(
+                new ContactInfo(&quot;Jack&quot;, listContainingNull, null),
+                new ContactInfo(&quot;Jack&quot;, List.of(&quot;jack@example.com&quot;), null),
+                new ContactInfo(&quot;Kim&quot;, Collections.emptyList(), 18));
+        infoList.stream()
+                .filter(i -&gt; i.getAge() &lt; 20)
+                .forEach(i -&gt; sendMail(i.getPrimaryMail(), i.getName()));
+    }
+}
+</code></pre>
+<p>IntelliJ IDEAのAnalyze ➜ Inspect Code...を実行すると、
+次のような結果が得られる:</p>
+<p><a href="images/InspectionResultsExample1.png"><img style="width: 100%" src="images/InspectionResultsExample1.png"/></a></p>
+<p>確かに、<code>i.getAge()</code>は<code>null</code>になりえるのでnullチェックが必要なのに、
+nullチェック無しでアンボクシングしているから指摘は正しい。
+同様に、次の指摘:</p>
+<p><a href="images/InspectionResultsExample2.png"><img style="width: 100%" src="images/InspectionResultsExample2.png"/></a></p>
+<p><code>sendMail</code>の最初のパラメータに<code>i.getPrimaryMail()</code>の戻り値を指定しているが、
+これも<code>null</code>になりうる値を<code>null</code>であってはならないパラメータに渡しているので、
+指摘通りである。</p>
+<p>しかしながら、
+<code>ContactInfo</code>のコンストラクタの第2パラメータに<code>listContainingNull</code>を渡すところはスルーしている。
+どうやら、
+<code>List&lt;@NotNull String&gt;</code>のような型パラメータに対するアノテーションは機能していないようだ。</p>
+<p>とはいえ、このようなアノテーションが標準化されて、かつ実用的<sup>†5</sup>になれば、
+妙なボイラープレート（<code>public</code>メソッドの最初に引数の値が<code>null</code>かどうか確認する儀式）と
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Objects.html#requireNonNull(T)">そのためのAPI</a>は不要になる。</p>
+<blockquote>
+<p>†5 静的解析は完璧ではない。<a href="https://en.wikipediaa.org/wiki/False_positives_and_false_negatives"><strong>偽陽性</strong>（<strong>false positive</strong>）や<strong>偽陰性</strong>（<strong>false negative</strong>）</a>はゼロにはならない。また、メタデータは人が付与するため、APIが間違ってアノテートされると、その後は大惨事が起きる。</p>
+</blockquote>
+<h2>水際対策</h2>
+<p>残念ながら、標準ライブラリの必要なAPI全てにメタデータが付加され、コンパイラが警告を出せるようになるまでは、<code>null</code>にまつわるアノテーションは概念実証（Proof of Concept: PoC）でしかない。
+Javaに限らずnull安全でない言語では、
+現実的には<code>null</code>に対して次のような<strong>水際対策</strong>で<code>null</code>の<strong>上陸</strong>を食い止めるしかない:</p>
+<ul>
+<li>できるだけ<code>null</code>を使わない</li>
+<li><code>null</code>を返す/受け取る可能性があるAPIを使用したら、
+速やかに<code>null</code>かどうか確認する（<code>null</code>の確認を先送りしない）</li>
+<li><code>null</code>を手にしてしまったら、
+それを適切な別の表現に変換するなどして、
+速やかに<strong>処分</strong>する（<code>null</code>の処分を先送りしない）</li>
+</ul>
+<p><code>null</code>の処分の先送りとは、例えば次のようなことである:</p>
+<ul>
+<li><code>null</code>を何の罪も無い他のオブジェクトにおっかぶせる（<code>Optional&lt;T&gt;</code>の<code>ofNullable(T)</code>メソッドなど、そのためのクラスに渡すのはよい）</li>
+<li><code>null</code>を別の型に<ruby>伝搬<rt>でんぱん</rt></ruby>する<sup>†6</sup></li>
+<li>不適切なnullオブジェクトに変換する</li>
+<li><code>NullPointerException</code>をキャッチする<sup>†7</sup></li>
+</ul>
+<blockquote>
+<p>†6 別の型に伝搬する例: <code>(s == null) ? null : s.getValue()</code></p>
+</blockquote>
+<blockquote>
+<p>†7 <code>NullPointerException</code>に限らず、
+<code>RuntimeException</code>とその派生の例外はキャッチすべきではないが...</p>
+</blockquote>
+<p>特にJavaでは、<code>null</code>かもしれない参照はすぐに<code>Optional.ofNullable(T)</code>でラップして、
+そのまま確認、処分すればよい。ラップしたまま先送りしないこと。</p>
+<h2><code>null</code>の源泉</h2>
+<p>水際対策ができれば、あとは自分が<code>null</code>をなるべく生み出さないようにする。Javaの代表的な<code>null</code>の源泉は、未初期化のフィールド、配列の生成、未初期化のローカル変数、といったところだろう:</p>
+<pre><code class="language-java">// 未初期化のフィールド
+private String name;
+
+public void foo() {
+
+    // 配列の生成（要素は全てnull）
+    var array = new Object[SIZE];
+
+    // 未初期化のローカル変数
+    String s;
+    ...
+}
+</code></pre>
+<p>すべてのクラスを不変にはできない<sup>†8</sup>ので、
+インスタンスの状態に応じて値が変化するフィールドは当然存在する。
+しかし、そうしたフィールドが<code>null</code>になるべき必然性はない。
+例えば、<code>null</code>が値を設定されていないことを表す、というのであれば、
+<code>null</code>を使う代わりに、
+フィールドの型を<code>T</code>から<code>Optional&lt;T&gt;</code>に変えて、
+それを表すために<code>Optional&lt;T&gt;.empty()</code>をさしておくこともできる。</p>
+<blockquote>
+<p>†8 簡単な例は、相互参照する2つのインスタンス、循環参照のリストなど。</p>
+</blockquote>
+<p>そのインスタンスのどの状態においても特定のフィールドが
+<code>null</code>でありうる、というのなら、そのフィールドへのアクセスすべてについて
+nullチェックが必要であり、<code>Optional&lt;T&gt;</code>でラップすることに意味がある。
+そうではなく、
+インスタンスの状態によってそのフィールドが<code>null</code>または非<code>null</code>であることが決まっていることもある。
+例えば、あるプライベートのインスタンスメソッドを呼び出している間、
+特定のフィールドが非<code>null</code>であることを保証している、
+という状況にあるなら、クラスを分割する、ステートパターンを適用するなど、
+設計を見直す方がいいかもしれない。</p>
+<p>配列もできるだけストリームAPIの終端操作で生成し、
+それでは実現できないもの<sup>†9</sup>だけを許容すべきである。</p>
+<blockquote>
+<p>†9 直ぐに思い浮かぶのはハッシュテーブルの実装など。</p>
+</blockquote>
+<p>最後のローカル変数だが、基本的にローカル変数は宣言時に初期値を必ず代入すること。
+新入社員やそれに準じるスキルの方々が、
+次のようなコードを書いてドヤ顔をしているのをよくみかける:</p>
+<pre><code class="language-java">String s;
+if (state == State.A) {
+    s = ...
+} else {
+    s = ...
+}
+</code></pre>
+<p>三項演算子（またはJava 12の<code>switch</code>式）で書ける場合もあるし、
+それができない場合は<code>var s = method();</code>のように値を返すメソッドに分離する、
+あるいはそれをメソッドに分けるとやたらパラメータが多くなるのであれば、
+<code>Supplier</code>か<code>Function</code>（ラムダ式）を定義して、その式の戻り値を代入する、
+などを検討してみる（C#ならラムダ式の代わりにローカル関数を使ってもよい）。</p>
+<blockquote>
+<p>未初期化のローカル変数には、似たようなケースが多々ある。
+例えば、<code>try</code>—<code>catch</code>で<code>try</code>の直前に変数を宣言だけしておいて、
+<code>try</code>ブロックの中でその変数に値を代入するケースも同様である。</p>
+</blockquote>
+<h2>References</h2>
+<!--
+<style>
+#references + ol > li::marker { content: "[" counter(list-item) "] "; }
+</style>
+-->
+<div id="references"></div>
+<ol>
+<li>
+<p><a name="ref1"></a>
+<a href="https://en.wikipedia.org/wiki/Null_object_pattern">Wikipedia, <em>Null object pattern</em></a></p>
+</li>
+<li>
+<p><a name="ref2"></a>
+<a href="https://books.google.com/books?id=UTgFCAAAQBAJ">Fowler, Martin, et al. <em>Refactoring: improving the design of
+existing code.</em> Addison-Wesley Professional, 1999.</a></p>
+</li>
+<li>
+<p><a name="ref3"></a>
+<a href="https://en.wikipedia.org/wiki/Option_type">Wikipedia, <em>Option type</em></a></p>
+</li>
+<li>
+<p><a name="ref4"></a>
+<a href="https://books.google.com/books?id=ka2VUBqHiWkC">Joshua Bloch. <em>Effective Java, second edition.</em>
+Addison-Wesley Professional, 2008.</a></p>
+</li>
+</ol>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">The Insanity Beyond Null</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="Part-0-Null.html">0. Null</a>
+    </li>
+    <li class="selected">
+      1. Java 11のnull
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="Part-2-CSharp-8.html">2. C# 8のnull</a>
+    </li>
+    <li>
+      <a href="Part-3-Others.html">3. そのほかのnull</a>
+    </li>
+    <li>
+      <a href="Part-4-Exercises.html">4. 演習問題</a>
+    </li>
+    <li>
+      <a href="Part-5-Epilog.html">5. 結び</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

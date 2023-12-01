@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Release Notes | 国際化エディタ</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo"><img src="editor-icon.gif" alt="アイコン" style="width: 32px; height: 32px; vertical-align: middle;">国際化エディタ</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>リリースノート</h1>
+<p><a name="latest"></a></p>
+<h2>2001-06-25</h2>
+<p><a href="editor-20010625.tar.gz">editor-20010625.tar.gz</a>をリリース。</p>
+<ul>
+<li>IMサーバのコードの一部をマージした。</li>
+<li>ソースコードの文字コードをEUCに統一した。</li>
+<li>前編集開始位置が行頭で、前編集文字列挿入後にそれが前の行の行末へ移動してしまうような場合、前編集文字列の領域とキャレット位置がずれてしまうバグを修正。</li>
+</ul>
+<h2>2001-01-21</h2>
+<p><a href="editor-20010121.tar.gz">editor-20010121.tar.gz</a>をリリース。</p>
+<ul>
+<li>起動時にリソースで指定されたXIMスタイルをXIMサーバが提供できない場合、利用可能なXIMスタイルを選択できるようにした。</li>
+<li>On-The-Spot入力で前編集文字列が存在するときに、スクロールバーを操作するなどしてキャレットが移動する場合、前編集文字列をキャンセルする処理が間違っていたのを修正した。</li>
+<li>編集中のファイル名をアイコン名として使用するようにした。</li>
+</ul>
+<h2>2001-01-15</h2>
+<p><a href="editor-20010115.tar.gz">editor-20010115.tar.gz</a>をリリース。</p>
+<ul>
+<li>On-The-Spotでフォーカスを失ったときにXmbResetIC()が呼ばれていなかったバグを修正した。</li>
+<li>USE_KINPUT2が定義されていない場合にTextAreaやTextLineへOn-The-Spotで入力する際、アプリケーション内部でフォーカスを移動したときに、前編集文字列がフォーカス移動前のコンポーネントに残ってしまうバグを修正（ICへのフォーカスを遅延して設定するようにした）。</li>
+</ul>
+<h2>2000-08-16</h2>
+<p><a href="editor-20000816.tar.gz">editor-20000816.tar.gz</a>をリリース。</p>
+<ul>
+<li>受動的フォーカスモデルのコードを一部マージした。</li>
+<li>オブジェクトのグラビティを指定するためのリソースを追加した。</li>
+<li>SylPanedWindowをマップするタイミングをレイアウト指定時に変更した。</li>
+<li>前編集文字列を挿入・削除したときにスクロールバーが出現・消滅する場合、前編集文字列の領域がおかしくなるバグを修正。</li>
+</ul>
+<h2>2000-02-17</h2>
+<p><a href="editor-20000217.tar.gz">editor-20000217.tar.gz</a>をリリース。</p>
+<ul>
+<li>On-The-SpotでICをリセットした直後に前編集文字列を消去するように変更した。</li>
+<li>関数の使用されない引数に__unusedキーワードを指定した。</li>
+<li>On-The-Spotの処理をTextLineとTextAreaで共通化した（Preedit.c）。</li>
+<li>前編集文字列があるときに、スクロールしてキャレットが移動してもICをリセットしていなかったのを修正。</li>
+<li>内部で使用されるマクロ名を一部変更した。</li>
+<li>Button, ListBox, TextLine, TextAreaに次のリソースを追加した:
+<ul>
+<li>focusFrameColor (Foreground): フォーカス枠の色</li>
+<li>focusFrameWidth (LineWidth): フォーカス枠の幅</li>
+</ul>
+</li>
+<li>TextArea, TextLineに次のリソースを追加した:
+<ul>
+<li>caretColor (Foreground): キャレットの色</li>
+</ul>
+</li>
+<li>TextAreaに次のリソースを追加した。
+<ul>
+<li>focusRippleColor (Foreground): フォーカス獲得時の波紋の色</li>
+<li>focusRippleWidth (LineWidth): フォーカス獲得時の波紋の幅</li>
+</ul>
+</li>
+</ul>
+<h2>2000-01-29</h2>
+<p><a href="editor-20000129.tar.gz">editor-20000129.tar.gz</a>をリリース。</p>
+<ul>
+<li>ソースファイルの拡張子の構成を変更。</li>
+<li>構造体SylTextLineのメンバn_preedit_charsなどが生成時に初期化されていなかったのを修正。</li>
+<li>Solarisではisspace()の代わりにiswspace()を使うように修正（1999-09-16からSolarisでは動作しなかった）。</li>
+</ul>
+<h2>1999-11-27</h2>
+<p><a href="editor-19991127.tar.gz">editor-19991127.tar.gz</a>をリリース。</p>
+<ul>
+<li>ラベルオブジェクトの名前をTapeからPlateに変更した。</li>
+<li>カラー指定のインデックス値をマジックナンバーで指定する方式を廃止して、シンボル名で指定できる機構にした。</li>
+<li>オブジェクトを解放するときにフォントセットを解放していなかったのを修正。</li>
+</ul>
+<h2>1999-10-17</h2>
+<p><a href="editor-19991017.tar.gz">editor-19991017.tar.gz</a>をリリース。</p>
+<ul>
+<li>前編集開始位置が行末に近く、前編集文字列挿入後にそれが次の行の先頭へ移動してしまうような場合、前編集文字列の領域とキャレット位置がずれてしまうバグを修正。</li>
+</ul>
+<h2>1999-10-10</h2>
+<p><a href="editor-19991010.tar.gz">editor-19991010.tar.gz</a>をリリース。</p>
+<ul>
+<li>起動後トップレベルウィンドウがフォーカスを獲得すると、編集領域にフォーカスが移るようにした。</li>
+<li>TextLineでキャレットの線の幅が0でなくなるのを修正。</li>
+<li>ウィンドウマネージャが不在でも正常にレイアウトするように修正。</li>
+<li>トップレベルウィンドウをマップするタイミングを遅らせて、起動時のムダな描画を減らした。</li>
+<li>imserver-19991007からWCString.c, Text.cをマージした。</li>
+<li>limits.hのMB_LEN_MAXを参照してワイドキャラクタ文字をマルチバイト文字に変換するようにした（jisのようなロケールにも対応）。</li>
+<li>前編集文字列があるときにポインタを移動できないようにした。</li>
+<li>デバッグ用メッセージを整理した。</li>
+<li>セレクション挿入処理を高速化し、セレクション変換中のフラグ変換を廃止した。</li>
+<li>文字列挿入関数の呼び出し方式を変更した。</li>
+<li>文字列削除の関数を用意して、選択領域削除などの処理を高速化した。</li>
+<li>文字列挿入の際の再フォーマット処理を修正した。</li>
+<li>フォーマットする行が長いときに速くなるように処理方法を変更した。</li>
+<li>TextAreaの表示領域すべてを前編集文字列で埋めてしまうと、前編集文字列の表示位置がずれるなどの不具合を修正。</li>
+</ul>
+<h2>1999-09-16</h2>
+<p><a href="editor-19990916.tar.gz">editor-19990916.tar.gz</a>をリリース。</p>
+<ul>
+<li>On-The-Spot入力で前編集文字列がある場合はキーイベントを無視するようにした。</li>
+<li>SetICFontSet()の呼び出しをFocusInイベントを受け取るときに変更した。</li>
+<li>On-The-Spot入力で前編集終了コールバックが呼ばれたときに、前編集文字列が残っていた場合、それを消去するようにした（xwnmo対策）。</li>
+<li>前編集キャレットコールバックの一部をサポートした（xwnmo対策）。</li>
+<li>挿入可能文字をisspace()で判定するように変更して、DEL（0x7f）が挿入できたバグを修正。</li>
+<li>XSetICFocus()/XUnsetICFocus()の呼び出し方が仕様通りでなかったのを修正。</li>
+<li>フォーカスを失うときにXmbResetIC()を呼び出すようにした。</li>
+<li>TextLineもOn-The-Spot入力に対応した。</li>
+</ul>
+<h2>1999-08-06</h2>
+<p><a href="editor-19990806.tar.gz">editor-19990806.tar.gz</a>をリリース。</p>
+<ul>
+<li>Button.cのXGrabPointer()のButtonMotionMaskを外した。</li>
+<li>SolarisでコンパイルできるようにResource.cでMAXHOSTNAMELENを定義した。</li>
+<li>コントロールマネージャを実装した。</li>
+<li>Over-The-Spotで動的にフォントを変更するようにした。</li>
+<li>暫定的に<a href="index.html#on-the-spot">On-The-Spot入力</a>をサポートした。</li>
+</ul>
+<h2>1999-05-04</h2>
+<p><a href="editor-19990504.tar.gz">editor-19990504.tar.gz</a>をリリース。</p>
+<ul>
+<li>VScrollbarのコールバックの仕様を変更。</li>
+<li>レイアウトマネージャのインタフェイスの仕様を変更。</li>
+<li>ReadSylTextArea()の処理速度を改良（起動時間が短縮）。</li>
+</ul>
+<h2>1999-03-08</h2>
+<p><a href="editor-19990308.tar.gz">editor-19990308.tar.gz</a>をリリース。</p>
+<ul>
+<li>リソース名のスペルミスを修正。Buttonをマージした。</li>
+<li>レイアウトマネージャを実装した。</li>
+<li>起動時の引数の与え方を変更した（<a href="index.html#usage">使用法</a>を参照）。</li>
+</ul>
+<h2>1999-03-01</h2>
+<p><a href="editor-19990301.tar.gz">editor-19990301.tar.gz</a>をリリース。</p>
+<ul>
+<li>TextLineをマージした。</li>
+<li>セレクションリクエストの応答処理をTextLineとTextAreaで共通化した。</li>
+</ul>
+<h2>1999-02-25</h2>
+<p><a href="editor-19990225.tar.gz">editor-19990225.tar.gz</a>をリリース。</p>
+<ul>
+<li>セレクションTIMESTAMPに対応。</li>
+<li>セレクションまわりのコードを整理した。</li>
+<li>背景ピクスマップをセレクションで張りつけできるようになった（ただしクライアント間でピクスマップのカラーマップ、ビジュアルが異なる場合は正常に動作しない）。</li>
+<li>Control-Tab, Control-Shift-Tabでフィールドの切り替えができるようになった（現在フィールドは1つしかないので機能しない）。</li>
+<li>PageUp, PageDown（RollDown, RollUp）でページ単位のスクロールができるようになった。</li>
+<li>タブを含む文字列をヤンクするとタブがスペースに置換されてしまうバグを修正。</li>
+</ul>
+<h2>1999-02-12</h2>
+<p><a href="editor-19990212.tar.gz">editor-19990212.tar.gz</a>をリリース。</p>
+<ul>
+<li>タブを使えるようにした。</li>
+<li>自発的なセレクション放棄の方法をICCCMに従うように修正した。</li>
+</ul>
+<h2>1999-01-11</h2>
+<p><a href="editor-19990111.tar.gz">editor-19990111.tar.gz</a>をリリース。</p>
+<ul>
+<li>次のリソースを追加した:
+<ul>
+<li>editor.ximStyle</li>
+<li>editor.geometry</li>
+<li>editor.headline</li>
+</ul>
+</li>
+<li>作成したリソースデータベースはディスプレイに結びつけて管理するようにした。</li>
+<li>アイコンピクスマップとアイコンウィンドウに対応した。</li>
+<li>リソースの読み込みは次の順序で行う:
+<ol>
+<li>xrdbでリソースが定義されてあれば、それを読み込む。なければ<code>~/.Xdefault</code>ファイルがあればそれを読み込む。</li>
+<li>環境変数XENVIRONMENTが定義されていれば、そのファイルを読み込む。なければ<code>~/.Xdefault-ホスト名</code>ファイルがあればそれを読み込む。</li>
+</ol>
+</li>
+</ul>
+<h2>1999-01-05</h2>
+<p><a href="editor-19990105.tar.gz">editor-19990105.tar.gz</a>をリリース。</p>
+<ul>
+<li>リソース設定がいっさいなくても動作するようにした。</li>
+<li>フォーカスが入るときにカーソル位置を示すマーカを表示するようにした。</li>
+</ul>
+<h2>1998-11-24</h2>
+<p><a href="editor-19981124.tar.gz">editor-19981124.tar.gz</a>をリリース。</p>
+<ul>
+<li>領域選択時のkillLineが選択領域を削除するように変更した。</li>
+</ul>
+<h2>1998-08-29</h2>
+<p>editor-19980829.tar.gzをリリース。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jan  8 18:57:30 JST 2000 -->
+<!-- hhmts start -->
+Last modified: Sun Nov 24 00:15:39 JST 2002
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">国際化エディタ</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li class="selected">
+      Release Notes
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Release Notes | Libcgi</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">libcgi</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Release Notes</h1>
+<h2>リリースノート 20080903 (2008-09-03)</h2>
+<ul>
+<li><a href="libcgi-20080903.tar.bz2">libcgi-20080903.tar.bz2</a>をリリース。</li>
+<li>BoxKit_close()がメモリリークするバグを修正。</li>
+<li>次のクラスを削除:
+<ul>
+<li>com_maroontress_libcgi_util_ArraySet</li>
+<li>com_maroontress_libcgi_util_String</li>
+</ul>
+</li>
+<li>std_lang_String, std_util_ArraySetを使用するように修正。</li>
+<li>std_db_BTreeを使用することで、直接Berkeley DBを使用しないようにした。</li>
+<li>Tree_scanBox()がキーと部分一致するボックスを返すとき、ボックスのキーが検索に指定したキーになってしまうバグを修正。</li>
+</ul>
+<h2>リリースノート 20080608 (2008-06-08)</h2>
+<ul>
+<li><a href="libcgi-20080608.tar.bz2">libcgi-20080608.tar.bz2</a>をリリース。</li>
+<li>configureでsanctuaryがインストールされているかどうか確認するようにした。</li>
+<li>com_maroontress_libcgi_db_Treeクラス:
+<ul>
+<li>Tree_MODE_READONLY、Tree_clearError()を追加。</li>
+<li>APIドキュメントの曖昧な記述を修正。</li>
+</ul>
+</li>
+</ul>
+<h2>リリースノート 20080525 (2008-05-25)</h2>
+<ul>
+<li><a href="libcgi-20080525.tar.bz2">libcgi-20080525.tar.bz2</a>をリリース。</li>
+<li>Ubuntu 7.10とopenSUSE 10.3でビルドできるようにした。</li>
+<li>Berkeley DB 4の1.85互換APIでビルドできるようにした。</li>
+</ul>
+<h2>リリースノート 20080430 (2008-04-30)</h2>
+<ul>
+<li><a href="libcgi-20080430.tar.bz2">libcgi-20080430.tar.bz2</a>をリリース。</li>
+</ul>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Libcgi</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li class="selected">
+      Release Notes
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="documents.html">Documents</a>
+    </li>
+    <li>
+      <a href="bdb4-compat185.html">Berkeley DB 4の1.85互換API</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

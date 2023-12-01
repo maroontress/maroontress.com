@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <script data-ad-client="ca-pub-4691079535294206" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-636163-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-636163-1');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Part 2. C# 8のnull | The Insanity Beyond Null</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="stylesheet" type="text/css" href="next-button.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+    <script src="next-button.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">The Insanity Beyond Null</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>2. C# 8の<code>null</code></h1>
+<p>C#は8より前のことは忘れてしまうと話は単純だ。値型も参照型も、値は<code>null</code>にはならない。
+値が<code>null</code>になれる型は<code>int?</code>や<code>string?</code>のような<strong>null許容の</strong>値型と参照型だけである。
+しかし、案の定、いろいろな罠が待ち構えている。</p>
+<h2>null許容値型とnull許容参照型</h2>
+<p>C#には値型（value type）と参照型（reference type）があり、
+そのどちらにもnull許容型と<strong>null非許容型</strong>（<strong>non-nullable type</strong>）がある。</p>
+<p><code>T</code>がnull非許容の<strong>値</strong>型の場合、
+<code>T?</code>は<strong>null許容値型</strong><sup>†1</sup>（<strong>nullable value type</strong>）である。
+ただし、<code>T?</code>の記法はシンタックスシュガーであり、
+その実際の型は<code>Nullable&lt;T&gt;</code>（構造体）である。
+したがって、<code>T</code>と<code>T?</code>はコンパイル時はもちろん、実行時も型として異なるものである。
+<code>T?</code>すなわち<code>Nullable&lt;T&gt;</code>はnull許容型である。
+Javaの<code>Optional&lt;T&gt;</code>とは異なり、
+<code>T?</code>も<code>Nullable&lt;T&gt;</code>もネストを禁止している。
+C#コンパイラは<code>Nullable&lt;T&gt;</code>を特別扱いすることでそれを実現する。
+なお、null許容値型のインスタンスは不変オブジェクトである。</p>
+<blockquote>
+<p>†1
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types">null許容値型</a>はC# 2.0から追加された。</p>
+</blockquote>
+<p>対照的に、<code>T</code>がnull非許容の<strong>参照</strong>型の場合、
+<code>T?</code>は<strong>null許容参照型</strong><sup>†2</sup>（<strong>nullable reference type</strong>）である。
+<code>T</code>と<code>T?</code>はコンパイラが区別するだけで、
+実行時には同じ<strong>もの</strong>（つまり<code>T?</code>、C# 8以前は参照型と呼ばれていたもの）になる。
+そして、もちろん、<code>T?</code>はnull許容型である。</p>
+<blockquote>
+<p>†2
+C# 8から<a href="https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references">null許容参照型</a>が追加され、
+従来の参照型はnull<strong>非</strong>許容参照型になった。
+ただし、互換性を維持するための仕掛けも用意されているし、
+デフォルトで互換性を維持する設定になっている。</p>
+</blockquote>
+<p>まとめると次のようになる:</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">null非許容型</th>
+<th style="text-align:left">null許容型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">値型</td>
+<td style="text-align:left">null非許容値型（例: <code>int</code>）</td>
+<td style="text-align:left">null許容値型（例: <code>int?</code>, <code>Nullable&lt;int&gt;</code>）</td>
+</tr>
+<tr>
+<td style="text-align:left">参照型</td>
+<td style="text-align:left">null非許容参照型（例: <code>string</code>）</td>
+<td style="text-align:left">null許容参照型（例: <code>string?</code>）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2>参照型の式のnullチェック</h2>
+<p>参照型の式<code>expr</code>が<code>null</code>であるかどうかを判定する方法を次の表にまとめた:</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">方式</th>
+<th style="text-align:left"><code>null</code>である</th>
+<th style="text-align:left"><code>null</code>ではない</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">比較演算子</td>
+<td style="text-align:left"><code>expr == null</code></td>
+<td style="text-align:left"><code>expr != null</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>is</code>パターンマッチング</td>
+<td style="text-align:left"><code>expr is null</code></td>
+<td style="text-align:left"><code>!(expr is null)</code></td>
+</tr>
+<tr>
+<td style="text-align:left">プロパティパターン</td>
+<td style="text-align:left"><code>!(expr is {})</code></td>
+<td style="text-align:left"><code>expr is {}</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>C# 9では<code>expr is not null</code>も使用できる。</p>
+</blockquote>
+<h2>コンパイル時と実行時のnull許容参照型の扱い</h2>
+<p>先ほどnull許容参照型とnull非許容参照型は「コンパイラが区別するだけ」と説明したが、
+実際はそう簡単ではない。
+コンパイラはコンテキストによって、それらを区別したり、同様に扱ったりする。
+例えば、次のクラスはコンパイルエラーになる:</p>
+<pre><code class="language-csharp">public class RaiseCS0111
+{
+    public void M(string name)
+    {
+    }
+
+    public void M(string? name)
+    {
+    }
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LglgNgNAJiDUAfAxAOwK4QgQwEYQFMACA1PQgWAChqABAZiNoCYiAlbMAZwIGEBlAAwBGUdQDe1ItKaNaAFiIBZABRhUwItgDmBAJRSZkqjKIBfaoekMmi1euAB+LboMmjV85ffW5dlbTCgkRkALb6nsamFjQ+srbKAUHOYRFxUTIxMUA=">エラーの例</a></p>
+</blockquote>
+<p><code>R</code>をnull非許容の参照型とするとき、
+メソッドのパラメータの型をそのシグネチャとしてみるときは、
+<code>R</code>と<code>R?</code>は同一のものとなる。
+したがって、<code>M(string)</code>と<code>M(string?)</code>は同じシグネチャであるので、
+コンパイルは失敗する。</p>
+<p>一方で、シグネチャが同一でメソッドをオーバーライドするということになると、
+今度は<code>R</code>と<code>R?</code>を区別して、
+コンパイラは次のコードに警告を出す:</p>
+<pre><code class="language-csharp">public class Base
+{
+    public virtual void M(string? name)
+    {
+    }
+}
+
+public sealed class RaiseCS8610 : Base
+{
+    public override void M(string name)
+    {
+    }
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LglgNgNAJiDUAfAxAOwK4QgQwEYQFMACA1PQgWAChqABAZiNoCYiAhbAZwOoG9qigpowBuYAE7B02CEwAsRALIAKWgEYADAH4iZALYEAlAKH8qQogF9q1mlQZFuMgjCasAStjDcAwgGUADgA2TSIQdi4eKjMLBwB7EQJxcTAYYloFFXUNXWwDY3NTE0FbWyA==">警告の例</a></p>
+</blockquote>
+<blockquote>
+<p>なお、逆に<code>M(string)</code>を<code>M(string?)</code>でオーバーライドすると警告は出ない。
+これはリスコフの置換原則（Liskov substitution principle）[<a href="#ref1">1</a>] が適用されるからだ。</p>
+</blockquote>
+<p>大まかに言うと、コンパイラは次のような手順でコンパイルを行う:</p>
+<ol>
+<li><code>R?</code>の<code>?</code>を無視してコンパイル ➜ エラーがあれば出力</li>
+<li>次に<code>?</code>を考慮してnull許容性のデータフロー解析 ➜ 警告があれば出力</li>
+</ol>
+<p>これが分かりにくいと思ったら、次のように考えてみると良い。
+まず、<code>R?</code>の<code>?</code>は<strong>型ではなく</strong>、
+コンパイルのときにだけ存在する属性（例えば、
+<code>[MaybeNull]</code>のようなもの）とみなしてみる。
+つまり、</p>
+<pre><code class="language-csharp">string? foo;
+</code></pre>
+<p>を次のようなコードと（脳内で）変換する:</p>
+<pre><code class="language-csharp">[MaybeNull] string foo;
+</code></pre>
+<p>このようなケースでは、
+型というよりも変数やパラメータにアノテーションを付加していると考えた方がよいだろう。</p>
+<p>厄介なのは、実行時に<code>R</code>と<code>R?</code>の区別がないことである。
+例として、次のようなコードを考えよう:</p>
+<pre><code class="language-csharp">public static void Main() {
+    var array = new[]
+    {
+        &quot;abc&quot;, null, &quot;def&quot;,
+    };
+    var all = array.OfType&lt;string?&gt;()
+        .ToArray();
+    foreach (var s in all)
+    {
+        Console.WriteLine(s);
+    }
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwMRQgG0wQwEaYCmABIVPkQLABQNAAgEwCM9ADMXUwHQAyAllACOAbhr0AzBwbEAwsQDeNYsqnTF1FZuIA3HGGJ6wOAJ7EAvMSiEA7gG0Aukq3L1z5wCJ8AY3cxLWTD93OEIAM18nZwBfUQ03XX0cbHMDMCNjLgB5UIAVYwAHQgAeTlYAfgA+AAoASki3ZS4cgHsAQTSTWtiG0OawQhwvAAtiKoTiAGdiAQNsOrjnVwaVTgBOKoma7rco+t3qfaA===">実行結果</a></p>
+</blockquote>
+<p>実行結果をみると、出力は2行だけであり、<code>all</code>の中に<code>null</code>は含まれていない。
+つまり、<code>OfType&lt;R&gt;()</code>と<code>OfType&lt;R?&gt;()</code>は同じ結果になる。
+<code>OfType&lt;T&gt;()</code>はその<a href="https://github.com/dotnet/runtime/blob/4f9ae42d861fcb4be2fcd5d3d55d5f227d30e723/src/libraries/System.Linq/src/System/Linq/Cast.cs">リファレンス実装</a>をみると、
+<code>is</code>パターンマッチングで<code>T</code>にマッチする要素だけを返すようになっている。
+そもそも、
+<code>is</code>パターンマッチングにおいて型に<code>R?</code>を指定すると、
+次のようにコンパイルエラーになる:</p>
+<pre><code class="language-csharp">public class RaiseCS8650
+{
+    public void M(object? o)
+    {
+        if (o is string?)
+        {
+        }
+    }
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LglgNgNAJiDUAfAxAOwK4QgQwEYQFMACA1PQgWAChqABAZiNoCYiAlbMAZwIGEBlABwA2AKwAGagG9qROU0a0ALEQCyACgD2uAFYEAxsAD8RTQEpZ8mVXm2iYAGZEt9rkwCM4oxZt251vzkAX0tg6hCqIA">エラーの例</a></p>
+</blockquote>
+<p>では、次のように型パラメータ<code>T</code>を用いて<code>is</code>パターンマッチングを試してみよう:</p>
+<pre><code class="language-csharp">public class C
+{
+    public static void M&lt;T&gt;(object? o)
+    {
+        if (o is T)
+        {
+            Console.WriteLine(&quot;true&quot;);
+        }
+        else
+        {
+            Console.WriteLine(&quot;false&quot;);
+        }
+    }
+
+    public static void Main()
+    {
+        M&lt;string?&gt;(&quot;a&quot;);
+        M&lt;string?&gt;(null);
+    }
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwMRQgG0wQwEaYCmABIVPkQLABQNAAgEwCMN9AzMY8QMI0DeNYkM4c6TAGycALMQCyAHgAqAPgAUAezwArQgGNgAfmLqAlIOEDqw68QCWAM2Ia7AZ2KKzVm0MvfvYgE5VACJgSEJgkwBuc28AX1ibQkwXQkTrXz9rQJD7HBSI6PThBK8hUsTGBkTM7wUxAAYDNWCcSJiym3qmJrUMbCLO0tKgA=">実行結果</a></p>
+</blockquote>
+<p>実行結果は<code>true</code>、<code>false</code>となる。
+<code>is</code>パターンマッチングで型パラメータ<code>T</code>に対して<code>R?</code>を指定しても、
+<code>R</code>を指定したのと同じ結果になることがわかる。
+<code>is</code>パターンマッチングは実行時に型を判定する機能であり、
+実行時に<code>?</code>は型イレイジャ（type erasure）[<a href="#ref2">2</a>] により消失するので、
+当然の結果である。
+しかし、<code>OfType&lt;T&gt;()</code>の例で示したように、
+誤解しやすいケースもある。
+もちろん、自分でメソッドを作成する場合は、
+後述するように、
+型制約で<code>T</code>に対して<code>R?</code>を指定できないようにすることも可能だ。
+しかし、LINQなど、標準ライブラリのAPIについては、
+<code>T</code>が実行時に判定されるものかどうか、使う側がよく注意する必要がある。</p>
+<h2>デフォルト値</h2>
+<p>Javaのパートで考察したnullオブジェクトパターンを再びC#で考えてみよう:</p>
+<pre><code class="language-cs">...
+public sealed class Program
+{
+    private static readonly Action DoNothing = () =&gt; {};
+
+    private readonly Func&lt;char, Action&gt; toAction;
+
+    public Program()
+    {
+        var map = new Dictionary&lt;char, Action&gt;()
+        {
+            ['h'] = MoveCursorLeft,
+            ['j'] = MoveCursorDown,
+            ['k'] = MoveCursorUp,
+            ['l'] = MoveCursorRight,
+        };
+        toAction = c =&gt; map.TryGetValue(c, out var action)
+            ? action
+            : DoNothing;
+    }
+
+    public void HandleKeyInput()
+    {
+        var c = GetPressedKey();
+        var action = toAction(c);
+        action();
+    }
+    ...
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwMRQgG0wQwEaYCmABIVPkQLABQNAAgEwCM9ADMXUwCwDcN9AZmIBnQjiJwODDkwDsNAN41iKqQ2Wql1VTuIA3HGGIBbYgF5iUQgHcZsgBQBKPtt0rjAOgASOKHCIA0oQAngCSUAAOEMBOLjoAvvyuKhFgAJYGwCScAGzEYGJwAPZQmMEy0gAiRQByRcAAFmlQAObmxE7mAHzECvE8xEk6qRk4WfmFJWUcAKwAPADGDYYwFT3ARZwMLhoqdEKcDo67vSc6BkbGOBHtVraVaQvAaSWGwYvLYKtbXU5nmv83ABtADkDRBAF12gBZIp6QgAYQgYGERTAABlCAAzYAwQG6UEAK0hMLhiORqLA1WssHxOlBAGsSRZYfCkSi0QBVCJ45JuVSgzDM4is8kcsAAJTSLQauPx/XxGy27QW3RM1w8ABUwMEAOKEYAANXEEEI9gWqyK0X0hmIOCeLygxz5/OIAH47Q6SnTVCBiNU6o1mi04qpErQ+fsOFxiD4/IEQuEojFnTotK6LsRVRZ9cAAAoFYSiOBBYKxfGZ+3PErtJVMBjm5z4quO8t88M6E4jTIkJa23MFwhFwglkKdMw9EE4EGhlLpHvRkVk9mUzE4zoKYgd1TdsbZGOildo6lQDdbrvzveLw8UrkRM/buejcZ0A/L2+S6Wyh80cNAA===">実行結果</a></p>
+</blockquote>
+<p>Javaの例と同様に、<code>null</code>は出てこない。素晴らしいが、気になることがある。</p>
+<p>ここで、
+<code>Dictionary&lt;TKey, TValue&gt;</code>クラスの<code>TryGetValue(TKey, out TValue)</code>メソッドが<code>false</code>を返すとき、
+<code>action</code>はどのような値になっているのだろう。<code>Action</code>はnull非許容型だから、
+<code>action</code>が<code>null</code>になることは無いはずでは、と考えるのが普通だ。
+しかし、答えは<code>null</code>である。
+<a href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2.trygetvalue?view=netstandard-2.1">APIリファレンス</a>には次のような記述がある:</p>
+<blockquote>
+<p><strong><code>value</code></strong> TValue<br>
+When this method returns, contains the value associated with the specified key,
+if the key is found; otherwise, the default value for the type of the value parameter.
+This parameter is passed uninitialized.</p>
+</blockquote>
+<p>参照型のデフォルト値は<code>null</code>なので、仕様通りである。これを正当化する、というか、
+コンパイラに教えるために、.NET Core 3.0では<code>TryGetValue</code>の定義に特別な属性を追加<sup>†3</sup>した。
+具体的には、次のように<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.maybenullwhenattribute?view=netstandard-2.1"><code>MaybeNullWhenAttribute</code></a>で第2パラメータをアノテートする:</p>
+<pre><code class="language-cs">public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
+</code></pre>
+<blockquote>
+<p>†3 .NET Core SDK 3.0.100-preview9で確認した。</p>
+</blockquote>
+<p><code>[MaybeNullWhen(false)]</code>は「メソッドの戻り値が<code>false</code>のときは、
+そのパラメータの型がnull非許容参照型だとしても、
+パラメータが<code>null</code>になりえる」ことをコンパイラに伝える。
+これにより、コンパイラはメソッドの戻り値が<code>false</code>のパスで、
+nullチェック無しにnull非許容参照型のパラメータにアクセスするコードに警告を出すことができる。</p>
+<p>要するに、
+null非許容参照型が生まれる前にデビューした標準ライブラリは、
+参照型の値が<code>null</code>になりえることを前提として設計されているので、
+null非許容参照型とは相性が悪いものがある、
+ということなのだ。
+そこでC#言語の開発者らは勇敢にも、
+JavaのChecker Frameworkのアノテーションに相当する属性を標準ライブラリに取り込み、
+null許容性を追跡する機能をコンパイラに追加した。</p>
+<blockquote>
+<p>一見すると、次のようにシグニチャを変更してしまえば良い気がする:</p>
+<pre><code class="language-cs">public bool TryGetValue(TKey key, out TValue? value)
+</code></pre>
+<p>これがダメな理由はMicrosoftの開発者ブログの記事
+<em>Try out Nullable Reference Types</em> [<a href="#ref3">3</a>]
+に詳しく説明されている。</p>
+</blockquote>
+<p><code>V</code>、<code>R</code>をそれぞれ、null非許容の値型、参照型として、
+上記をまとめると次のようになる:</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Types</th>
+<th style="text-align:left">Examples</th>
+<th style="text-align:left">Can be <code>null</code>?</th>
+<th style="text-align:left"><code>default</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>V</code></td>
+<td style="text-align:left"><code>int</code>, <code>bool</code></td>
+<td style="text-align:left">Never</td>
+<td style="text-align:left"><code>0</code>や<code>false</code>など</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>V?</code>, <code>Nullable&lt;V&gt;</code></td>
+<td style="text-align:left"><code>int?</code>, <code>Nullable&lt;int&gt;</code></td>
+<td style="text-align:left">Yes</td>
+<td style="text-align:left"><code>null</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>R</code></td>
+<td style="text-align:left"><code>string</code></td>
+<td style="text-align:left"><em>Yes</em></td>
+<td style="text-align:left"><code>null</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>R?</code></td>
+<td style="text-align:left"><code>string?</code></td>
+<td style="text-align:left">Yes</td>
+<td style="text-align:left"><code>null</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2>LINQ</h2>
+<p>続いて、配列の要素の中から条件に合う最初の要素を取得する操作を考えてみる。
+次のコードをみてみよう:</p>
+<pre><code class="language-cs">var firstFavorite = new[] { &quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot; }
+    .Where(matchesFavorite)
+    .FirstOrDefault();
+
+// firstFavoriteはnullになることがある... ん!?
+if (firstFavorite is {})
+{
+    ...
+}
+
+// または
+if (firstFavorite is string s)
+{
+    ...
+}
+</code></pre>
+<p><code>FirstOrDefault()</code>メソッドは<code>this</code>となる<code>IEnumerable&lt;T&gt;</code>が空であれば<code>default(T)</code>を、
+そうでなければ最初の要素を返す。
+そして、その戻り値の型は<code>T</code>である。
+この例では<code>T</code>はnull非許容参照型の<code>string</code>なので、
+空の<code>IEnumerable&lt;string&gt;</code>に対して<code>null</code>を返す。
+C# 8より前では普通のことだが、今や異常である。
+なぜなら戻り値の型が<code>string?</code>ならその値は<code>null</code>になってもよいが、
+<code>string</code>なら<code>null</code>にならないことになっているからだ。</p>
+<p><code>FirstOrDefault()</code>は次のように、
+<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.maybenullattribute?view=netstandard-2.1"><code>MaybeNullAttribute</code></a>で戻り値をアノテートし、
+戻り値が<code>null</code>になることを許すはず‡である:</p>
+<pre><code class="language-cs">[return: MaybeNull]
+public static TSource FirstOrDefault&lt;TSource&gt;(this IEnumerable&lt;TSource&gt; source)
+</code></pre>
+<p><code>[return: MaybeNull]</code>は「メソッドの戻り値は、
+その型がnull非許容参照型だとしても、
+<code>null</code>になりえる」ことをコンパイラに伝える。
+これにより、
+メソッドの戻り値をnullチェック無しにアクセスするコードにコンパイラは警告を出すことができる。</p>
+<blockquote>
+<p>‡ .NET Core SDK 3.0.100-rc1では、まだアノテートされていない。
+masterブランチにマージされているのは確認したので、正式リリースまでには対応しているだろう。</p>
+</blockquote>
+<p><code>FirstOrDefault()</code>の代わりに<code>DefaultIfEmpty(defaultValue).First()</code>を使っても良い。
+しかし、戻り値をnullオブジェクトパターン的に使えるのでなければ、
+結局その戻り値と<code>defaultValue</code>の比較が必要になる。</p>
+<p>再び、あえて次のように記述してみる:</p>
+<pre><code class="language-cs">var firstFavorite = new[] { &quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot; }
+    .Where(matchesFavorite)
+    .Take(1);
+foreach (var s in firstFavorite)
+{
+    ...
+}
+
+// あるいは...
+var firstOrEmpty = new[] { &quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot; }
+    .Where(matchesFavorite)
+    .Take(1)
+    .ToArray();
+if (firstOrEmpty.Length &gt; 0)
+{
+    var s = firstOrEmpty[0];
+    ...
+}
+</code></pre>
+<p><code>null</code>の話題からは脱線するが、<code>FirstOrDefault()</code>よりも<code>Take(1)</code>が便利な場合がある。
+それは要素の型<code>T</code>が値型のときである。値型で<code>default(T)</code>の値が扱いにくい場合は、
+要素数が高々1個の<code>IEnumerable&lt;T&gt;</code>として扱った方が都合が良いこともある
+（Javaのパートで説明したときは理解を深めるための考え方でしかなかったが、
+C#では実用的である）。</p>
+<p>C#で高々1つ、0個または1個を扱うための選択肢は次のようになる:</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th>インスタンスの個数</th>
+<th>null許容型/包括型</th>
+<th><code>null</code>/その代わりに...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高々1個</td>
+<td><code>T?</code></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td>0個以上</td>
+<td><code>T[]</code></td>
+<td><code>Array.Empty&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td>0個以上</td>
+<td><code>IEnumerable&lt;T&gt;</code></td>
+<td><code>Enumerable.Empty&lt;T&gt;</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2>null許容値型の暗黙的/明示的型変換</h2>
+<p>null許容値型では、
+<code>T?</code>型の変数に対しては、<code>T?</code>型の式と<code>null</code>だけではなく、
+<code>T</code>型の式を代入できる。
+これは、<code>Nullable&lt;T&gt;</code>型の「<code>T?</code>から<code>T</code>へ」の<code>implicit</code>演算子が適用されるためである。
+<code>T</code>が<code>int</code>の場合の例を次に示す:</p>
+<pre><code class="language-csharp">int? v1 = null;
+int? v2 = 123;
+</code></pre>
+<p>右辺の値は<code>Nullable&lt;int&gt;</code>型に暗黙に変換
+（「<code>int</code>から<code>int?</code>へ」の<code>implicit</code>演算子が適用）される。
+つまり、次のコードと等価である:</p>
+<pre><code class="language-csharp">var v1 = new Nullable&lt;int&gt;();
+var v2 = new Nullable&lt;int&gt;(123);
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LglgNgNAJiDUAfAAgJgIwFgBQPkGYACNQgYRwG8dCbijkAWQgWXQAoBKa2q7W/wmAB2wAPyEAbukIBeQkICuECAG5uAwSPETUswulT41fWgF8c6usSbNUnS7w00JAQwBOk6XKEBTAO6EAHJKEC4ARhA+ADzCwAB8nMZOku6Sut7+QSHhkTEiCQb4HElmOObYQA">コンパイル結果</a></p>
+</blockquote>
+<p>反対に、<code>T?</code>型の式を<code>T</code>型の変数に代入する場合は、
+明示的な型変換（<code>T?</code>から<code>T</code>への<code>explicit</code>演算子）が必要である。
+次の例はコンパイルエラーとなる:</p>
+<pre><code class="language-csharp">int? maybeInt = 123;
+int intValue = maybeInt;
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LglgNgNAJiDUAfAAgJgIwFgBQPkGYACNQgYRwG8dCbijkAWQgWXQAoBKa2q7W/wmAB2wAPyEAtgEMAngCMApgEkRhALyF0qfAG5uAwauHAAalIgBXBesmzFK4Hr60AvjjfYgA=">コンパイルエラー</a></p>
+</blockquote>
+<p>次のような明示的な型変換（<code>int</code>へのキャスト）を使用すればエラーにはならない:</p>
+<pre><code class="language-csharp">int? maybeInt = 123;
+var intValue = (int)maybeInt;
+</code></pre>
+<p>しかし、これは次のコードと等価である:</p>
+<pre><code class="language-csharp">int? maybeInt = 123;
+var intValue = maybeInt.Value;
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LglgNgNAJiDUAfAAgJgIwFgBQPkGYACNQgYRwG8dCbijkAWQgWXQAoBKa2q7W/wmAB2wAPyEAtgEMAngCMApgEkRhALyF0qfAG5uAwgDcpAJ0EiAalIgBXBesJthwDtPnKRevrQC+OfXTETMyonAG8BjTO4m6KKsAOWroB/MZmzla29hqxHsAAdJl2Xvx+2GVAA===">コンパイル結果</a></p>
+</blockquote>
+<p><code>Nullable&lt;T&gt;</code>の<code>Value</code>プロパティは、オブジェクトが値をもつ場合、その値を返す。
+そうでなければ、例外<code>InvalidOperationException</code>をスローする。
+したがって、<code>T</code>型に変換するときに値が無ければ、
+同様に例外をスローすることに気を付ける必要がある。</p>
+<h2>null許容値型の値の有無の判別</h2>
+<p><code>Nullable&lt;T&gt;</code>型の式に値があるかどうかは、
+次のように<code>HasValue</code>プロパティで調べることができる:</p>
+<pre><code class="language-csharp">int? maybeInt = ...
+if (maybeInt.HasValue) {
+    var intValue = maybeInt.Value;
+    ...
+}
+</code></pre>
+<p>あるいは、次のように<code>T?</code>型の式を<code>null</code>と比較してもよい:</p>
+<pre><code class="language-csharp">int? maybeInt = ...
+// 次の行は if (maybeInt is {}) { や
+// if (!(maybeInt is null)) { でも同じ
+if (maybeInt != null) {
+    var intValue = maybeInt.Value;
+    ...
+}
+</code></pre>
+<p>さらにパターンマッチングを適用することもできる:</p>
+<pre><code class="language-csharp">int? maybeInt = ...
+// 次の行は if (maybeInt is int intValue) {
+// でも同じ
+if (maybeInt is {} intValue) {
+    ...
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LglgNgNAJiDUAfAAgJgIwFgBQPkGYACNQgYRwG8dCbijl0A2YgFkIFl0AKASmtqrZawwmAB2wAPyEAtgEMAngCMApgEkJhALyF0qfAG5+I0QDNCXecvUSAdAAk5AZwBqciAFcVPQoJMmANzkAJ1EJN08VbVlFVQ1gWwivIyF/AF9jQgzcVJoCYiZWDlReTL9/cSkY63jovUNM4TBzLgBCS1ibYFEnQjEPCAgeH3L/WiDQyqSonSs4u2mUsezhbMz8hmZkNnZ8UtzfRtpK6Tmuuv0lipaz2rBeijSRo8CQsOBp6NuF92SXrMyK1o63ohW2HBY+2EoxEJ2q826OnqVxMzQs32693e72mzwOq0BhBwIIKWx2AFYoQJ/nCMRcGvjjjdOncHmkcb9vIdGTQgbyidhskA===">コンパイル結果</a></p>
+</blockquote>
+<p>なお、null許容参照型には、<code>Value</code>プロパティや<code>HasValue</code>プロパティは存在しない。
+繰り返しになるが、null許容参照型の場合、<code>T</code>と<code>T?</code>は実際には同じ型なので、
+それは当然である。
+もちろん、<code>null</code>との比較、パターンマッチングは同様に適用できる。</p>
+<h2>null許容値型のリフト演算子</h2>
+<p>null許容値型では、<code>T</code>型の演算子を<code>T?</code>型にそのまま適用できる。
+<code>T?</code>型に適用した<code>T</code>型の演算子をリフト演算子（lifted operators）と呼ぶ。</p>
+<p>演算結果は、
+どちらか一方または両方に値がない（<code>null</code>である）ときは値のない<code>T?</code>型のオブジェクト、
+両方に値があるときはそれらを演算した結果の値をもつ<code>T?</code>型のオブジェクトになる。
+例えば、<code>a</code>と<code>b</code>が<code>int?</code>型のオブジェクトのとき、次のコード:</p>
+<pre><code class="language-csharp">var c = a + b;
+</code></pre>
+<p>は次のコードとほぼ等価である:</p>
+<pre><code class="language-csharp">// &amp;ではなく&amp;&amp;でもよい
+var c = (a.HasValue &amp; b.HasValue)
+    ? new Nullable&lt;int&gt;(a.Value + b.Value)
+    : new Nullable&lt;int&gt;();
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LglgNgNAJiDUAfAAgJgIwFgBQPkGYACNQgYRwG8dCbijkAWQgWXQAowA7YAfkIEMohLr0IAjAJTVaVbLXmEAbvwBOhAMaEAvAMLxxAbmk0AvjmN1iTZqg7c+g4ffFS5Mi/OVrNOtvwB0ABL8AM4AavwQAK4ApoQAZOJBoRHRMa4KmYR8nDEA7oQAclEQEPxiEDEAPCIAfH7+qbF6SU3pHlkghLkFxaXllTXc9RJGbqY4ZthAA=">コンパイル結果</a></p>
+</blockquote>
+<p>ただし、<code>bool?</code>型の演算だけは、特殊なルールが適用される。
+詳しくは<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/boolean-logical-operators#nullable-boolean-logical-operators">null許容論理型の論理演算子</a>を参照してほしい。</p>
+<h2>null許容値型のボクシングとアンボクシング</h2>
+<p>null許容値型では、
+<code>T?</code>型のオブジェクトをボクシングすると、
+オブジェクトに値があるときはその<code>T</code>型の値をボクシングしたオブジェクト、
+そうでなければ<code>null</code>となる。次に例を示す:</p>
+<pre><code class="language-csharp">int? maybeInt = ...
+object boxedInt = maybeInt;
+</code></pre>
+<p>これは次のコードと同様の意味である:</p>
+<pre><code class="language-csharp">int? maybeInt = ...
+var boxedInt = (maybeInt.HasValue)
+    ? (object)maybeInt.Value
+    : null;
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LglgNgNAJiDUAfAAgJgIwFgBQPkGYACNQgYRwG8dCbijkAWQgWXQAoBKa2q7W/wmAB2wAPyEAtgEMAngCMApgEkRhALyF0qfAG5uAwgHs5AKwUBjYITmGAHgpgqrG6fOUi9fWgF8c+usRMzKic/rwGNMJikrKKTuqa2p4RhABuUgBO1nYO8RpsrnEiAHQAElIAzgBqUhAArgpcXik04mzGZpYche7AxTX1Cv4pIIRCdRAQyT44vthAA===">コンパイル結果</a></p>
+</blockquote>
+<p>また、
+<code>T</code>型の値をボクシングしたオブジェクトを、<code>T?</code>型にアンボクシングすることもできる。
+次に例を示す:</p>
+<pre><code class="language-csharp">int intValue = ...
+object boxedInt = intValue;
+int? maybeInt = (int?)boxedInt;
+</code></pre>
+<p>なお、null許容参照型は、参照型なので当然、ボクシングやアンボクシングは行われない。</p>
+<h2><code>?.</code>演算子と<code>?[]</code>演算子</h2>
+<p><a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-"><code>?.</code>演算子と<code>?[]</code>演算子</a>は<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#null-conditional-operator"><strong>null条件演算子</strong></a><sup>†4</sup>（<strong>null-conditional operator</strong>）である。</p>
+<blockquote>
+<p>†4 Wikipedia [<a href="#ref4">4</a>] によると、
+この演算子と同じ意味の演算子が他のプログラミング言語でも定義されているが、
+今のところの呼び方は言語によって様々である。</p>
+</blockquote>
+<p><code>expr</code>がnull許容型の式であるとき、
+<code>expr?.Member</code>は「<code>expr</code>が<code>null</code>ではない場合に限って実行される、
+<code>expr</code>のメンバー<code>Member</code>へのアクセス」である。
+<code>expr</code>が<code>null</code>である場合は、<code>Member</code>へのアクセスは生じず、
+<code>Member</code>が<code>void</code>型でなければ、式は<code>null</code>になる。</p>
+<p>同様に、
+<code>expr?[index]</code>は「<code>expr</code>が非nullの場合にだけ行われる<code>expr</code>のインデクサー<code>this[int]</code>へのアクセス」である。
+<code>expr</code>が<code>null</code>である場合は<code>this[int]</code>へのアクセスは生じずに式は<code>null</code>になる。</p>
+<p>どちらも<code>expr</code>がnull非許容値型の場合はコンパイルエラーになる。</p>
+<blockquote>
+<p>さらに細かいことだが、
+コンパイル時に<code>Member</code>または<code>this[int]</code>の型が、
+参照型なのか値型なのか不明な場合（例えば、
+ジェネリクスで型パラメータになっていて型制約がない場合、など）は、
+コンパイルエラーになる。</p>
+<p><a href="https://sharplab.io/#v2:CYLg1APgxAdgrgGwQQwEYIKYAIMzZgWAChiABAZiwGcNlNgtSAmLAMQHt2AeAFQD5iASAD0wrIEJrQHYMgGQjASQyBmhkCHDIGeGQBMMgY8jAJmmBNBkAxDIAcGQBUMgS4ZAPwyB7BkCEjoHkGQFYMgaIYhorAHcAFhgBO2HlhCMmJzFAPwZAfQZzINcPbyxffyoAF084AGME4gBvYiwcxkoOdgAKXzgYAGsYdhcYAEps3KyiXKxBAFVyyuqsAF4sUoqqmABuepyAX1HmrEmKWKx2ga6MrABzDAShrAmSIkFZ3wS3AEsqAG0jmASsI4BdScbmwTWr7r55jsGRptztmcpSACMADZGAAWLAAJWQJwwAGEAMoABkRTHIhQKvD4AH4sAAzTh1b45B65QQAN2QniwAFsenjOFiAHQLTrDSbNClUmB0/HsLGnRE3L7NbZjIA==">エラーの例</a></p>
+</blockquote>
+<p>これらをまとめると、次のようになる:</p>
+<!--
+| `expr`の型 | `expr`の値 | `expr?.Member`, `expr?[int]`の結果 |
+| :--- | :--- | :--- |
+| null許容型, null非許容参照型 | `null` | `null` |
+|                 | not `null` | `expr.Member`, `expr[int]` |
+| null非許容値型 | never `null` | コンパイルエラー |
+-->
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>expr</code>の型</th>
+<th style="text-align:left"><code>expr</code>の値</th>
+<th style="text-align:left"><code>expr?.Member</code>, <code>expr?[int]</code>の結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left" rowspan="2">
+  null許容型 または<br>null非許容参照型
+</td>
+<td style="text-align:left"><code>null</code></td>
+<td style="text-align:left">nothing if the type is <code>void</code>,
+  <code>null</code> otherwise</td>
+</tr>
+<tr>
+<td style="text-align:left">not <code>null</code></td>
+<td style="text-align:left"><code>expr.Member</code>, <code>expr[int]</code></td>
+</tr>
+<tr>
+<td style="text-align:left">null非許容値型</td>
+<td style="text-align:left">never <code>null</code></td>
+<td style="text-align:left">コンパイルエラー</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>例えば、
+<code>Member</code>が「戻り値が<code>void</code>型のメソッドや<code>Action</code>のようなデリゲートの呼び出し」であれば、
+次と同様な結果<sup>†5</sup>になる。</p>
+<pre><code class="language-cs">if (expr is {})
+{
+    expr.Member();
+}
+</code></pre>
+<p>そうではなく、<code>Member</code>が値または参照を返す場合は、
+<code>expr</code>が<code>null</code>の時は<code>null</code>、
+非<code>null</code>の時は<code>expr.Member</code>になる。
+<code>R</code>、<code>V</code>をそれぞれ、null非許容の参照型、値型とすると、次のようになる:</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>Member</code>の型</th>
+<th style="text-align:left"><code>expr?.Member</code>と類似の結果<sup>†5</sup></th>
+<th style="text-align:left">式の型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>R</code>/<code>R?</code></td>
+<td style="text-align:left"><code>(expr is null) ? null : expr.Member</code></td>
+<td style="text-align:left"><code>R?</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>V</code></td>
+<td style="text-align:left"><code>(expr is null) ? (V?)null : expr.Member</code></td>
+<td style="text-align:left"><code>V?</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>V?</code></td>
+<td style="text-align:left"><code>(expr is null) ? null : expr.Member</code></td>
+<td style="text-align:left"><code>V?</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>インデクサーの場合は、<code>expr</code>が<code>null</code>の時は<code>null</code>、
+非<code>null</code>の時は<code>expr[index]</code>になる。
+同様に<code>R</code>、<code>V</code>を用いると、次のようになる:</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>this[int]</code>の型</th>
+<th style="text-align:left"><code>expr?[index]</code>と類似の結果<sup>†5</sup></th>
+<th style="text-align:left">式の型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>R</code>/<code>R?</code></td>
+<td style="text-align:left"><code>(expr is null) ? null : expr[index]</code></td>
+<td style="text-align:left"><code>R?</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>V</code></td>
+<td style="text-align:left"><code>(expr is null) ? (V?)null : expr[index]</code></td>
+<td style="text-align:left"><code>V?</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>V?</code></td>
+<td style="text-align:left"><code>(expr is null) ? null : expr[index]</code></td>
+<td style="text-align:left"><code>V?</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>†5 <code>expr?.Member</code>と<code>expr?[index]</code>では、
+どちらも<code>expr</code>は一度しか評価されない。</p>
+</blockquote>
+<p>ただし、Swiftと異なり、
+次のように<code>?.</code>と<code>?[]</code>を左辺値に使用するとコンパイルエラーとなる:</p>
+<pre><code class="language-cs">public sealed class Program
+{
+    public static void Main()
+    {
+        var m = new Program();
+
+        // MaybeFooがnullでなければSetBar(), SetChar()で値を設定
+        m.MaybeFoo?.SetBar(&quot;hello&quot;);
+        m.MaybeFoo?.SetChar(0, 'h');
+
+        // 上と同じになって欲しいけど、コンパイルエラー
+        m.MaybeFoo?.Bar = &quot;hello&quot;;
+        m.MaybeFoo?[0] = 'h';
+    }
+
+    public Foo? MaybeFoo { get; set; }
+
+    public sealed class Foo
+    {
+        private char[] table = {};
+
+        public string Bar { get; set; } = &quot;&quot;;
+
+        public char this[int k]
+        {
+            get =&gt; table[k];
+            set =&gt; table[k] = value;
+        }
+
+        public void SetBar(string newBar)
+            =&gt; Bar = newBar;
+
+        public void SetChar(int k, char c)
+            =&gt; this[k] = c;
+    }
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgbgpgTglgZgTwDQBMQGoA+BiAdgVwBtCBDAI0IgAIJdzKBYAKGYAEBmKgZwhMpSqsATIICMAdmYBvZlTmChQ2fJlN56qmBJQqAWyoBeKrggB3MeIAUASgDczZRqoB6Z1QCyJBGQgAxAPb+gDIMBMSA5gyAVgyAigyAMQyADgwAyhDAAELaNkhUScAAwgAW6dZhgCQKgEkMgLRRgFnajhq6AHSe3n6BAPx12WlQlgBEeRDE/t12Ner1jT4B/m3Z+ekADJkA5HmLwyxqTi5ugFBygBYMgDAqgBoMgNYMEYDGDIBmDIBM1oDqDIAiDFGAlgyAgAyAzQyAzwyAiwyAJQyA1wyAFQyAS4ZAD8MI3kYy8E1adU6hiovX6hEG9g2TghTUmLQA2nMALpw5aLFHqAC+DlRgk4mI8kOa/ioUioAHNkrZuKyqGT1uoOOy+BABMIqJMaqpNlQAA6wLTAagAYwKUCx+OA9GoRikJJRYLkvNYojmVFhjJZwDZPDNnLh3W62opPM4Cu0VGAeRgXCxMFwwCoAGtcTqGYH1KbDAA+F1qrH+4ni+QW8ORigQaP4oxaQj4CCxpxcwN6gAsWWSnUs+sNJlMnWswfkBgjsKMlc6dvFheLuUVli9Pt9mSdOjlNftm3rLrdHv9cLlOc5zC5QA===">エラーの例</a></p>
+</blockquote>
+<p>特に、<code>Member</code>の型、または<code>this[int]</code>の型がnull<strong>非</strong>許容型のとき、
+<code>?.</code>演算子と<code>?[]</code>演算子は<b><code>null</code>を上陸させる</b>操作である。
+つまり、それらの演算子により、
+<code>?</code>が感染し、もともとは存在しなかった<code>R?</code>や<code>V?</code>が新たに発生する可能性がある。
+よって、これらは<code>null</code>の<strong>処分</strong>を先送りにする操作である。
+それらはnullオブジェクトパターンの誤用、
+<code>NullReferenceException</code>（NRE）のキャッチなどに類似して、
+妙なところからチェック漏れを引き起こしかねない。
+それゆえ、安易に<code>?.</code>と<code>?[]</code>を（<code>.</code>と<code>[]</code>の代わりに）使用するべきではない。</p>
+<h2><code>??</code>演算子と<code>??=</code>演算子</h2>
+<p><a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator"><code>??</code>演算子、<code>??=</code>演算子</a>は、
+それぞれ、
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#the-null-coalescing-operator"><strong>null合体演算子</strong></a><sup>†6</sup>（<strong>null-coalescing operator</strong>）、
+<strong>null合体代入演算子</strong>（<strong>null-coalescing assignment operator</strong>）である。</p>
+<blockquote>
+<p>†6 null条件演算子と同様に、
+他の言語でも同じ意味の演算子が定義されている。
+Wikipedia [<a href="#ref5">5</a>] を参照。</p>
+</blockquote>
+<p><code>expr1 ?? expr2</code><sup>†7</sup>は次と同じ意味になる:</p>
+<pre><code class="language-cs">(expr1 is {}) ? expr1 : expr2
+</code></pre>
+<p>ただし、<code>expr1 ?? expr2</code>の場合、<code>expr1</code>は一度しか評価されない。</p>
+<p>また、<code>expr1</code>がnull許容値型の場合、
+<code>??</code>演算子は<code>Nullable&lt;T&gt;</code>の<code>GetValueOrDefault(T)</code>メソッドと類似の操作であるが、
+<code>expr1</code>が<code>null</code>のときだけ<code>expr2</code>が評価される点が異なる。</p>
+<p><code>expr1 ?? throw new Exception()</code><sup>†7</sup>は、<code>expr1</code>が<code>null</code>のとき例外をスローし、
+そうでなければ<code>expr1</code>を返す式となる。</p>
+<p><code>variable ??= expr</code><sup>†7</sup>は次と同じ意味になる:</p>
+<pre><code class="language-cs">if (variable is null)
+{
+    variable = expr;
+}
+</code></pre>
+<blockquote>
+<p>†7 <code>expr1</code>、<code>variable</code>がnull非許容値型の場合、コンパイルエラーになる。</p>
+<p><a href="https://sharplab.io/#v2:CYLg1APgxAdgrgGwQQwEYIKYAIMzZgWAChiABAJgEZiyBmLAZw2U2CwqwDEB7b4gb2JZh7eqUoA2dgBYsAJWQBLJgGEAygAYNlAJwAKRTAAuWAG4AadpQ1YATgEohIwURFuzyW2ZsBeM1gB+AKwNAG4ndw8vW187QOCAIgTw10isAH0sP1N4rCMAC1tuAHcsGAxSgFEADwBjDAAHI0VuGD17FLSMrLigvMKSsoqsGvqmlraOiPccoL8w6bcvOawkzpEAXxpU4VIxSRksAFklNsMjYIsrDWCHaZcu009vHtnghZ2Z55ie5cTkxYiTLZXIFIqlcpVOqNZqtdrrSLA3rBMGDSEjaHjOFTT5uN7zBHuP5+NbTLZEDZAA">エラーの例</a></p>
+</blockquote>
+<p>特に<code>expr2</code>がnull<strong>非</strong>許容型の場合、
+<code>??</code>演算子は<b><code>null</code>の上陸を阻止する</b>操作である。
+これにより、<code>null</code>は処分される。
+逆に、<code>expr2</code>がnull<strong>許容</strong>型の場合、
+<code>?.</code>演算子と<code>?[]</code>演算子と同様に、
+<code>??</code>演算子を安易に使うべきではない。</p>
+<h2><code>!</code>後置演算子</h2>
+<p><a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/nullable-reference-types-specification#the-null-forgiving-operator"><strong>null許容演算子</strong>（<strong>null-forgiveness operator</strong>, <strong>null forgiving operator</strong>）</a>はnull許容参照型の式（<code>null</code>そのもの、
+またはその可能性がある式）を、
+null非許容参照型の式としてみなす演算子（実際は警告を出さないようにするコンパイラへの指令）である。
+次のように、
+null許容参照型の式に<code>!</code>を<ruby>後置<rt>こうち</rt></ruby>して、
+警告を抑制できる:</p>
+<pre><code class="language-cs">public sealed class Foo
+{
+    public Foo()
+    {
+        // NonNullable = null; は警告
+        NonNullable = null!;
+    }
+
+    public string NonNullable { get; }
+
+    public void RaiseNoWarnings()
+    {
+        string? maybeNull = null;
+
+        // string t = maybeNull; は警告
+        string t = maybeNull!;
+
+        // var n = maybeNull.Length; は警告
+        var n = maybeNull!.Length;
+    }
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgbgpgTglgZgTwDQBMQGoA+BiAdgVwBtCBDAI0IgAIJdzKBYAKGYAEBmKgZwhMpSqsATFQBiAe3HMA3syrzBnCeIAUASjkLZTBbqoB6fVQBy43MaKkK1ALxUCxANxVA9gyAzaMBSKpr0mzF4vS29pYAhI7eVAC+uswRHIIAjAAMvuaWgVTSVADmEMDOkbE6CvGsACxUAEokMDymAOokULgwuNlc6hHaPvKsyQD8VAC2JAhkEP6EVHYOhOEsxT6GiSnA08Oj45PO7l6Len2r6yNjE6HzEbrLYE32x5tnxAB0ADK02cAAFjuelwo3UDudhOW1Cr3eX3mukKTEiQA">警告の例</a></p>
+</blockquote>
+<p>念のために書いておくが、
+コンパイラの警告を理解できずに、
+ただそれを消したいだけで<code>!</code>を後置してはならない。
+そんなことをすれば、
+自分があとでビックリするだけだろう。</p>
+<blockquote>
+<p>null非許容型の式に対して<code>!</code>を後置しても、コンパイラは<code>!</code>を無視する。
+また、
+null許容値型の式に対して<code>!</code>を後置しても（Swiftの無条件アンラップとは異なり）、
+単に警告を抑制するだけなので注意が必要である。
+<code>Nullable&lt;T&gt;</code>から値を取り出す
+（値が無ければ例外をスローする）
+<code>Value</code>プロパティのつもりで<code>!</code>を後置しても、
+値は取り出されず、単にコンパイルエラーになる。</p>
+<p><a href="https://sharplab.io/#v2:C4LgbgpgTglgZgTwDQBMQGoA+BiAdgVwBtCBDAI0IgAIJdzKBYAKGYAEBmKgZwhMpSqsATIICMAdmYBvKsyrzBnVqIBsggCxUASiRg8AwgGVRABhWiAFDFzAqMJFQBiAe2dU4D68AD8VAFYOLs6+AOYAlHIKUpEKCgD0cVSAhNaAdgzsgDIRgOYMgPYMgIAMAITZgISOgGmRgKoMgDEMgNEMMbFUAPpUALx2+QDctbGNLXDtnQrd7vkAdABCJFAdTHUzstOzCckpQll5hYBm0YBSKoBJDICJRoBsSv3yg34jAGp8+BBTsw3NVCHnl9dHCq+LqenZgBUMgJcMgD8MIAehRCwwuhCuKUAx3KACldANYM2UAVgyASIZEYARBleg0eYwmNwUAF9mLUONxgFB8ABjWxBWrReYzElBCzKExUMgTMLNAB8VHGUHu7MmrxJLN5EyoMhCEGAbW40tlhPpVEViqAA=">エラーの例</a></p>
+</blockquote>
+<h2>ジェネリクスの型パラメータ制約</h2>
+<p>型パラメータは厄介だ。
+<code>Foo&lt;T&gt;</code>というクラスがあるとする。
+このとき、
+型パラメータ<code>T</code>は<code>int</code>、<code>string</code>のようなnull非許容型だけではなく、
+<code>int?</code>、<code>string?</code>のようなnull許容型でもよい。
+そのため、<code>T?</code>型のパラメータや戻り値は破綻する。
+次のように、型パラメータ<code>T</code>をもちながら<code>T?</code>型を含む型は
+コンパイルエラーとなる:</p>
+<pre><code class="language-cs">public sealed class Foo&lt;T&gt;
+    // 次のどちらかの行のコメントを解除すればエラーは無くなる
+    // where T : class
+    // または
+    // where T : struct
+{
+    public T? Default { get; } = default;
+
+    public void DoSomething(T? t)
+    {
+    }
+
+    public void DoAnything()
+    {
+        T? bar;
+    }
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgbgpgTglgZgTwDQBMQGoA+BiAdgVwBtCBDAI0IgAIJdzKBYAKGYAEBmKgZwhMpSqsATFQBiAe3EAeACoA+ZgEgA9MqqBCa0B2DIEsGQIYMgSIZA0gybAMhGbAzQyBDhkDPDIAmGQEkMgY8jAJmmBNBkAxDIAcGQBUMgS4ZAPwyA9gyAhI6A8gyAVgyA0QxKqlQA7gAW0NQyVCCCQjFqgH4MgPoMgVnxSVApadzAUPgAxsDMAN5KHFQyAPxUACIQcCREwFR1VADmEMAA3FQAvlQAvFQoXT2EY8yNnKwALB3iAMriALYjCTC4gwAUrVTAAJTMVHf9t/cTK0z3gmub7eIAgrgIwEcTqcbq97g1QW87hcyCQoKNHndnkwkUA=">エラーの例</a></p>
+</blockquote>
+<p>型パラメータ<code>T</code>を非null許容の参照型（<code>class</code>）か、
+あるいは非null許容の値型（<code>struct</code>）に型制約で限定することで、
+エラーは解消する。</p>
+<blockquote>
+<p>つまり、<code>T?</code>が実際のところ参照型<code>T</code>と値型<code>Nullable&lt;T&gt;</code>のどちらなのか、
+をはっきりさせる必要がある。
+これはC#の<b><ruby>誓約<rt>せいやく</rt></ruby></b>とか<b><ruby>呪<rt>のろ</rt></ruby>い</b>のようなものだ。</p>
+</blockquote>
+<p>型パラメータ<code>T</code>が非null許容型であることを示す<code>notnull</code>制約もある。これは「<code>class</code>または<code>struct</code>」のようなものである。
+<code>T</code>が<code>notnull</code>制約である場合、<code>T</code>は参照型なのか値型なのか不明なため、
+同様に<code>Foo&lt;T&gt;</code>は<code>T?</code>型を含むことはできない。
+そして、<code>Foo&lt;T&gt;</code>の<code>T</code>は<code>notnull</code>だと制限したら、
+当然だが<code>T</code>にnull許容型を指定することはできなくなる。
+次のコードで確認してみよう:</p>
+<pre><code class="language-cs">public sealed class Foo&lt;T&gt;
+    where T : notnull
+{
+    public Foo(T t)
+    {
+    }
+}
+
+public static class Foo
+{
+    public static Foo&lt;T&gt; NewFoo&lt;T&gt;(T t)
+        where T : notnull
+        =&gt; new Foo&lt;T&gt;(t);
+
+    public static void RaiseWarnings(string? maybeNull)
+    {
+        _ = NewFoo(1);
+        _ = NewFoo(&quot;a&quot;);
+
+        int? i = 1;
+        string? notNull = &quot;a&quot;;
+
+        _ = NewFoo(notNull);
+        // 次の2行は警告
+        _ = NewFoo(i);
+        _ = NewFoo(maybeNull);
+    }
+}
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgbgpgTglgZgTwDQBMQGoA+BiAdgVwBtCBDAI0IgAIJdzKBYAKGYAEBmKgZwhMpSqsATFQBiAe3EAeACoA+ZlSVUA7gAto1GVRBVc44AWLMA3ouUcxkgBTbgASnNKzTZVQC+zTyyaXWARgA2QREJcVMnQU4A4LDZOSoAOQgVOPlbKgdIt3VNKm1dfUMiQmzlAF4E3BSraXSHAG5IyL8gwQAWKgAlEhgeAHUSKFwYXABzLmsAgAYAfioAWxIEMghEksdXZRc3NwB9KnKklLDrf3smrd2qA6Pk1JsAIhJHi7Kld6pR4HmYQ6p/JdrkoZvMiutiP9no9Lp9bscHuJrOCNkDgQB6dFUQCE1oA7BiEgBkIwD2DIAzaMAUipw/73U4wN5XXbw6k2JYrNaoyLebxAA===">警告の例</a></p>
+</blockquote>
+<p><code>NewFoo(notNull)</code>に警告が出ないのは、null許容参照型の面白いところである。
+<code>string?</code>型の式でも、データフロー解析で値が<code>null</code>ではないことが判明していれば、
+型推論では<code>string</code>型として扱われる。一方、値型ではそのようなことは起きない。</p>
+<p>最後に、ややこしいが、<code>class?</code>制約もある。
+<code>T</code>が<code>class?</code>制約である場合、<code>T</code>そのものがnull許容型であるため、
+<code>Foo&lt;T&gt;</code>は<code>T?</code>型を含むことはできない。
+しかし、<code>T</code>に対してはnull許容、非許容に関わらず参照型を指定できる。</p>
+<p><code>R</code>をnull非許容参照型、<code>V</code>をnull非許容値型として、
+上記をまとめると次のようになる:</p>
+<div class="horizontal-scroll">
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><code>T</code>の制約</th>
+<th style="text-align:left"><code>Foo&lt;T&gt;</code>が<code>T?</code>を含む</th>
+<th style="text-align:center"><code>Foo&lt;V&gt;</code></th>
+<th style="text-align:center"><code>Foo&lt;V?&gt;</code></th>
+<th style="text-align:center"><code>Foo&lt;R&gt;</code></th>
+<th style="text-align:center"><code>Foo&lt;R?&gt;</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">なし</td>
+<td style="text-align:left">コンパイルエラー</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>where T : class</code></td>
+<td style="text-align:left">OK</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">○</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>where T : class?</code></td>
+<td style="text-align:left">コンパイルエラー</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">○</td>
+<td style="text-align:center">○</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>where T : struct</code></td>
+<td style="text-align:left">OK</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>where T : notnull</code></td>
+<td style="text-align:left">コンパイルエラー</td>
+<td style="text-align:center">○</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">○</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><code>typeof</code>演算子</h2>
+<p><code>typeof</code>演算子はnull許容参照型には使用できない。
+これは<code>is</code>パターンマッチングに似た話だが、
+例えば<code>typeof(string?)</code>はコンパイルエラーになる。</p>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwMRQgG0wQwEaYCmABIVPkQLABQNAAgEwCMN9AzMXUwGycPEAxAPZCaAbxrEpfBpOkTq0pZyYBOABTAAngAdCQgGbquABgD8ASgsBuOVIC+Ne0A">エラーの例</a></p>
+</blockquote>
+<p>対照的に、<code>typeof(int?)</code>は<code>Nullable&lt;int&gt;</code>を表す<code>Type</code>オブジェクトを返す。
+<code>object.GetType()</code>の結果も含めると、次のようになる:</p>
+<pre><code class="language-cs">// Console.WriteLine(typeof(string?));
+// はコンパイルエラー
+
+// System.Nullable`1[System.Int32]
+Console.WriteLine(typeof(int?));
+
+string? s = &quot;a&quot;;
+// System.String
+Console.WriteLine(s.GetType());
+
+int? i = 1;
+// System.Int32
+Console.WriteLine(i.GetType());
+</code></pre>
+<blockquote>
+<p><a href="https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwMRQgG0wQwEaYCmABIVPkQLABQNAAgEwCMN9AzMXUwGycPEAxAPZCaAbxrEpfBpOkTq0pcQD0KzkwCcACmABPAA6EhAM21cADAH4AlDYDcc5avWB7BkDNDIGeGQIsMgEoZA1wyAFQyAlwyAPwxOyhFKahoAdAByWLgEhAAGTADaXLEAklDAbAwAulHSXDr6RqbaAJb5tg6sis4a1sQAzsQAvMQARDi9js3OMdkAysBgdQDmpVLl2u2xAOKEwAAqhoTadkNzxHXAVgfdxExDLS5xeQWyw8oLNStrm0Y7jfcAvjTf1EA">実行結果</a></p>
+</blockquote>
+<p>なお、
+しつこいようだが、
+型パラメータ<code>T</code>に対して<code>R?</code>を指定して<code>typeof(T)</code>を評価しても、
+その結果は<code>typeof(R)</code>になる。</p>
+<h2>References</h2>
+<!--
+<style>
+#references + ol > li::marker { content: "[" counter(list-item) "] "; }
+</style>
+-->
+<div id="references"></div>
+<ol>
+<li>
+<p><a name="ref1"></a>
+<a href="https://en.wikipedia.org/wiki/Behavioral_subtyping">Wikipedia, <em>Behavioral subtyping</em></a></p>
+</li>
+<li>
+<p><a name="ref2"></a>
+<a href="https://en.wikipedia.org/wiki/Type_erasure">Wikipedia, <em>Type erasure</em></a></p>
+</li>
+<li>
+<p><a name="ref3"></a>
+<a href="https://devblogs.microsoft.com/dotnet/try-out-nullable-reference-types/">Microsoft Developer Blogs, <em>Try out Nullable Reference Types</em></a></p>
+</li>
+<li>
+<p><a name="ref4"></a>
+<a href="https://en.wikipedia.org/wiki/Safe_navigation_operator">Wikipedia, <em>Safe navigation operator</em></a></p>
+</li>
+<li>
+<p><a name="ref5"></a>
+<a href="https://en.wikipedia.org/wiki/Null_coalescing_operator">Wikipedia, <em>Null coalescing operator</em></a></p>
+</li>
+</ol>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">The Insanity Beyond Null</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="Part-0-Null.html">0. Null</a>
+    </li>
+    <li>
+      <a href="Part-1-Java-11.html">1. Java 11のnull</a>
+    </li>
+    <li class="selected">
+      2. C# 8のnull
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="Part-3-Others.html">3. そのほかのnull</a>
+    </li>
+    <li>
+      <a href="Part-4-Exercises.html">4. 演習問題</a>
+    </li>
+    <li>
+      <a href="Part-5-Epilog.html">5. 結び</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

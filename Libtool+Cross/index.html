@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | Libtoolでクロス開発</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Libtoolでクロス開発</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p>クロス開発でlibtoolを使用すると、<s>あの忌々しい</s>疑似ライブラリ（<code>.la</code>ファイル）に正しくない絶対パスが埋め込まれてしまい、コンビニエンスライブラリが不便なライブラリになってしまう。ウェブで検索しても、あんまり回避方法を見つけられなかったので、ここにまとめておく。</p>
+<div class="horizontal-scroll" style="display: flex;">
+<div>
+<a href="https://www.amazon.co.jp/dp/9888381482/ref=as_li_ss_il?coliid=I1CI3J3TUG7JCT&colid=17JPOVJZYO9H1&psc=0&ref_=lv_ov_lig_dp_it&linkCode=li3&tag=sanchappikeio-22&linkId=857a960627f1a2e5f38b63a08c941edf&language=ja_JP" target="_blank"><img title="Gnu Libtool Reference Manual" src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=9888381482&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=sanchappikeio-22&language=ja_JP" height="236px"></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=sanchappikeio-22&language=ja_JP&l=li3&o=9&a=9888381482" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
+</div>
+<div>
+<a href="https://www.amazon.co.jp/dp/B00BC2HTHM/ref=as_li_ss_il?ie=UTF8&linkCode=li3&tag=sanchappikeio-22&linkId=02a721ba8c0a78f08f7b1e707b4b89b7&language=ja_JP" target="_blank"><img title="Autotools Mythbuster (English Edition)" src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B00BC2HTHM&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=sanchappikeio-22&language=ja_JP" height="236px"></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=sanchappikeio-22&language=ja_JP&l=li3&o=9&a=B00BC2HTHM" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
+</div>
+<div>
+<a href="https://www.amazon.co.jp/dp/B0125HHEAY/ref=as_li_ss_il?ie=UTF8&linkCode=li3&tag=sanchappikeio-22&linkId=6e79213abcab6647bce6c70bfc679ca7&language=ja_JP" target="_blank"><img title="GNU Autotools Step By Step (Linux Software Development) (English Edition)" src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B0125HHEAY&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=sanchappikeio-22&language=ja_JP" height="236px"></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=sanchappikeio-22&language=ja_JP&l=li3&o=9&a=B0125HHEAY" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
+</div>
+<div>
+<a href="https://www.amazon.co.jp/Autotools-2nd-English-John-Calcote-ebook/dp/B07J4CYXF5/ref=as_li_ss_il?_encoding=UTF8&coliid=I33MQNZ5I9U7CQ&colid=17JPOVJZYO9H1&qid=&sr=&linkCode=li3&tag=sanchappikeio-22&linkId=4f468abdc2c5b3e66a8386df400baaba&language=ja_JP" target="_blank"><img title="Autotools, 2nd Edition (English Edition)" src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B07J4CYXF5&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=sanchappikeio-22&language=ja_JP" height="236px"></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=sanchappikeio-22&language=ja_JP&l=li3&o=9&a=B07J4CYXF5" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
+</div>
+</div>
+<h2>問題の詳細</h2>
+<p>例えば、<code>libfoo.la</code>というライブラリをlibtoolとautomakeでクロスコンパイルしてインストールする場合、ホストシステムのライブラリをインストールする先は、ビルドシステムのインストール先（<code>/usr/local/lib</code>）とは異なる場所になる。ここではそれを<code>/w/usr/local/lib</code>としておく。ただし、<code>./configure --prefix=/w/usr/local</code>とするのではなく、<code>make DESTDIR=/w all install</code>でビルド、インストールする。</p>
+<p>このようにインストールすると、<code>.la</code>ファイルの中の<code>libdir</code>は次のようになる。</p>
+<pre><code class="language-sh">libdir='/usr/local/lib'
+</code></pre>
+<p>また、<code>foo_la_LDFLAGS</code>にライブラリのサーチパスを指定したり、<code>foo_la_LIBADD</code>に依存するライブラリを指定してコンビニエンスライブラリを作成すると、<code>dependency_libs</code>の値には、次のようにいろいろな環境の絶対パスが埋め込まれる（注: <code>LDFLAGS</code>には<code>-R$(libdir) -L$(DESTDIR)$(libdir)</code>を、<code>LIBADD</code>には<code>$(top_builddir)/libbar.la -lbaz</code>を指定した）。</p>
+<pre><code class="language-sh">dependency_libs='-R/usr/local/lib -L/w/usr/local/lib /usr/local/lib/libbar.la -lbaz'
+</code></pre>
+<p>まず<code>libdir</code>の値はホストシステムでは正しいが、ビルドシステムでは正しくない。そのため、インストールされた<code>libfoo.la</code>を<code>-L/w/usr/local/lib -lfoo</code>でリンクしようとすると、「<code>libtool: warning: library `libfoo.la' was moved.</code>」と警告が出る。つまり、この値はビルドシステムからみたときに<code>/w/usr/local/lib</code>でなければならない。もちろん、ホストシステムでセルフコンパイルするときは<code>/usr/local/lib</code>でなければならない。</p>
+<p>警告は無視すればいいが、<code>dependency_libs</code>の方はもっと深刻である。<code>-L</code>で指定するサーチパスはビルドシステムのものなので、ホストシステムでは正しくない。また、依存するライブラリ<code>libbar.la</code>のパスはホストシステムでは正しいが、ビルドシステムでは正しくない。そのため、このインストールされた疑似ライブラリ<code>libfoo.la</code>をビルドシステムでリンクすると、「<code>/usr/local/lib/libbar.la</code>がみつからない」とエラーになってしまう。<code>libbar.la</code>は<code>/w/usr/local/lib</code>にあるのだが...。</p>
+<h2>すべてはMontaVistaのツールチェインから...</h2>
+<p>ウェブで検索してもよくわからず、コンビニエンスライブラリの使用は中止、警告も無視することで回避しようと考えていた。しかし、ある日MontaVistaのツールチェインを眺めていたとき、<code>.la</code>ファイルの<code>libdir</code>の行が次のようになっていることに気付いた。</p>
+<pre><code class="language-sh">libdir=$CROSS_COMPILE_PREFIX'/usr/lib'
+</code></pre>
+<p>ん。これはどうやるんだ。<code>CROSS_COMPILE_PREFIX</code>で検索して<a href="http://mail.gnome.org/archives/gtk-devel-list/2002-January/msg00072.html">Smoother cross compilation of 1.3.12</a>を発見する。このなかの次の部分で目が覚めた。</p>
+<pre><code class="language-plaintext">Problem B) autoconf
+
+All the new code and much of the higher end code (gnome, etc) depend on
+libtool. My personal feelings about this obscure shell script aside,
+it's got problems in a cross compilation environment - typically libtool
+will fail on a link step because it decodes a .la file, then does magic
+parsing of a -lsomething into a /usr/lib/something.so - which is
+typically a native host library and not what I want.
+
+It would be really great to just turn off -l parsing in libtool and let
+the gcc compiler figure it out. I couldn't figure it out.
+
+so I wrote a script that postprocesses and demangles the libtool
+generated .la file.
+
+It gets rid of /usr/lib/*.la references, the -L references, any
+hardcoded paths to -l in the dependency_libs variable, and makes
+libdir=$CROSS_COMPILE_PREFIX'/usr/lib', etc.
+
+Is there a better solution?
+</code></pre>
+<p>そう、要は自分でスクリプトを書けばいいのだ。</p>
+<h2>疑似ライブラリを変換するスクリプト</h2>
+<p>変換スクリプトは簡単に書ける。<code>.la</code>ファイル自体はシェルスクリプトからそのまま<code>.</code>コマンドで入力できるので、特にパースの処理も不要である。<code>libdir</code>の処理は上記の引用をそのまま適用した。<code>dependency_libs</code>については、<code>for</code>コマンドで複数の引数を順にみていく。絶対パスで指定された疑似ライブラリ<code>/*/lib<i>BAR</i>.la</code>は<code>-l<i>BAR</i></code>に変換する。また、<code>-L/w/<i>PATH</i></code>は<code>-L'$CROSS_<wbr>COMPILE_<wbr>PREFIX'/<i>PATH</i></code>に変換する。</p>
+<p>具体的には、次のような<a href="demangle">変換スクリプト</a>を用意すればよい。なお、libtoolが<code>.la</code>ファイルの2行目の「libtoolのバージョン」を参照するため、<code>.la</code>ファイルの先頭2行のコメントは削除してはならない。</p>
+<pre><code class="language-sh">#!/bin/sh
+filename=$1
+. $filename
+
+new_dependency_libs=
+for lib in $dependency_libs ; do
+  case $lib in
+  /*/lib*.la)
+    lib=${lib##*/}
+    lib=${lib#lib}
+    lib=-l${lib%.la}
+    ;;
+  -L/*)
+    lib=-L\'\$CROSS_COMPILE_PREFIX\'${lib#-L$DESTDIR}
+    ;;
+  *)
+    ;;
+  esac
+  new_dependency_libs=&quot;$new_dependency_libs $lib&quot;
+done
+
+cat &gt; $filename &lt;&lt; EOF
+# ${filename##*/} - a libtool library file
+# Generated by ltmain.sh - GNU libtool 1.5.26 (1.1220.2.493 2008/02/01 16:58:18)
+dlname='${dlname}'
+library_names='${library_names}'
+old_library='${old_library}'
+dependency_libs='${new_dependency_libs}'
+current=$current
+age=$age
+revision=$revision
+installed=$installed
+shouldnotlink=$shouldnotlink
+dlopen='$dlopen'
+dlpreopen='$dlpreopen'
+libdir=\$CROSS_COMPILE_PREFIX'${libdir}'
+EOF
+</code></pre>
+<p>先ほどの<code>libfoo.la</code>をこのスクリプトで変換すると、次のようになる。</p>
+<pre><code class="language-sh">dependency_libs='-R/usr/local/lib -L'$CROSS_COMPILE_PREFIX'/usr/local/lib -lbar -lbaz'
+libdir=$CROSS_COMPILE_PREFIX'/usr/local/lib'
+</code></pre>
+<p>このスクリプトを<code>demangle</code>としてソースツリーに追加した。</p>
+<h2>インストール後フックのターゲット</h2>
+<p>ライブラリ<code>libfoo.la</code>のインストール後に、インストールされた疑似ライブラリを「デマングル」必要がある。これは<code>Makefile.am</code>で、次のように<code>install-exec-hook</code>ターゲットを利用した。</p>
+<pre><code class="language-makefile">install-exec-hook:
+    $(top_srcdir)/demangle $(DESTDIR)$(libdir)/libfoo.la
+</code></pre>
+<h2>libtoolコマンドに環境変数を渡す</h2>
+<p>ここまでできれば、ほぼ完了。あとは、この「デマングられた」疑似ライブラリを（もちろんlibtoolで）リンクするときのことを考える。<code>libfoo.la</code>をリンクするプログラム<code>foo</code>をビルドするときに、環境変数<code>CROSS_COMPILE_PREFIX</code>を設定してからlibtoolを実行するようにしたい。これも<code>foo</code>を（クロスコンパイルで）ビルドする<code>Makefile.am</code>のなかで、次のように変数<code>LIBTOOL</code>をオーバライドした。</p>
+<pre><code class="language-makefile">LIBTOOL = env CROSS_COMPILE_PREFIX=$(DESTDIR) $(SHELL) $(top_builddir)/libtool
+</code></pre>
+<h2>libtool 1.5のバグ</h2>
+<p>libtool 1.5では疑似ライブラリをリンクするとき、リンクする疑似ライブラリのなかの<code>dependency<wbr>_libs</code>に含まれる<code>-R</code>フラグが捨てられてしまう、という<a href="http://lists.gnu.org/archive/html/bug-libtool/2006-01/msg00019.html">バグ</a>がある。そのため、結局のところ、コンビニエンスライブラリに「依存するライブラリ」を埋め込んでも、そのライブラリをリンクするときに、「実行時に共有ライブラリを探すパス」をすべて指定しなければならない。つまり、せっせと<code>-R</code>を書いても、最後には依存するすべての共有ライブラリを把握しておく必要がある。すべての共有ライブラリを同じところに置ければいいが、なんだかよくわからないサードパーティの共有ライブラリに限って、特定のパスに配置せよと求められることがよくある（クロス、というか組み込みでは）。libtoolのコンビニエンスライブラリは、共有ライブラリに関してはコンビニエンスではない。</p>
+<p>libtoolがこのバグを抱え込んでしまった過程をみると、オープンソース開発の典型的な落とし穴にはまったことがわかる。そして、このようなバグを長く放置しているlibtoolがバベルの塔になってしまったことを露呈している。一部のユーザーが満足するための（そしてオリジナルの思想にも仕様にもマッチしない）パッチが提案され、なにも理解していないメインテナが「広く利用できるように」そのパッチを適用し、互換性も確認せずにリリースする。ユーザはよくわからないまま従来の機能が使えなくなり、おかしな回避策を選ぶ。</p>
+<p>libtool 1.4.3でも<code>dependency<wbr>_libs</code>の<code>-R</code>フラグはネイティブのリンカに渡されない。例えば、GNU ldには<code>-rpath</code>オプションに変換して渡す（直接ldを実行するわけではないので、gccの<code>-Wl</code>オプションを通して渡すが）。なのに、ネイティブのリンカに<code>-R</code>が渡らないようにするために「えーい、<code>dependency<wbr>_libs</code>に含まれる<code>-R</code>は捨てちゃえ」と修正することが正しいわけがない。<code>-R</code>をネイティブのリンカに渡すために変換するところを直すべきだろう（少なくても、お前のプラットフォームの場合だけ捨てろよ）。</p>
+<p>こういうアホどもが開発に関わっている限り、libtoolは永遠にクソツールだろう。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Thu Oct  5 22:10:23 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Thu May  7 05:30:03 JST 2009
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Libtoolでクロス開発</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

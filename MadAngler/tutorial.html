@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tutorial | Mad Angler</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Mad Angler</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Tutorial</h1>
+<h2>プロジェクトの作成</h2>
+<p>最初に表示されるのは次のプロジェクト一覧を表示する画面です。ただし、まだプロジェクトを作成していないので、プロジェクトは表示されません。&quot;New Project&quot; をクリックして、プロジェクトを作成します。</p>
+<div class="horizontal-scroll"><img src="images/firstpage.png"/></div>
+<p>次の画面でプロジェクトを作成します。&quot;Project ID&quot; にプロジェクト名を入力し、Createボタンをクリックします。</p>
+<div class="horizontal-scroll"><img src="images/newproject1.png"/></div>
+<p>正しくプロジェクトを作成できると、次のようなダイアログが表示されます。OKボタンをクリックすると、プロジェクトの設定に移ります。</p>
+<div class="horizontal-scroll"><img src="images/newproject2.png"/></div>
+<h2>プロジェクトの設定</h2>
+<p>プロジェクト設定の画面はタブで設定項目が分かれています。次の画面は &quot;Generic&quot; タブを選択したときのものです。ここでは、&quot;Description&quot; にプロジェクトの簡単な説明を入力します。また、詳しくは後述しますが、&quot;Notification URL&quot; にビルドを開始するためのURLが示されています。</p>
+<div class="horizontal-scroll"><img src="images/configure1.png"/></div>
+<p>次の画面は &quot;Platform&quot; タブを選択したときのものです。最初はなにもプラットフォームが登録されていません。Addボタンで、プラットフォームを追加します。</p>
+<div class="horizontal-scroll"><img src="images/configure2.png"/></div>
+<p>&quot;Platform ID&quot; にはプラットフォームを識別するための名前を入力します。&quot;User@Hostname&quot; にはsshでリモートコマンドを実行するユーザ名とホスト名を@で連結したものを入力します。&quot;Command&quot; にはそのリモートコマンドのパスを入力します（引数は指定できません）。最後の &quot;Charset&quot; ではリモートコマンドの出力するログの文字セットを選択します。リモートコマンドに関する設定内容の意味については、次の節で詳しく説明します。OKボタンをクリックすると、プラットフォームが追加されます。</p>
+<div class="horizontal-scroll"><img src="images/configure3.png"/></div>
+<p>次の画面は &quot;Mail&quot; タブを選択したときのものです。&quot;Enable sending mails&quot; チェックボックスをクリックすると、ビルドが終了したときにメールで通知するようになります。&quot;Sender&quot; には差出人の名前を指定します。&quot;Receipient&quot; にはメール受け取るメールアドレスを指定します。</p>
+<div class="horizontal-scroll"><img src="images/configure4.png"/></div>
+<p>ここまでの設定が終わったら、Submitボタンをクリックして、設定を保存します。設定を保存に成功すると、次のダイアログが表示されます。OKボタンをクリックすると、プロジェクト一覧に戻ります。</p>
+<div class="horizontal-scroll"><img src="images/configure5.png"/></div>
+<h2>リモートホストとビルドスクリプトの設定</h2>
+<p>先ほど「プラットフォームの追加」の設定で、&quot;User@Hostname&quot; と &quot;Command&quot; を指定しました。Mad Anglerは &quot;Notification URL&quot; にアクセスされると、各プラットフォーム毎に次のようなコマンドを実行します。</p>
+<pre><code class="nohighlight">$ ssh <i>User@Hostname</i> <i>Command</i> <i>REVISION</i></code></pre>
+<p><code><i>REVISION</i></code>は &quot;Notification URL&quot; に含まれるパラメータになります。これをそれぞれのプラットフォームで正しく実行できるようにするためには、プラットフォーム毎に次のような準備をしておく必要があります。</p>
+<ol>
+<li>
+<p>&quot;User@Hostname&quot; の<code>~/.ssh/authorized_keys</code>にMad Anglerの公開鍵を追加します。Mad Anglerの公開鍵は、プロジェクト一覧の画面で鍵のアイコンをクリックすると表示されます。</p>
+</li>
+<li>
+<p>&quot;User@Hostname&quot; がリポジトリからリビジョンをチェックアウトできるように設定します。この作業はMad Anglerとは直接関係ありませんが、使用するバージョン管理システムにより、アカウントや公開鍵の登録などが必要になるでしょう。</p>
+</li>
+<li>
+<p>リモートコマンドである &quot;Command&quot; を用意します。&quot;Command&quot; は第1引数に指定される<code><i>REVISION</i></code>をリポジトリからチェックアウトして、ビルドします。&quot;Command&quot; は<code><i>REVISION</i></code>を正しくビルドできたときだけ、最終行にOKを表示して終了するコマンドでなければなりません（ビルドに失敗したときは最終行にOK以外を表示する必要があります）。</p>
+</li>
+</ol>
+<p>リモートコマンドの具体例は次のようになります。前半ではプラットフォームの情報を表示し、さらにリモートコマンドそれ自体を表示します。後半では、<code><i>REVISION</i></code>をチェックアウトしてmakeしています。</p>
+<pre><code class="nohighlight">#!/bin/sh
+
+echo "User:" `whoami`
+echo "Host:" `hostname`
+echo "Directory:" `pwd`
+echo "Platform:" `uname -a`
+echo "Command:" $0 "$*"
+echo "--- $0"
+cat $0
+
+echo "--- Log"
+revision=$1
+workdir=$$
+{ mkdir $workdir \
+  &amp;&amp; cd $workdir \
+  &amp;&amp; <i>$revisionをチェックアウト</i> \
+  &amp;&amp; cd <i>チェックアウトしたディレクトリ</i> \
+  &amp;&amp; ./configure \
+  &amp;&amp; make; } \
+  || { rm -rf $workdir; echo NG; exit; }
+
+rm -rf $workdir
+echo OK</code></pre>
+<p>準備ができたら、Mad Anglerから実行する前に、設定が正しいかどうか確認しておきます。&quot;User@Hostaname&quot; にログインした後、次のようにコマンドを実行して、既知のビルド可能な<code><i>REVISION</i></code>をビルドできることを確認します。</p>
+<pre><code class="nohighlight">$ ssh <i>User@Hostname</i>
+Password:
+...
+$ <i>Command</i> <i>REVISION</i>
+...
+OK
+$
+</code></pre>
+<h2>ビルドの実行</h2>
+<p>設定が正しいことが確認できたら、次のように &quot;Notification URL&quot; にアクセスしてみてください。</p>
+<pre><code class="nohighlight">$ fetch -o - <i>URL</i></code></pre>
+<p>あるいは</p>
+<pre><code class="nohighlight">$ wget -O - <i>URL</i></code></pre>
+<p>ビルドが走れば成功です。バージョン管理システムによりますが、コミットのフックスクリプトに &quot;Notification URL&quot; へアクセスするコマンドを追加すれば、コミットする度にMad Anglerがビルドを確認するようになります。</p>
+<h2>ビルド結果の通知</h2>
+<p>ビルドが終了すると、Mad Anglerは次のようなメールでビルド結果を通知します（メールの設定で、通知を有効にした場合）。</p>
+<pre><code class="nohighlight">From: Mad Angler &lt;www@localhost.localdomain&gt;
+To: my-address@example.com
+Subject: [My first project] BUILD SUCCEEDED: Rev. <i>REVISION</i>
+<hr>
+Project: My first project
+Revision: <i>REVISION</i>
+Result: OK
+
+Log:
+http://192.168.121.128/MadAngler.html#%3Clink%20type%3D%22buildLog...
+
+Mad Angler:
+http://192.168.121.128/index.html</code></pre>
+<p>&quot;Log&quot; に記載されているURLをウェブブラウザで開くと、次のような画面が表示され、ログの詳細を確認することができます。</p>
+<div class="horizontal-scroll"><img src="images/buildlog.png"/></div>
+<p>ログは最後の20行だけが表示されているので、ログ全体を確認したい場合は &quot;Display only the last part&quot; チェックボックスのチェックを外してください。</p>
+<h2>ビルド結果の確認</h2>
+<p>メールによる通知だけではなく、プロジェクト一覧の画面からもプロジェクトのビルド状況を確認することができます。</p>
+<p>次のプロジェクト一覧の画面からプロジェクトIDをクリックします。</p>
+<div class="horizontal-scroll"><img src="images/build1.png"/></div>
+<p>次のようなビルド一覧の画面が表示されるので、確認したいビルドをクリックします。</p>
+<div class="horizontal-scroll"><img src="images/build2.png"/></div>
+<p>クリックしたビルドのログが画面の下部に表示されます（ログの右上にあるアイコンをクリックすると、ログだけを表示します）。</p>
+<div class="horizontal-scroll"><img src="images/build3.png"/></div>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Fri May  2 06:34:16 JST 2008 -->
+<!-- hhmts start -->
+Last modified: Fri Jun  6 21:13:50 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Mad Angler</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li class="selected">
+      Tutorial
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="manual.html">Manual</a>
+    </li>
+    <li>
+      <a href="reference.html">Reference</a>
+    </li>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

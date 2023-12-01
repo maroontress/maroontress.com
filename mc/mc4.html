@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>4. f(x)の求積問題 | モンテカルロシミュレーション</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown_light.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">モンテカルロシミュレーション</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<script src="https://fred-wang.github.io/TeXZilla/TeXZilla-min.js"></script>
+<script src="https://fred-wang.github.io/TeXZilla/examples/customElement.js"></script>
+<h1>4. <la-tex>f(x)</la-tex>の求積問題</h1>
+<p><a name="design"></a></p>
+<h2>4.1. 設計</h2>
+<p>最後も課題を確認しておきます。課題は「求積問題で適当な関数<la-tex>f(x)</la-tex>を選び、適当な区間で定積分し面積を計算するプログラムを作成し、ワークステーション上で実行せよ。試行回数の増加とともにその値はどのように変化するか? 入門的モンテカルロとあたりはずれモンテカルロの2つについて計算し、両者の結果を比較せよ。」です。</p>
+<p>乱数の発生については、Buffonの針と同様に、先程作成したrandコマンドがそのまま使えます。あとは乱数を読み込んで定積分するプログラムを作ることになります。今回は入門的モンテカルロ法で定積分するプログラムをcrudeコマンド、あたりはずれモンテカルロ法で定積分するプログラムをhitormissコマンドと呼ぶことにします。テキストにある通り、入門的モンテカルロ法（crudeコマンド）では一つ乱数を発生させることが1ステップに相当します。また、あたりはずれモンテカルロ法（hitormissコマンド）では二つの乱数で二次元座標上の点を表現するので、二つ乱数を発生させることが1ステップに相当します。</p>
+<h3>4.1.1. crudeコマンド</h3>
+<p>crudeコマンドで乱数以外に必要になる人為的なパラメータは、被積分関数<la-tex>f(x)</la-tex>とその積分区間です。速度的な問題で被積分関数は直接プログラム中に書くことにします。積分区間に関しては、<la-tex>a &lt; x &lt; b</la-tex>で積分する場合は、次のような動作イメージをもってプログラムを作成します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10 | ./crude <la-tex>a</la-tex>の値 <la-tex>b</la-tex>の値</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>例えば、それぞれ<la-tex>a=0</la-tex>、<la-tex>b=1</la-tex>と選んだ場合は次のようにするわけです。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10 | ./crude 0 1</u> <span class="nocode"><i>Enter</i></span>
+.
+.
+.
+foo[bar]% </code></pre>
+<p>上の例では、randコマンドが10個乱数を発生させていますので、crudeコマンドは10ステップ実行されることになります。</p>
+<h3>4.1.2. hitormissコマンド</h3>
+<p>hitormissコマンドで乱数以外に必要になる人為的なパラメータは、被積分関数<la-tex>f(x)</la-tex>と矩形領域<la-tex>a &lt; x &lt; b</la-tex>, <la-tex>0 &lt; y &lt; c</la-tex>を表す3つのパラメータ<la-tex>a</la-tex>, <la-tex>b</la-tex>, <la-tex>c</la-tex>です。crudeコマンドと同様に速度的な問題で被積分関数は直接プログラム中に書くことにします。したがって、次のような動作イメージをもってプログラムを作成します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10 | ./hitormiss <la-tex>a</la-tex>の値 <la-tex>b</la-tex>の値 <la-tex>c</la-tex>の値</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>例えば、それぞれ<la-tex>a=0</la-tex>、<la-tex>b=1</la-tex>、<la-tex>c=1</la-tex>と選んだ場合は次のようにするわけです。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10 | ./hitormiss 0 1 1</u> <span class="nocode"><i>Enter</i></span>
+.
+.
+.
+foo[bar]% </code></pre>
+<p>上の例では、randコマンドが10個乱数を発生させていますが、hitormissコマンドは1ステップで2つの乱数をとるので、5ステップだけ実行されることになります。</p>
+<p><a name="work"></a></p>
+<h2>4.2. 作業用ディレクトリの作成</h2>
+<p>次のようにpwdコマンドを入力して、現在自分がホームディレクトリにいることを確認してください。</p>
+<pre><code class="nohighlight">foo[bar]% <u>pwd</u> <span class="nocode"><i>Enter</i></span>
+/home/appi/foo
+foo[bar]% </code></pre>
+<p>もし違っていたらcdコマンドでホームディレクトリに移動します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cd</u> <span class="nocode"><i>Enter</i></span>
+foo[bar]% <u>pwd</u> <span class="nocode"><i>Enter</i>（確認のため）</span>
+/home/appi/foo
+foo[bar]% </code></pre>
+<p>求積問題のプログラムを作成するための作業用ディレクトリを次のように作ります。</p>
+<pre><code class="nohighlight">foo[bar]% <u>mkdir integral</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>次にこのディレクトリに移ります（繰り返しになりますが、このときもtcshのファイル名補完機能を用いればタイプ量を減らすことができます）。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cd integral</u> <span class="nocode"><i>Enter</i></code></pre>
+<p>最後に念のためpwdコマンドでカレントディレクトリを確認します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>pwd</u> <span class="nocode"><i>Enter</i></span>
+/home/appi/foo/integral
+foo[bar]% </code></pre>
+<p><a name="copy"></a></p>
+<h2>4.3. ソースの雛型のコピー</h2>
+<p>求積問題でも雛型を用意してあります。</p>
+<p>以前と同様に、次のようにcpコマンドを用いて、ファイルを自分のホームディレクトリにコピーします。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cp ~yoshiko/skel/integral/* .</u> <span class="nocode"><i>Enter</i></span>
+foo[bar]% </code></pre>
+<p>ファイルをコピーしたら、念のためlsコマンドで確認してみてください。</p>
+<p><a name="edit"></a></p>
+<h2>4.4. ソースの編集</h2>
+<p>乱数の度数分布で起動したMuleが、まだ動いている場合はそのまま使用しても構いません。終了してしまった場合はもう一度Muleを起動してください。</p>
+<p>ファイル<code>crude.c</code>と<code>hitormiss.c</code>の二つを編集して、プログラムを完成させます。</p>
+<p>また被積分関数については、ファイル<code>Function.c</code>を編集して定義します。</p>
+<p><a name="build"></a></p>
+<h2>4.5. 実行ファイルの構築</h2>
+<p>求積問題でもMakefileを用意してあります。ファイル<code>crude.c</code>と<code>hitormiss.c</code>をコンパイルするには、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>make</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>プログラムに間違いがなければ次のように出力され、自動的に実行ファイル<code>crude</code>と<code>hitormiss</code>が構築されます。</p>
+<pre><code class="language-plaintext">foo[bar]% make
+ln -s ../rand-distribution/Summation.h .
+ln -s ../buffon/Trial.h .
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c crude.c
+ln -s ../rand-distribution/Summation.c .
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c Summation.c
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c Function.c
+gcc -o crude crude.o Summation.o Function.o -lm
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c hitormiss.c
+ln -s ../buffon/Trial.c .
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c Trial.c
+gcc -o hitormiss hitormiss.o Trial.o Function.o -lm
+ln -s ../rand-distribution/rand .
+ln -s ../rand-distribution/graph.sh .
+foo[bar]% 
+</code></pre>
+<p>エラーや警告が出た場合は、内容を調べて修正し、もう一度makeしてみます。</p>
+<p>正常に構築できたようであれば、次に進みます。</p>
+<p><a name="exec"></a></p>
+<h2>4.6. プログラムの実行テスト</h2>
+<h3>4.6.1. crudeコマンド</h3>
+<p>実行する前に、パラメータ<la-tex>a</la-tex>, <la-tex>b</la-tex>を決定しなければなりません。例えば、それぞれ<la-tex>a=0</la-tex>、<la-tex>b=1</la-tex>に選んだ場合は、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10 | ./crude 0 1</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>次のように10ステップ実行されます（値は異なるかもしれません）。</p>
+<pre><code class="language-plaintext">foo[bar]% ./rand 10 | ./crude 0 1
+1 0.857868
+2 0.921152
+3 0.931160
+4 0.909657
+5 0.791601
+6 0.823858
+7 0.807871
+8 0.828640
+9 0.833127
+10 0.849034
+foo[bar]% 
+</code></pre>
+<p>正常に動作しなかったり、値がめちゃくちゃだったりした場合は、Muleで修正して再びmakeします。</p>
+<h3>4.6.2. hitormissコマンド</h3>
+<p>実行する前に、パラメータ<la-tex>a</la-tex>, <la-tex>b</la-tex>, <la-tex>c</la-tex>を決定しなければなりません。例えば、それぞれ<la-tex>a=0</la-tex>、<la-tex>b=1</la-tex>、<la-tex>c=1</la-tex>に選んだ場合は、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10 | ./hitormiss 0 1 1</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>randコマンドは10個の乱数を発生させますが、hitormissコマンドは1ステップあたりに2つの乱数をとるので、次のように5ステップだけ実行されます（値は異なるかもしれません）。</p>
+<pre><code class="language-plaintext">foo[bar]% ./rand 10 | ./hitormiss 0 1 1
+1 1.000000
+2 1.000000
+3 1.000000
+4 1.000000
+5 1.000000
+foo[bar]% 
+</code></pre>
+<p>正常に動作しなかったり、値がめちゃくちゃだったりした場合は、Muleで修正して再びmakeします。</p>
+<p><a name="graph"></a></p>
+<h2>4.7. グラフの作成</h2>
+<p>試行回数<la-tex>n</la-tex>が増加するにしたがって、積分値が収束する様子をグラフにプロットしてみます。これについてもシェルスクリプト<code>graph.sh</code>が用意してあります。</p>
+<h3>4.7.1. crudeコマンド</h3>
+<p>試行回数が10000回で、それぞれ<la-tex>a=0</la-tex>, <la-tex>b=1</la-tex>に選んだならば、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10000 | ./crude 0 1 | sh graph.sh -0 crude</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>また、試行回数10000回目での積分値を数値で知りたい場合は、次のように入力することで知ることができます。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10000 | ./crude 0 1 | tail</u> <span class="nocode"><i>Enter</i></span>
+9991 0.784151
+9992 0.784167
+9993 0.784184
+9994 0.784204
+9995 0.784208
+9996 0.784210
+9997 0.784216
+9998 0.784232
+9999 0.784196
+10000 0.784164
+foo[bar]% </code></pre>
+<p>入力するとxgraphのウィンドウが現れますので、収束している様子を確認したら、印刷して終了します。</p>
+<h3>4.7.2. hitormissコマンド</h3>
+<p>試行回数が10000回で、それぞれ<la-tex>a=0</la-tex>, <la-tex>b=1</la-tex>, <la-tex>c=1</la-tex>に選んだならば、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 20000 | ./hitormiss 0 1 1 | sh graph.sh -0 hit-or-miss</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>randコマンドに与える引数は、試行回数の2倍でなければならないことに注意してください。入力するとxgraphのウィンドウが現れますので、収束している様子を確認したら、印刷して終了します。</p>
+<p>また、試行回数10000回目での積分値を数値で知りたい場合は、次のように入力することで知ることができます。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 20000 | ./hitormiss 0 1 1 | tail</u> <span class="nocode"><i>Enter</i></span>
+9991 0.783906
+9992 0.783927
+9993 0.783949
+9994 0.783970
+9995 0.783992
+9996 0.784014
+9997 0.784035
+9998 0.784057
+9999 0.783978
+10000 0.783900
+foo[bar]% </code></pre>
+<footer>
+<!-- Created: Mon Sep 14 04:27:19 JST 1998 -->
+<!-- hhmts start -->
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">モンテカルロシミュレーション</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="mc1.html">1. 作業を始めるまで</a>
+    </li>
+    <li>
+      <a href="mc2.html">2. 乱数の度数分布</a>
+    </li>
+    <li>
+      <a href="mc3.html">3. Buffonの針</a>
+    </li>
+    <li class="selected">
+      4. f(x)の求積問題
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="mc5.html">5. 酔歩問題（時間が余った場合）</a>
+    </li>
+    <li>
+      <a href="mc6.html">6. あとかたづけ</a>
+    </li>
+    <li>
+      <a href="bib.html">参考文献</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

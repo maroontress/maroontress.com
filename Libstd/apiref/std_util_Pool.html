@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>Pool - std_util_Pool</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_util_Pool"/>
+    <h3>package std_util</h3>
+    <h1>extensible class Pool</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<b>std_util_Pool</b><br>
+<br>
+#define std_util_Pool_IMPORT<br>
+#include &lt;std/util/Pool.h&gt;<br>
+#include &lt;std/util/impl/Pool.h&gt;<br>
+    <dl><dd>
+<p>データをためておくプールです。<a href="std_util_Pool.html#std_util_Pool_createInputTube">Pool_<wbr>createInputTube</a>()で生成した入力端と、<a href="std_util_Pool.html#std_util_Pool_createOutputTube">Pool_<wbr>createOutputTube</a>()で生成した出力端を使用して、プールに入出力することができます。また、<a href="std_util_Pool.html#std_util_Pool_createByteArray">Pool_<wbr>createByteArray</a>()でプールにあるデータの複製をバイト配列として生成することもできます。</p>
+<p>データをプールに格納する実装の方式は実装に依存します。連続したメモリ領域に格納されるとは限らず、断片化されたり、ファイルに格納するかもしれません。そのため、プールへの入出力は一般的なメモリへの入出力よりもコストが高くなります。</p>
+
+<h3>マルチスレッドの安全性</h3>
+<p>インスタンスとそれから生成した入出力端のインスタンスのメソッド呼び出しはMTセーフではありません。複数のスレッドが同一のインスタンスをアクセスする場合は、呼び出し側のスレッドがメソッド呼び出しを排他する必要があります。</p>
+<p>プールの生成はMTセーフです。</p>
+  </dd></dl>
+    <hr>
+<h2>Field Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a></font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_Pool.bucket"><b>bucket</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;プールに出力したデータのリストです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_Pool.size"><b>size</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;プールにたまっているデータのサイズです。</td>
+</tr>
+    </table>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_Pool.html#union std_util_Pool">union Pool</a></font>
+  </td>
+  <td valign="top"><a href="#std_util_Pool_create"><b>Pool_<wbr>create</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;空のプールを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#std_util_Pool_getSize"><b>Pool_<wbr>getSize</b></a>(<a href="std_util_Pool.html#union std_util_Pool">union Pool</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;プールにたまっているデータのサイズを取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#std_util_Pool_free"><b>Pool_<wbr>free</b></a>(<a href="std_util_Pool.html#union std_util_Pool">union Pool</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;プールを解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_io_OutputTube.html#union std_io_OutputTube">union std_<wbr>io_<wbr>OutputTube</a></font>
+  </td>
+  <td valign="top"><a href="#std_util_Pool_createOutputTube"><b>Pool_<wbr>createOutputTube</b></a>(<a href="std_util_Pool.html#union std_util_Pool">union Pool</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;プールにデータを出力するための出力端を生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_io_InputTube.html#union std_io_InputTube">union std_<wbr>io_<wbr>InputTube</a></font>
+  </td>
+  <td valign="top"><a href="#std_util_Pool_createInputTube"><b>Pool_<wbr>createInputTube</b></a>(<a href="std_util_Pool.html#union std_util_Pool">union Pool</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;プールからデータを入力するための入力端を生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_lang_ByteArray.html#struct std_lang_ByteArray">struct std_<wbr>lang_<wbr>ByteArray</a> *</font>
+  </td>
+  <td valign="top"><a href="#std_util_Pool_createByteArray"><b>Pool_<wbr>createByteArray</b></a>(<a href="std_util_Pool.html#union std_util_Pool">union Pool</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バイト配列を生成します。</td>
+</tr>
+    </table>
+<h2>Field Detail</h2>
+<p><a name="struct std_util_impl_Pool.bucket"></a><font size="+1"><b>bucket</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a> <b>bucket</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+プールに出力したデータのリストです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_impl_Pool.size"></a><font size="+1"><b>size</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>size</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+プールにたまっているデータのサイズです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_util_Pool_create"></a><font size="+1"><b>Pool_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_util_Pool.html#union std_util_Pool">union Pool</a> <b>Pool_create</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+空のプールを生成します。
+<p>戻り値が参照するオブジェクトは<a href="std_util_Pool.html#std_util_Pool_free">Pool_<wbr>free</a>()で解放しなければなりません。</p>
+<p>生成できなかった場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返します。</p>
+    </dd>
+
+<dl>Returns:<dd>プール、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_Pool_getSize"></a><font size="+1"><b>Pool_<wbr>getSize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>Pool_getSize</b>(</td>
+    <td nowrap><a href="std_util_Pool.html#union std_util_Pool">union Pool</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+プールにたまっているデータのサイズを取得します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>プールにたまっているデータのサイズ</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_Pool_free"></a><font size="+1"><b>Pool_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>Pool_free</b>(</td>
+    <td nowrap><a href="std_util_Pool.html#union std_util_Pool">union Pool</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+<p>プールを解放します。プールにたまっていたデータも解放します。</p>
+<p>呼び出し後は<span class="arg">this</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_Pool_createOutputTube"></a><font size="+1"><b>Pool_<wbr>createOutputTube</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_io_OutputTube.html#union std_io_OutputTube">union std_<wbr>io_<wbr>OutputTube</a></td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Pool_createOutputTube</b>(</td>
+    <td nowrap><a href="std_util_Pool.html#union std_util_Pool">union Pool</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+プールにデータを出力するための出力端を生成します。
+<p>生成した出力端に出力したデータはプールにあるデータに追加されます。同じプールの複数の出力端に出力する場合も同様です。</p>
+<p>複数の出力端を生成する場合はデータの出力順に注意してください。とくに出力端がバッファリングされる場合は、出力端をクローズしてバッファをフラッシュするまで、その他の出力端から出力しないようにする必要があります。</p>
+<p>戻り値が参照するオブジェクトは、<span class="arg">this</span>を解放する前に、<a href="std_io_OutputTube.html#std_io_OutputTube_close">std_<wbr>io_<wbr>OutputTube_<wbr>close</a>()で解放しなければなりません。</p>
+<p>生成できなかった場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>出力端、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_Pool_createInputTube"></a><font size="+1"><b>Pool_<wbr>createInputTube</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union std_<wbr>io_<wbr>InputTube</a></td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Pool_createInputTube</b>(</td>
+    <td nowrap><a href="std_util_Pool.html#union std_util_Pool">union Pool</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+プールからデータを入力するための入力端を生成します。
+<p>生成した入力端からデータを入力してもプールにあるデータは変化しません。入力端のストリームの位置がプールのデータの最後にあるとき、入力端から入力するとEOSを返します。同時に出力端を生成していたとしても、それらが入力をブロックすることはありません。</p>
+<p>複数の入力端を生成することもできます。その場合、それぞれの入力端はストリームの位置を独立して保持します。</p>
+<p>戻り値が参照するオブジェクトは、<span class="arg">this</span>を解放する前に、<a href="std_io_InputTube.html#std_io_InputTube_close">std_<wbr>io_<wbr>InputTube_<wbr>close</a>()で解放しなければなりません。</p>
+<p>生成できなかった場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>入力端、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_Pool_createByteArray"></a><font size="+1"><b>Pool_<wbr>createByteArray</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_lang_ByteArray.html#struct std_lang_ByteArray">struct std_<wbr>lang_<wbr>ByteArray</a> *</td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Pool_createByteArray</b>(</td>
+    <td nowrap><a href="std_util_Pool.html#union std_util_Pool">union Pool</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+バイト配列を生成します。
+<p>プールにたまっているデータのサイズと同じサイズのバイト配列を生成し、プールにあるデータをそのバイト配列にコピーして返します。呼び出しの前後でプールにあるデータは変化しません。</p>
+<p>戻り値が参照するオブジェクトは<a href="std_lang_ByteArray.html#std_lang_ByteArray_free">std_<wbr>lang_<wbr>ByteArray_<wbr>free</a>()で解放しなければなりません。</p>
+<p>生成できなかった場合は<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>バイト配列、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

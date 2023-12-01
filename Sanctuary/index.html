@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | Sanctuary</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Sanctuary</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h2>概要</h2>
+<p>SanctuaryはXMLで記述したAPI仕様を入力として、C言語のヘッダファイルやドキュメント（HTMLとTeX）などを出力するツールです。</p>
+<div class="horizontal-scroll"><img src="images/overview.png"></div>
+<p>APIリファレンスを自動生成するツールとしては、DoxyGenやjavadocなどが有名です。これらのツールは<strong>コメントに特別なアノテーションを埋め込んだソースコード</strong>からAPIリファレンスなどのドキュメントを自動的に生成します。</p>
+<p>SanctuaryもAPIリファレンスを自動生成することができますが、さらに次のような特徴があります。</p>
+<dl>
+<dt>ヘッダファイルの自動生成</dt>
+<dd>ヘッダファイルのコーディングスタイルが形式的である場合、開発者がそれに合わせてヘッダファイルを書くことは、機械的な作業を多く含みます。例えば、名前衝突防止のプレフィックス、二重インクルード防止マクロや、C++用マクロなどを必ず書くルールである場合、それは自動的に生成して欲しいでしょう。</dd>
+<dt>重複のない記述</dt>
+<dd>同様な記述を繰り返す場合に、XMLでは実体宣言、実体参照を利用して、重複する記述を避けることができます。しかし、コメントによるアノテーションではコピーアンドペーストの出番になるでしょう。また、細かいことですが、関数プロトタイプの引数名と、コメント内の<code>@param</code>アノテーションの引数名を合わせるといった作業も楽しいものではありません。コメントによるアノテーションには限界があるといえます。</dd>
+<dt>名前空間の導入</dt>
+<dd>C言語には名前空間（ネームスペース）を制御する機能がない<a href="#1">&dagger;</a>ため、多くの場合は識別子にプレフィックスを付加するというコーディングスタイルを採用します。その結果、ソースコードはプレフィックスだらけになりがちです（例えば、JavaでStringを必ずjava.lang.Stringと書かなければならないとしたら、あなたは幸せでしょうか）。Javaのimport命令に相当するマクロを定義することで、C言語にもファイルスコープで名前空間を導入することができます。しかし、そうしたマクロを手作業で維持するのは困難でしょう。</dd>
+<dt>テスト用スタブの自動生成</dt>
+</dl>
+<p>逆にSanctuaryでは、XMLでAPIを記述するために独自の文法を学習する必要があります（DTDだけですべてを理解できれば学習の必要はありませんが...）。</p>
+<p class="footnote"><a name="1">&dagger;</a> C++のusingやJavaのimportのように名前を省略する機能がC言語にはないという意味です。名前空間そのものはC言語にもあります。例えば、構造体などのタグ名の名前空間と、関数名などの識別子の名前空間は異なります。また、スコープによっても名前空間は異なります。
+<h2>ドキュメント</h2>
+<ul>
+<li><a href="r2/tutorial.html">バージョン2.0</a></li>
+<li><a href="r1/tutorial.html">バージョン1.0</a></li>
+</ul>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon Mar 13 04:24:02 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Sun May 13 03:40:00 JST 2007
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Sanctuary</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

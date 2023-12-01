@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd">
+<class package="com_example" name="Integer1">
+  <define name="@_MAX">
+    <macro>0x7fffffff</macro>
+  </define>
+
+  <define name="@_MIN">
+    <macro>(-0x7fffffff - 1)</macro>
+  </define>
+
+  <typedef type="int" name="@_t"/>
+
+  <struct tag="@">
+    <member type="@_t" name="value"/>
+  </struct>
+
+  <method name="@_new">
+    <param type="@_t" name="i"/>
+    <return type="struct @ *"/>
+  </method>
+
+  <method name="@_delete">
+    <param type="struct @ *" name="i"/>
+  </method>
+
+  <method name="@_set">
+    <param type="struct @ *" name="i"/>
+    <param type="@_t" name="value"/>
+  </method>
+
+  <method name="@_get">
+    <param type="struct @ *" name="i"/>
+    <return type="@_t"/>
+  </method>
+</class>

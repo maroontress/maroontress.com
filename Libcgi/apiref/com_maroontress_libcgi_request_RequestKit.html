@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>RequestKit - com_maroontress_libcgi_request_RequestKit</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_maroontress_libcgi_request</h3>
+    <h1>class RequestKit</h1>
+#define com_maroontress_libcgi_request_RequestKit_IMPORT<br>
+#include &lt;com/maroontress/libcgi/request/RequestKit.h&gt;<br>
+    <dl><dd>
+リクエストを生成するためのキットです。
+  </dd></dl>
+    <hr>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_RequestKit_loadMap"><b>RequestKit_<wbr>loadMap</b></a>(<a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> *&nbsp;<i>map</i>, union std_<wbr>io_<wbr>InputTube (*<i>inputTubeCreator</i>)(void))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マップにリクエストパラメータをロードします。</td>
+</tr>
+    </table>
+<h2>Method Detail</h2>
+<p><a name="com_maroontress_libcgi_request_RequestKit_loadMap"></a><font size="+1"><b>RequestKit_<wbr>loadMap</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>RequestKit_loadMap</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> *&nbsp;<i>map</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>union std_<wbr>io_<wbr>InputTube (*<i>inputTubeCreator</i>)(void))</td>
+  </tr>
+</table>
+<dl>
+<dd>
+マップにリクエストパラメータをロードします。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>map</i> - マップ<br>
+
+<i>inputTubeCreator</i> - リクエストパラメータの入力ストリームを生成する関数<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

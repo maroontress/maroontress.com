@@ -1,0 +1,59 @@
+!!! ja_JP.EUCロケールのリソース例
+
+!!! ウィンドウのタイトル
+xsel.headline: セレクションテスタ
+
+!!! XIMサーバとXIMスタイル
+!xsel.localeModifier: @im=syl
+!xsel.ximStyle: PreeditCallbacks, StatusArea
+xsel.localeModifier: @im=kinput2
+xsel.ximStyle: PreeditPosition, StatusArea
+
+!!! フォント
+xsel*fontset: \
+    -*-fixed-medium-r-normal--16-*-*-*-*-*-iso8859-1,\
+    -*-fixed-medium-r-normal--16-*-*-*-*-*-jisx0208.1983-0,\
+    -*-fixed-medium-r-normal--16-*-*-*-*-*-jisx0201.1976-0,\
+    -*-fixed-medium-r-normal--16-*-*-*-*-*-jisx0212.1990-0
+xsel*button.fontset: \
+    -*-helvetica-bold-r-normal--14-*-*-*-p-*-iso8859-1,\
+    -*-fixed-medium-r-normal--14-*-*-*-c-*-jisx0208.1983-0,\
+    -*-fixed-medium-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
+    -*-fixed-medium-r-normal--14-*-*-*-c-*-jisx0212.1990-0
+xsel*plate.fontset: \
+    -*-courier-bold-r-normal--14-*-*-*-m-*-iso8859-1,\
+    -*-fixed-medium-r-normal--14-*-*-*-c-*-jisx0208.1983-0,\
+    -*-fixed-medium-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
+    -*-fixed-medium-r-normal--14-*-*-*-c-*-jisx0212.1990-0
+
+!!! メッセージ
+xsel.messageUnknownPropertyType: 不明なプロパティタイプ
+xsel.messageRetrievingSelection: セレクション取得中...
+xsel.messageTargetsNotFound: ターゲット一覧を取得できませんでした
+
+!!! ラベル
+xsel.selection.plate.label: セレクション名
+xsel.retrieve.button.label: セレクションの取得
+xsel.targets.plate.label: ターゲット一覧
+xsel.name.plate.label: ターゲット名
+xsel.type.plate.label: タイプ
+xsel.format.plate.label: フォーマット
+xsel.items.plate.label: 項目数（残り）
+xsel.contents.plate.label: 内容
+
+!!! グラビティ
+xsel*gravity: North
+xsel*plate.gravity: West
+xsel.selection.listBox.gravity: Center
+
+!!! カラー
+xsel*preedited: maroon
+xsel*illuminated: #e0e0ff
+xsel*caretColor: black
+xsel*focusFrameColor: orange
+xsel*focusRippleColor: orange
+xsel*button.illuminated: gray50
+xsel*button.background: gray70
+
+!!! ライン幅
+xsel*LineWidth: 2

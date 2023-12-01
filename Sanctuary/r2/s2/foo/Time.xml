@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd">
+<class package="foo" name="Time">
+  <namespace/>
+
+  <define name="add">
+    <macroparam name="tvp">
+      <desc>timeval構造体のポインタ</desc>
+    </macroparam>
+
+    <macroparam name="uvp">
+      <desc>timeval構造体のポインタ</desc>
+    </macroparam>
+
+    <macroparam name="vvp">
+      <desc>和を格納するtimeval構造体のポインタ</desc>
+    </macroparam>
+
+    <macro>
+do {
+  (vvp)->tv_sec = (tvp)->tv_sec + (uvp)->tv_sec;
+  (vvp)->tv_usec = (tvp)->tv_usec + (uvp)->tv_usec;
+  if ((vvp)->tv_usec >= 1000000) {
+    (vvp)->tv_sec++;
+    (vvp)->tv_usec -= 1000000;
+  }
+} while (0)
+    </macro>
+
+    <desc>
+      <brief>timeval構造体の和を求めます。</brief>
+      <p><arg>tvp</arg> + <arg>uvp</arg>の値を計算し、<arg>vvp</arg>に格納します。</p>
+      <p><arg>tvp</arg>, <arg>uvp</arg>, <arg>vvp</arg>はtimeval構造体のポインタでなければなりません。</p>
+    </desc>
+  </define>
+
+  <desc>
+    <brief>timeval構造体を演算する操作を提供します。</brief>
+  </desc>
+</class>

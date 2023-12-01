@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd">
+<class package="foo" name="NestedStruct">
+  <namespace/>
+
+  <struct tag="Outer"> 
+    <structmember name="s1">
+      <member type="int" name="i">
+	<desc><brief>何かの整数値です。</brief></desc>
+      </member>
+
+      <tag>
+        <desc>
+          <brief>匿名の構造体です。</brief>
+	  <p>匿名の構造体には、便宜上、仮の名前が付けられます。仮の名前は@に続くユニークなID（整数値）となります。</p>
+          <p><em>匿名の構造体の説明をここに記述します。</em></p>
+        </desc>
+      </tag>
+
+      <desc>
+        <brief>型が「匿名の構造体」のメンバです。</brief>
+        <p><em>メンバs1の説明をここに記述します。</em></p>
+      </desc>
+    </structmember>
+
+    <structmember tag="Inner" name="s2">
+      <member type="int" name="i">
+	<desc><brief>何かの整数値です。</brief></desc>
+      </member>
+
+      <tag>
+        <desc>
+          <brief>構造体のメンバとして定義される構造体です。</brief>
+          <p>この構造体はトップレベルで定義された場合と同様に扱えます。</p>
+          <p><em>構造体Innerの説明をここに記述します。</em></p>
+        </desc>
+      </tag>
+
+      <desc>
+        <brief>型が「foo_NestedStruct_Inner構造体」のメンバです。</brief>
+        <p><em>メンバs2の説明をここに記述します。</em></p>
+      </desc>
+    </structmember>
+
+    <desc><brief>メンバとして構造体を定義する構造体です。</brief></desc>
+  </struct>
+
+  <desc><brief>ネストする構造体の例を提供します。</brief></desc>
+</class>

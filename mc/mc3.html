@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>3. Buffonの針 | モンテカルロシミュレーション</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown_light.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">モンテカルロシミュレーション</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<script src="https://fred-wang.github.io/TeXZilla/TeXZilla-min.js"></script>
+<script src="https://fred-wang.github.io/TeXZilla/examples/customElement.js"></script>
+<h1>3. Buffonの針</h1>
+<p><a name="design"></a></p>
+<h2>3.1. 設計</h2>
+<p>また課題を確認しておきます。課題は「Buffonの針の問題から円周率を計算するプログラムを作成し、ワークステーション上で実行せよ。試行回数の増加とともにその値はどのように変化するか。」です。</p>
+<p>乱数の発生については、先程作成したrandコマンドがそのまま使えます。あとは乱数を読み込んで円周率を出力するプログラムを作ることになります。今回はそれをbuffonコマンドと呼ぶことにします。Buffonの針では、テキストにある通り、二つ乱数を発生させることが一回針を投げる行為に対応しています（このシミュレーションでは一回針を投げることが1ステップに相当します）。</p>
+<p>乱数以外に必要になる人為的なパラメータは、テキストにあるように、<la-tex>a</la-tex>と<la-tex>L</la-tex>になります（小文字のエルは字体によっては読みにくいので、以下大文字で表記します）。したがって次のような動作イメージをもってプログラムを作成します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10 | ./buffon <la-tex>a</la-tex>の値 <la-tex>L</la-tex>の値</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>例えば、それぞれ<la-tex>a=1.0</la-tex>、<la-tex>L=0.5</la-tex>と選んだ場合は次のようにするわけです。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10 | ./buffon 1.0 0.5</u> <span class="nocode"><i>Enter</i></span>
+.
+.
+.
+foo[bar]% </code></pre>
+<p>上の例では、randコマンドが10個乱数を発生させていますが、buffonコマンドは1ステップで2つの乱数をとるので、5ステップだけ実行されるわけです。</p>
+<p>方針は以上です。あとは少し細かい点についてテキストを補足しておきます。まず、針の中心の座標<la-tex>y</la-tex>のとり方ですが、「<la-tex>-a \leq y &lt; a</la-tex>」ととった方が簡単です。そのかわり、針が平行線と交わっているかどうかは<la-tex>y_{1}</la-tex>と<la-tex>y_{2}</la-tex>の符号が異符号か同符号かで判断します（テキストでは「<la-tex>y_{1} - 2a</la-tex>」と「<la-tex>y_{2} - 2a</la-tex>」の符号を比較するように書いてあります）。また、<la-tex>\theta</la-tex>については、「<la-tex>0 \leq \theta &lt; 2\pi</la-tex>」ととってください。</p>
+<p><a name="work"></a></p>
+<h2>3.2. 作業用ディレクトリの作成</h2>
+<p>次のようにpwdコマンドを入力して、現在自分がホームディレクトリにいることを確認してください。</p>
+<pre><code class="nohighlight">foo[bar]% <u>pwd</u> <span class="nocode"><i>Enter</i></span>
+/home/appi/foo
+foo[bar]% </code></pre>
+<p>もし違っていたらcdコマンドでホームディレクトリに移動します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cd</u> <span class="nocode"><i>Enter</i></span>
+foo[bar]% <u>pwd</u> <span class="nocode"><i>Enter</i>（確認のため）</span>
+/home/appi/foo
+foo[bar]% </code></pre>
+<p>乱数の度数分布のときと同じように、Buffonの針のプログラムを作成するための作業用ディレクトリを次のように作ります。</p>
+<pre><code class="nohighlight">foo[bar]% <u>mkdir buffon</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>次にこのディレクトリに移ります（繰り返しになりますが、このときもtcshのファイル名補完機能を用いればタイプ量を減らすことができます）。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cd buffon</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>最後に念のためpwdコマンドでカレントディレクトリを確認します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>pwd</u> <span class="nocode"><i>Enter</i></span>
+/home/appi/foo/buffon
+foo[bar]% </code></pre>
+<p><a name="copy"></a></p>
+<h2>3.3. ソースの雛型のコピー</h2>
+<p>乱数の度数分布のときと同様に、Buffonの針でも雛型を用意してあります。</p>
+<p>以前と同様に、次のようにcpコマンドを用いて、ファイルを自分のホームディレクトリにコピーします。</p>
+<pre><code class="nohighlight">foo[bar]% <u>cp ~yoshiko/skel/buffon/* .</u> <span class="nocode"><i>Enter</i></span>
+foo[bar]% </code></pre>
+<p>ファイルをコピーしたら、念のためlsコマンドで確認してみてください。</p>
+<p><a name="edit"></a></p>
+<h2>3.4. ソースの編集</h2>
+<p>乱数の度数分布で起動したMuleが、まだ動いている場合はそのまま使用しても構いません。終了してしまった場合はもう一度Muleを起動してください。</p>
+<p><code>buffon.c</code>を編集して、プログラムを完成させます。</p>
+<p><a name="build"></a></p>
+<h2>3.5. 実行ファイルの構築</h2>
+<p>Buffonの針でもMakefileを用意してあるので、ファイル<code>buffon.c</code>をコンパイルするには、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>make</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>プログラムに間違いがなければ次のように出力され、自動的に実行ファイル<code>buffon</code>が構築されます。</p>
+<pre><code class="language-plaintext">foo[bar]% make
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c buffon.c
+gcc -Wall -O2 -pipe -D__USE_FIXED_PROTOTYPES__ -c Trial.c
+gcc -o buffon buffon.o Trial.o -lm
+ln -s ../rand-distribution/rand rand
+ln -s ../rand-distribution/graph.sh graph.sh
+foo[bar]%
+</code></pre>
+<p>エラーや警告が出た場合は、内容を調べて修正し、もう一度makeしてみます。</p>
+<p>正常に構築できたようであれば、次に進みます。</p>
+<p><a name="exec"></a></p>
+<h2>3.6. プログラムの実行テスト</h2>
+<p>実行する前に、パラメータ<la-tex>a</la-tex>、<la-tex>L</la-tex>を決定しなければなりません。例えば、それぞれ<la-tex>a=1.0</la-tex>、<la-tex>L=0.5</la-tex>に選んだ場合は、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 10 | ./buffon 1.0 0.5</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>randコマンドは10個の乱数を発生させますが、buffonコマンドは1ステップあたりに2つの乱数をとるので、次のように5ステップだけ実行されます。</p>
+<pre><code class="language-plaintext">foo[bar]% ./rand 10 | ./buffon 1.0 0.5
+1 1.600000
+2 3.200000
+3 4.800000
+4 3.200000
+5 2.666667
+foo[bar]% 
+</code></pre>
+<p>正常に動作しなかったり、値がめちゃくちゃだったりした場合は、Muleで修正して再びmakeします。</p>
+<p><a name="graph"></a></p>
+<h2>3.7. グラフの作成</h2>
+<p>試行回数<la-tex>n</la-tex>が増加するにしたがって、どのように円周率が収束するかグラフにプロットしてみます。これについてもシェルスクリプト<code>graph.sh</code>が用意してあります。試行回数が10000回で、それぞれ<la-tex>a=1.0</la-tex>、<la-tex>L=0.5</la-tex>に選んだならば、ktermで次のように入力します。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 20000 | ./buffon 1.0 0.5 | sh graph.sh -0 buffon</u> <span class="nocode"><i>Enter</i></span></code></pre>
+<p>randコマンドに与える引数は、試行回数の2倍でなければならないことに注意してください。入力するとxgraphのウィンドウが現れますので、収束している様子を確認したら、印刷して終了します。</p>
+<p>また、試行回数10000回目での円周率を数値で知りたい場合は、次のように入力することで知ることができます。</p>
+<pre><code class="nohighlight">foo[bar]% <u>./rand 20000 | ./buffon 1.0 0.5 | tail</u> <span class="nocode"><i>Enter</i></span>
+9991 3.124018
+9992 3.123720
+9993 3.123423
+9994 3.123125
+9995 3.122828
+9996 3.123140
+9997 3.123452
+9998 3.123765
+9999 3.123467
+10000 3.123780
+foo[bar]% </code></pre>
+<footer>
+<!-- Created: Mon Sep 14 05:03:54 JST 1998 -->
+<!-- hhmts start -->
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">モンテカルロシミュレーション</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="mc1.html">1. 作業を始めるまで</a>
+    </li>
+    <li>
+      <a href="mc2.html">2. 乱数の度数分布</a>
+    </li>
+    <li class="selected">
+      3. Buffonの針
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="mc4.html">4. f(x)の求積問題</a>
+    </li>
+    <li>
+      <a href="mc5.html">5. 酔歩問題（時間が余った場合）</a>
+    </li>
+    <li>
+      <a href="mc6.html">6. あとかたづけ</a>
+    </li>
+    <li>
+      <a href="bib.html">参考文献</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

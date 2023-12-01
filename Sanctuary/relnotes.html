@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Release Notes | Sanctuary</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Sanctuary</div>
+<div id="toc-level" data-values="H2"></div>
+<h1>Release Notes</h1>
+<h2>リリースノート 2.0.3 (2008-09-17)</h2>
+<p><a href="sanctuary-2.0.3.tar.bz2">sanctuary-2.0.3.tar.bz2</a>をリリース。</p>
+<h3>バグ修正</h3>
+<ul>
+<li>${prefix}/bin/が存在しないとき、ant installが失敗するバグを修正。</li>
+<li>ant install実行後にant install -Dprefix=/anotherを実行すると、/another/bin/にスクリプトが正しくインストールされないバグを修正。</li>
+</ul>
+<h2>リリースノート 2.0.2 (2008-06-05)</h2>
+<p><a href="sanctuary-2.0.2.tar.bz2">sanctuary-2.0.2.tar.bz2</a>をリリース。</p>
+<h3>バグ修正</h3>
+<ul>
+<li>C++対応のヘッダファイルを生成するとき、グローバル変数の宣言をextern &quot;C&quot; {...}で囲まないバグを修正。</li>
+</ul>
+<h2>リリースノート 2.0.1 (2008-04-30)</h2>
+<p><a href="sanctuary-2.0.1.tar.bz2">sanctuary-2.0.1.tar.bz2</a>をリリース。</p>
+<h3>バグ修正</h3>
+<ul>
+<li>スタブのオーバライド用関数ポインタのプロトタイプに修飾子を出力しないようにした。</li>
+<li>xclassのドキュメントで同じパッケージの識別子への自動リンクが簡略形にならないバグを修正。</li>
+<li>xclassの実体となる共用体のインポートマクロを生成しないバグを修正。</li>
+</ul>
+<h2>リリースノート 2.0.0 (2007-09-23)</h2>
+<p><a href="sanctuary-2.0.0.tar.bz2">sanctuary-2.0.0.tar.bz2</a>をリリース。</p>
+<p>sanctuary-20070527.tar.bz2（バージョン1.0.4）をインポートして、バージョン2の系列の新リポジトリに移行。</p>
+<h3>新機能と変更</h3>
+<ul>
+<li>cathedralブランチをマージ。</li>
+<li>TeX出力のハイパーリンク機能をHTML出力と同等に改善。</li>
+<li>--codeオプションを引数無しに変更し、デフォルトでC++対応のヘッダファイルを生成するようにした。</li>
+<li>--output-dir, --input-file, --without-c++オプションを追加。</li>
+<li>外部DTDのシステムIDに指定したURLが、互換性のないバージョンのDTDである場合は例外をスローするようにした。</li>
+</ul>
+<h3>DTD</h3>
+<ul>
+<li>methodmember要素を追加し、構造体、共用体の関数ポインタ型メンバをmethodmember要素で指定するようにした。</li>
+<li>method要素は構造体、共用体のメンバに指定できなくなった。</li>
+</ul>
+<h3>バグ修正</h3>
+<ul>
+<li>TeX出力: 数学モードのエスケープ処理で一部の文字がエスケープされないバグを修正。</li>
+</ul>
+<h3>実装の変更</h3>
+<ul>
+<li>クラス名の改名、サブパッケージにクラスを分割。</li>
+<li>ハッシュマップと定数プールの利用。</li>
+<li>重複するコードを共通化。</li>
+<li>ソースコードからコピーライト表示を削除。</li>
+</ul>
+<h2>リリースノート 1.0.7 (2008-09-17)</h2>
+<ul>
+<li><a href="sanctuary-1.0.7.tar.bz2">sanctuary-1.0.7.tar.bz2</a>をリリース。</li>
+<li>バグ修正:</li>
+<ul>
+<li>${prefix}/bin/が存在しないとき、ant installが失敗するバグを修正。</li>
+<li>ant install実行後にant install -Dprefix=/anotherを実行すると、/another/bin/にスクリプトが正しくインストールされないバグを修正。</li>
+</ul>
+</ul>
+<h2>リリースノート 1.0.6 (2008-06-05)</h2>
+<ul>
+<li><a href="sanctuary-1.0.6.tar.bz2">sanctuary-1.0.6.tar.bz2</a>をリリース。</li>
+<li>バグ修正:</li>
+<ul>
+<li>C++対応のヘッダファイルを生成するとき、グローバル変数の宣言をextern "C" {...}で囲まないバグを修正。</li>
+</ul>
+</ul>
+<h2>リリースノート 1.0.5 (2007-09-23)</h2>
+<ul>
+<li><a href="sanctuary-1.0.5.tar.bz2">sanctuary-1.0.5.tar.bz2</a>をリリース。</li>
+<li>sanctuary-20070527.tar.bz2（バージョン1.0.4）をインポートして、バージョン1の系列の新リポジトリに移行。</li>
+<li>新機能と変更:</li>
+<ul>
+<li>外部DTDのシステムIDに指定したURLが、互換性のないバージョンのDTDである場合は例外をスローするようにした。</li>
+</ul>
+<li>バグ修正:</li>
+<ul>
+<li>TeX出力: 数学モードのエスケープ処理で一部の文字がエスケープされないバグを修正。</li>
+</ul>
+<li>実装の変更:</li>
+<ul>
+<li>ソースコードからコピーライト表示を削除。</li>
+</ul>
+</ul>
+<h2>リリースノート 1.0.4 (2007-05-27)</h2>
+<ul>
+<li><a href="sanctuary-20070527.tar.bz2">sanctuary-20070527.tar.bz2</a>をリリース。</li>
+<li>macro要素の内容が複数行で、trim()の結果が1行のとき、ヘッダファイルを正しく生成できないバグを修正。</li>
+<li>HTML出力で「{構造体|共用体}.メンバ名」のリンクが簡略系にならないバグを修正。</li>
+<li>MethodMember要素の子のmodifier要素の内容がHTMLドキュメントに出力されないバグを修正。</li>
+<li>modifier要素の内容がTeXドキュメントに出力されないバグを修正。</li>
+<li>HTML出力の文書型宣言を変更して、ブラウザによって表示がなるべく変わらないようにした。</li>
+<li>HTML出力で「_」の直後を改行可能にした。</li>
+<li>HTML出力で、引数をもつ関数（または関数ポインタ）の戻り値の型の文字列が長い場合、行が長くならないように表示形式を変更した。</li>
+<li>HTML出力でmath要素の内容は、アルファベットは斜体で、ハイフンはマイナス記号で表示するようにした。</li>
+<li>HTML出力のタイトルの文字列を「簡略形 - 完全形」とした。</li>
+<li>Method.javaとMethodMember.javaの共通部分をFunction.javaに委譲した。</li>
+</ul>
+<h2>リリースノート 1.0.3 (2007-03-26)</h2>
+<ul>
+<li><a href="sanctuary-20070326.tar.bz2">sanctuary-20070326.tar.bz2</a>をリリース。</li>
+<li>外部DTDのシステムIDにURL<wbr>（http://<wbr>maroontress.com/<wbr>Sanctuary/<wbr>1.0/<wbr>sanctuary.<wbr>dtd）<wbr>を指定したとき、jarファイル内のリソースからDTDを読み込むようにした。</li>
+<li>ドキュメントのクラス名の後に "#include &lt;ヘッダファイル名&gt;" を表示するようにした。</li>
+<li>namespace要素を指定したときは、ドキュメントの「#include &lt;ヘッダファイル名&gt;」の前に "#define パッケージ名_クラス名_IMPORT" を表示するようにした。</li>
+<li>namespace要素を指定したとき、ドキュメントでは同一パッケージのクラス（インタフェース）に所属する識別子についてはパッケージ名を省略して表示するようにした。結果としてインポートマクロを使用したときのソースコードでの表記とドキュメントでの表記が等しくなった。</li>
+<li>TeX出力の段落開始の字下げが発生しないバグを修正。</li>
+<li>HTML出力で文字がエスケープされないバグを修正。</li>
+</ul>
+<h2>リリースノート 1.0.2 (2006-12-10)</h2>
+<ul>
+<li><a href="sanctuary-20061210.tar.bz2">sanctuary-20061210.tar.bz2</a>をリリース。</li>
+<li>Cのコメントに含まれる#を無視しないバグを修正。</li>
+<li>Cのコメントに含まれるstructとunionを無視しないバグを修正。</li>
+<li>structまたはunionで始まる識別子があると例外をスローするバグを修正。</li>
+</ul>
+<h2>リリースノート 1.0.1 (2006-09-08)</h2>
+<ul>
+<li><a href="sanctuary-20060908.tar.bz2">sanctuary-20060908.tar.bz2</a>をリリース。</li>
+<li>member要素、param要素、return要素などのtype属性に含まれる構造体、共用体のタグ名を抽出して、それらの前方定義を自動的にヘッダファイルに出力するようにした。</li>
+</ul>
+<h2>リリースノート 1.0.0 (2006-08-20)</h2>
+<ul>
+<li><a href="sanctuary-20060820.tar.bz2">sanctuary-20060820.tar.bz2</a>をリリース。</li>
+<li>バージョンを出力できるようにした。</li>
+<li>@展開の機能を追加。規定の属性の値に "@" が含まれる場合、"@" を「パッケージ名 + "_" + クラス名」に展開する。ただし、C言語のコメントに含まれる "@" は展開されない。展開の対象となる属性はリファレンスを参照のこと。</li>
+<li>名前空間展開の機能を追加。namespace要素が存在する場合、規定の属性の値に接頭辞「パッケージ名 + "_" + クラス名 + "_"」を付加する。ただし、属性の値が "@" のときは「パッケージ名 + "_" + クラス名」に展開する。名前空間展開を適用した場合は@展開を適用しない。展開の対象となる属性はリファレンスを参照のこと。</li>
+<li>インポートマクロの機能を追加。namespace展開を指定した場合、ヘッダファイルには「パッケージ名 + "_" + クラス名 + "_" + 識別子」を「クラス名 + "_" + 識別子」に展開し、「パッケージ名 + "_" + クラス名」を「クラス名」に展開するマクロを定義する。これらマクロはデフォルトでは無効であり、有効にするためには、マクロ「パッケージ名 + "_" + クラス名 + "_IMPORT"」を定義してからヘッダファイルをインクルードする。リンカから見えるシンボルに影響はないことに注意。</li>
+<li>次のようにDTDを変更した。詳細はリファレンスを参照のこと。</li>
+<ul>
+<li>namespace要素、export要素を追加。</li>
+<li>class要素内でdefine要素の出現順序を変更。</li>
+<li>include要素のcode属性を廃止して、file属性に変更。</li>
+<li>import要素のcode属性を廃止して、type属性とtag属性に変更。</li>
+<li>typedef要素のas属性を廃止して、type属性に変更。</li>
+<li>struct/union/enum要素のname属性を廃止して、tag属性に変更。</li>
+<li>structmember/<wbr>unionmember/<wbr>enummember<wbr>要素のtype属性を廃止して、tag属性を追加。</li>
+<li>macroparam要素を追加して引数付きマクロの記述方法を変更。</li>
+<li>structmember/<wbr>unionmember/<wbr>enummember<wbr>要素の子のdesc要素はメンバの説明を記述するものとし、構造体、共用体、列挙型の説明を記述するためのtag要素を子として追加。</li>
+<li>enum要素またはenummember要素で、子のconstant要素が1回以上出現するように変更。</li>
+</ul>
+<li>入力するXMLファイルをDTDで検証するようにした。</li>
+<li>DTDで制約できない属性の値の内容を検査するようにした。エラーがあった場合はステータスコード1で終了するようにした。実行時エラーとなる状況はリファレンスを参照のこと。</li>
+<li>TeX出力の際、記号のエスケープ処理が不完全だったバグを修正。</li>
+</ul>
+<h2>リリースノート 0.1.1 (2006-05-29)</h2>
+<ul>
+<li><a href="sanctuary-20060529.tar.bz2">sanctuary-20060529.tar.bz2</a>をリリース。</li>
+<li>Antでもビルドできるようにした。</li>
+<li>インストールするファイルの構成を変更し、シェルスクリプトからコマンドを実行するようにした。</li>
+</ul>
+<h2>リリースノート 0.1.0 (2006-05-01)</h2>
+<ul>
+<li><a href="sanctuary-20060501.tar.bz2">sanctuary-20060501.tar.bz2</a>をリリース。</li>
+<li>可変長引数とグローバル変数を記述できるようにした。</li>
+<li>HTML出力の際に生成するindex.htmlと、TeX出力の際に生成するsanctuary.texにおいて、パッケージとクラスの出現順序を辞書順にソートするようにした。</li>
+</ul>
+<h2>リリースノート 0.0.0 (2006-04-09)</h3></h2>
+<ul>
+<li><a href="sanctuary-20060409.tar.bz2">sanctuary-20060409.tar.bz2</a>をリリース。</li>
+</ul>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Mon Mar 13 04:24:02 JST 2006 -->
+<!-- hhmts start -->
+Last modified: Sun May 13 03:40:00 JST 2007
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Sanctuary</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li class="selected">
+      Release Notes
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

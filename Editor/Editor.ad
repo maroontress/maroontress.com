@@ -1,0 +1,49 @@
+!!! ja_JP.EUCロケールのリソース例
+
+!!! キーバインディングに関するもの
+!	いっぱいあるので省略
+
+!!! フォントに関するもの
+editor*fontset: \
+	-adobe-helvetica-medium-r-normal--14-*-*-*-p-*-iso8859-1,\
+	-misc-fixed-medium-r-normal--14-*-*-*-c-*-jisx0208.1983-0,\
+	-misc-fixed-medium-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
+	-misc-fixed-medium-r-normal--14-*-*-*-c-*-jisx0212.1990-0
+!	編集領域: editor.edit.text.fontset
+!	ファイル名領域: editor.filename.text.fontset
+!	ボタンのラベル: editor*button.fontset
+
+!!! XIMに関するもの
+!editor*localeModifier: @im=kinput2
+!	指定なしの場合は環境変数XMODIFIERを参照。
+editor*ximStyle: PreeditPosition, StatusArea
+
+!!! ウィンドウマネージャ関連
+editor*geometry: 600x400
+editor*headline: 国際化エディタ
+
+!!! カラーに関するもの
+editor*foreground:		black
+editor*background:		white
+editor*highlighted:		#3f00ff
+editor*illuminated:		#e0e0ff
+editor*preedited:		maroon
+editor*Button.illuminated:	gray50
+editor*caretColor:		black
+editor*focusFrameColor:		orange
+editor*focusRippleColor:	orange
+
+!!! ボタンのラベル
+editor.save.button.label: ●
+editor.save.button.foreground: red
+editor.save.button.background: gray70
+editor.load.button.label: 〓
+editor.load.button.foreground: green
+editor.load.button.background: gray70
+
+!!! IMスタイル選択ダイアログ
+imstyle.headline: 選択: 入力メソッドスタイル
+imstyle.styleList.plate.label: 入力メソッドのスタイルを選択してください
+imstyle*focusFrameWidth: 3
+imstyle*focusFrameColor: orange
+imstyle*illuminated: #dfdfff

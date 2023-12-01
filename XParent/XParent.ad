@@ -1,0 +1,40 @@
+xparent.geometry: 320x40-0+0
+xparent.layoutMode: thick
+
+!xparent.geometry: 640x24-0+0
+!xparent.layoutMode: thin
+
+xparent*foreground: white
+xparent*background: black
+xparent*mediumGray: black
+!xparent.graph.On: orange1
+!xparent.graph.Off: orange4
+
+xparent*fontset: \
+    -*-helvetica-medium-r-normal--10-100-*-*-*-*-iso8859-1,\
+    -misc-fixed-medium-r-normal--10-90-*-*-*-*-jisx0208.1983-0,\
+    -misc-fixed-medium-r-normal--10-90-*-*-*-*-jisx0201.1976-0,\
+    -*-fixed-medium-r-normal--10-90-*-*-*-*-jisx0212.1990-0
+
+xparent.acline.plate.label: =D-?-
+xparent.batteryTime.plate.label: ????:??:??
+xparent.batteryLife.plate.label: 100%
+xparent.slot.plate.label: スロット0
+xparent*button.fontset: \
+    -*-helvetica-medium-r-normal--8-80-*-*-*-*-iso8859-1,\
+    -elisa100-fixed-medium-r-normal--8-70-*-*-*-*-jisx0208.1983-0,\
+    -elisa100-fixed-medium-r-normal--8-70-*-*-*-*-jisx0201.1976-0,\
+    -*-fixed-medium-r-normal--8-70-*-*-*-*-jisx0212.1990-0
+xparent*button.foreground: black
+xparent*button.background: gray70
+xparent*button.mediumGray: gray70
+xparent*button.illuminated: gray50
+xparent.cardAttach.button.label: ▼
+xparent.cardDetach.button.label: ▲
+xparent.cardInfo.text.illuminated: gray50
+
+xparent.messageUnknown: 測定中
+xparent.messageCharging: 充電中
+xparent.messageDisabled: 電源供給停止中
+xparent.messageEmpty: カード未挿入
+xparent.messageNotFound: 検出不能

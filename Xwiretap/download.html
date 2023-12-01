@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Download | Xwiretap</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Xwiretap</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h2>ダウンロード</h2>
+<p>最新版は<a href="xwiretap-20040516.tar.gz"><code>xwiretap-20040516.tar.gz</code></a>です。主に動作確認したプラットフォームは次の通りです。</p>
+<ul>
+<li>FreeBSD 4.9 + XFree86 4.3.0</li>
+<li>Red Hat Linux 9 + XFree86 4.3.0</li>
+</ul>
+<h2>必要な構成</h2>
+<p>次のものをインストールしておく必要があります。</p>
+<ul>
+<li><a href="../Imserver/">日本語XIMサーバ</a>（2004-05-06以降）</li>
+<li><a href="http://cl.aist-nara.ac.jp/~taku-ku/software/mecab/">MeCab</a>（0.76以降）</li>
+<li>Berkeley DB（Linuxの場合）</li>
+</ul>
+<p>Red Hat Linux 9では次のrpmで動作確認しました。</p>
+<ul>
+<li>db4-4.0.14-20</li>
+<li>db4-devel-4.0.14-20</li>
+</ul>
+<h2>ビルドとインストール</h2>
+<p>tar ballを展開後、環境に合うように<code>Imakefile</code>を編集します。<code>Imakefile</code>では、最低限、次の項目について指定する必要があります<a href="#1">†</a>。</p>
+<dl style="background-color: var(--pre-background); padding: 16px;">
+<dt><code>InstallBinDir</code></dt>
+<dd>実行形式ファイルのインストール先ディレクトリを指定します。</dd>
+<dt><code>MecabIncDir</code></dt>
+<dd>MeCabのヘッダファイル（<code>mecab.h</code>）があるディレクトリを指定します。</dd>
+<dt><code>MecabLibDir</code></dt>
+<dd>MeCabのライブラリ（<code>libmecab.so</code>）があるディレクトリを指定します。</dd>
+<dt><code>BerkeleyDBType</code></dt>
+<dd>[Linuxの場合のみ] <code>/usr/include/db1/db.h</code>と<code>/usr/lib/libdb1.so</code>がインストールされている場合は<code>DB1</code>を、<code>/usr/include/db_185.h</code>と<code>/usr/lib/libdb.so</code>がインストールされている場合は<code>DB185</code>を指定します。</dd>
+</dl>
+<p><code>Imakefile</code>を変更したら、<code>xmkmf -a ; make ; make install</code>で完了します。</p>
+<p class="footnote"><a name="1">&dagger;</a> FreeBSDを使用していて、MeCabをportsでインストールしている場合、なにも変更せずにビルドできるようになっています。</p>
+<h2>実行</h2>
+<h3>Xwiretapの実行</h3>
+<p>Xwiretapは<strong>日本語EUCロケールでのみ動作する</strong>ことに注意してください。次のように、日本語EUCロケールを設定して実行します。</p>
+<pre><code class="nohighlight">% setenv LANG <i>EUCロケール名</i>
+% xwiretap [<i>参照辞書のパス</i>] &</code></pre>
+<p>具体的には、FreeBSDでは次のようにして実行します。</p>
+<pre><code class="language-plaintext">% setenv LANG ja_JP.eucJP
+% xwiretap ~/.imserver-reference.db &amp;
+</code></pre>
+<p>参照辞書のパスを省略した場合、<code>/tmp/reference.db</code>を参照辞書として使用します。</p>
+<h3>Xクライアントの実行</h3>
+<p>環境によっては、事前にXサーバをlocalhostから接続できるようにしておく必要があります。</p>
+<pre><code class="language-plaintext">% xhost +localhost
+</code></pre>
+<p>Xwiretapを実行したら、次にXクライアントをXwiretap経由でディスプレイサーバに接続します。そのためには、次のようにローカルホストのディスプレイ番号1に接続するようにXクライアントを実行します。</p>
+<pre><code class="language-plaintext">% setenv DISPLAY localhost:1
+% mozilla &amp;
+</code></pre>
+<p>アプリケーションによっては、次のようにコマンドラインオプションで指定することもできます。</p>
+<pre><code>% xemacs -display localhost:1
+</code></pre>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Wed May  5 04:05:34 JST 2004 -->
+<!-- hhmts start -->
+Last modified: Sun May 16 07:05:31 JST 2004
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Xwiretap</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="news.html">News</a>
+    </li>
+    <li class="selected">
+      Download
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

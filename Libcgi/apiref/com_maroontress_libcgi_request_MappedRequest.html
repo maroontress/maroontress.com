@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>MappedRequest - com_maroontress_libcgi_request_MappedRequest</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_maroontress_libcgi_request</h3>
+    <h1>class MappedRequest</h1>
+#define com_maroontress_libcgi_request_MappedRequest_IMPORT<br>
+#include &lt;com/maroontress/libcgi/request/MappedRequest.h&gt;<br>
+    <dl><dd>
+マップされたリクエストです。
+<p><a href='com_maroontress_libcgi_request_GetRequest.html'>GetRequestクラス</a>と
+<a href='com_maroontress_libcgi_request_URLEncodedPostRequest.html'>URLEncodedPostRequestクラス</a>はこのクラスに委譲します。</p>
+  </dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_maroontress_libcgi_request_MappedRequest.html#struct com_maroontress_libcgi_request_MappedRequest">struct MappedRequest</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マップされたリクエストの実装となる構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>Request</a></font>
+  </td>
+  <td valign="top"><a href="#struct com_maroontress_libcgi_request_MappedRequest.super"><b>super</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;親クラス</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct com_maroontress_libcgi_request_MappedRequest.map"><b>map</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マップ</td>
+</tr>
+      </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_request_MappedRequest.html#struct com_maroontress_libcgi_request_MappedRequest">struct MappedRequest</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_request_MappedRequest_create"><b>MappedRequest_<wbr>create</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;マップされたリクエストを生成します。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct com_maroontress_libcgi_request_MappedRequest"></a>
+<font size="+1"><b>struct MappedRequest</b></font></p>
+<dl><dd>
+マップされたリクエストの実装となる構造体です。
+    
+<hr>
+<p><a name="struct com_maroontress_libcgi_request_MappedRequest.super"></a><font size="+1"><b>super</b></font></p>
+<p><a href="com_maroontress_libcgi_Request.html#struct com_maroontress_libcgi_Request">struct com_<wbr>maroontress_<wbr>libcgi_<wbr>Request</a> <b>super</b></p>
+<dl>
+<dd>
+親クラス
+      </dd>
+</dl>
+<hr>
+<p><a name="struct com_maroontress_libcgi_request_MappedRequest.map"></a><font size="+1"><b>map</b></font></p>
+<p><a href="com_maroontress_libcgi_request_Map.html#struct com_maroontress_libcgi_request_Map">struct Map</a> * <b>map</b></p>
+<dl>
+<dd>
+マップ
+      </dd>
+</dl>
+</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="com_maroontress_libcgi_request_MappedRequest_create"></a><font size="+1"><b>MappedRequest_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_request_MappedRequest.html#struct com_maroontress_libcgi_request_MappedRequest">struct MappedRequest</a> * <b>MappedRequest_create</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+マップされたリクエストを生成します。
+<p>戻り値が参照するオブジェクトは<a href="com_maroontress_libcgi_Request.html#com_maroontress_libcgi_Request_free">com_<wbr>maroontress_<wbr>libcgi_<wbr>Request_<wbr>free</a>()で解放しなければなりません。</p>
+<p>生成に失敗したときは<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Returns:<dd>マップされたリクエストのインスタンス、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

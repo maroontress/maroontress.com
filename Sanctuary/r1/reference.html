@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Reference | Sanctuary | Version 1.0</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Sanctuary 1.0</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<style>
+p.elementInclude {
+  font-family: 'Inconsolata', Consolas, 'Yu Gothic', monospace;
+  color: white;
+  background-color: black;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 12px;
+  padding-right: 12px;
+  overflow-x: auto;
+}
+p.elementInclude a {
+  color: #4db2ff
+}
+p.elementSection {
+  font-family: Helvetica, "Yu Gothic UI", sans-selif;
+  font-weight: bold;
+}
+</style>
+<h1>Reference</h1>
+<p><a name="@%E5%B1%95%E9%96%8B"></a></p>
+<h2>@展開</h2>
+<p>規定の属性の値に<code>@</code>が含まれる場合、その<code>@</code>を‘<code>パッケージ名_クラス名</code>’に置換する@展開を適用します。ただし、C言語のコメント（<code>/*</code>...<code>*/</code>）に含まれる<code>@</code>は展開しません。展開の対象となる属性は次の通りです。</p>
+<ul>
+<li>
+<a href="#globalvariable">globalvariable</a>要素のtype属性</li>
+<li>
+<a href="#import">import</a>要素のtag属性</li>
+<li>
+<a href="#member">member</a>要素のtype属性</li>
+<li>
+<a href="#param">param</a>要素のtype属性</li>
+<li>
+<a href="#return">return</a>要素のtype属性</li>
+<li>
+<a href="#typedef">typedef</a>要素のtype属性</li>
+</ul>
+<p><a href="#namespace">namespace</a>要素を指定しない場合は、次の属性の値も展開の対象となります。ただし、<a href="#method">method</a>要素については、<a href="#class">class</a>要素または<a href="#interface">interface</a>要素の直接の子となる要素だけが対象となります。</p>
+<ul>
+<li>
+<a href="#abstractmethod">abstractmethod</a>要素のname属性</li>
+<li>
+<a href="#constant">constant</a>要素のname属性</li>
+<li>
+<a href="#define">define</a>要素のname属性</li>
+<li>
+<a href="#enum">enum</a>要素のtag/alias属性</li>
+<li>
+<a href="#enummember">enummember</a>要素のtag属性</li>
+<li>
+<a href="#export">export</a>要素のtag属性</li>
+<li>
+<a href="#globalvariable">globalvariable</a>要素のname属性</li>
+<li>
+<a href="#method">method</a>要素のname属性</li>
+<li>
+<a href="#struct">struct</a>要素のtag/alias属性</li>
+<li>
+<a href="#structmember">structmember</a>要素のtag属性</li>
+<li>
+<a href="#typedef">typedef</a>要素のname属性</li>
+<li>
+<a href="#union">union</a>要素のtag/alias属性</li>
+<li>
+<a href="#unionmember">unionmember</a>要素のtag属性</li>
+</ul>
+<p>識別子となる属性の値に@展開を適用した場合、展開後の文字列は<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>にならなければなりません。</p>
+<p><a name="a"></a></p>
+<h2>a要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#inline.group">inline.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>href</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 </dd>
+<dd>
+	リンク先のURL
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>URLにリンクする文字列です。HTMLのa要素と同様です。</p>
+<p><a name="abstractmethod"></a></p>
+<h2>abstractmethod要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">((<a href="#param">param</a>+, <a href="#variableparam">variableparam</a>?)?, <a href="#modifier">modifier</a>?, <a href="#return">return</a>?, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	関数の識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+【ドキュメントのみに作用します】
+<p>ドキュメントにアブストラクトメソッドのドキュメントを生成します。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="arg"></a></p>
+<h2>arg要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#inline.group">inline.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA)</p>
+    <p class="elementSection">解説</p>
+<p>引数の文字列です。イタリック体で出力します。</p>
+  <hr>
+<a name="block.group"></a><p class="element">block.groupパラメータ実体</p>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#desc">desc</a>, <a href="#li">li</a></p>
+    <p class="elementSection">展開される内容</p>
+<p class="elementInclude"><a href="#p">p</a>|<a href="#pre">pre</a>|<a href="#see">see</a>|<a href="#note">note</a>|<a href="#ul">ul</a></p>
+    <p class="elementSection">解説</p>
+<p><a href="#desc">desc</a>要素に含まれる要素のグループです。</p>
+<p><a name="brief"></a></p>
+<h2>brief要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#desc">desc</a>, <a href="#p">p</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA|%<a href="#inline.group">inline.group</a>;)*</p>
+    <p class="elementSection">解説</p>
+<p>要約となる文字列です。<a href="#desc">desc</a>要素に含まれる最初のbrief要素の内容は要約となります。</p>
+<p>HTML出力において、<a href="#param">param</a>要素または<a href="#return">return</a>要素の内部にbrief要素を記述しても、それを通常のテキストと同様に扱います。</p>
+<p>TeX出力ではすべてのbrief要素を通常のテキストと同様に扱います。</p>
+<p><a name="class"></a></p>
+<h2>class要素</h2>
+<p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#namespace">namespace</a>?, <a href="#include">include</a>*, <a href="#define">define</a>*, <a href="#import">import</a>*, <a href="#export">export</a>*, <a href="#typedef">typedef</a>*, (<a href="#struct">struct</a>|<a href="#union">union</a>|<a href="#enum">enum</a>)*, (<a href="#method">method</a>|<a href="#abstractmethod">abstractmethod</a>)*, (<a href="#globalvariable">globalvariable</a>)*, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	クラス名
+      </dd>
+      <dt class="attribute"><i>package</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	パッケージ名
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>クラスのドキュメントを記述することを宣言するトップレベルの要素です。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="code"></a></p>
+<h2>code要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#inline.group">inline.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA)</p>
+    <p class="elementSection">解説</p>
+<p>ソースコードの文字列です。タイプライタ体で出力します。</p>
+  <hr>
+<a name="constant"></a><p class="element">constant要素</p>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#enum">enum</a>, <a href="#enummember">enummember</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	定数の識別子
+      </dd>
+      <dt class="attribute"><i>value</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 </dd>
+<dd>
+	定数の値
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで列挙型の定数を定義します。<i>value</i>属性の値は空文字列であってはなりません。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="define"></a></p>
+<h2>define要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#macroparam">macroparam</a>*, <a href="#variableparam">variableparam</a>?, <a href="#macro">macro</a>?, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	定義するマクロの識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルに<i>name</i>属性で指定したマクロを定義します。マクロの展開内容は<a href="#macro">macro</a>要素の内容になります。<a href="#macro">macro</a>要素の内容が複数行で構成される場合、各行の行末にバックスラッシュを展開します。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="desc"></a></p>
+<h2>desc要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#abstractmethod">abstractmethod</a>, <a href="#class">class</a>, <a href="#constant">constant</a>, <a href="#define">define</a>, <a href="#enum">enum</a>, <a href="#enummember">enummember</a>, <a href="#export">export</a>, <a href="#globalvariable">globalvariable</a>, <a href="#interface">interface</a>, <a href="#macroparam">macroparam</a>, <a href="#member">member</a>, <a href="#method">method</a>, <a href="#package">package</a>, <a href="#param">param</a>, <a href="#return">return</a>, <a href="#struct">struct</a>, <a href="#structmember">structmember</a>, <a href="#tag">tag</a>, <a href="#typedef">typedef</a>, <a href="#union">union</a>, <a href="#unionmember">unionmember</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA|%<a href="#inline.group">inline.group</a>;|%<a href="#block.group">block.group</a>;|<a href="#brief">brief</a>|<a href="#section">section</a>)*</p>
+    <p class="elementSection">解説</p>
+<p>各要素に対するドキュメントです。</p>
+<p><a name="em"></a></p>
+<h2>em要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#inline.group">inline.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA)</p>
+    <p class="elementSection">解説</p>
+<p>強調する文字列です。ボールド体で出力します。</p>
+  <hr>
+<a name="enum"></a><p class="element">enum要素</p>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#constant">constant</a>+, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>tag</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	列挙型のタグ名の識別子
+      </dd>
+      <dt class="attribute"><i>alias</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	typedefで定義する識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで列挙型を定義します。<i>alias</i>属性を指定した場合、その名前で列挙型を型定義します。</p>
+<p><i>tag</i>属性を省略した場合は必ず<i>alias</i>属性を指定します。<i>tag</i>属性と<i>alias</i>属性の両方を省略することはできません。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="enummember"></a></p>
+<h2>enummember要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#nest.group">nest.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#constant">constant</a>+, <a href="#tag">tag</a>?, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>tag</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	列挙型のタグ名の識別子
+      </dd>
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	メンバの識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで構造体または共用体に含まれる列挙型メンバを定義します。</p>
+<p><i>tag</i>属性を省略した場合は匿名列挙型となります。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p>この要素は<a href="#member">member</a>要素と<a href="#enum">enum</a>要素を多重継承したようなものになっています。メンバの説明は<a href="#desc">desc</a>要素に、定義する列挙型そのものの説明は<b><a href="#tag">tag</a>要素の子の</b><a href="#desc">desc</a>要素に記述します。</p>
+<p><a name="export"></a></p>
+<h2>export要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>type</i></dt>
+<dd class="attribute">
+<code>(struct|union|enum)</code> 必須 </dd>
+<dd>
+	タグのタイプ
+      </dd>
+      <dt class="attribute"><i>tag</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	タグの識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルに不完全な構造体、共用体、列挙型のタグを定義（構造体、共用体、列挙型の前方定義を展開）します。列挙型の前方定義はGCC拡張で使用可能です。</p>
+<p>同じクラスに属する不透明な構造体、共用体、列挙型をそのポインタ型で参照する場合に、不完全な構造体、共用体、列挙型のタグを定義（構造体、共用体、列挙型の前方定義を展開）するために使用します。</p>
+<p>異なるクラスに属する前方定義のタグは<a href="#import">import</a>要素で記述してください。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="globalvariable"></a></p>
+<h2>globalvariable要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>type</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	グローバル変数の型
+      </dd>
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	グローバル変数の識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルでグローバル変数を定義します。<i>type</i>属性に<code>#</code>が含まれる場合、先頭の<code>#</code>はグローバル変数名で展開されます。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="hyperlink"></a></p>
+<h2>hyperlink要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#inline.group">inline.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>label</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 </dd>
+<dd>
+	ハイパーリンクのターゲット名
+      </dd>
+      <dt class="attribute"><i>namespace</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 </dd>
+<dd>
+	ターゲットのネームスペース
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ハイパーリンクのターゲットにリンクする文字列です。</p>
+<p>同じドキュメントへのリンクでは<i>namespace</i>属性を省略できます。異なるクラスのターゲットにリンクする場合は、<i>namespace</i>属性にそのクラスの "<code><i>パッケージ名</i>.<i>クラス名</i></code>" を指定します（インタフェースも同様です）。また、パッケージのドキュメントのターゲットにリンクする場合は、<i>namespace</i>属性にそのクラスの "<code><i>パッケージ名</i></code>" を指定します。</p>
+<p><i>label</i>属性を省略した場合、<i>namespace</i>属性が指定するクラスまたはパッケージのドキュメントそのものにリンクします。両方の属性を省略した場合、同一ドキュメントへリンクします。</p>
+<p><i>namespace</i>属性、<i>label</i>属性の値が空文字列の場合、属性を省略したものとして扱います。</p>
+<p><a name="hypertarget"></a></p>
+<h2>hypertarget要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#inline.group">inline.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>label</i></dt>
+<dd class="attribute">
+<code>ID</code> 必須 </dd>
+<dd>
+	ハイパーリンクのターゲット名
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ハイパーリンクのリンク先を定義します。</p>
+<p>ターゲット名は1つのXMLファイル内でユニークな文字列でなければなりません。</p>
+<p><a name="import"></a></p>
+<h2>import要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">EMPTY</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>type</i></dt>
+<dd class="attribute">
+<code>(struct|union|enum)</code> 必須 </dd>
+<dd>
+	タグのタイプ
+      </dd>
+      <dt class="attribute"><i>tag</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	タグの識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+【ヘッダファイルのみに作用します】
+<p>ヘッダファイルに不完全な構造体、共用体、列挙型のタグを定義（構造体、共用体、列挙型の前方定義を展開）します。列挙型の前方定義はGCC拡張で使用可能です。</p>
+<p>外部で定義される（異なるクラスの）構造体、共用体、列挙型をそのポインタ型で参照する場合に、不完全な構造体、共用体、列挙型のタグを定義（構造体、共用体、列挙型の前方定義を展開）するために使用します。ただし、型の記述に含まれる構造体と共用体のタグの前方定義は自動的に出力されるので、この要素が必要になるのはマクロ定義などにより自動的に構造体、共用体のタグを発見できない場合や、GCC拡張の「不完全な列挙型」を記述する場合に限られます。</p>
+<p>この要素の<i>tag</i>属性は名前空間展開の対象ではないことに注意してください。同じクラスに属する前方定義のタグは<a href="#export">export</a>要素で記述してください。</p>
+<p><a name="include"></a></p>
+<h2>include要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">EMPTY</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>file</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 </dd>
+<dd>
+	インクルードファイル名
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+【ヘッダファイルのみに作用します】
+<p>ヘッダファイルにインクルードの指示（<code>#include</code>）を埋め込みます。<i>file</i>属性の内容が<code>#include &lt;</code>と<code>&gt;</code>の間に展開されます。</p>
+<p><code>#include "</code>...<code>"</code>という形式に展開できません。</p>
+<p><a name="inline.group"></a></p>
+<h2>inline.groupパラメータ実体</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#brief">brief</a>, <a href="#desc">desc</a>, <a href="#li">li</a>, <a href="#note">note</a>, <a href="#p">p</a>, <a href="#see">see</a></p>
+    <p class="elementSection">展開される内容</p>
+<p class="elementInclude"><a href="#code">code</a>|<a href="#math">math</a>|<a href="#arg">arg</a>|<a href="#em">em</a>|<a href="#a">a</a>|<a href="#hypertarget">hypertarget</a>|<a href="#hyperlink">hyperlink</a></p>
+    <p class="elementSection">解説</p>
+<p><a href="#desc">desc</a>要素に含まれる要素のグループです。</p>
+<p><a name="interface"></a></p>
+<h2>interface要素</h2>
+<p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#namespace">namespace</a>?, <a href="#method">method</a>*, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	クラス名
+      </dd>
+      <dt class="attribute"><i>package</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	パッケージ名
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+【ドキュメントのみに作用します】
+<p>インタフェースのドキュメントを記述することを宣言するトップレベルの要素です。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="li"></a></p>
+<h2>li要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#ul">ul</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA|%<a href="#inline.group">inline.group</a>;|%<a href="#block.group">block.group</a>;)*</p>
+    <p class="elementSection">解説</p>
+<p>箇条書の項目を示す要素です。HTMLのli要素と同様です。</p>
+  <hr>
+<a name="macro"></a><p class="element">macro要素</p>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#define">define</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA)</p>
+    <p class="elementSection">解説</p>
+【ヘッダファイルのみに作用します】
+<p>ヘッダファイルにマクロの展開内容を記述します。</p>
+<p><a name="macroparam"></a></p>
+<h2>macroparam要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#define">define</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	マクロの引数の識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルにマクロの引数を記述します。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="math"></a></p>
+<h2>math要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#inline.group">inline.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA)</p>
+    <p class="elementSection">解説</p>
+<p>数式の文字列です。現在の仕様ではTeX出力では<code>$</code>と<code>$</code>の間に出力します。</p>
+<p>ハイフンをマイナス記号として出力する場合は<a href="#math">math</a>要素を使用してください。</p>
+<p>将来のバージョンとの互換性のため、英数字と空白、プラス記号、マイナス記号以外を要素に含めないようにしてください。</p>
+<p><a name="member"></a></p>
+<h2>member要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#nest.group">nest.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>type</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	メンバの型
+      </dd>
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	メンバの識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで構造体または共用体のメンバを定義します。<i>type</i>属性に<code>#</code>が含まれる場合、先頭の<code>#</code>は<i>name</i>属性の内容で展開されます。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="method"></a></p>
+<h2>method要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a>, <a href="#interface">interface</a>, <a href="#nest.group">nest.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">((<a href="#param">param</a>+, <a href="#variableparam">variableparam</a>?)?, <a href="#modifier">modifier</a>?, <a href="#return">return</a>?, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	関数または関数ポインタの識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルに関数または関数ポインタを定義します。<a href="#class">class</a>要素または<a href="#interface">interface</a>要素の内部では関数として、構造体または共用体のメンバでは関数ポインタとして展開されます。</p>
+<p>この要素が<a href="#class">class</a>要素または<a href="#interface">interface</a>要素の直接の子である場合に限り、<i>name</i>属性の値に名前空間展開が適用されます。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="modifier"></a></p>
+<h2>modifier要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#abstractmethod">abstractmethod</a>, <a href="#method">method</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">EMPTY</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>code</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 </dd>
+<dd>
+	関数の修飾子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで関数または関数ポインタの修飾子を定義します。</p>
+<p>修飾子はドキュメントにも反映されます。</p>
+<p><a name="namespace"></a></p>
+<h2>namespace要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a>, <a href="#interface">interface</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">EMPTY</p>
+    <p class="elementSection">解説</p>
+<p>この要素を指定したクラスまたはインタフェースに<a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>を適用します。</p>
+<p><a name="nest.group"></a></p>
+<h2>nest.groupパラメータ実体</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#struct">struct</a>, <a href="#structmember">structmember</a>, <a href="#union">union</a>, <a href="#unionmember">unionmember</a></p>
+    <p class="elementSection">展開される内容</p>
+<p class="elementInclude"><a href="#member">member</a>|<a href="#structmember">structmember</a>|<a href="#unionmember">unionmember</a>|<a href="#enummember">enummember</a>|<a href="#method">method</a></p>
+    <p class="elementSection">解説</p>構造体または共用体のメンバとなる要素です。
+  <hr>
+<a name="note"></a><p class="element">note要素</p>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#block.group">block.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA|%<a href="#inline.group">inline.group</a>;)*</p>
+    <p class="elementSection">解説</p>
+<p>注意を示す段落の要素です。</p>
+<p><a name="p"></a></p>
+<h2>p要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#block.group">block.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA|%<a href="#inline.group">inline.group</a>;|<a href="#brief">brief</a>)*</p>
+    <p class="elementSection">解説</p>
+<p>段落を示す要素です。HTMLのp要素と同様です。</p>
+  <hr>
+<a name="package"></a><p class="element">package要素</p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	パッケージ名
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+【ドキュメントのみに作用します】
+<p>パッケージのドキュメントを記述することを宣言するトップレベルの要素です。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="param"></a></p>
+<h2>param要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#abstractmethod">abstractmethod</a>, <a href="#method">method</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>type</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	引数の型
+      </dd>
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	引数の識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで関数または関数ポインタの引数を定義します。<i>type</i>属性に<code>#</code>が含まれる場合、先頭の<code>#</code>は<i>name</i>属性の内容で展開されます。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="pre"></a></p>
+<h2>pre要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#block.group">block.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA)</p>
+    <p class="elementSection">解説</p>
+<p>整形済みのテキストを示す文字列です。HTMLのpre要素と同様です。</p>
+<p><a name="return"></a></p>
+<h2>return要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#abstractmethod">abstractmethod</a>, <a href="#method">method</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>type</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	関数の戻り値の型
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで関数または関数ポインタの戻り値を定義します。<i>type</i>属性に<code>#</code>が含まれる場合、先頭の<code>#</code>は関数または関数ポインタ名で展開されます。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="section"></a></p>
+<h2>section要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#desc">desc</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA)</p>
+    <p class="elementSection">解説</p>
+<p>章の見出しとなる要素です。</p>
+  <hr>
+<a name="see"></a><p class="element">see要素</p>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#block.group">block.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(#PCDATA|%<a href="#inline.group">inline.group</a>;)*</p>
+    <p class="elementSection">解説</p>
+<p>参考または参照を示す段落の要素です。</p>
+<p><a name="struct"></a></p>
+<h2>struct要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">((%<a href="#nest.group">nest.group</a>;)*, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>tag</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	構造体のタグ名の識別子
+      </dd>
+      <dt class="attribute"><i>alias</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	typedefで定義する識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで構造体を定義します。<i>alias</i>属性を指定した場合、その名前で構造体を型定義します。</p>
+<p><i>tag</i>属性を省略した場合は必ず<i>alias</i>属性を指定します。<i>tag</i>属性と<i>alias</i>属性の両方を省略することはできません。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="structmember"></a></p>
+<h2>structmember要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#nest.group">nest.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">((%<a href="#nest.group">nest.group</a>;)*, <a href="#tag">tag</a>?, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>tag</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	構造体のタグ名の識別子
+      </dd>
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	メンバ名
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで構造体または共用体に含まれる構造体メンバを定義します。</p>
+<p><i>tag</i>属性を省略した場合は匿名構造体となります。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p>この要素は<a href="#member">member</a>要素と<a href="#struct">struct</a>要素を多重継承したようなものになっています。メンバの説明は<a href="#desc">desc</a>要素に、定義する構造体そのものの説明は<b><a href="#tag">tag</a>要素の子の</b><a href="#desc">desc</a>要素に記述します。</p>
+<p><a name="tag"></a></p>
+<h2>tag要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#enummember">enummember</a>, <a href="#structmember">structmember</a>, <a href="#unionmember">unionmember</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#desc">desc</a>?)</p>
+    <p class="elementSection">解説</p>
+<p><a href="#structmember">structmember</a>要素の構造体、<a href="#unionmember">unionmember</a>要素の共用体、<a href="#enummember">enummember</a>要素の列挙型に関するドキュメントを定義します。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="typedef"></a></p>
+<h2>typedef要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>type</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	識別子の型
+      </dd>
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	型定義する識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルに<i>name</i>属性で指定した名前で、<i>type</i>属性で指定した型を定義します。<i>type</i>属性に<code>#</code>が含まれる場合、先頭の<code>#</code>は<i>name</i>属性の内容で展開されます。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="ul"></a></p>
+<h2>ul要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#block.group">block.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">(<a href="#li">li</a>+)</p>
+    <p class="elementSection">解説</p>
+<p>箇条書を示す要素です。HTMLのul要素と同様です。</p>
+<p><a name="union"></a></p>
+<h2>union要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#class">class</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">((%<a href="#nest.group">nest.group</a>;)*, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>tag</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	共用体のタグ名の識別子
+      </dd>
+      <dt class="attribute"><i>alias</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	typedefで定義する識別子
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで共用体を定義します。<i>alias</i>属性を指定した場合、その名前で共用体を型定義します。</p>
+<p><i>tag</i>属性を省略した場合は必ず<i>alias</i>属性を指定します。<i>tag</i>属性と<i>alias</i>属性の両方を省略することはできません。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p><a name="unionmember"></a></p>
+<h2>unionmember要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#nest.group">nest.group</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">((%<a href="#nest.group">nest.group</a>;)*, <a href="#tag">tag</a>?, <a href="#desc">desc</a>?)</p>
+    <p class="elementSection">属性</p>
+<dl class="attribute">
+      <dt class="attribute"><i>tag</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 省略可能 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>, <a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>/<a href="#@%E5%B1%95%E9%96%8B">@展開</a>］</dd>
+<dd>
+	共用体のタグ名の識別子
+      </dd>
+      <dt class="attribute"><i>name</i></dt>
+<dd class="attribute">
+<code>CDATA</code> 必須 ［<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>］</dd>
+<dd>
+	メンバ名
+      </dd>
+    </dl>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで構造体または共用体に含まれる共用体メンバを定義します。</p>
+<p><i>tag</i>属性を省略した場合は匿名共用体となります。</p>
+<p>ドキュメントに<a href="#desc">desc</a>要素の内容が展開されます。</p>
+<p>この要素は<a href="#member">member</a>要素と<a href="#union">union</a>要素を多重継承したようなものになっています。メンバの説明は<a href="#desc">desc</a>要素に、定義する共用体そのものの説明は<b><a href="#tag">tag</a>要素の子の</b><a href="#desc">desc</a>要素に記述します。</p>
+<p><a name="variableparam"></a></p>
+<h2>variableparam要素</h2>
+<p class="elementSection">包括される要素</p>
+<p class="elementInclude"><a href="#abstractmethod">abstractmethod</a>, <a href="#define">define</a>, <a href="#method">method</a></p>
+    <p class="elementSection">包括する要素</p>
+<p class="elementInclude">EMPTY</p>
+    <p class="elementSection">解説</p>
+<p>ヘッダファイルで関数または関数ポインタまたはマクロの可変長引数を定義します。通常の引数の最後に一度だけ出現できる要素です。</p>
+<p><a name="%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B"></a></p>
+<h2>名前空間展開</h2>
+<p><a href="#namespace">namespace</a>要素を含むクラスまたはインタフェースの規定の属性の値に接頭辞‘<code>パッケージ名_クラス名_</code>’を付加します。名前空間展開を適用した属性の値には<a href="#@%E5%B1%95%E9%96%8B">@展開</a>を適用しません。ただし、<code>@</code>の場合は、例外的に‘<code>パッケージ名_クラス名</code>’に展開します。</p>
+<p>また、<b>展開前の</b>属性の値が空文字列であってはなりません。</p>
+<p>展開の対象となる属性は次の通りです。ただし、<a href="#method">method</a>要素については、<a href="#class">class</a>要素または<a href="#interface">interface</a>要素の直接の子となる要素だけが対象となります。</p>
+<ul>
+<li>
+<a href="#abstractmethod">abstractmethod</a>要素のname属性</li>
+<li>
+<a href="#constant">constant</a>要素のname属性</li>
+<li>
+<a href="#define">define</a>要素のname属性</li>
+<li>
+<a href="#enum">enum</a>要素のtag/alias属性</li>
+<li>
+<a href="#enummember">enummember</a>要素のtag属性</li>
+<li>
+<a href="#export">export</a>要素のtag属性</li>
+<li>
+<a href="#globalvariable">globalvariable</a>要素のname属性</li>
+<li>
+<a href="#method">method</a>要素のname属性</li>
+<li>
+<a href="#struct">struct</a>要素のtag/alias属性</li>
+<li>
+<a href="#structmember">structmember</a>要素のtag属性</li>
+<li>
+<a href="#typedef">typedef</a>要素のname属性</li>
+<li>
+<a href="#union">union</a>要素のtag/alias属性</li>
+<li>
+<a href="#unionmember">unionmember</a>要素のtag属性</li>
+</ul>
+<p>展開後の文字列は<a href="#%E8%AD%98%E5%88%A5%E5%AD%90">識別子</a>にならなければなりません。</p>
+<p><a name="%E5%AE%9F%E8%A1%8C%E6%99%82%E3%82%A8%E3%83%A9%E3%83%BC"></a></p>
+<h2>実行時エラー</h2>
+<p>実行時に検証するエラーは次の通りです。</p>
+<ul>
+<li>識別子でなければならない属性の（@展開または名前空間展開前の）値が空文字列</li>
+<li>識別子でなければならない属性の（@展開または名前空間展開後の）値に、不正な文字が含まれている</li>
+<li>展開の対象となる属性の値で、C言語のコメントが属性の中で完結していない（終端がない）</li>
+<li>
+<a href="#struct">struct</a>要素、<a href="#union">union</a>要素、<a href="#enum">enum</a>要素で<i>tag</i>属性と<i>alias</i>属性の両方が定義されていない</li>
+<li>
+<a href="#constant">constant</a>要素の<i>value</i>属性の内容が空文字列</li>
+</ul>
+    <p>エラーを検出したときはステータスコード1で終了します。</p>
+<p><a name="%E8%AD%98%E5%88%A5%E5%AD%90"></a></p>
+<h2>識別子</h2>
+<p>識別子は先頭が英字または<code>_</code>で始まり、2文字目以降が英数字または<code>_</code>で構成される文字列です。</p>
+<p>次の属性の値は識別子でなければなりません。</p>
+<ul>
+<li>
+<a href="#class">class</a>要素のname/package属性</li>
+<li>
+<a href="#enummember">enummember</a>要素のname属性</li>
+<li>
+<a href="#interface">interface</a>要素のname/package属性</li>
+<li>
+<a href="#macroparam">macroparam</a>要素のname属性</li>
+<li>
+<a href="#member">member</a>要素のname属性</li>
+<li>
+<a href="#package">package</a>要素のname属性</li>
+<li>
+<a href="#param">param</a>要素のname属性</li>
+<li>
+<a href="#structmember">structmember</a>要素のname属性</li>
+<li>
+<a href="#unionmember">unionmember</a>要素のname属性</li>
+</ul>
+<p>次の属性の値も識別子でなければなりませんが、属性の値に<a href="#@%E5%B1%95%E9%96%8B">@展開</a>または<a href="#%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93%E5%B1%95%E9%96%8B">名前空間展開</a>を適用する場合は、展開した文字列が識別子になる必要があります。</p>
+<ul>
+<li>
+<a href="#abstractmethod">abstractmethod</a>要素のname属性</li>
+<li>
+<a href="#constant">constant</a>要素のname属性</li>
+<li>
+<a href="#define">define</a>要素のname属性</li>
+<li>
+<a href="#enum">enum</a>要素のtag/alias属性</li>
+<li>
+<a href="#enummember">enummember</a>要素のtag属性</li>
+<li>
+<a href="#export">export</a>要素のtag属性</li>
+<li>
+<a href="#globalvariable">globalvariable</a>要素のname属性</li>
+<li>
+<a href="#method">method</a>要素のname属性</li>
+<li>
+<a href="#struct">struct</a>要素のtag/alias属性</li>
+<li>
+<a href="#structmember">structmember</a>要素のtag属性</li>
+<li>
+<a href="#typedef">typedef</a>要素のname属性</li>
+<li>
+<a href="#union">union</a>要素のtag/alias属性</li>
+<li>
+<a href="#unionmember">unionmember</a>要素のtag属性</li>
+</ul>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="../index.html">Sanctuary</a></span>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="../index.html#%E3%83%89%E3%82%AD%E3%83%A5%E3%83%A1%E3%83%B3%E3%83%88">Version 1.0</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="tutorial.html">Tutorial</a>
+    </li>
+    <li class="selected">
+      Reference
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="dtd.html">DTD</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

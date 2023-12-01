@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <script data-ad-client="ca-pub-4691079535294206" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-636163-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-636163-1');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Part 0. Null | The Insanity Beyond Null</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="stylesheet" type="text/css" href="next-button.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+    <script src="next-button.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">The Insanity Beyond Null</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>0. Null</h1>
+<p>C言語の<code>getchar()</code>は標準入力ストリームから文字を1つ読んで返す。
+ただし、ストリームの終端（EOF）に達するか、エラーが発生したときは定数<code>EOF</code>を返す。
+この定数は負の整数値で定義されている。</p>
+<p>文字は1バイトなので、戻り値の型は<code>char</code>でも良さそうな気がする。
+しかし、<code>char</code>がとりうる256種類の値と「EOFまたはエラー」を合わせた257種類の値を表現できる型でなければならないので、戻り値の型を<code>char</code>にすることはできない。</p>
+<p>このように、APIには<strong>2種類以上の結果</strong><sup>†1</sup>を返すものがあり、
+呼び出し元が戻り値を確認して<strong>結果はそのいずれなのか</strong>を調べなければならないものがある。
+そして、特別な結果を示すための定数<sup>†2</sup>（上記の例では<code>EOF</code>）が定義されている。</p>
+<blockquote>
+<p>†1 通常の処理と例外処理、
+のような表現は<ruby>相応<rt>ふさわ</rt></ruby>しくない。
+<code>getchar()</code>にとってEOFは例外処理ではないからだ。
+<code>getchar()</code>はストリームからの文字の取得、
+EOFの検出または入力エラーの検出の2種類の結果を知らせる。</p>
+</blockquote>
+<blockquote>
+<p>†2 いわゆる<ruby>番兵<rt>ばんぺい</rt></ruby>（sentinel value）のこと。
+Wikipedia [<a href="#ref1">1</a>] を参照。</p>
+</blockquote>
+<p>そして、ポインタを返すAPIのなかには、
+失敗を表すために<ruby><code>NULL</code><rt>ヌル</rt></ruby>（nullポインタ）を返すものがある。
+<code>fopen()</code>や<code>malloc()</code>などは要求に応えられなかった場合に、
+<code>strstr()</code>や<code>strchr()</code>などは「見つからなかった」場合に、その値が返る。
+戻り値のポインタが<code>NULL</code>かどうかを調べずにそのポインタを使用すると、
+恐ろしいことになる。というのは、何が起こるかは決まってないからだ。</p>
+<p>オブジェクト指向言語の参照にも、
+C言語のnullポインタと同様、
+<strong>何も参照してない</strong>ことを示す<code>null</code>、
+<code>nil</code>などが定義されていることが多い。
+それらを<strong>null参照</strong>（<strong>null reference</strong>）と呼ぶ。
+Wikipedia [<a href="#ref2">2</a>] の説明を次に引用しておく:</p>
+<blockquote>
+<p><em>a <strong>null pointer</strong> or <strong>null reference</strong> has a value reserved for indicating that the pointer or reference does not refer to a valid object.</em></p>
+</blockquote>
+<p>ただし、例えばJavaではnull参照をたどって（null dereferencingして）も、
+規定の例外をスローするだけで、
+特別恐ろしいことは起きない。
+<code>if</code>で参照が<code>null</code>かどうか調べ忘れないようにすればよいだけだし、
+忘れても例外がスローされるだけだ。</p>
+<p>しかし、<code>if</code>で<code>null</code>をチェックすること、
+いわゆる<strong>nullチェック</strong>、がnull参照を正しく扱う唯一の方法ではない。
+いくつかの言語でnull参照をどう取り扱えばよいか考えてみよう。</p>
+<h2>References</h2>
+<!--
+<style>
+#references + ol > li::marker { content: "[" counter(list-item) "] "; }
+</style>
+-->
+<div id="references"></div>
+<ol>
+<li>
+<p><a name="ref1"></a>
+<a href="https://en.wikipedia.org/wiki/Sentinel_value">Wikipedia, <em>Sentinel value</em></a></p>
+</li>
+<li>
+<p><a name="ref2"></a>
+<a href="https://en.wikipedia.org/wiki/Null_pointer">Wikipedia, <em>Null pointer</em></a></p>
+</li>
+</ol>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">The Insanity Beyond Null</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li class="selected">
+      0. Null
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="Part-1-Java-11.html">1. Java 11のnull</a>
+    </li>
+    <li>
+      <a href="Part-2-CSharp-8.html">2. C# 8のnull</a>
+    </li>
+    <li>
+      <a href="Part-3-Others.html">3. そのほかのnull</a>
+    </li>
+    <li>
+      <a href="Part-4-Exercises.html">4. 演習問題</a>
+    </li>
+    <li>
+      <a href="Part-5-Epilog.html">5. 結び</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

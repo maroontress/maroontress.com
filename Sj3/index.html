@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | Sj3</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Sj3</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p>FreeBSD 5.3以降（と4.11以降）のportsでインストールしたsj3の<code>sj3serv</code>は動作しません（原因はそのうちに説明します）。そのため、次のバージョンのsj3はアンインストールしましょう。</p>
+<ul>
+<li><code>ja-sj3-2.0.1.20_2</code></li>
+<li><code>ja-sj3-2.0.1.20_3</code></li>
+</ul>
+<h2>FreeBSDで最後に動いたsj3のports</h2>
+<p>FreeBSD 4.10でリリースされたsj3のportsは<a href="http://www.freebsd.org/cgi/cvsweb.cgi/ports/japanese/sj3/sj3.tar.gz?only_with_tag=RELEASE_4_10_0&amp;tarball=1">ここ</a>から取得できます。amd64とia64ではビルドできないようですが、少なくてもi386では動作しています。</p>
+<p>一応4.10-RELEASEのパッケージ<code>ja-sj3-2.0.1.20_1.tgz</code>の<a href="ja-sj3-2.0.1.20_1.tgz">コピー</a>をおいておきます。</p>
+<h2>FreeBSD 6.2でビルドしたsj3</h2>
+<p>ここのところFreeBSD 4.11を6.2に更新することが多く、その度にパッチをあててビルドするのも面倒なので、6.2でsj3のパッケージをビルドしました。portsの<code>make package</code>で作った<a href="freebsd_6_2/ja-sj3-2.0.1.20_99.tbz"><code>ja-sj3-2.0.1.20_99.tbz</code></a>と、そのportsの<a href="freebsd_6_2/sj3.tar.gz">sj3.tar.gz</a>です。</p>
+<h2>Linuxでsj3をビルド</h2>
+<p>次のファイルをダウンロードしておきます。</p>
+<ul>
+<li><a href="ftp://ftp.sony.co.jp/pub/unsupported/src/sj3-2.0.1.20.tar.gz"><code>sj3-2.0.1.20.tar.gz</code></a></li>
+<li><a href="http://www.freebsd.org/cgi/cvsweb.cgi/ports/japanese/sj3/sj3.tar.gz?only_with_tag=RELEASE_4_10_0&amp;tarball=1"><code>sj3.tar.gz</code></a></li>
+<li><a href="sj3-2.0.1.20_1-linux-1.patch"><code>sj3-2.0.1.20_1-linux-1.patch</code></a></li>
+</ul>
+<p>最後のパッチ<code>sj3-2.0.1.20_1-linux-1.patch</code>は以下の内容を変更します。</p>
+<ul>
+<li><code>sj3serv</code>の所有者と所有グループをFreeBSDと同じくbinに変更</li>
+<li><code>sj3serv</code>のポート番号をFreeBSDと同じく3086に変更</li>
+<li>portsのパッチが<code>strlcpy(3)</code>を使うように変更するが、Linuxには<code>strlcpy</code>がないので追加</li>
+</ul>
+<p>つぎのようにビルドします。</p>
+<pre><code class="nohighlight">% <b>tar zxf <i>anywhere</i>/sj3.tar.gz</b>
+% <b>tar zxf <i>anywhere</i>/sj3-2.0.1.20.tar.gz</b>
+% <b>cd sj3-2.0.1.20/</b>
+% <b>cat ../sj3/files/patch-* | patch -s -p0</b>
+% <b>cat <i>anywhere</i>/sj3-2.0.1.20_1-linux-1.patch | patch -s -p1</b>
+% <b>xmkmf</b>
+% <b>make Makefiles</b>
+% <b>make</b>
+% <b>su</b>
+# <b>make install</b>
+# <b>exit</b></code></pre>
+<p>サーバを走らせます。</p>
+<pre><code class="nohighlight">% <b>su</b>
+# <b>/usr/local/bin/sj3serv</b>
+Kana-Kanji Conversion Server Version 2.08C
+Copyright (c) 1990-1995 Sony Corporation
+Created at Mon Mar 23 16:42:59 JST 1998
+Can't open "/dev/console"
+終了しました
+# <b>exit</b></code></pre>
+<p>デモで動作を確認します。</p>
+<pre><code class="nohighlight">% <b>cd <i>anywhere</i>/sj3-2.0.1.20/demo</b>
+% <b>./sample -H localhost</b>
+        *--------------------------------------------*
+        * Sample Program for                         *
+        * New Japanese Convert Library               *
+        * SJ3LIB                                     *
+        *                                            *
+        *    Terminator of Input : Newline-code      *
+        *                                            *
+        *    If you want to end this process,        *
+        *    input Newline-code or Control-D.        *
+        *--------------------------------------------*
+[Input Alphabet] <b>hoge</b>
+[Output Yomi ]:[ほげ]
+[Output Kanji]:[帆下]
+[Input Alphabet]</code></pre>
+<h2>FreeBSDの最新のportsでsj3servが動かない原因</h2>
+<p>正確には、<code>sj3serv</code>は走りますが、クライアントは漢字に変換できません。</p>
+<p>原因とその修正方法もわかってますが、そのうちにまとめます。</p>
+<p>それよりもコミッタがちゃんと動作確認してないことに疑問に感じます。sj3ではなくapacheだったら、ビルド後に<code>apachectl start</code>でプロセスが走るだけで動作確認を済ませますか? そのあとウェブブラウザで接続して、テストページが表示されるかを調べませんか? sj3は誰も使ってないから、クライアントから変換できるか試す必要がない、と思われているかもしれませんが。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Jan  8 17:51:19 JST 2005 -->
+<!-- hhmts start -->
+Last modified: Sun May 11 09:17:25 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Sj3</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>ContentType - com_maroontress_libcgi_mime_ContentType</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_maroontress_libcgi_mime</h3>
+    <h1>class ContentType</h1>
+#define com_maroontress_libcgi_mime_ContentType_IMPORT<br>
+#include &lt;com/maroontress/libcgi/mime/ContentType.h&gt;<br>
+    <dl><dd>
+コンテンツタイプです。
+  </dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コンテンツタイプの実体となる構造体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_mime_ContentType_create"><b>ContentType_<wbr>create</b></a>(const char *&nbsp;<i>s</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コンテンツタイプを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_mime_ContentType_free"><b>ContentType_<wbr>free</b></a>(<a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a> *&nbsp;<i>ct</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コンテンツタイプを解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_mime_ContentType_matches"><b>ContentType_<wbr>matches</b></a>(<a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a> *&nbsp;<i>ct</i>, const char *&nbsp;<i>mainType</i>, const char *&nbsp;<i>subType</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コンテンツタイプを比較します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;char *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_mime_ContentType_getType"><b>ContentType_<wbr>getType</b></a>(<a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a> *&nbsp;<i>ct</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;コンテンツタイプのタイプを表す文字列を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_mime_ContentType_getParameter"><b>ContentType_<wbr>getParameter</b></a>(<a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a> *&nbsp;<i>ct</i>, const char *&nbsp;<i>name</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;パラメータを取得します。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct com_maroontress_libcgi_mime_ContentType"></a>
+<font size="+1"><b>struct ContentType</b></font></p>
+<dl><dd>コンテンツタイプの実体となる構造体です。</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="com_maroontress_libcgi_mime_ContentType_create"></a><font size="+1"><b>ContentType_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a> * <b>ContentType_create</b>(</td>
+    <td nowrap>const char *&nbsp;<i>s</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+コンテンツタイプを生成します。
+<p><span class="arg">s</span>が表す文字列はRFC 2045に示される次の形式である必要があります。</p>
+<pre>
+type &quot;/&quot; subtype *(&quot;;&quot; parameter)
+</pre>
+<p>ただし<span class="code">parameter</span>はRFC 2045と互換性ある次の形式でなければなりません。</p>
+<pre>
+parameter := attribute [&quot;=&quot; value]
+attribute := token ; Matching of attributes is ALWAYS case-insensitive.
+value := token / quoted-string
+</pre>
+<p>パラメータの値<span class="code">value</span>が<span class="code">quoted-string</span>である場合、両端のクォート文字（<span class="code">&quot;</span>）は取り除かれます。</p>
+<p>戻り値が参照するオブジェクトは<a href="com_maroontress_libcgi_mime_ContentType.html#com_maroontress_libcgi_mime_ContentType_free">ContentType_<wbr>free</a>()で解放しなければなりません。</p>
+<dl><dt>See:</dt><dd>RFC 2045</dd></dl>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>s</i> - コンテンツタイプを表す文字列<br>
+
+</dd></dl>
+<dl>Returns:<dd>コンテンツタイプのインスタンス</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_mime_ContentType_free"></a><font size="+1"><b>ContentType_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>ContentType_free</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a> *&nbsp;<i>ct</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+コンテンツタイプを解放します。
+<p><span class="arg">ct</span>が<span class="code">NULL</span>のときはなにもしません。呼び出し後は<span class="arg">ct</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>ct</i> - コンテンツタイプのインスタンス<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_mime_ContentType_matches"></a><font size="+1"><b>ContentType_<wbr>matches</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>ContentType_matches</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a> *&nbsp;<i>ct</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>mainType</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>subType</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+コンテンツタイプを比較します。
+<p><span class="arg">subType</span>が<span class="code">NULL</span>の場合は主タイプと<span class="arg">mainType</span>が等しい場合にマッチします。</p>
+<p><span class="arg">subType</span>が非<span class="code">NULL</span>の場合は主タイプと<span class="arg">mainType</span>が等しく、かつ<span class="arg">subType</span>と副タイプが等しい場合にマッチします。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>ct</i> - コンテンツタイプのインスタンス<br>
+
+<i>mainType</i> - 主タイプ<br>
+
+<i>subType</i> - 副タイプ<br>
+
+</dd></dl>
+<dl>Returns:<dd>マッチする場合は非0、そうでなければ0</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_mime_ContentType_getType"></a><font size="+1"><b>ContentType_<wbr>getType</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>char * <b>ContentType_getType</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a> *&nbsp;<i>ct</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+コンテンツタイプのタイプを表す文字列を取得します。
+<p>戻り値が参照するオブジェクトは<span class="arg">ct</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、解放してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>ct</i> - コンテンツタイプのインスタンス<br>
+
+</dd></dl>
+<dl>Returns:<dd>「主タイプ/副タイプ」という形式の文字列</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_mime_ContentType_getParameter"></a><font size="+1"><b>ContentType_<wbr>getParameter</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_mime_Parameter.html#struct com_maroontress_libcgi_mime_Parameter">struct Parameter</a> * <b>ContentType_getParameter</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_mime_ContentType.html#struct com_maroontress_libcgi_mime_ContentType">struct ContentType</a> *&nbsp;<i>ct</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+パラメータを取得します。
+<p>名前が<span class="arg">name</span>と一致するパラメータを取得します。パラメータの名前と<span class="arg">name</span>を比較する際には大文字小文字は区別されません。一致するパラメータが存在しない場合は<span class="code">NULL</span>を返します。</p>
+<p>戻り値が参照するオブジェクトは<span class="arg">ct</span>を解放するまで有効です。戻り値が参照するオブジェクトを解放してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>ct</i> - コンテンツタイプのインスタンス<br>
+
+<i>name</i> - パラメータの名前<br>
+
+</dd></dl>
+<dl>Returns:<dd>パラメータが存在する場合はそのインスタンス、そうでなければ<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | 3CRWE62092A driver for FreeBSD 4.x</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">3CRWE62092A driver for FreeBSD 4.x</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h2>ニュース</h2>
+<h3>2004-01-26</h3>
+<p><a href="3crwe62092a-20040126.tar.gz">3crwe62092a-20040126.tar.gz</a>をリリース。ifconfig(8)を使用してIEEE 802.11パラメータを設定できるようにした。</p>
+<h3>2003-12-28</h3>
+<p><a href="3crwe62092a-20031228.tar.gz">3crwe62092a-20031228.tar.gz</a>をリリース。</p>
+<h2>カーネルの変更</h2>
+<h3>カーネルのソースツリーにxwドライバのソースをコピー</h3>
+<p>配布のtar ballに含まれるxwドライバのソースを次のようにカーネルのソースツリーにコピーします。</p>
+<pre><code class="nohighlight">% tar zxf <i>anywhere</i>/3crwe62092a-<i>yyyymmdd</i>.tar.gz
+% cd 3crwe62092a
+% su
+# cp -r xw /sys/dev/</code></pre>
+<h3>/sys/conf/files</h3>
+<p><code>/sys/conf/files</code>に次の行を追加します。</p>
+<pre><code class="language-plaintext">dev/xw/if_xw.c                  optional xw
+</code></pre>
+<h3>カーネルのコンフィギュレーションファイル</h3>
+<p>カーネルのコンフィギュレーションファイル（例えば<code>/sys/i386/conf/FOO</code>）に次の行を追加します。</p>
+<pre><code class="language-plaintext">device          xw
+</code></pre>
+<h3>カーネルの再構築とインストール</h3>
+<p>次のようにカーネルの再構築とインストールを行います。</p>
+<pre><code class="language-plaintext"># cd /sys/i386/conf/
+# config FOO
+# cd ../../compile/FOO
+# make depend
+# make
+# make install
+</code></pre>
+<h2>設定</h2>
+<h3>/etc/pccard.confの編集</h3>
+<p><code>/etc/pccard.conf</code>に次のような3CRWE62092A用のエントリを追加します（配布のtar ballに含まれる<code>3crwe62092a/etc/pccard.conf-sample</code>を参考にしてください）。</p>
+<pre><code class="language-plaintext">card &quot;3Com&quot; &quot;3CRWE62092A Wireless LAN PC Card&quot;
+config  auto &quot;xw&quot; ?
+insert  /etc/pccard_ether $device start
+remove  /etc/pccard_ether $device stop
+</code></pre>
+<h3>/etc/rc.confの編集</h3>
+<p>DHCPを利用する場合は<code>/etc/rc.conf</code>に次のようなxwドライバのエントリを追加します（配布のtar ballに含まれる<code>3crwe62092a/etc/rc.conf-sample</code>を参考にしてください）。</p>
+<pre><code class="language-plaintext">ifconfig_xw0=&quot;dhcp&quot;
+</code></pre>
+<p>DHCPを利用しない場合は次のようなxwドライバのエントリを追加します。</p>
+<pre><code class="nohighlight">ifconfig_xw0="inet <i>XXX.XXX.XXX.XXX</i> netmask <i>YYY.YYY.YYY.YYY</i> ssid <i>SSID</i> <u>wepmode on wepkey <i>WEPKEY</i></u>"</code></pre>
+<p>上記の<code><i>SSID</i></code> と<code><i>WEPKEY</i></code> は環境に応じて変更する必要があります（WEPを使用しない場合は下線部を<code>wepmode off</code>にします）。</p>
+<h3>/etc/dhclient.confの編集（DHCPを使用する場合のみ）</h3>
+<p>DHCPを利用する場合は<code>/etc/dhclient.conf</code>に次のようなxwドライバのエントリを追加します（配布のtar ballに含まれる<code>3crwe62092a/etc/dhclient.conf-sample</code>を参考にしてください）。</p>
+<pre><code class="nohighlight">interface "xw0" {
+    media   "ssid <i>SSID</i> <u>wepmode on wepkey <i>WEPKEY</i></u>";
+}</code></pre>
+<p>上記の<code><i>SSID</i></code> と<code><i>WEPKEY</i></code> は環境に応じて変更する必要があります（WEPを使用しない場合は下線部を<code>wepmode off</code>にします）。</p>
+<h2>性能</h2>
+<p>アクセスポイント経由でftpサーバにファイルを送受信して確認したところ、受信で490kバイト/秒、送信で390kバイト/秒程度の結果が得られました。</p>
+<pre><code class="language-plaintext">ftp&gt; get mozilla-source-1.5b.tar.bz2 /dev/null
+local: /dev/null remote: mozilla-source-1.5b.tar.bz2
+150 Opening BINARY mode data connection for 'mozilla-source-1.5b.tar.bz2' (29642163 bytes).
+226 Transfer complete.
+29642163 bytes received in 59.22 seconds (488.84 KB/s)
+
+ftp&gt; put mozilla-source-1.5b.tar.bz2 /dev/null
+local: mozilla-source-1.5b.tar.bz2 remote: /dev/null
+150 Opening BINARY mode data connection for '/dev/null'.
+100% |**************************************************| 28947 KB    00:00 ETA
+226 Transfer complete.
+29642163 bytes sent in 74.83 seconds (386.85 KB/s)
+</code></pre>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sat Aug 15 21:43:22 JST 1998 -->
+<!-- hhmts start -->
+Last modified: Fri Feb 26 09:31:23 JST 2010
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">3CRWE62092A driver for FreeBSD 4.x</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

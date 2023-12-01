@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>LinkedList - std_util_LinkedList</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_util_LinkedList"/>
+    <h3>package std_util</h3>
+    <h1>extensible class LinkedList</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<b>std_util_LinkedList</b><br>
+<br>
+#define std_util_LinkedList_IMPORT<br>
+#include &lt;std/util/LinkedList.h&gt;<br>
+#include &lt;std/util/impl/LinkedList.h&gt;<br>
+    <dl><dd>
+リンクリストです。
+<p>リンクリストは要素となるオブジェクトについて一切関与しません。</p>
+  </dd></dl>
+    <hr>
+<h2>Field Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedList.html#struct std_util_LinkedList_Node">struct LinkedList_<wbr>Node</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_LinkedList.head"><b>head</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先頭のノードです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedList.html#struct std_util_LinkedList_Node">struct LinkedList_<wbr>Node</a> **</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_impl_LinkedList.next"><b>next</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最後のノードの<a href="std_util_LinkedList.html#struct std_util_LinkedList_Node.next">struct LinkedList_<wbr>Node.next</a>フィールドのアドレスです。</td>
+</tr>
+    </table>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="std_util_LinkedList.html#struct std_util_LinkedList_Node">struct LinkedList_<wbr>Node</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リンクリストのノードとなる構造体です。</td>
+        </tr>
+      <tr>
+
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedList.html#struct std_util_LinkedList_Node">struct LinkedList_<wbr>Node</a> *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_LinkedList_Node.next"><b>next</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次のノードの参照です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void *</font>
+  </td>
+  <td valign="top"><a href="#struct std_util_LinkedList_Node.value"><b>value</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ノードの値の参照です。</td>
+</tr>
+      </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a></font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedList_create"><b>LinkedList_<wbr>create</b></a>(void)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リンクリストを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedList_free"><b>LinkedList_<wbr>free</b></a>(<a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;リンクリストを解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedList_getSize"><b>LinkedList_<wbr>getSize</b></a>(<a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要素の個数を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedList_append"><b>LinkedList_<wbr>append</b></a>(<a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a>&nbsp;<i>this</i>, void *&nbsp;<i>element</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要素をリンクリストに追加します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void *</font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedList_getFirst"><b>LinkedList_<wbr>getFirst</b></a>(<a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先頭の要素をリンクリストから取り除き、それを返します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_util_LinkedList.html#struct std_util_LinkedList_Node">struct LinkedList_<wbr>Node</a> *</font>
+  </td>
+  <td valign="top"><a href="#std_util_LinkedList_getHeadNode"><b>LinkedList_<wbr>getHeadNode</b></a>(<a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a>&nbsp;<i>this</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先頭のノードの参照を取得します。</td>
+</tr>
+    </table>
+<h2>Field Detail</h2>
+<p><a name="struct std_util_impl_LinkedList.head"></a><font size="+1"><b>head</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_util_LinkedList.html#struct std_util_LinkedList_Node">struct LinkedList_<wbr>Node</a> * <b>head</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+先頭のノードです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_impl_LinkedList.next"></a><font size="+1"><b>next</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_util_LinkedList.html#struct std_util_LinkedList_Node">struct LinkedList_<wbr>Node</a> ** <b>next</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+最後のノードの<a href="std_util_LinkedList.html#struct std_util_LinkedList_Node.next">struct LinkedList_<wbr>Node.next</a>フィールドのアドレスです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+    <h2>Struct Detail</h2>
+<p><a name="struct std_util_LinkedList_Node"></a>
+<font size="+1"><b>struct LinkedList_Node</b></font></p>
+<dl><dd>
+リンクリストのノードとなる構造体です。
+<p><span class="em">この構造体のメンバはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    
+<hr>
+<p><a name="struct std_util_LinkedList_Node.next"></a><font size="+1"><b>next</b></font></p>
+<p><a href="std_util_LinkedList.html#struct std_util_LinkedList_Node">struct LinkedList_<wbr>Node</a> * <b>next</b></p>
+<dl>
+<dd>
+次のノードの参照です。
+<p>最後のノードでは<span class="code">NULL</span>になります。</p>
+      </dd>
+</dl>
+<hr>
+<p><a name="struct std_util_LinkedList_Node.value"></a><font size="+1"><b>value</b></font></p>
+<p>void * <b>value</b></p>
+<dl>
+<dd>
+ノードの値の参照です。
+      </dd>
+</dl>
+</dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_util_LinkedList_create"></a><font size="+1"><b>LinkedList_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a> <b>LinkedList_create</b>(</td>
+    <td nowrap>void)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+リンクリストを生成します。
+<p>戻り値が参照するオブジェクトは<a href="std_util_LinkedList.html#std_util_LinkedList_free">LinkedList_<wbr>free</a>()で解放しなければなりません。</p>
+<p>生成に失敗した場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返します。</p>
+    </dd>
+
+<dl>Returns:<dd>リンクリストのインスタンス、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_LinkedList_free"></a><font size="+1"><b>LinkedList_<wbr>free</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>LinkedList_free</b>(</td>
+    <td nowrap><a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+リンクリストを解放します。
+<p>含まれていた要素とは関連がなくなります。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_LinkedList_getSize"></a><font size="+1"><b>LinkedList_<wbr>getSize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>LinkedList_getSize</b>(</td>
+    <td nowrap><a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+要素の個数を取得します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>要素の個数</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_LinkedList_append"></a><font size="+1"><b>LinkedList_<wbr>append</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>LinkedList_append</b>(</td>
+    <td nowrap><a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a>&nbsp;<i>this</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>void *&nbsp;<i>element</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+要素をリンクリストに追加します。
+<p>リンクリストが空の場合、<span class="arg">element</span>は先頭の要素になります。そうでなければ、<span class="arg">element</span>はリンクリストの最後の要素に追加されます。</p>
+<p>リンクリストは<span class="arg">element</span>が参照するオブジェクトにアクセスしません。その有効性はアプリケーションが保証してください。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+<i>element</i> - 要素の参照<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_LinkedList_getFirst"></a><font size="+1"><b>LinkedList_<wbr>getFirst</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void * <b>LinkedList_getFirst</b>(</td>
+    <td nowrap><a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+先頭の要素をリンクリストから取り除き、それを返します。
+<p>リンクリストが空の場合は<span class="code">NULL</span>を返します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>要素の参照、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="std_util_LinkedList_getHeadNode"></a><font size="+1"><b>LinkedList_<wbr>getHeadNode</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_util_LinkedList.html#struct std_util_LinkedList_Node">struct LinkedList_<wbr>Node</a> *</td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>LinkedList_getHeadNode</b>(</td>
+    <td nowrap><a href="std_util_LinkedList.html#union std_util_LinkedList">union LinkedList</a>&nbsp;<i>this</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+先頭のノードの参照を取得します。
+<p>リンクリストが空の場合は<span class="code">NULL</span>を返します。</p>
+<p>戻り値が参照するオブジェクトは<a href="std_util_LinkedList.html#std_util_LinkedList_getFirst">LinkedList_<wbr>getFirst</a>()または<a href="std_util_LinkedList.html#std_util_LinkedList_free">LinkedList_<wbr>free</a>()を呼び出すまで有効です。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>this</i> - instance.<br>
+
+</dd></dl>
+<dl>Returns:<dd>先頭のノード、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

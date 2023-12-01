@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE package SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd">
+<package name="com_example">
+  <desc>
+    <p>sanctuaryのサンプルを提供します。</p>
+  </desc>
+</package>

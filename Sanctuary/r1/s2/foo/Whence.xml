@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd">
+<class package="foo" name="Whence">
+  <namespace/>
+
+  <enum tag="@">
+    <constant name="SET" value="1">
+      <desc><brief>ファイル先頭からのオフセットを表します。</brief></desc>
+    </constant>
+
+    <constant name="CUR">
+      <desc><brief>現在のファイル位置からのオフセットを表します。</brief></desc>
+    </constant>
+
+    <constant name="END">
+      <desc><brief>ファイル末尾からのオフセットを表します。</brief></desc>
+    </constant>
+
+    <desc>
+      <brief>ファイルをシークする際にオフセットの基点を指定する列挙型です。</brief>
+    </desc>
+  </enum>
+
+  <desc>
+    <brief>ファイルのシークに必要な指令を提供します。</brief>
+    <p>lseek(2)の引数whenceをenumで表現してみました。</p>
+  </desc>
+</class>

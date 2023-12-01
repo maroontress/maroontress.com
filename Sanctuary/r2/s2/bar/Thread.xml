@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/2.0/sanctuary.dtd" [
+  <!ENTITY thisParam '
+    <param type="struct @ *" name="thread">
+      <desc>Threadクラスのインスタンス</desc>
+    </param>
+  '>
+]>
+<class package="bar" name="Thread">
+  <namespace/>
+
+  <export type="struct" tag="@">
+    <desc><brief>スレッドの実体となる構造体です。</brief><p>不透明な構造体です。</p></desc>
+  </export>
+
+  <method name="new">
+    &thisParam;
+
+    <param type="void (*#)(struct @ *)" name="run">
+      <desc>see bar_Thread_run()</desc>
+    </param>
+
+    <desc><brief>スレッドのインスタンスを生成します。</brief></desc>
+  </method>
+
+  <method name="start">
+    &thisParam;
+    <desc><brief>新しいスレッドによるbar_Thread_run()の実行を開始します。</brief></desc>
+  </method>
+
+  <abstractmethod name="run">
+    &thisParam;
+    <desc><brief>スレッドが実行する処理を実装します。</brief></desc>
+  </abstractmethod>
+
+  <desc><brief>アブストラクトメソッドの例を提供します。</brief></desc>
+</class>

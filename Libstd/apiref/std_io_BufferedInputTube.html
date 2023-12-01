@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>BufferedInputTube - std_io_BufferedInputTube</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+<a name="union std_io_BufferedInputTube"/>
+    <h3>package std_io</h3>
+    <h1>extensible class BufferedInputTube</h1>
+<a href="std_lang_Object.html">std_lang_Object</a><br>
+&#x2514;&nbsp;<a href="std_io_InputTube.html">std_io_InputTube</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&#x2514;&nbsp;<b>std_io_BufferedInputTube</b><br>
+<br>
+#define std_io_BufferedInputTube_IMPORT<br>
+#include &lt;std/io/BufferedInputTube.h&gt;<br>
+#include &lt;std/io/impl/BufferedInputTube.h&gt;<br>
+    <dl><dd>
+<p>ストリームのバッファ付き入力端です。</p>
+  </dd></dl>
+    <hr>
+<h2>Field Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a></font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_BufferedInputTube.source"><b>source</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入力元です。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_BufferedInputTube.size"><b>size</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファから読みだし可能なデータのサイズです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;unsigned char *</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_BufferedInputTube.data"><b>data</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファから入力可能なデータの先頭を指すポインタです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;size_t</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_BufferedInputTube.bufferSize"><b>bufferSize</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファのサイズです。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void *</font>
+  </td>
+  <td valign="top"><a href="#struct std_io_impl_BufferedInputTube.bufferData"><b>bufferData</b></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファの先頭を指すポインタです。</td>
+</tr>
+    </table>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="std_io_BufferedInputTube.html#union std_io_BufferedInputTube">union BufferedInputTube</a></font>
+  </td>
+  <td valign="top"><a href="#std_io_BufferedInputTube_create"><b>BufferedInputTube_<wbr>create</b></a>(<a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>in</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;バッファ付き入力端を生成して返します。</td>
+</tr>
+    </table>
+<h2>Field Detail</h2>
+<p><a name="struct std_io_impl_BufferedInputTube.source"></a><font size="+1"><b>source</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a> <b>source</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+入力元です。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_BufferedInputTube.size"></a><font size="+1"><b>size</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>size</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+バッファから読みだし可能なデータのサイズです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_BufferedInputTube.data"></a><font size="+1"><b>data</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>unsigned char * <b>data</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+バッファから入力可能なデータの先頭を指すポインタです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_BufferedInputTube.bufferSize"></a><font size="+1"><b>bufferSize</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>size_t <b>bufferSize</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+バッファのサイズです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<p><a name="struct std_io_impl_BufferedInputTube.bufferData"></a><font size="+1"><b>bufferData</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void * <b>bufferData</b></td>
+  </tr>
+</table>
+<dl>
+<dd>
+バッファの先頭を指すポインタです。
+<p><span class="em">このフィールドはサブクラスを実装する都合で公開されているので、アプリケーションはアクセスしないでください。</span></p>
+    </dd>
+</dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="std_io_BufferedInputTube_create"></a><font size="+1"><b>BufferedInputTube_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="std_io_BufferedInputTube.html#union std_io_BufferedInputTube">union BufferedInputTube</a></td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>BufferedInputTube_create</b>(</td>
+    <td nowrap><a href="std_io_InputTube.html#union std_io_InputTube">union InputTube</a>&nbsp;<i>in</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+<p>バッファ付き入力端を生成して返します。戻り値が参照するオブジェクトは<a href="std_io_InputTube.html#std_io_InputTube_close">InputTube_<wbr>close</a>()でクローズしなければなりません。戻り値が参照するオブジェクトをクローズすると、<span class="arg">in</span>が参照する入力端も自動的に<a href="std_io_InputTube.html#std_io_InputTube_close">InputTube_<wbr>close</a>()でクローズします。</p>
+<p>生成できなかった場合は<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span>を返し、<span class="arg">in</span>を<a href="std_io_InputTube.html#std_io_InputTube_close">InputTube_<wbr>close</a>()でクローズします。</p>
+<p>戻り値に関わらず、呼び出し後は<span class="arg">in</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>in</i> - 入力元<br>
+
+</dd></dl>
+<dl>Returns:<dd>バッファ付き入力端、または<span class="code"><a href="std_lang_Object.html#std_lang_Object_NULL">std_<wbr>lang_<wbr>Object_<wbr>NULL</a></span></dd></dl>
+</dl>
+<hr>
+  </body>
+</html>

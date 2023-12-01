@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | Mad Angler</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">Mad Angler</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p>Mad AnglerはAJAXな管理コンソールをもつCIツールです。</p>
+<h2>概要</h2>
+<p>次のような特徴があります。</p>
+<h4>ビルドツールに依存しません</h4>
+<p>ビルドは疑似端末をもったssh経由のリモートコマンドで実行します。ビルドの成功、失敗の判定はビルドログの最終行が<code>OK</code>かどうかで決まります。したがって、ビルドに限らずリモートコマンドの内容次第で様々なことがテスト可能です。</p>
+<h4>バージョン管理システムに依存しません</h4>
+<p>リモートコマンドがリポジトリからソースコードをチェックアウトすることを想定しているため、バージョン管理システムに依存しません。バージョン管理システムに、コミットをフックしてスクリプトを実行できる機能と、リビジョンを指定してチェックアウトできる機能があれば、コミットをトリガとしてビルドを自動で確認することができるようになります。</p>
+<h4>ビルドの指示はREST形式のウェブAPIです</h4>
+<p>バージョン管理システムと連係させて使用する場合は、コミットをフックするスクリプトで「コミットされたリビジョン」をパラメータに含むURLをアクセスするように設定します。すると、コミットに連動してビルドが走り、そのログを保存するようになります。</p>
+<h4>1つのリビジョンを複数のプラットフォームでビルドして確認できます</h4>
+<p>ビルド結果はプラットフォーム毎に分けて記録されます。</p>
+<h4>管理コンソールはGWTで書かれたウェブアプリケーションです</h4>
+<p>ウェブブラウザでビルドのステータスやログを確認できます。また、プロジェクトの作成や設定もウェブブラウザから行えます。</p>
+<h2>ワークフロー</h2>
+<p>想定しているワークフローは次のような図になります。</p>
+<div class="horizontal-scroll" style="background-color: white;"><img width="100%" src="images/workflow.png"></div>
+<p>開発チームのメンバーがリポジトリに変更をコミットすると、リポジトリはCGIリクエストを使用して、コミットされたリビジョンをMad Anglerに通知します。Mad Anglerはコミットされたリビジョンをデータベースに記録してCGIのセッションを終了し、バックグラウンドでSSHプロトコルを使用して、ビルド用ホストでビルドスクリプトをリモート実行します。リモート実行には疑似端末が割り当てられ、Mad Anglerはすべての出力をログに記録します。</p>
+<p>ビルド用ホストでは、ビルドスクリプトが指定のリビジョンのソースコードをリポジトリからチェックアウトし、ソースコードをビルドします。ビルドが終了するとリモート実行は終了します。Mad Anglerはログの内容からビルド結果を決定し、データベースに記録します。同時に、開発チームのメーリングリストにビルド結果のレポートをメールで通知します。</p>
+<p>加えて、メンバーはいつでもウェブブラウザで、Mad Anglerに記録されたプロジェクトのビルド状況を確認したり、Mad Anglerのプロジェクト設定を変更することができます。</p>
+<h2>ビルドするリビジョンの決定アルゴリズム</h2>
+<p>Mad Anglerは1つのプロジェクトにつき、同時にビルドするリビジョンを1つに制限しています。通常、Mad Anglerは時系列順にリビジョンをビルドしていきますが、Mad Anglerがビルド中にさらなるコミットが複数発生した場合は、できるだけ最新のリビジョンからビルドしようとします。</p>
+<p>「次にビルドするリビジョン」を決定するアルゴリズム<a href="#1">★1</a>は、次のようになります。</p>
+<div class="cover-image"><img src="images/build-algorithm1.png"/></div>
+<h4>ビルドが終了したリビジョンが最新ではない場合</h4>
+<p>リビジョン<em>A</em>のビルドが終了した時点で、最新のリビジョンが<em>A</em>でなかった場合は、次に最新のリビジョンをビルドします。リビジョン<em>A</em>をビルドしている間に、新しくリビジョンがコミットされると、この状況になります。</p>
+<p>最新のリビジョンとリビジョン<em>A</em>の間のリビジョンはひとまずスキップされます。スキップされたリビジョンのビルド結果は不明になります。</p>
+<br style="clear: both;">
+<div class="cover-image"><img src="images/build-algorithm2.png"/></div>
+<h4>ビルドが終了したリビジョンが最新だった場合</h4>
+<p>リビジョン<em>A</em>のビルドが終了した時点で、最新のリビジョンが<em>A</em>であった場合、「ビルド結果が成功である最新のリビジョン」を探索します。リビジョン<em>A</em>から順にリビジョンをさかのぼります。注目しているリビジョンのビルド結果に従い、次のように処理を分岐します。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">結果</th>
+<th style="text-align:left">処理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">成功</td>
+<td style="text-align:left">探索を終了します。</td>
+</tr>
+<tr>
+<td style="text-align:left">失敗</td>
+<td style="text-align:left">注目しているリビジョンを次（1つ前）に進めます。</td>
+</tr>
+<tr>
+<td style="text-align:left">不明</td>
+<td style="text-align:left">注目しているリビジョンをビルドします。</td>
+</tr>
+</tbody>
+</table>
+<p class="footnote"><a name="1">★1</a> バージョン管理システムが分散型の場合はブランチを考慮する必要があるため、このアルゴリズムでは問題があります。次にビルドするべきリビジョンをうまく決定するには、プロジェクトで使用されているバージョン管理システムのことをMad Anglerがもっと知っている必要があります。とりあえず将来のリリースでは、時系列順にすべてのリビジョンをビルドするアルゴリズムも選択できるようなる予定です。
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Wed Apr 30 07:57:18 JST 2008 -->
+<!-- hhmts start -->
+Last modified: Fri May  9 06:52:08 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">Mad Angler</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="download.html">Download</a>
+    </li>
+    <li>
+      <a href="tutorial.html">Tutorial</a>
+    </li>
+    <li>
+      <a href="manual.html">Manual</a>
+    </li>
+    <li>
+      <a href="reference.html">Reference</a>
+    </li>
+    <li>
+      <a href="relnotes.html">Release Notes</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

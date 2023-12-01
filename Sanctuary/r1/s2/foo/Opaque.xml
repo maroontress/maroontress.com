@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE class SYSTEM "http://maroontress.com/Sanctuary/1.0/sanctuary.dtd">
+<class package="foo" name="Opaque">
+  <namespace/>
+
+  <define name="TYPE">
+    <macro>struct another_Class *</macro>
+    <desc>
+      <brief>コンストラクタの引数の型です。</brief>
+      <p>型の詳細は隠蔽されています。</p>
+    </desc>
+  </define>
+
+  <import type="struct" tag="another_Class"/>
+
+  <typedef type="struct @_ *" name="@">
+    <desc>
+      <brief>ある構造体のポインタ型です。</brief>
+      <p>構造体の詳細は隠蔽されています。</p>
+    </desc>
+  </typedef>
+
+  <method name="new">
+    <param type="@_TYPE" name="s">
+      <desc>別のクラスで記述されている構造体のポインタ</desc>
+    </param>
+
+    <return type="@">
+      <desc>インスタンスのポインタ</desc>
+    </return>
+
+    <desc><brief>別のクラスで定義されている構造体のポインタ型から、不透明なデータ型のインスタンスを生成します。</brief></desc>
+  </method>
+
+  <desc><brief>import要素の使用例を提供します。</brief></desc>
+</class>

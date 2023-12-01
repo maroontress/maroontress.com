@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | VJEを改造する</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">VJEを改造する</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h2>on-the-spotモードにおけるXmbResetIC()の挙動変更</h2>
+<h3>背景</h3>
+<p><a href="../Imserver/xim-server.html">on-the-spot対応日本語XIMサーバ 機能と実装の比較</a>で書いたように、VJE-Delta 3.0では、クライアントがXmbResetIC()を呼び出しても、XIMサーバ（vje）は自分側の前編集文字列を消去しないどころか、前編集文字列を（一部だけ）再描画しようとしてクライアントの描画コールバックを呼び出すという仕様になっています。このような実装では、<a href="../Editor/index.html">editor</a>は正常に動作しません。</p>
+<p>一般にXIMを利用するアプリケーションでは、クライアントがひとつのIMをオープンして、ICを1つだけ生成するケースと、ICを複数生成するケースが考えられます。前者のケースでは、そのクライアントのもつ複数のテキスト入力オブジェクトで唯一のICを使い回し、クライアントの最下行の状態表示領域を共有するという実装になります。オブジェクト間でキーボードフォーカスが移動するときに、コールバック関数のポインタ一式を変更するため、前編集文字列が存在すればXmbResetIC()でそれをリセットする必要があります。XIMプロトコルではクライアントがXIMサーバに対して明示的に前編集文字列を操作できないということが、その根本的原因です。</p>
+<p>後者のケースでは、それぞれのテキスト入力オブジェクトごとにICを生成するので、そのような問題は起きません（リセットの必要がありません）。しかし、オブジェクトが個別に状態表示領域を用意する必要があります（共有できないため）。打開策として、XIMスタイルにXIMStatusNoneを使用する手もあるでしょう。</p>
+<p>両方のケースに対応するためには、結局XmbResetIC()を使用する必要があるため、この仕様はそれぞれのXIMサーバで一致していて欲しいものです。</p>
+<h3>処置</h3>
+<p>XmbResetIC()の仕様が明確でないから別にvjeが悪いわけではないのですが、例のごとくvjeはソースが提供されるので、<a href="vje-3.0-xmb_reset_ic.patch-1.gz">パッチ</a>を作ってみました。パッチの当て方は、次の通りです。</p>
+<pre><code class="nohighlight">% tar zxvf delta.tgz
+% cd delta
+% gzip -dc <i>どこか</i>/vje-3.0-xmb_reset_ic.patch-1.gz | patch</code></pre>
+<p>このパッチを適用したvjeは、XmbResetIC()を呼び出すと、XIMサーバ側の前編集文字列をすべてキャンセルしてから、描画コールバックを呼び出してクライアント側の前編集文字列を消去するような動作になります。</p>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Fri Feb 11 01:43:59 JST 2000 -->
+<!-- hhmts start -->
+Last modified: Sun May 11 09:37:05 JST 2008
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">VJEを改造する</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

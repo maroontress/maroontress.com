@@ -1,0 +1,400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <title>BoxKit - com_maroontress_libcgi_db_BoxKit</title>
+    <link rel="stylesheet" type="text/css" href="sanctuary.css">
+  </head>
+  <body>
+    <h3>package com_maroontress_libcgi_db</h3>
+    <h1>class BoxKit</h1>
+#define com_maroontress_libcgi_db_BoxKit_IMPORT<br>
+#include &lt;com/maroontress/libcgi/db/BoxKit.h&gt;<br>
+    <dl><dd>
+ツリーを変更するためのボックスキットです。
+<p>ボックスキットは変数を複数保持することができます。それぞれの変数には、整数または文字列のどちらか一方を設定できます。</p>
+  </dd></dl>
+    <hr>
+    <h2>Struct Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+      <tr>
+        <td colspan="2"><font size="+1"><b><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a></b></font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ボックスキットの実体となる構造体です。</td>
+        </tr>
+    </table><br>
+<h2>Method Summary</h2>
+    <table width="100%" cellspacing="0" border="1">
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_create"><b>BoxKit_<wbr>create</b></a>(<a href="com_maroontress_libcgi_db_Tree.html#struct com_maroontress_libcgi_db_Tree">struct Tree</a> *&nbsp;<i>tree</i>, const char *&nbsp;<i>key</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ボックスキットを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_load"><b>BoxKit_<wbr>load</b></a>(<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>, const void *&nbsp;<i>data</i>, size_t&nbsp;<i>size</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;シリアライズされたデータをロードします。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_setInt"><b>BoxKit_<wbr>setInt</b></a>(<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>, const char *&nbsp;<i>name</i>, int&nbsp;<i>value</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;変数に整数を設定します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_getInt"><b>BoxKit_<wbr>getInt</b></a>(<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>, const char *&nbsp;<i>name</i>, <span class="splint">(out)</span> int *&nbsp;<i>value</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;変数に設定されている整数を取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_setString"><b>BoxKit_<wbr>setString</b></a>(<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>, const char *&nbsp;<i>name</i>, const char *&nbsp;<i>value</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;変数に文字列を設定します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_createString"><b>BoxKit_<wbr>createString</b></a>(<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>, const char *&nbsp;<i>name</i>, <span class="splint">(out)</span> char **&nbsp;<i>value</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;変数に設定されている文字列のコピーを生成します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_createXMLEscapedString"><b>BoxKit_<wbr>createXMLEscapedString</b></a>(<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>, const char *&nbsp;<i>name</i>, <span class="splint">(out)</span> char **&nbsp;<i>value</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;変数に設定されている文字列のコピーを生成します。生成される文字列はXML向けにエスケープされています。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_delete"><b>BoxKit_<wbr>delete</b></a>(<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>, const char *&nbsp;<i>name</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;変数を削除します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;char *</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_getKey"><b>BoxKit_<wbr>getKey</b></a>(<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;キーを取得します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;void</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_purge"><b>BoxKit_<wbr>purge</b></a>(<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ボックスキットを解放します。</td>
+</tr>
+<tr>
+  <td align="right" valign="top" width="1%">
+    <font size="-1">&nbsp;int</font>
+  </td>
+  <td valign="top"><a href="#com_maroontress_libcgi_db_BoxKit_close"><b>BoxKit_<wbr>close</b></a>(<a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ツリーを更新してボックスキットを解放します。</td>
+</tr>
+    </table>
+    <h2>Struct Detail</h2>
+<p><a name="struct com_maroontress_libcgi_db_BoxKit"></a>
+<font size="+1"><b>struct BoxKit</b></font></p>
+<dl><dd>
+ボックスキットの実体となる構造体です。
+<p>型の詳細は隠蔽されています。</p>
+    </dd></dl>
+<hr>
+<h2>Method Detail</h2>
+<p><a name="com_maroontress_libcgi_db_BoxKit_create"></a><font size="+1"><b>BoxKit_<wbr>create</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> * <b>BoxKit_create</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_Tree.html#struct com_maroontress_libcgi_db_Tree">struct Tree</a> *&nbsp;<i>tree</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>key</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ボックスキットを生成します。
+<p><span class="arg">key</span>をキーとする空のボックスキットを生成します。</p>
+<p>戻り値が参照するオブジェクトは<a href="com_maroontress_libcgi_db_BoxKit.html#com_maroontress_libcgi_db_BoxKit_purge">BoxKit_<wbr>purge</a>()または<a href="com_maroontress_libcgi_db_BoxKit.html#com_maroontress_libcgi_db_BoxKit_close">BoxKit_<wbr>close</a>()で解放しなければなりません。</p>
+<p>生成できない場合は<span class="code">NULL</span>を返します。</p>
+
+    <p>このメソッドは実装上の都合で公開されているので、アプリケーションは呼び出さないでください。</p>
+  
+    </dd>
+
+<dl>Parameters:<dd>
+<i>tree</i> - ツリー<br>
+
+<i>key</i> - キー<br>
+
+</dd></dl>
+<dl>Returns:<dd>ボックスキット、または<span class="code">NULL</span></dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_BoxKit_load"></a><font size="+1"><b>BoxKit_<wbr>load</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BoxKit_load</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const void *&nbsp;<i>data</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>size_t&nbsp;<i>size</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+シリアライズされたデータをロードします。
+
+    <p>このメソッドは実装上の都合で公開されているので、アプリケーションは呼び出さないでください。</p>
+  
+    </dd>
+
+<dl>Parameters:<dd>
+<i>kit</i> - ボックスキット<br>
+
+<i>data</i> - シリアライズされたデータ<br>
+
+<i>size</i> - <span class="arg">data</span>のサイズ<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_BoxKit_setInt"></a><font size="+1"><b>BoxKit_<wbr>setInt</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BoxKit_setInt</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>int&nbsp;<i>value</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+変数に整数を設定します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>kit</i> - ボックスキット<br>
+
+<i>name</i> - 変数名<br>
+
+<i>value</i> - 整数<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_BoxKit_getInt"></a><font size="+1"><b>BoxKit_<wbr>getInt</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BoxKit_getInt</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><span class="splint">(out)</span> int *&nbsp;<i>value</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+変数に設定されている整数を取得します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>kit</i> - ボックスキット<br>
+
+<i>name</i> - 変数名<br>
+
+<i>value</i> - 整数の格納先<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_BoxKit_setString"></a><font size="+1"><b>BoxKit_<wbr>setString</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BoxKit_setString</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>value</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+変数に文字列を設定します。
+    </dd>
+
+<dl>Parameters:<dd>
+<i>kit</i> - ボックスキット<br>
+
+<i>name</i> - 変数名<br>
+
+<i>value</i> - 文字列<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_BoxKit_createString"></a><font size="+1"><b>BoxKit_<wbr>createString</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BoxKit_createString</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><span class="splint">(out)</span> char **&nbsp;<i>value</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+変数に設定されている文字列のコピーを生成します。
+<p>成功した場合、<span class="code">*</span><span class="arg">value</span>が参照するオブジェクトは<span class="code">free(3)</span>で解放しなければなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>kit</i> - ボックスキット<br>
+
+<i>name</i> - 変数名<br>
+
+<i>value</i> - 生成した文字列の参照の格納先<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_BoxKit_createXMLEscapedString"></a><font size="+1"><b>BoxKit_<wbr>createXMLEscapedString</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BoxKit_createXMLEscapedString</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap><span class="splint">(out)</span> char **&nbsp;<i>value</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+変数に設定されている文字列のコピーを生成します。生成される文字列はXML向けにエスケープされています。
+<p>成功した場合、<span class="code">*</span><span class="arg">value</span>が参照するオブジェクトは<span class="code">free(3)</span>で解放しなければなりません。</p>
+<dl><dt>See:</dt><dd>com_<wbr>maroontress_<wbr>libcgi_<wbr>db_<wbr>XML_<wbr>createEscapedString()</dd></dl>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>kit</i> - ボックスキット<br>
+
+<i>name</i> - 変数名<br>
+
+<i>value</i> - 生成した文字列の参照の格納先<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_BoxKit_delete"></a><font size="+1"><b>BoxKit_<wbr>delete</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BoxKit_delete</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>,</td>
+  </tr>
+  <tr>
+    <td></td><td nowrap>const char *&nbsp;<i>name</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+変数を削除します。
+<p>変数名が<span class="arg">name</span>の変数を削除します。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>kit</i> - ボックスキット<br>
+
+<i>name</i> - 変数名<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_BoxKit_getKey"></a><font size="+1"><b>BoxKit_<wbr>getKey</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>char * <b>BoxKit_getKey</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+キーを取得します。
+<p>戻り値が参照するオブジェクトは<span class="arg">kit</span>を解放するまで有効です。戻り値が参照するオブジェクトを変更、修正してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>kit</i> - ボックスキット<br>
+
+</dd></dl>
+<dl>Returns:<dd>キー</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_BoxKit_purge"></a><font size="+1"><b>BoxKit_<wbr>purge</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>void <b>BoxKit_purge</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ボックスキットを解放します。
+<p><span class="arg">kit</span>への変更は捨てられ、ツリーには反映されません。</p>
+<p>呼び出し後は<span class="arg">kit</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>kit</i> - ボックスキット<br>
+
+</dd></dl>
+</dl>
+<hr>
+<p><a name="com_maroontress_libcgi_db_BoxKit_close"></a><font size="+1"><b>BoxKit_<wbr>close</b></font></p>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td nowrap>int <b>BoxKit_close</b>(</td>
+    <td nowrap><a href="com_maroontress_libcgi_db_BoxKit.html#struct com_maroontress_libcgi_db_BoxKit">struct BoxKit</a> *&nbsp;<i>kit</i>)</td>
+  </tr>
+</table>
+<dl>
+<dd>
+ツリーを更新してボックスキットを解放します。
+<p><span class="arg">kit</span>への変更はツリーにコミットされます。</p>
+<p>呼び出し後は<span class="arg">kit</span>が参照するオブジェクトを参照してはなりません。</p>
+    </dd>
+
+<dl>Parameters:<dd>
+<i>kit</i> - ボックスキット<br>
+
+</dd></dl>
+<dl>Returns:<dd>成功した場合は0、そうでなければ&minus;1</dd></dl>
+</dl>
+<hr>
+  </body>
+</html>
