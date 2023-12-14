@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Windowsランナーでssh-agent | GitHub Actions and Dungeons</title>
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">GitHub Actions and Dungeons</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Windowsランナーでssh-agent</h1>
+<p>Windowsランナーを使う予定のない人は、以降まったく読む価値が無いことに注意。</p>
+<h2>別のプライベートリポジトリのクローン</h2>
+<p>あるリポジトリAについてGitHub Actionsのジョブを実行中に、Aと別のプライベートリポジトリBをチェックアウトまたはクローンするステップを記述したい。Windowsランナーに限らないが、簡単な方法はマーケットプレイスのactions/checkoutを次のように使うことだろう:</p>
+<pre><code class="language-yaml">    steps:
+    - name: Checkout private repository
+      uses: actions/checkout@v4
+      with:
+        repository: maroontress-tomohisa/private-repository-example
+        ssh-key: ${{secrets.PRIVATE_REPO_DEPLOY_KEY}}
+        path: private-repository-example
+    - name: Print README.md
+      shell: bash
+      run: |
+        cat private-repository-example/README.md
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L13-L23">GitHubで見る</a></p>
+</blockquote>
+<p>「リポジトリB」にアクセスするために、<a href="https://docs.github.com/ja/authentication/connecting-to-github-with-ssh/managing-deploy-keys#deploy-keys">デプロイキー</a>を使用することにする。リポジトリBのURLは<code>git@github.com:maroontress-tomohisa/private-repository-example.git</code>としよう。そして、リポジトリBには適切にデプロイキーのパブリックキーが設定され、リポジトリAの<a href="https://docs.github.com/ja/actions/security-guides/using-secrets-in-github-actions#about-secrets">シークレット</a>に適切にデプロイキーのプライベートキーが設定されていて、それをワークフロー内では<code>secret.PRIVATE_REPO_DEPLOY_KEY</code>で参照できるようになっている、とする。</p>
+<p>最初のステップでリポジトリBを<code>private-repository-example</code>にチェックアウトする。次のステップで確認のため、リポジトリBの<code>README.md</code>を出力する。</p>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">Run actions/checkout@v4
+Syncing repository: maroontress-tomohisa/private-repository-example
+Getting Git version info
+
+Temporarily overriding HOME='D:\a\_temp\d3f120f5-cde6-43a2-b847-7146107be8b8' before making global git config changes
+Adding repository directory to the temporary git global config as a safe directory
+&quot;C:\Program Files\Git\bin\git.exe&quot; config --global --add safe.directory D:\a\try_out_github_actions\try_out_github_actions\private-repository-example
+Initializing the repository
+Disabling automatic garbage collection
+Setting up auth
+Determining the default branch
+Fetching the repository
+Determining the checkout info
+Checking out the ref
+&quot;C:\Program Files\Git\bin\git.exe&quot; log -1 --format='%H'
+'3cf9492e7ffb20ea5246a8edf1bec8d3aab293a4'
+⋮
+# An Example of Private Repository
+</code></pre>
+<blockquote>
+<p><a href="result-1.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>成功だ。最後の行は<code>README.md</code>の中身そのものである。</p>
+<p>このように、actions/checkoutを使えば、別のプライベートリポジトリをチェックアウトすることができる。しかし、ローカル環境でも同じようにリポジトリBをチェックアウトする必要がある場合、何らかのスクリプトを用意して、そのスクリプトでチェックアウトしたい。そうすると、ワークフローファイルに記述したものはGitHub Actionsでしか実行できないので、二重に管理することになる。ワークフローファイルをローカルで実行できるように変換する何かを作るのも良さそうだが、他の方法も調べてみよう。</p>
+<h2>ssh-agentで別のプライベートリポジトリのクローン</h2>
+<p>同じことを、今度は<code>ssh-agent</code>を用いてやってみる。そうではなく、<code>~/.ssh/config</code>にエントリを追加してもできるが、それは後のセクションで試してみる。</p>
+<p>まず、Windowsランナーにインストールされている<code>ssh-agent</code>関連のコマンドがどのようになっているのかを確認する。</p>
+<pre><code class="language-yaml">    - name: Check commands
+      shell: bash
+      run: |
+        ls -l `which ssh`
+        ls -l `which ssh-add`
+        ls -l `which ssh-agent`
+        ls -l `which git`
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L29-L35">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">-rwxr-xr-x 1 runneradmin 197121 958822 Aug 30 09:46 /usr/bin/ssh
+-rwxr-xr-x 1 runneradmin 197121 441485 Aug 30 09:46 /usr/bin/ssh-add
+-rwxr-xr-x 1 runneradmin 197121 415546 Aug 30 09:46 /usr/bin/ssh-agent
+-rwxr-xr-x 4 runneradmin 197121 3830264 Aug 30 09:49 /mingw64/bin/git
+</code></pre>
+<blockquote>
+<p><a href="result-2.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>Windowsの<code>ssh-agent</code>の実装はいくつかあるが、パスにあるのはGit for Windowsのものである。</p>
+<p><code>ssh-agent</code>を素直に実行すると次のようになる:</p>
+<pre><code class="language-yaml">    - name: Start ssh-agent
+      shell: bash
+      run: |
+        eval `ssh-agent`
+        echo SSH_AUTH_SOCK=&quot;$SSH_AUTH_SOCK&quot; &gt;&gt; &quot;$GITHUB_ENV&quot;
+        echo SSH_AGENT_PID=&quot;$SSH_AGENT_PID&quot; &gt;&gt; &quot;$GITHUB_ENV&quot;
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L36-L41">GitHubで見る</a></p>
+</blockquote>
+<p>最後の二行は、後に続くステップで環境変数<code>SSH_AUTH_SOCK</code>と<code>SSH_AGENT_PID</code>が有効になるように<code>$GITHUB_ENV</code>に追記している（詳細は<a href="https://docs.github.com/ja/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable">環境変数の設定</a>を参照）。</p>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">Agent pid 433
+</code></pre>
+<blockquote>
+<p><a href="result-3.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p><code>ssh-agent</code>がバックグラウンドで動作したので、次にデプロイキーを<code>ssh-add</code>コマンドでエージェントに登録する:</p>
+<pre><code class="language-yaml">    - name: Add a deploy key
+      shell: bash
+      run: |
+        mkdir -p $HOME/.ssh
+        echo &quot;${{secrets.PRIVATE_REPO_DEPLOY_KEY}}&quot; &gt; $HOME/.ssh/PRIVATE_REPO_DEPLOY_KEY
+        ssh-add $HOME/.ssh/PRIVATE_REPO_DEPLOY_KEY
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L42-L47">GitHubで見る</a></p>
+</blockquote>
+<p>一旦、<code>~/.ssh</code>ディレクトリを作成して、そこにファイルとしてプライベートキーを保存した。</p>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">Identity added: /c/Users/runneradmin/.ssh/PRIVATE_REPO_DEPLOY_KEY (git@github.com:maroontress-tomohisa/private-repository-example.git)
+</code></pre>
+<blockquote>
+<p><a href="result-4.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>無事、登録できた。カッコ内にSSHキーのコメントが表示されている。このデプロイキーは、コメントにリポジトリのURLを指定して作成した。これは現時点では意味が無い（後のセクションで、複数のプライベートリポジトリを読み出すときに用いる）ので、ここでは無視する。</p>
+<p>念のため、次のように<code>ssh-add -l</code>で登録されたキーを確認する:</p>
+<pre><code class="language-yaml">    - name: List fingerprints
+      shell: bash
+      run: |
+        ssh-add -l
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L48-L51">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">3072 SHA256:EHYsJhMvV2X03sbEYcAH3w7MNft1lra8M/ZSF0XMr5k git@github.com:maroontress-tomohisa/private-repository-example.git (RSA)
+</code></pre>
+<blockquote>
+<p><a href="result-5.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>これで<code>git clone</code>できるはずである。次のようにクローンしてみよう:</p>
+<pre><code class="language-yaml">    - name: Clone the private repository (which fails)
+      continue-on-error: true
+      shell: bash
+      run: |
+        git clone --depth 1 git@github.com:maroontress-tomohisa/private-repository-example.git
+        cat private-repository-example/README.md
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L52-L57">GitHubで見る</a></p>
+</blockquote>
+<p>最後の行は、クローンに成功した場合に<code>READMD.md</code>を表示したい、という意図だが、成功しないので意味が無い。結果は次のようになった:</p>
+<pre><code class="language-plaintext">Cloning into 'private-repository-example'...
+Host key verification failed.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+Error: Process completed with exit code 128.
+</code></pre>
+<blockquote>
+<p><a href="result-6.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>これは簡単で、<code>github.com</code>のSSHパブリックキーが<code>~/.ssh/known_hosts</code>に含まれてないのでエラーになる。そもそも<code>~/.ssh/known_hosts</code>が存在してないのだ。次のように<code>known_hosts</code>を作成しよう:</p>
+<pre><code class="language-yaml">    - name: Perform workarounds (create ~/.ssh/known_hosts)
+      shell: bash
+      run: |
+        rm -rf private-repository-example
+        cat &lt;&lt; EOF &gt; $HOME/.ssh/known_hosts
+        github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+        EOF
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L58-L64">GitHubで見る</a></p>
+</blockquote>
+<p>もう一度、次のようにクローンしてみよう:</p>
+<pre><code class="language-yaml">    - name: Clone a private repository
+      shell: bash
+      run: |
+        git clone --depth 1 git@github.com:maroontress-tomohisa/private-repository-example.git
+        cat private-repository-example/README.md
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L65-L69">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">Cloning into 'private-repository-example'...
+# An Example of Private Repository
+</code></pre>
+<blockquote>
+<p><a href="result-7.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>成功した。</p>
+<blockquote>
+<p>☕ 少し前までは、この段階で環境変数<code>GIT_SSH</code>の設定が必要だったのだが、現在はその必要が無くなった。GitHub Actionsの世界は少しずつ良くなっているようだ。</p>
+</blockquote>
+<h2>別のプライベートLFSリポジトリのクローン</h2>
+<p>今度は、別のプライベートリポジトリCをクローンしてみよう。ただし、リポジトリCはGit LFSを用いている。そう、説明はなかったが、前のセクションのリポジトリBはLFSを使っていなかった。</p>
+<p>リポジトリCのURLは<code>git@github.com:maroontress-tomohisa/private-lfs-repository-example.git</code>とする。今度も同様に、リポジトリCには適切にデプロイキーのパブリックキーが設定され、リポジトリAのシークレットに適切にデプロイキーのプライベートキーが設定されていて、それをワークフロー内では<code>secret.PRIVATE_LFS_REPO_DEPLOY_KEY</code>で参照できるようになっているとしよう。</p>
+<p>素直に考えると、前のセクションと同じように、URLとシークレットの変数だけ変更すればできそうだ。次のようにステップを実行する:</p>
+<pre><code class="language-yaml">    steps:
+    - name: Start ssh-agent
+      shell: bash
+      run: |
+        mkdir -p $HOME/.ssh
+        cat &lt;&lt; EOF &gt; $HOME/.ssh/known_hosts
+        github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+        EOF
+        eval `ssh-agent`
+        echo SSH_AUTH_SOCK=&quot;$SSH_AUTH_SOCK&quot; &gt;&gt; &quot;$GITHUB_ENV&quot;
+        echo SSH_AGENT_PID=&quot;$SSH_AGENT_PID&quot; &gt;&gt; &quot;$GITHUB_ENV&quot;
+    - name: Add a deploy key
+      shell: bash
+      run: |
+        echo &quot;${{secrets.PRIVATE_LFS_REPO_DEPLOY_KEY}}&quot; &gt; $HOME/.ssh/PRIVATE_LFS_REPO_DEPLOY_KEY
+        ssh-add $HOME/.ssh/PRIVATE_LFS_REPO_DEPLOY_KEY
+    - name: List fingerprints
+      shell: bash
+      run: |
+        ssh-add -l
+    - name: Clone a private repository with LFS
+      shell: bash
+      run: |
+        git clone --depth 1 git@github.com:maroontress-tomohisa/private-lfs-repository-example.git
+        cat private-lfs-repository-example/README.md
+        unzip -v private-lfs-repository-example/empty.zip
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L74-L99">GitHubで見る</a></p>
+</blockquote>
+<p>プライベートリポジトリCのルートには<code>empty.zip</code>があるので、最後の行でそれを確認できれば成功だ。結果は次のようになった:</p>
+<pre><code class="language-plaintext">Agent pid 56
+⋮
+Identity added: /c/Users/runneradmin/.ssh/PRIVATE_LFS_REPO_DEPLOY_KEY (git@github.com:maroontress-tomohisa/private-lfs-repository-example.git)
+⋮
+3072 SHA256:61EFfTJR56r9rX3u9EGG/HrvPcejWJTR0VLssfIpBzg git@github.com:maroontress-tomohisa/private-lfs-repository-example.git (RSA)
+⋮
+Cloning into 'private-lfs-repository-example'...
+# An Example of Private Repository with LFS
+Archive:  private-lfs-repository-example/empty.zip
+ Length   Method    Size  Cmpr    Date    Time   CRC-32   Name
+--------  ------  ------- ---- ---------- ----- --------  ----
+       0  Stored        0   0% 2023-10-06 06:44 00000000  empty
+--------          -------  ---                            -------
+       0                0   0%                            1 file
+</code></pre>
+<blockquote>
+<p><a href="result-8.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>成功した。</p>
+<blockquote>
+<p>☕ 少し前までは、この段階でも環境変数<code>GIT_SSH</code>の設定が必要だったのだが、現在はその必要が無くなった。</p>
+</blockquote>
+<p>なお、actions/checkoutを用いる場合は、次のようにオプション<code>lfs: true</code>の追加が必要になることに注意:</p>
+<pre><code class="language-yaml">    steps:
+    - name: Checkout private LFS repository
+      uses: actions/checkout@v4
+      with:
+        repository: maroontress-tomohisa/private-lfs-repository-example
+        ssh-key: ${{secrets.PRIVATE_LFS_REPO_DEPLOY_KEY}}
+        lfs: true
+        path: private-lfs-repository-example
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L104-L116">GitHubで見る</a></p>
+<p><a href="result-9.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<h2>別の複数のプライベートリポジトリをクローンする</h2>
+<p>次に、二つのリポジトリBとCを、リポジトリAのジョブから読み出したい。actions/checkoutを使うなら二つのステップを並べれば良いが、<code>ssh-agent</code>を使ってもできるのだろうか。</p>
+<p><code>ssh-agent</code>に<code>ssh-add</code>で<strong>同じホストの</strong>キーを複数追加することはできる。しかし、<code>ssh</code>は、接続に失敗したら次のキーを試す、のように接続先に順番にキーを適用するだけである。マーケットプレイスのwebfactory/ssh-agentの<a href="https://github.com/webfactory/ssh-agent#using-multiple-keys">説明</a>を引用すると:</p>
+<blockquote>
+<p>ただし、注意点が1つあります。SSHサーバーは、多数の一致しないキーが提示された後に接続試行を中断する可能性があります。そのため、たとえば、6つの異なるキーがssh-agentにロードされていて、5つの不明なキーの後にサーバーが中断した場合、最後のキー（正しいキーかもしれません）は決して試されません。</p>
+</blockquote>
+<p>だから、<code>ssh-agent</code>を用いて<strong>同じホストの</strong>複数のリポジトリをチェックアウトするなら、次のように「デプロイキーの登録、チェックアウト、デプロイキーの削除」を繰り返す必要がある:</p>
+<ul>
+<li>リポジトリBのキーを<code>ssh-add</code>で登録</li>
+<li>リポジトリBをクローン</li>
+<li>リポジトリBのキーを<code>ssh-add</code>で削除</li>
+<li>リポジトリCのキーを<code>ssh-add</code>で登録</li>
+<li>リポジトリCをクローン</li>
+<li>リポジトリCのキーを<code>ssh-add</code>で削除</li>
+<li>⋮</li>
+</ul>
+<p>ところで、ローカルでビルドする際は、デプロイキーを用いることなく、二つのリポジトリをクローンできるのが望ましい。ワークフローファイルでもローカルと同じような手順でチェックアウトしたいので、<code>ssh-agent</code>を用いるのをやめて、別の方法を試してみよう。</p>
+<p>リポジトリBとCは、同じホスト<code>github.com</code>にあるので、ちょっとした工夫が必要になる（GitHub Actionsに限った話ではなく、良く知られた話なので、詳細はChatGPTにでも尋ねてほしい）。要約すると、<code>git config</code>の<a href="https://git-scm.com/docs/git-config#Documentation/git-config.txt-urlltbasegtinsteadOf"><code>url.&lt;base&gt;.insteadOf</code></a>の機能と、<code>~/.ssh/config</code>の<code>Host</code>及び<a href="https://man.openbsd.org/ssh_config#Hostname"><code>Hostname</code></a>の機能を使って、Gitのレイヤーでリポジトリ毎にユニークな偽ホスト名を割り当て、SSHのレイヤーで偽ホスト名を<code>github.com</code>に変換し、同時にその偽ホストに対応するリポジトリのSSHキーを関連付ける、という技法である。具体的には次のようになる:</p>
+<pre><code class="language-yaml">    steps:
+    - name: Create ~/.ssh/known_hosts
+      shell: bash
+      run: |
+        mkdir -p $HOME/.ssh
+        cat &lt;&lt; EOF &gt; $HOME/.ssh/known_hosts
+        github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+        EOF
+    - name: Add deploy keys
+      shell: bash
+      run: |
+        add_key() {
+          key=&quot;$HOME/.ssh/$1&quot;
+          win_key=&quot;$(cygpath -w $key)&quot;
+          echo &quot;$2&quot; &gt; &quot;$key&quot;
+          ssh-keygen -y -f $key &gt; $key.pub
+          read a b comment &lt; $key.pub
+          echo comment: $comment
+          url=&quot;${comment%.*}&quot;
+          echo url: $url
+          host_path=&quot;${url#*@}&quot;
+          new_host_path=&quot;$1.${host_path}&quot;
+          new_url=&quot;git@$new_host_path&quot;
+          echo git config --global url.&quot;${new_url}&quot;.insteadOf &quot;${url}&quot;
+          git config --global url.&quot;${new_url}&quot;.insteadOf &quot;${url}&quot;
+          cat &lt;&lt; EOF &gt;&gt; $HOME/.ssh/config
+
+        Host ${new_host_path%%:*}
+          HostName github.com
+          IdentityFile $win_key
+          IdentitiesOnly yes
+        EOF
+        }
+        add_key PRIVATE_REPO_DEPLOY_KEY &quot;${{secrets.PRIVATE_REPO_DEPLOY_KEY}}&quot;
+        add_key PRIVATE_LFS_REPO_DEPLOY_KEY &quot;${{secrets.PRIVATE_LFS_REPO_DEPLOY_KEY}}&quot;
+    - name: Prints git config
+      shell: bash
+      run: git config --global --list
+    - name: Prints ssh config
+      shell: bash
+      run: cat $HOME/.ssh/config
+    - name: Clone a private repository
+      shell: bash
+      run: |
+        git clone --depth 1 git@github.com:maroontress-tomohisa/private-repository-example.git
+        cat private-repository-example/README.md
+    - name: Clone another private repository with LFS
+      shell: bash
+      run: |
+        git clone --depth 1 git@github.com:maroontress-tomohisa/private-lfs-repository-example.git
+        cat private-lfs-repository-example/README.md
+        unzip -v private-lfs-repository-example/empty.zip
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L121-L172">GitHubで見る</a></p>
+</blockquote>
+<p>少し長いが、それほど難しくはない。<code>Add deploy keys</code>のステップで、<code>git config</code>による設定変更と<code>~/.ssh/config</code>のエントリ作成を、デプロイキーごとに実施する。前のセクションで言及したSSHキーのコメントはここで使用する。鍵にコメントとしてURLを埋め込んでおくことで、「キーとURL」の組みを記述せずに済んでいる。結果は次のようになった:</p>
+<pre><code class="language-plaintext">comment: git@github.com:maroontress-tomohisa/private-repository-example.git
+url: git@github.com:maroontress-tomohisa/private-repository-example
+git config --global url.git@PRIVATE_REPO_DEPLOY_KEY.github.com:maroontress-tomohisa/private-repository-example.insteadOf git@github.com:maroontress-tomohisa/private-repository-example
+comment: git@github.com:maroontress-tomohisa/private-lfs-repository-example.git
+url: git@github.com:maroontress-tomohisa/private-lfs-repository-example
+git config --global url.git@PRIVATE_LFS_REPO_DEPLOY_KEY.github.com:maroontress-tomohisa/private-lfs-repository-example.insteadOf git@github.com:maroontress-tomohisa/private-lfs-repository-example
+⋮
+url.git@PRIVATE_REPO_DEPLOY_KEY.github.com:maroontress-tomohisa/private-repository-example.insteadof=git@github.com:maroontress-tomohisa/private-repository-example
+url.git@PRIVATE_LFS_REPO_DEPLOY_KEY.github.com:maroontress-tomohisa/private-lfs-repository-example.insteadof=git@github.com:maroontress-tomohisa/private-lfs-repository-example
+⋮
+
+Host PRIVATE_REPO_DEPLOY_KEY.github.com
+  HostName github.com
+  IdentityFile C:\Users\runneradmin\.ssh\PRIVATE_REPO_DEPLOY_KEY
+  IdentitiesOnly yes
+
+Host PRIVATE_LFS_REPO_DEPLOY_KEY.github.com
+  HostName github.com
+  IdentityFile C:\Users\runneradmin\.ssh\PRIVATE_LFS_REPO_DEPLOY_KEY
+  IdentitiesOnly yes
+⋮
+Cloning into 'private-repository-example'...
+# An Example of Private Repository
+⋮
+Cloning into 'private-lfs-repository-example'...
+# An Example of Private Repository with LFS
+Archive:  private-lfs-repository-example/empty.zip
+ Length   Method    Size  Cmpr    Date    Time   CRC-32   Name
+--------  ------  ------- ---- ---------- ----- --------  ----
+       0  Stored        0   0% 2023-10-06 06:44 00000000  empty
+--------          -------  ---                            -------
+       0                0   0%                            1 file
+</code></pre>
+<blockquote>
+<p><a href="result-10a.png">GitHub Actionsの結果1</a> <a href="result-10b.png">GitHub Actionsの結果2</a></p>
+</blockquote>
+<p><code>git config</code>の設定内容と、<code>~/.ssh/config</code>の中身を確認してから、リポジトリBとCをチェックアウトした。正しくチェックアウトできている。</p>
+<blockquote>
+<p>☕ GitHub公式ドキュメントでも“<a href="https://docs.github.com/ja/authentication/connecting-to-github-with-ssh/managing-deploy-keys#using-multiple-repositories-on-one-server">1つのサーバー上で複数のリポジトリを利用する</a>”で複数のデプロイキーを扱う別の方法を紹介している。しかし、その方法だと、ローカルの<code>~/.ssh/config</code>も変更することになるし、<code>git clone</code>の際にリポジトリのURLとして偽のURLを指定することになる。また別の面倒を引き寄せたくなければ、避けたほうが良い。</p>
+</blockquote>
+<h2>webfactory/ssh-agentで別の複数のプライベートリポジトリをクローンする</h2>
+<p>しかし、このような「工夫」をワークフローファイルに記述するのは煩雑だ。同じことをマーケットプレイスの<a href="https://github.com/marketplace/actions/webfactory-ssh-agent">webfactory/ssh-agent</a>を次のように使って実現してみよう:</p>
+<pre><code class="language-yaml">    steps:
+    - name: webfactory/ssh-agent
+      uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: |
+          ${{secrets.PRIVATE_REPO_DEPLOY_KEY}}
+          ${{secrets.PRIVATE_LFS_REPO_DEPLOY_KEY}}
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L241-L247">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">Starting ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-QrHWdhFo8ceQ/agent.1095
+SSH_AGENT_PID=1096
+Adding private key(s) to agent
+Identity added: (stdin) (git@github.com:maroontress-tomohisa/private-repository-example.git)
+Identity added: (stdin) (git@github.com:maroontress-tomohisa/private-lfs-repository-example.git)
+Key(s) added:
+3072 SHA256:EHYsJhMvV2X03sbEYcAH3w7MNft1lra8M/ZSF0XMr5k git@github.com:maroontress-tomohisa/private-repository-example.git (RSA)
+3072 SHA256:61EFfTJR56r9rX3u9EGG/HrvPcejWJTR0VLssfIpBzg git@github.com:maroontress-tomohisa/private-lfs-repository-example.git (RSA)
+Configuring deployment key(s)
+Added deploy-key mapping: Use identity 'C:\Users\runneradmin/.ssh/key-43749e3def49002289a25278b6d8d5a0b8fed7f2c33f26750fe6233c114a1c39' for GitHub repository maroontress-tomohisa/private-repository-example
+Added deploy-key mapping: Use identity 'C:\Users\runneradmin/.ssh/key-aabbaf196b10644a69c23360df933575c9e9d496cfc251dabf9b22ee13d7bea9' for GitHub repository maroontress-tomohisa/private-lfs-repository-example
+</code></pre>
+<blockquote>
+<p><a href="result-11.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>簡単になったが、副作用として<code>ssh-agent</code>がバックグラウンドで開始する。次のステップで確認してみる:</p>
+<pre><code class="language-yaml">    - name: List fingerprints
+      shell: bash
+      run: ssh-add -l
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L248-L250">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">3072 SHA256:EHYsJhMvV2X03sbEYcAH3w7MNft1lra8M/ZSF0XMr5k git@github.com:maroontress-tomohisa/private-repository-example.git (RSA)
+3072 SHA256:61EFfTJR56r9rX3u9EGG/HrvPcejWJTR0VLssfIpBzg git@github.com:maroontress-tomohisa/private-lfs-repository-example.git (RSA)
+</code></pre>
+<blockquote>
+<p><a href="result-12.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p><code>git config</code>の設定内容と、<code>~/.ssh/config</code>の中身も確認してみよう:</p>
+<pre><code class="language-yaml">    - name: Prints git config
+      shell: bash
+      run: git config --global --list
+    - name: Prints ssh config
+      shell: bash
+      run: cat $HOME/.ssh/config
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L251-L256">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">url.git@key-43749e3def49002289a25278b6d8d5a0b8fed7f2c33f26750fe6233c114a1c39.github.com:maroontress-tomohisa/private-repository-example.insteadof=https://github.com/maroontress-tomohisa/private-repository-example
+url.git@key-43749e3def49002289a25278b6d8d5a0b8fed7f2c33f26750fe6233c114a1c39.github.com:maroontress-tomohisa/private-repository-example.insteadof=git@github.com:maroontress-tomohisa/private-repository-example
+url.git@key-43749e3def49002289a25278b6d8d5a0b8fed7f2c33f26750fe6233c114a1c39.github.com:maroontress-tomohisa/private-repository-example.insteadof=ssh://git@github.com/maroontress-tomohisa/private-repository-example
+url.git@key-aabbaf196b10644a69c23360df933575c9e9d496cfc251dabf9b22ee13d7bea9.github.com:maroontress-tomohisa/private-lfs-repository-example.insteadof=https://github.com/maroontress-tomohisa/private-lfs-repository-example
+url.git@key-aabbaf196b10644a69c23360df933575c9e9d496cfc251dabf9b22ee13d7bea9.github.com:maroontress-tomohisa/private-lfs-repository-example.insteadof=git@github.com:maroontress-tomohisa/private-lfs-repository-example
+url.git@key-aabbaf196b10644a69c23360df933575c9e9d496cfc251dabf9b22ee13d7bea9.github.com:maroontress-tomohisa/private-lfs-repository-example.insteadof=ssh://git@github.com/maroontress-tomohisa/private-lfs-repository-example
+⋮
+
+Host key-43749e3def49002289a25278b6d8d5a0b8fed7f2c33f26750fe6233c114a1c39.github.com
+    HostName github.com
+    IdentityFile C:\Users\runneradmin/.ssh/key-43749e3def49002289a25278b6d8d5a0b8fed7f2c33f26750fe6233c114a1c39
+    IdentitiesOnly yes
+
+Host key-aabbaf196b10644a69c23360df933575c9e9d496cfc251dabf9b22ee13d7bea9.github.com
+    HostName github.com
+    IdentityFile C:\Users\runneradmin/.ssh/key-aabbaf196b10644a69c23360df933575c9e9d496cfc251dabf9b22ee13d7bea9
+    IdentitiesOnly yes
+</code></pre>
+<blockquote>
+<p><a href="result-13.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p><code>git config</code>に関してはエントリが前のセクションの三倍に増えているが、<code>git@github.com:</code>で始めるSSH形式のURLに加えて、HTTPS形式のURL、<code>ssh://</code>で始まるSSH+GIT形式のURLも変換の対象になっている。あとは、偽ホストの名前にハッシュ値が使われてることを除いて、前のセクションの説明と違いは無い。</p>
+<p>ではクローンしてみよう:</p>
+<pre><code class="language-yaml">    - name: Clone the private repository (which fails)
+      shell: bash
+      continue-on-error: true
+      run: |
+        git clone --depth 1 git@github.com:maroontress-tomohisa/private-repository-example.git
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L257-L261">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">Cloning into 'private-repository-example'...
+Host key verification failed.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+Error: Process completed with exit code 128.
+</code></pre>
+<blockquote>
+<p><a href="result-14.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>webfactory/ssh-agentの<a href="https://github.com/marketplace/actions/webfactory-ssh-agent#ssh-agent-github-action">説明</a>によると、次のように<code>.ssh/known_hosts</code>を生成するという記述がある:</p>
+<blockquote>
+<p>This action</p>
+<ul>
+<li>⋮</li>
+<li>configures known_hosts for GitHub.com.</li>
+</ul>
+</blockquote>
+<p>しかし、Windowsランナーではどうやらうまくできないようだ。自分で作成してもう一度試してみよう:</p>
+<pre><code class="language-yaml">    - name: Perform workarounds
+      shell: bash
+      run: |
+        mkdir -p $HOME/.ssh
+        cat &lt;&lt; EOF &gt; $HOME/.ssh/known_hosts
+        github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+        EOF
+    - name: Clone a private repository
+      shell: bash
+      run: |
+        git clone --depth 1 git@github.com:maroontress-tomohisa/private-repository-example.git
+        cat private-repository-example/README.md
+    - name: Clone another private repository with LFS
+      shell: bash
+      run: |
+        git clone --depth 1 git@github.com:maroontress-tomohisa/private-lfs-repository-example.git
+        cat private-lfs-repository-example/README.md
+        unzip -v private-lfs-repository-example/empty.zip
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L262-L279">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">Cloning into 'private-repository-example'...
+# An Example of Private Repository
+⋮
+Cloning into 'private-lfs-repository-example'...
+# An Example of Private Repository with LFS
+Archive:  private-lfs-repository-example/empty.zip
+ Length   Method    Size  Cmpr    Date    Time   CRC-32   Name
+--------  ------  ------- ---- ---------- ----- --------  ----
+       0  Stored        0   0% 2023-10-06 06:44 00000000  empty
+--------          -------  ---                            -------
+       0                0   0%                            1 file
+</code></pre>
+<blockquote>
+<p><a href="result-15.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>成功した。そして、やっと本題に入れる。</p>
+<h2>混ぜるな危険</h2>
+<p>最後に、マーケットプレイスのactions/checkoutとwebfactory/ssh-agentを組み合わせて、プライベートリポジトリをチェックアウトしてみよう。最初に、webfactory/ssh-agentでリポジトリCをチェックアウトするための準備として、デプロイキーを次のように登録する:</p>
+<pre><code class="language-yaml">    steps:
+    - name: webfactory/ssh-agent
+      uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: |
+          ${{secrets.PRIVATE_LFS_REPO_DEPLOY_KEY}}
+    ⋮
+    - name: Perform workarounds
+      shell: bash
+      run: |
+        mkdir -p $HOME/.ssh
+        cat &lt;&lt; EOF &gt; $HOME/.ssh/known_hosts
+        github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+        EOF
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L285-L306">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">Starting ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-bGHWNwHc6WoG/agent.1649
+SSH_AGENT_PID=1650
+Adding private key(s) to agent
+Identity added: (stdin) (git@github.com:maroontress-tomohisa/private-lfs-repository-example.git)
+Key(s) added:
+3072 SHA256:61EFfTJR56r9rX3u9EGG/HrvPcejWJTR0VLssfIpBzg git@github.com:maroontress-tomohisa/private-lfs-repository-example.git (RSA)
+Configuring deployment key(s)
+Added deploy-key mapping: Use identity 'C:\Users\runneradmin/.ssh/key-aabbaf196b10644a69c23360df933575c9e9d496cfc251dabf9b22ee13d7bea9' for GitHub repository maroontress-tomohisa/private-lfs-repository-example
+⋮
+</code></pre>
+<blockquote>
+<p><a href="result-16.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>あとはリポジトリCをチェックアウトするだけだが、その前にactions/checkoutでリポジトリBをチェックアウトする:</p>
+<pre><code class="language-yaml">    - name: Checkout a private repository with actions/checkout
+      uses: actions/checkout@v4
+      with:
+        repository: maroontress-tomohisa/private-repository-example
+        ssh-key: ${{secrets.PRIVATE_REPO_DEPLOY_KEY}}
+        path: private-repository
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L311-L316">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">Syncing repository: maroontress-tomohisa/private-repository-example
+Getting Git version info
+Copying 'C:\Users\runneradmin\.gitconfig' to 'D:\a\_temp\d52f99d9-b40f-4405-a929-b1a18384d9db\.gitconfig'
+Temporarily overriding HOME='D:\a\_temp\d52f99d9-b40f-4405-a929-b1a18384d9db' before making global git config changes
+Adding repository directory to the temporary git global config as a safe directory
+&quot;C:\Program Files\Git\bin\git.exe&quot; config --global --add safe.directory D:\a\try_out_github_actions\try_out_github_actions\private-repository
+Initializing the repository
+Disabling automatic garbage collection
+Setting up auth
+Determining the default branch
+Fetching the repository
+Determining the checkout info
+Checking out the ref
+&quot;C:\Program Files\Git\bin\git.exe&quot; log -1 --format='%H'
+'3cf9492e7ffb20ea5246a8edf1bec8d3aab293a4'
+</code></pre>
+<blockquote>
+<p><a href="result-17.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>成功した。続いて、リポジトリCをクローンしてみよう:</p>
+<pre><code class="language-yaml">    - name: List fingerprints after actions/checkout (which fails)
+      continue-on-error: true
+      shell: bash
+      run: ssh-add -l
+    - name: Clone another private repository with LFS (which fails)
+      continue-on-error: true
+      shell: bash
+      run: |
+        git clone --depth 1 git@github.com:maroontress-tomohisa/private-lfs-repository-example.git
+        cat private-lfs-repository-example/README.md
+        unzip -v private-lfs-repository-example/empty.zip
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L317-L327">GitHubで見る</a></p>
+</blockquote>
+<p>本来は不要だが、<code>git clone</code>の前のステップでは<code>ssh-add</code>を用いて<code>ssh-agent</code>の状態を確認している。結果は次のようになった:</p>
+<pre><code class="language-plaintext">Error connecting to agent: Bad file descriptor
+Error: Process completed with exit code 2.
+⋮
+Cloning into 'private-lfs-repository-example'...
+Load key &quot;C:\\Users\\runneradmin/.ssh/key-aabbaf196b10644a69c23360df933575c9e9d496cfc251dabf9b22ee13d7bea9&quot;: error in libcrypto
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+Error: Process completed with exit code 128.
+</code></pre>
+<blockquote>
+<p><a href="result-18.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p><code>git clone</code>は失敗した。その前の<code>git-add -l</code>も失敗している。actions/checkoutを実行した結果、バックグラウンドで実行中の<code>ssh-agent</code>の状態が壊れた（プロセスは存在しているが、プロセス間通信のステートがおかしくなった）のだろう。</p>
+<p>とりあえず、次のように<code>ssh-agent</code>を再起動してから、再度クローンしてみよう:</p>
+<pre><code class="language-yaml">    - name: Perform more workarounds (kill ssh-agent to restart)
+      shell: bash
+      run: |
+        eval `ssh-agent -k`
+        # The following lines are placebos (because we can't unset env.*):
+        echo SSH_AUTH_SOCK= &gt;&gt; &quot;$GITHUB_ENV&quot;
+        echo SSH_AGENT_PID= &gt;&gt; &quot;$GITHUB_ENV&quot;
+        # See https://github.com/actions/runner/issues/1126
+    - name: webfactory/ssh-agent
+      uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: |
+          ${{secrets.PRIVATE_LFS_REPO_DEPLOY_KEY}}
+    - name: List fingerprints (after restarting ssh-agent)
+      shell: bash
+      run: ssh-add -l
+    - name: Clone another private repository with LFS
+      shell: bash
+      run: |
+        git clone --depth 1 git@github.com:maroontress-tomohisa/private-lfs-repository-example.git
+        cat private-lfs-repository-example/README.md
+        unzip -v private-lfs-repository-example/empty.zip
+</code></pre>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L329-L350">GitHubで見る</a></p>
+</blockquote>
+<p>結果は次のようになった:</p>
+<pre><code class="language-plaintext">unset SSH_AUTH_SOCK;
+unset SSH_AGENT_PID;
+echo Agent pid 1650 killed;
+⋮
+Starting ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-nR7bVfNdAwqI/agent.766
+SSH_AGENT_PID=767
+Adding private key(s) to agent
+Identity added: (stdin) (git@github.com:maroontress-tomohisa/private-lfs-repository-example.git)
+Key(s) added:
+3072 SHA256:61EFfTJR56r9rX3u9EGG/HrvPcejWJTR0VLssfIpBzg git@github.com:maroontress-tomohisa/private-lfs-repository-example.git (RSA)
+Configuring deployment key(s)
+Added deploy-key mapping: Use identity 'C:\Users\runneradmin/.ssh/key-aabbaf196b10644a69c23360df933575c9e9d496cfc251dabf9b22ee13d7bea9' for GitHub repository maroontress-tomohisa/private-lfs-repository-example
+⋮
+3072 SHA256:61EFfTJR56r9rX3u9EGG/HrvPcejWJTR0VLssfIpBzg git@github.com:maroontress-tomohisa/private-lfs-repository-example.git (RSA)
+⋮
+Cloning into 'private-lfs-repository-example'...
+# An Example of Private Repository with LFS
+Archive:  private-lfs-repository-example/empty.zip
+ Length   Method    Size  Cmpr    Date    Time   CRC-32   Name
+--------  ------  ------- ---- ---------- ----- --------  ----
+       0  Stored        0   0% 2023-10-06 06:44 00000000  empty
+--------          -------  ---                            -------
+       0                0   0%                            1 file
+</code></pre>
+<blockquote>
+<p><a href="result-19.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p><code>ssh-agent</code>を再起動すると、確かに全てのエラーは消えた。さて、なぜこのようなことが起きるのか調べてみよう。</p>
+<p>actions/checkoutが何故起動済みの<code>ssh-agent</code>を「壊す」のだろうか。actions/checkoutのログを見てみると、次の行に気づく:</p>
+<pre><code class="language-plaintext">▾Setting up auth
+  ⋮
+  &quot;C:\Program Files\Git\bin\git.exe&quot; config --local core.sshCommand &quot;\&quot;C:\Windows\System32\OpenSSH\ssh.exe\&quot; -i \&quot;$RUNNER_TEMP/455b31bf-8bfa-4d87-bb2e-3d92b700ba9a\&quot; -o StrictHostKeyChecking=yes -o CheckHostIP=no -o \&quot;UserKnownHostsFile=$RUNNER_TEMP/455b31bf-8bfa-4d87-bb2e-3d92b700ba9a_known_hosts\&quot;&quot;
+</code></pre>
+<blockquote>
+<p><a href="result-20.png">GitHub Actionsの結果</a></p>
+</blockquote>
+<p>なんと、actions/checkoutは、デプロイキーを指定した場合、SSHに<code>C:\<wbr>Windows\<wbr>System32\<wbr>OpenSSH\<wbr>ssh.exe</code>を使用するようだ。Windowsには<code>ssh</code>の実装がいくつかあるが、OpenSSH版の実装とGit for Windows版の実装は互換性が無い。OpenSSHの<code>ssh</code>とGit for Windowsの<code>ssh-agent</code>を一緒に使うことはできない。互換性が無い理由はちゃんと調べてないが、おそらくプロセス間通信で使うプロトコルが違うのだろう（だとすると、何故同じ環境変数を使っているだろう? よく経緯はわからないが、まともではないことは間違いない）。</p>
+<p>まとめると、Windowsランナーの場合:</p>
+<ul>
+<li><code>bash</code>から<code>ssh-agent</code>を起動すると、Git for Windowsの実装の実行ファイルがバックグラウンドで動作する（ように環境変数<code>PATH</code>が設定されている）。</li>
+<li>actions/checkoutはオプションでデプロイキーを指定すると、<code>git</code>がSSHの実装として<code>C:\<wbr>Windows\<wbr>System32\<wbr>OpenSSH\<wbr>ssh.exe</code>を使用するようになる。</li>
+<li>OpenSSHの<code>ssh.exe</code>は環境変数<code>SSH_AUTH_SOCK</code>と<code>SSH_AGENT_PID</code>の値を見て、OpenSSH版<code>ssh-agent</code>が実行中と判断して、プロセス間通信を開始する。しかし、起動しているのはGit for Windows版のエージェントなので、状態が壊れる（多分）。</li>
+</ul>
+<p>次のような回避方法がある:</p>
+<ul>
+<li>先にactions/checkout、その後に<code>ssh-agent</code>（またはwebfactory/ssh-agent）という順番になるように徹底する。</li>
+<li><code>ssh-agent</code>はOpenSSH版（<code>C:\<wbr>Windows\<wbr>System32\<wbr>OpenSSH\<wbr>ssh-agent.exe</code>）を使う。</li>
+<li>複数のデプロイキーを使うだけなら、<code>ssh-agent</code>を起動しないようにする。</li>
+</ul>
+<p>最初の二つの選択肢は、別の混乱を招く可能性が高いので、やめておいた方が良い。そもそも、webfactory/ssh-agentは、その名前が表すように、<code>ssh-agent</code>を使うためのものだ。だから、複数のデプロイキーを扱うためだけに使うのは悪用なのではないだろうか。パッと探しただけだと、マーケットプレイスには複数のデプロイキーを扱うだけのアクションは見つからなかった。だとすると、アクションを自作（して、公開）するのも良さそうだ。</p>
+<footer>
+<!-- Created: Tue Dec  5 21:40:30 JST 2023 -->
+<!-- hhmts start -->
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">GitHub Actions and Dungeons</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li class="selected">
+      Windowsランナーでssh-agent
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>
