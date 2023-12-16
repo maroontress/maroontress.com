@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>News | XIMレシーバ</title>
+    <link rel="canonical" href="https://www.maroontress.com/Imreceiver/news.html" />
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo"><img src="imreceiver-icon.gif" alt="アイコン" style="width: 32px; height: 32px; vertical-align: bottom;"/>XIMレシーバ</div>
+<div id="toc-level" data-values="H2"></div>
+<h1>News</h1>
+<h2>2004-12-23</h2>
+<p><a href="imreceiver-20041223.tar.gz">imreceiver-20041223.tar.gz</a>をリリース。</p>
+<ul>
+<li>XFree86 4.4.0で終了時にクラッシュするバグを修正（XrmSetDatabase()でディスプレイに設定したリソースデータベースは、4.4.0からXCloseDisplay()でディスプレイをクローズするときに破壊されるようになった。そのためリソースデータベースを破壊する前にディスプレイとの関連を外すようにした）。</li>
+</ul>
+<h2>2004-05-16</h2>
+<p><a href="imreceiver-20040516.tar.gz">imreceiver-20040516.tar.gz</a>をリリース。</p>
+<ul>
+<li>予測候補を反転文字で描画するようにした。</li>
+</ul>
+<h2>2003-11-16</h2>
+<p><a href="imreceiver-20031116.tar.gz">imreceiver-20031116.tar.gz</a>をリリース。</p>
+<ul>
+<li>警告メッセージをwarnx()で表示するようにした。</li>
+<li>On-The-Rootスタイル使用時、前編集文字列にキャレットを描画しないバグを修正。</li>
+<li>フォントセットを共有するようにした。</li>
+<li>フィードバックの値をビットマスクとして解釈するようにした。</li>
+</ul>
+<h2>2003-01-03</h2>
+<p><a href="imreceiver-20030103.tar.gz">imreceiver-20030103.tar.gz</a>をリリース。</p>
+<ul>
+<li>XFree86 4.2.0でmake installが失敗するのを修正した。</li>
+<li>ウィンドウをドラッグして（ウィンドウマネージャに頼らず）動かせるようにした。</li>
+<li>ウィンドウをウィンドウマネージャに頼らず自分で管理するかどうかをリソースimreceiver.selfManagedで指定できるようにした（デフォルトはTrue）。</li>
+<li>リソースimreceiver.autoHiddenのデフォルト値をTrueに変更した。</li>
+</ul>
+<h2>2002-06-21</h2>
+<p><a href="imreceiver-20020621.tar.gz">imreceiver-20020621.tar.gz</a>をリリース。</p>
+<ul>
+<li>状態表示、予測候補表示のウィンドウではキャレットを描画しないようにした。</li>
+<li>TWMで.twmrcにRandomPlacementを設定しない場合、ウィンドウをマップする度に配置場所を指定することになる。これを回避するため、ウィンドウのマップを制御するリソースimreceiver.autoHiddenを追加した（デフォルトではマップの制御をしない）。</li>
+</ul>
+<h2>2002-05-01</h2>
+<p><a href="imreceiver-20020501.tar.gz">imreceiver-20020501.tar.gz</a>をリリース。</p>
+<ul>
+<li>テキスト操作APIを追加した。マルチバイト文字列、ワイドキャラクタ文字列を保存する領域のサイズの計算方法を修正。MB_LEN_MAX、sizeof(wchar_t)とするべきところをsizeof(MB_LEN_MAX)にしていたバグを修正。</li>
+<li>不要なソースファイルを削除した。</li>
+</ul>
+<h2>2001-05-27</h2>
+<p><a href="imreceiver-20010527.tar.gz">imreceiver-20010527.tar.gz</a>をリリース。</p>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">XIMレシーバ</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li class="selected">
+      News
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

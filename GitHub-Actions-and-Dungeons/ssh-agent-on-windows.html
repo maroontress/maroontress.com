@@ -167,7 +167,7 @@ Checking out the ref
 <blockquote>
 <p><a href="https://github.com/maroontress/try_out_github_actions/blob/d6dbe2337b2e2f2bca1eb0cb1be7588f57912f58/.github/workflows/windows-ssh-agent.yml#L52-L57">GitHubで見る</a></p>
 </blockquote>
-<p>最後の行は、クローンに成功した場合に<code>READMD.md</code>を表示したい、という意図だが、成功しないので意味が無い。結果は次のようになった:</p>
+<p>最後の行は、クローンに成功した場合に<code>README.md</code>を表示したい、という意図だが、成功しないので意味が無い。結果は次のようになった:</p>
 <pre><code class="language-plaintext">Cloning into 'private-repository-example'...
 Host key verification failed.
 fatal: Could not read from remote repository.
@@ -210,7 +210,8 @@ Error: Process completed with exit code 128.
 </blockquote>
 <p>成功した。</p>
 <blockquote>
-<p>☕ 少し前までは、この段階で環境変数<code>GIT_SSH</code>の設定が必要だったのだが、現在はその必要が無くなった。GitHub Actionsの世界は少しずつ良くなっているようだ。</p>
+<p><span style="font-size: large;">☕</a></p>
+<p>少し前までは、この段階で環境変数<code>GIT_SSH</code>の設定が必要だったのだが、現在はその必要が無くなった。GitHub Actionsの世界は少しずつ良くなっているようだ。</p>
 </blockquote>
 <h2>別のプライベートLFSリポジトリのクローン</h2>
 <p>今度は、別のプライベートリポジトリCをクローンしてみよう。ただし、リポジトリCはGit LFSを用いている。そう、説明はなかったが、前のセクションのリポジトリBはLFSを使っていなかった。</p>
@@ -267,7 +268,8 @@ Archive:  private-lfs-repository-example/empty.zip
 </blockquote>
 <p>成功した。</p>
 <blockquote>
-<p>☕ 少し前までは、この段階でも環境変数<code>GIT_SSH</code>の設定が必要だったのだが、現在はその必要が無くなった。</p>
+<p><span style="font-size: large;">☕</a></p>
+<p>少し前までは、この段階でも環境変数<code>GIT_SSH</code>の設定が必要だったのだが、現在はその必要が無くなった。</p>
 </blockquote>
 <p>なお、actions/checkoutを用いる場合は、次のようにオプション<code>lfs: true</code>の追加が必要になることに注意:</p>
 <pre><code class="language-yaml">    steps:
@@ -293,10 +295,10 @@ Archive:  private-lfs-repository-example/empty.zip
 <ul>
 <li>リポジトリBのキーを<code>ssh-add</code>で登録</li>
 <li>リポジトリBをクローン</li>
-<li>リポジトリBのキーを<code>ssh-add</code>で削除</li>
+<li>リポジトリBのキーを<code>ssh-add -d</code>で削除</li>
 <li>リポジトリCのキーを<code>ssh-add</code>で登録</li>
 <li>リポジトリCをクローン</li>
-<li>リポジトリCのキーを<code>ssh-add</code>で削除</li>
+<li>リポジトリCのキーを<code>ssh-add -d</code>で削除</li>
 <li>⋮</li>
 </ul>
 <p>ところで、ローカルでビルドする際は、デプロイキーを用いることなく、二つのリポジトリをクローンできるのが望ましい。ワークフローファイルでもローカルと同じような手順でチェックアウトしたいので、<code>ssh-agent</code>を用いるのをやめて、別の方法を試してみよう。</p>
@@ -396,7 +398,8 @@ Archive:  private-lfs-repository-example/empty.zip
 </blockquote>
 <p><code>git config</code>の設定内容と、<code>~/.ssh/config</code>の中身を確認してから、リポジトリBとCをチェックアウトした。正しくチェックアウトできている。</p>
 <blockquote>
-<p>☕ GitHub公式ドキュメントでも“<a href="https://docs.github.com/ja/authentication/connecting-to-github-with-ssh/managing-deploy-keys#using-multiple-repositories-on-one-server">1つのサーバー上で複数のリポジトリを利用する</a>”で複数のデプロイキーを扱う別の方法を紹介している。しかし、その方法だと、ローカルの<code>~/.ssh/config</code>も変更することになるし、<code>git clone</code>の際にリポジトリのURLとして偽のURLを指定することになる。また別の面倒を引き寄せたくなければ、避けたほうが良い。</p>
+<p><span style="font-size: large;">☕</a></p>
+<p>GitHub公式ドキュメントでも“<a href="https://docs.github.com/ja/authentication/connecting-to-github-with-ssh/managing-deploy-keys#using-multiple-repositories-on-one-server">1つのサーバー上で複数のリポジトリを利用する</a>”で複数のデプロイキーを扱う別の方法を紹介している。しかし、その方法だと、ローカルの<code>~/.ssh/config</code>も変更することになるし、<code>git clone</code>の際にリポジトリのURLとして偽のURLを指定することになる。また別の面倒を引き寄せたくなければ、避けたほうが良い。</p>
 </blockquote>
 <h2>webfactory/ssh-agentで別の複数のプライベートリポジトリをクローンする</h2>
 <p>しかし、このような「工夫」をワークフローファイルに記述するのは煩雑だ。同じことをマーケットプレイスの<a href="https://github.com/marketplace/actions/webfactory-ssh-agent">webfactory/ssh-agent</a>を次のように使って実現してみよう:</p>
@@ -499,7 +502,7 @@ Error: Process completed with exit code 128.
 <blockquote>
 <p><a href="result-14.png">GitHub Actionsの結果</a></p>
 </blockquote>
-<p>webfactory/ssh-agentの<a href="https://github.com/marketplace/actions/webfactory-ssh-agent#ssh-agent-github-action">説明</a>によると、次のように<code>.ssh/known_hosts</code>を生成するという記述がある:</p>
+<p>webfactory/ssh-agentの<a href="https://github.com/marketplace/actions/webfactory-ssh-agent#ssh-agent-github-action">説明</a>によると、次のように<code>~/.ssh/known_hosts</code>を生成するという記述がある:</p>
 <blockquote>
 <p>This action</p>
 <ul>
@@ -547,6 +550,18 @@ Archive:  private-lfs-repository-example/empty.zip
 <p><a href="result-15.png">GitHub Actionsの結果</a></p>
 </blockquote>
 <p>成功した。そして、やっと本題に入れる。</p>
+<blockquote>
+<p><span style="font-size: large;">🚧</a></p>
+<p>webfactory/ssh-agentを本格的に使用する場合、リポジトリをそれぞれのオーガナイゼーションにコピー（フォーク）してから使うべきである。攻撃者がwebfactoryのアカウントを乗っ取り、マーケットプレイスのアクションを悪意をもって書き換え、プライベートキーとそのプライベートリポジトリのURLを抜いてしまう、というリスクを排除するためである。これはwebfactoryに限らず、GitHub公式のアクション以外の全てのサードパーティ製アクションに当てはまることだ。</p>
+<p>参考までに、アクションのリポジトリをプライベートにコピーして使う設定例を次に示す:</p>
+<div style="padding-left: 4em;">
+<p><strong>コピーしたアクションを使用するプライベートリポジトリの設定</strong></p>
+<p><a href="settings-actions-general.png">Settings ➜ Actions ➜ General</a> ➜ Actions permissions で “Allow <em>your-organization</em>, and select non-<em>your-organization</em>, actions and reusable workflows” を選択して保存する。</p>
+<img style="width: calc(100% - 16px); padding: 8px; background-color: #0e1017;" src="security-hardening.png">
+</div>
+<p>このようにプライベートリポジトリを設定すると、自分のオーガナイゼーションのアクション（コピーしたサードパーティアクション）、GitHub公式のアクション、マーケットプレイスの「verified creator」のアクションだけが利用可能になる。それ以外のサードパーティアクションを指定するとワークフロー実行時にエラーになる。</p>
+<p>もしくは、自分のオーガナイゼーションのリポジトリにコピーする代わりに、バージョンをSHA-1ハッシュで指定しても良い。ただし、その場合でも根本的なビジネスのリスクとして、依存している公開されているアクションが突然消失する可能性（例: 開発元の作成者がリポジトリを消してしまう、など）を認識しておくべきである。さらに、プライベートなコピーにしろSHA-1ハッシュ指定にしろ、使うアクションがその依存関係により参照する別の「何か」が問題にならないかについて注意する必要もある。セキュリティ強化に関する詳細は、公式の「<a href="https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-third-party-actions"><em>Using third-party actions</em> — Security hardening for GitHub Actions</a>」を参照。</p>
+</blockquote>
 <h2>混ぜるな危険</h2>
 <p>最後に、マーケットプレイスのactions/checkoutとwebfactory/ssh-agentを組み合わせて、プライベートリポジトリをチェックアウトしてみよう。最初に、webfactory/ssh-agentでリポジトリCをチェックアウトするための準備として、デプロイキーを次のように登録する:</p>
 <pre><code class="language-yaml">    steps:
@@ -711,7 +726,7 @@ Archive:  private-lfs-repository-example/empty.zip
 <blockquote>
 <p><a href="result-20.png">GitHub Actionsの結果</a></p>
 </blockquote>
-<p>なんと、actions/checkoutは、デプロイキーを指定した場合、SSHに<code>C:\<wbr>Windows\<wbr>System32\<wbr>OpenSSH\<wbr>ssh.exe</code>を使用するようだ。Windowsには<code>ssh</code>の実装がいくつかあるが、OpenSSH版の実装とGit for Windows版の実装は互換性が無い。OpenSSHの<code>ssh</code>とGit for Windowsの<code>ssh-agent</code>を一緒に使うことはできない。互換性が無い理由はちゃんと調べてないが、おそらくプロセス間通信で使うプロトコルが違うのだろう（だとすると、何故同じ環境変数を使っているだろう? よく経緯はわからないが、まともではないことは間違いない）。</p>
+<p>なんと、actions/checkoutは、デプロイキーを指定した場合、SSHに<code>C:\<wbr>Windows\<wbr>System32\<wbr>OpenSSH\<wbr>ssh.exe</code>を使用するようだ。Windowsには<code>ssh</code>の実装がいくつかあるが、OpenSSH版の実装とGit for Windows版の実装は互換性が無い。OpenSSHの<code>ssh</code>とGit for Windowsの<code>ssh-agent</code>を一緒に使うことはできない。互換性が無い理由はちゃんと調べてないが、おそらくプロセス間通信で使うプロトコルが違うのだろう（だとすると、何故同じ環境変数を使っているのだろう? よく経緯はわからないが、まともではないことは間違いない）。</p>
 <p>まとめると、Windowsランナーの場合:</p>
 <ul>
 <li><code>bash</code>から<code>ssh-agent</code>を起動すると、Git for Windowsの実装の実行ファイルがバックグラウンドで動作する（ように環境変数<code>PATH</code>が設定されている）。</li>

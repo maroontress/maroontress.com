@@ -16,6 +16,10 @@ https://www.maroontress.com/HandMouse/index.html
 https://www.maroontress.com/Heap/index.html
 https://www.maroontress.com/Hungarian/index.html
 https://www.maroontress.com/ICCCM/index.html
+https://www.maroontress.com/Imreceiver/changes.html
+https://www.maroontress.com/Imreceiver/index.html
+https://www.maroontress.com/Imreceiver/news.html
+https://www.maroontress.com/Imreceiver/resource.html
 https://www.maroontress.com/Imserver/bug-xcreatefontset.html
 https://www.maroontress.com/Imserver/bug.html
 https://www.maroontress.com/Imserver/changes.html

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Top | XIMレシーバ</title>
+    <link rel="canonical" href="https://www.maroontress.com/Imreceiver/index.html" />
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo"><img src="imreceiver-icon.gif" alt="アイコン" style="width: 32px; height: 32px; vertical-align: bottom;"/>XIMレシーバ</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<p>XIMレシーバは、On-The-Root、Over-The-Spotスタイルにおいて、XIMサーバに代わって前編集文字列などをユーザに提示するものです。</p>
+<h2>XIMサーバと分離した理由</h2>
+<p>当時On-The-Spotスタイルに対応する<strong>しっかりした</strong>XIMサーバを利用できなかったことがきっかけとなり、自分でXIMサーバを実装することになりました。</p>
+<p>初期の目標はOn-The-Spotスタイルだけを提供するXIMサーバを実装することでした。On-The-SpotスタイルではXIMクライアントが前編集中の文字列や変換結果などを描画するので、当初の実装ではXIMサーバが自前でそれらを描画する必要がありませんでした。そのため、XIMサーバのイベント処理の構造などは比較的簡単なものでした。</p>
+<p>「候補一覧」や「状態（StatusAreaの対応）」をXIMサーバが描画するように実装しているときに、次のような問題に遭遇しました。</p>
+<ul>
+<li>候補一覧ウィンドウの外観と、XIMクライアントの外観との調和: 外観を変更するためにはXIMサーバ自身を変更する必要がある。</li>
+<li>候補一覧ウィンドウや状態ウィンドウに関する（再描画や破壊などの）イベント管理: ソースコードが複雑になり、同期に関するバグが発生しやすい。</li>
+</ul>
+<p>将来的にXIMサーバをOn-The-Root、Over-The-Spotスタイルに対応させる場合、このままではイベント処理周辺の実装が煩雑になることを懸念しました。また、外観をハードコーディングして固定することは、カスタマイズという点でも望ましくありません。そこで、描画（ルックアンドフィール）に関する部分を<strong>別のモジュール</strong>（XIMレシーバ）にするという方針を採用することにしました。</p>
+<p>この方針により、XIMサーバ自身は描画せず、その代わりに表示して欲しい文字列をXIMレシーバに送信して、XIMレシーバが描画を代行するようになります。</p>
+<p>（注: 現在でも候補一覧ウィンドウと、XIMStatusAreaスタイルにおける状態表示ウィンドウについてはXIMサーバ側で描画していますが、そのためにイベント処理が複雑になっています。）</p>
+<h2>利点</h2>
+<p>XIMサーバから表示部分を分離したことにより、次の利点が得られました。</p>
+<ul>
+<li>XIMサーバ、XIMレシーバの両方とも構造が簡単になる。</li>
+<li>ユーザは自分の好みにあう外観をもつXIMレシーバを選べる。</li>
+</ul>
+<p>しかし、XIMレシーバとXIMサーバはXサーバを介して通信するため、性能という点については逆に不利になっています。</p>
+<h2>ダウンロード・ビルド</h2>
+<p>最新版は<a href="imreceiver-20041223.tar.gz"><code>imreceiver-20041223.tar.gz</code></a>です。主に動作確認したプラットフォームは次の通りです。</p>
+<!--
+- FreeBSD 4.8 + XFree86 4.3.0
+- FreeBSD 4.9 + XFree86 4.3.0
+-->
+<ul>
+<li>FreeBSD 4.10 + XFree86 4.4.0</li>
+<li>Red Hat Linux 9 + XFree86 4.3.0</li>
+</ul>
+<p>tar ballを展開後、環境に合うように<code>Imakefile</code>を編集してください。</p>
+<p>あとは<code>xmkmf -a ; make ; make install</code>で完了です。</p>
+<p><a name="usage"></a></p>
+<h2>使用法</h2>
+<p>コマンドラインから次のように起動します（XIMサーバの起動の前でも、後でも問題ありません）。</p>
+<pre><code class="language-plaintext">% imreceiver &amp;
+</code></pre>
+<h2>ドキュメント</h2>
+<ul>
+<li><a href="resource.html">リソース一覧</a></li>
+<li><a href="changes.html">開発履歴</a></li>
+</ul>
+<h2>プロトコル</h2>
+<p>使用するプロトコルは大きく4つに分類できます。</p>
+<h3>1. XIMPreeditPositionスタイル — Over-The-Spotスタイルの前編集文字列</h3>
+<p>起動時にXIM_RECEIVERセレクションを取得します（セレクションが奪われた場合は、XIMレシーバは終了する必要があります）。セレクション要求を受け取り、セレクションターゲットがXIM_PREEDIT_WINDOWアトムの場合、セレクションリクエスタのウィンドウのプロパティを監視します（ただし既に監視対象のウィンドウであった場合は無視します）。</p>
+<p>そのウィンドウが破壊されるまで、次の5つプロパティを取得し、適切に表示します。プロパティに変更があった場合は、再取得して表示を更新します。</p>
+<ol>
+<li>指定ウィンドウのXIM_PREEDIT_STRINGプロパティ（COMPOUND_TEXT）: 前編集文字列。このプロパティが存在しない場合は、前編集文字列の表示をいっさい中止する。</li>
+<li>指定ウィンドウのXIM_PREEDIT_FEEDBACKプロパティ（INTEGER）: フィードバックを指定するXIMFeedback型の配列。</li>
+<li>指定ウィンドウのXIM_PREEDIT_CARETプロパティ（INTEGER）: 前編集文字列のキャレット位置。</li>
+<li>指定ウィンドウのXIM_PREEDIT_FONTSETプロパティ（STRING）: 前編集文字列のフォントセットを指定する文字列。</li>
+<li>指定ウィンドウのXIM_PREEDIT_SPOT_LOCATIONプロパティ（POINT）: ルートウィンドウに関する挿入位置の座標。y座標はベースライン位置。</li>
+</ol>
+<h3>2. XIMPreeditNothingスタイル — On-The-Rootスタイルの前編集文字列</h3>
+<p>次の3つのプロパティを取得し、適切に表示します。プロパティに変更があった場合は、再取得して表示を更新します。</p>
+<ol>
+<li>ルートウィンドウのXIM_PREEDIT_STRINGプロパティ（COMPOUND_TEXT）: 前編集文字列。このプロパティが存在しない場合は、前編集文字列の表示をいっさい中止する。</li>
+<li>ルートウィンドウのXIM_PREEDIT_FEEDBACKプロパティ（INTEGER）: フィードバックを指定するXIMFeedback型の配列。</li>
+<li>ルートウィンドウのXIM_PREEDIT_CARETプロパティ（INTEGER）: 前編集文字列のキャレット位置。</li>
+</ol>
+<h3>3.  XIMStatusNothingスタイル — On-The-Rootスタイルの状態文字列</h3>
+<p>次のプロパティを取得し、適切に表示します。プロパティに変更があった場合は、再取得して表示を更新します。</p>
+<ul>
+<li>ルートウィンドウのXIM_STATUS_STRINGプロパティ（COMPOUND_TEXT）: 状態文字列。このプロパティが存在しない場合は、状態文字列の表示をいっさい中止する。</li>
+</ul>
+<h3>4. 予測入力の候補</h3>
+<p>次のプロパティを取得し、適切に表示します。プロパティに変更があった場合は、再取得して表示を更新します。</p>
+<ul>
+<li>ルートウィンドウの XIM_PREDICT_STRINGプロパティ（COMPOUND_TEXT）: 予測入力の候補文字列（の配列）。このプロパティが存在しない場合は、候補の表示をいっさい中止する。</li>
+</ul>
+<footer>
+<hr>
+<address><a href="mailto:maroontress.fast.software@gmail.com">たなか ともひさ</a></address>
+<!-- Created: Sun Jun  3 00:41:34 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Tue Aug 29 23:00:10 JST 2006
+<!-- hhmts end -->
+</footer>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">XIMレシーバ</a></span>
+  </div>
+  <ul>
+    <li class="selected">
+      Top
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+    <li>
+      <a href="news.html">News</a>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>
