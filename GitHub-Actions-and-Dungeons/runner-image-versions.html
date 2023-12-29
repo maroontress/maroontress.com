@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZTJ8C5812"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0ZTJ8C5812');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4691079535294206" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Attemp #2 並列ビルドとランナーのイメージバージョン | GitHub Actions and Dungeons</title>
+    <link rel="canonical" href="https://www.maroontress.com/GitHub-Actions-and-Dungeons/runner-image-versions.html" />
+    <link rel="stylesheet" type="text/css" href="/css/markdown.ja.css">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/logo-v2-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo-v2-180x180.png">
+    <link rel="icon" type="image/x-icon" href="/images/logo-v2.ico">
+    <link rel="mask-icon" href="/images/logo-v2-mask-icon.svg" color="#800000">
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="/js/toc.js"></script>
+  </head>
+  <body>
+    <div class="logo">
+      <b>Maroontress Fast Software</b>
+    </div>
+    <div class="container">
+      <div class="main-container">
+        <section>
+          <main class="content">
+<div class="project-logo">GitHub Actions and Dungeons</div>
+<div id="toc-level" data-values="H2,H3"></div>
+<h1>Attempt #2<br>並列ビルドと<ruby>🏃<rp>(</rp><rt>ランナー</rt><rp>)</rp></ruby>のイメージバージョン</h1>
+<p>ビルドを早く終わらせるために、並列にビルドするのは常套手段だ。
+GitHub Actionsでもワークフロー中に複数のジョブを並列に実行することが可能である。
+鍵は<a href="https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idneeds"><code>needs</code></a>で、次のように用いる:</p>
+<pre><code class="language-yaml">jobs:
+  job1:
+    ⋮
+
+  job2:
+    ⋮
+
+  job3:
+    needs: [job1, job2]
+    ⋮
+</code></pre>
+<p><code>job3</code>は<code>job1</code>と<code>job2</code>が終了すると開始する。<code>job1</code>、<code>job2</code>、<code>job3</code>はそれぞれ異なるランナーのインスタンスで実行するので、<code>job1</code>と<code>job2</code>はビルド結果を<code>actions/upload-artifact</code>でそれぞれ保存して、<code>job3</code>は<code>actions/download-artifact</code>でそれらを取得するようにする。これが典型的な並列ジョブの実行方法だ。</p>
+<h2>iOS向けライブラリの並列ビルド</h2>
+<p>より具体的な例を紹介しよう。次の<a href="https://github.com/maroontress/mimicssl-aes128-cbc-decrypt/blob/main/.github/workflows/ios.yml">ワークフロー</a>はAES 128ビットCBCモードを復号するライブラリをiOS向けにxcframeworkとしてビルドするものだ:</p>
+<pre><code class="language-yaml">jobs:
+  build_non_fat:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    strategy:
+      max-parallel: 3
+      matrix:
+        abi: [x86_64, arm64]
+        sdk: [iphoneos, iphonesimulator]
+        exclude:
+          - abi: x86_64
+            sdk: iphoneos
+    steps:
+      ⋮
+
+  install_and_test:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    needs: build_non_fat
+    steps:
+      ⋮
+</code></pre>
+<p><code>build_non_fat</code>の全てのジョブが終わると、<code>install_and_test</code>ジョブが開始する。ワークフローを可視化すると次のようになる:</p>
+<div>
+<a href="attempt2/Workflow-iOS.png"><img style="width: 100%;" src="attempt2/Workflow-iOS.png"></a>
+</div>
+<p>最初の<code>build_non_fat</code>ジョブは次の構成<sup><a href="#1">†1</a></sup>で並列に三つのジョブを実行する:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">ABI</th>
+<th style="text-align:left">SDK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>x86_64</code></td>
+<td style="text-align:left"><code>iphonesimulator</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>arm64</code></td>
+<td style="text-align:left"><code>iphonesimulator</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>arm64</code></td>
+<td style="text-align:left"><code>iphoneos</code></td>
+</tr>
+</tbody>
+</table>
+<p>CMakeを用いる場合、<code>iphonesimulator</code>のSDK向けに<code>x86_64</code>と<code>arm64</code>のABIを両方とも含む<strong>fatライブラリ</strong>を一度に作成することもできる。その場合はジョブの数は二つにできるだろう。しかし、このプロジェクトはアセンブラ命令（イントリンシックス）を用いるため、ABIによってソースファイルのセットやコンパイルオプションが異なる。そのため、<code>build_non_fat</code>ジョブではバラバラに<strong>non fatライブラリ</strong>をビルドしておく。それぞれのランナーではCMakeでビルドした成果物を含む<strong>ビルドディレクトリ</strong>を<code>actions/upload-artifact</code>で保存する。ビルドディレクトリの名前はABIとSDKを含むので、次のジョブでダウンロードしても衝突しない。</p>
+<p>二番目の<code>install_and_test</code>ジョブは成果物であるビルドディレクトリを<code>actions/download-artifact</code>を用いてすべてダウンロードし、次の処理を逐次実行する:</p>
+<ul>
+<li><code>xcrun</code>を用いてiOSシミュレータを実行し、<code>ctest</code>で<code>iphonesimulator</code>と<code>x86_64</code><sup><a href="#2">†2</a></sup>のnon fatライブラリのテストを実行</li>
+<li><code>lipo</code>を用いて<code>iphonesimulator</code>向けのfatライブラリを作成</li>
+<li><code>xcodebuild</code>を用いてxcframeworkの作成</li>
+<li>xcframework、<code>iphoneos</code>向けnon fatライブラリ、<code>iphonesimulator</code>向けのfatライブラリ、ヘッダファイルのインストール</li>
+</ul>
+<p>やや複雑だが、詳細を理解する必要はいっさいない。重要なのは、これらのビルドはシェルスクリプトと、そこから呼び出されるCMakeで実現しているということだ。CMakeは最初のジョブだけではなく、二番目のジョブでも使用している<sup><a href="#3">†3</a></sup>が、二番目のジョブではCMakeはビルドディレクトリを作成しない。最初のジョブが作成したものをダウンロードしたので、それらに対して<code>ctest</code>や<code>cmake --target install</code>をそれぞれ実行する。</p>
+<p><a name="1"></a></p>
+<blockquote>
+<p>†1 <code>x86_64</code>と<code>iphoneos</code>の組み合わせは<code>exclude</code>で除外している。</p>
+</blockquote>
+<p><a name="2"></a></p>
+<blockquote>
+<p>†2 IntelアーキテクチャのmacOSランナーを使用しているため。</p>
+</blockquote>
+<p><a name="3"></a></p>
+<blockquote>
+<p>†3 一旦<code>cmake --target install</code>でビルドしたライブラリをテンポラリな場所にインストールして、それに対して<code>lipo</code>や<code>xcodebuild</code>を用いるため。</p>
+</blockquote>
+<h2>ランナーのイメージの「バージョン」</h2>
+<p>ところが、このようなワークフローファイルを運用していると、たまにビルドに失敗することがあった。ビルドの失敗は、二番目のジョブで<code>cmake</code>や<code>ctest</code>を実行した時に起きていた。なぜビルドは失敗したのだろう。</p>
+<p>GitHub Actionsのビルドログの最初の部分には、実行しているランナーの情報が記録されている。
+例えば、あるビルドログの “Set up job” の項目を展開すると次のようになる:</p>
+<div>
+<a href="attempt2/RunnerImage.png"><img style="width: 100%;" src="attempt2/RunnerImage.png"></a>
+</div>
+<p>これを見ると、ランナーのイメージは<code>macos-12</code>、バージョンは<code>20231216.1</code>で、イメージのリリースに関するリンクも表示されている。そのランナーにどのようなソフトウェアがインストールされているのか、どのような変更があったのか、これらのリンクより知ることができる。イメージのリリースにはタグが付与されているので、どれくらいの頻度でイメージが更新されているかを、次のように簡単に知ることができる:</p>
+<div>
+<img style="width: 320px;" src="attempt2/Tags.png">
+</div>
+<p>これを見ると、どうやら、およそ1〜2週間で更新があるのが当たり前のようだ。</p>
+<p>そして、その<a href="https://github.com/actions/runner-images">ランナーイメージのリポジトリ</a>のREADMEには、次のような<a href="https://github.com/actions/runner-images?tab=readme-ov-file#available-images">最新の利用可能なイメージの一覧</a>が記載されている:</p>
+<div>
+<a href="attempt2/AvailableImages.png"><img style="width: 100%;" src="attempt2/AvailableImages.png"></a>
+</div>
+<p>表の右端には「Rollout Progress of Latest Image Release」という列がある。この列は最新バージョンのイメージがどれだけの割合で利用されているかを示す。例えば<code>macos-12</code>でこれが100%であれば、どのインスタンスも同じ（最新の）バージョンのイメージを用いることになる。実際、上記の表はすべての行で100%なので、そうなっている。</p>
+<p>しかし、いつでも必ず100%になっているわけではない。次の表は別の日のものである:</p>
+<div>
+<a href="attempt2/AvailableImages_20240111_1219.png"><img style="width: 100%;" src="attempt2/AvailableImages_20240111_1219.png"></a>
+</div>
+<p>この画像のように、例えば<code>macos-12</code>でロールアウト進捗が9.79%だったとすると、インスタンスは90.21%の確率で一つ前の（古い）バージョンのイメージを用いる。そして、イメージのバージョンが異なると、インストールされているコンパイラ、ツールチェイン、SDKなども、更新されて違うバージョンになっている可能性がある。</p>
+<blockquote>
+<p><span style="font-size: large;">☕</span></p>
+<p>複数のインスタンスがすべて同じバージョンになる確率はどうだろう。ロールアウト進捗が10%のイメージのランナーで2つのインスタンスの場合、(1 − 0.1)<sup>2</sup> + 0.1<sup>2</sup> = 0.82である。古いバージョン同士と、新しいバージョン同士の確率の和となる。4つのインスタンスの場合、(1 − 0.1)<sup>4</sup> + 0.1<sup>4</sup> = 0.6561 + 0.001 = 0.6562となる。2/3くらいの確率でインスタンスのイメージは全部同じバージョンだ。</p>
+</blockquote>
+<!--
+> ロールアウト進捗aのn個のインスタンスなら
+> (1 &minus; a)^n + a^n
+> 特にnが奇数なら
+> 1 - F(1)a + F(2)a^2 - ... - F(n-2)a^(n-2) + F(n-1)a^(n-1)
+> 例えばn = 3なら
+> 1 - 3a + 3a^2
+-->
+<p>ビルドが失敗したのはこれが原因だった。ビルドで走っている複数のインスタンスのうちの一つが古いイメージのものであり、その古いイメージと最新のイメージでは、（運が悪いことに）CMakeのバージョンが異なっていた。古いCMakeで作成したビルドディレクトリを、新しいCMakeでテストやインストールしようして、うまくいかないのは不思議でもなんでもない。</p>
+<p>一番の問題は、ロールアウトされているどのランナーのイメージも同一であるに違いない、という自分の思い込みであった。</p>
+<h2>ランタイムでのバージョンの取得</h2>
+<p>さて、ワークフローを実行中のイメージのバージョンを取得するにはどうすれば良いのだろうか。調べてみると、文書化されていないようだが、次のように<a href="https://github.com/actions/runner-images/discussions/7661">環境変数<code>ImageVersion</code>から取得する</a>ようだ:</p>
+<div>
+<a href="attempt2/ImageVersion.png"><img style="width: 100%;" src="attempt2/ImageVersion.png"></a>
+</div>
+<blockquote>
+<p><a href="https://github.com/maroontress/try_out_github_actions/actions/workflows/image-version.yml">このワークフローファイルをGitHubで見る</a></p>
+</blockquote>
+<p>といっても、イメージのバージョンを取得できたところで、どうしようもない。「<em>並列に実行するジョブにおいて実行中のイメージのバージョンを保存しておいて、後段のジョブ（前のセクションで説明した、ビルドディレクトリをダウンロードするジョブ）で使用したイメージのバージョンをチェックして、同じでなければ実行を中止する</em>」ことは可能だが、先ほど見たようにイメージは頻繁に更新されているので、その度にCIが止まるのは不便でしかない。そうするとしても、先ほどの例であれば、イメージのバージョンではなく、インストールされているCMakeのバージョンをチェックするほうが良い。</p>
+<h2>指定のバージョンのCMakeをインストール</h2>
+<p>CMakeはそれほど巨大なツールでもなく、Windows、Linux、macOSそれぞれにバイナリ配布のリリースもある。イメージにプリインストールされているCMakeを使うのではなく、好きなバージョンのCMakeを自分でインストールしてみるのはどうだろう。</p>
+<p>実際、マーケットプレイスにサードパーティ製の<a href="https://github.com/marketplace/actions/get-cmake">CMakeをインストールするためのアクション</a>が公開されている。ワークフローの最初のステップで、次のようにバージョンを指定してCMakeをインストールしてみる:</p>
+<div>
+<a href="attempt2/get-cmake.png"><img style="width: 100%;" src="attempt2/get-cmake.png"></a>
+</div>
+<p>これで、異なるバージョンのイメージが混ざっていても、エラーは起きなくなった。</p>
+<p>しかし、CMake以外にも依存しているツールはある。例えば、Xcodeはどうだろう。Xcodeのような大きなものになってくると、流石にバージョンを指定してインストールはしたくない。現時点の<a href="https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md#xcode"><code>macos-12</code>のイメージにインストールされているXcode</a>は次のようになっている:</p>
+<div>
+<img width="320px;" src="attempt2/Xcode.png">
+</div>
+<p>例えば、環境変数<code>XCODE_VERSION</code>の値でXcodeのバージョンを指定するなら、次のようにすればよい:</p>
+<pre><code class="language-yaml">    - name: Select Xcode
+      run: sudo xcode-select -s &quot;/Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer&quot;
+</code></pre>
+<p>指定したバージョンのXcodeが、イメージの更新で利用できなくなる可能性もあるが、その頻度は年に1回程度だろう（<a href="https://en.wikipedia.org/wiki/Xcode#Xcode_11.0_-_14.x_(since_SwiftUI_framework)">13.1のリリースは2021年10月、14.2のリリースは2022年12月</a>、であることを目安とした）。</p>
+<h2>ひとつのジョブでCMakeの利用を完結させる</h2>
+<p>もうひとつ、考え方として押さえておきたいのは、ひとつのツールをインスタンスを<ruby>跨<rp>(</rp><rt>また</rt><rp>)</rp></ruby>いで使わないようにすることだ。この例では「CMakeを使うインスタンスはそのインスタンスでCMakeの使用を完結させる」ことを意味する。そのためには、CMakeで作成したビルドディレクトリを、次のジョブのインスタンスに引き継ぐことはやめる。代わりに、最初のジョブで「テストを実行、テンポラリなディレクトリにnon fatライブラリをインストール、それをアップロード」するところまでを同じインスタンスで実行する。そして、最後のジョブで、すべてのnon fatライブラリをダウンロードして、xcframeworkを作成する。ワークフローファイルは次のようなイメージになる:</p>
+<pre><code class="language-yaml">jobs:
+  build_non_fat:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    strategy:
+      max-parallel: 3
+      matrix:
+        abi: [x86_64, arm64]
+        sdk: [iphoneos, iphonesimulator]
+        exclude:
+          - abi: x86_64
+            sdk: iphoneos
+    steps:
+      ⋮
+    - name: Run simulator and then test
+      if: ${{ matrix.sdk == 'iphonesimulator' &amp;&amp; matrix.abi == 'x86_64' }}
+      run: |
+        ⋮
+        ctest --test-dir build/iphonesimulator-x86_64 -C $BUILD_TYPE
+      ⋮
+    - name: Install non fat files temporally
+      run: |
+        cmake --build ${{matrix.sdk}}-${{matrix.abi}} --target install \
+          $HOME/tmp ...
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: non-fat-files-${{matrix.sdk}}-${{matrix.abi}}
+        path: ~/tmp
+        if-no-files-found: error
+
+  install:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    needs: build_non_fat
+    steps:
+      ⋮
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      ⋮
+    - name: Create xcframework
+      ⋮
+</code></pre>
+<p>もちろん、古いコンパイラで作成したライブラリを新しいコンパイラで操作するとエラーになることもあり得るが、分断されるポイントを減らすことで耐性が上がることを意識しておきたい。それが無理なら、並列ビルドはセルフホスティッドランナーでやろう。</p>
+          </main>
+        </section>
+      </div>
+      <div class="left-container">
+<nav>
+  <div>
+    <a href="/">Projects</a>
+  </div>
+  <div>
+    <span>&#x25BE;</span>
+  </div>
+  <div>
+    <span class="project-name"><a href="index.html">GitHub Actions and Dungeons</a></span>
+  </div>
+  <ul>
+    <li>
+      <a href="index.html">Top</a>
+    </li>
+    <li>
+      <a href="ssh-agent-on-windows.html">Attemp #1 Windowsランナーでssh-agent</a>
+    </li>
+    <li class="selected">
+      Attemp #2 並列ビルドとランナーのイメージバージョン
+    </li>
+    <ul id="toc-placeholder">
+    </ul>
+  </ul>
+</nav>
+      </div>
+    </div>
+  </body>
+</html>

@@ -11,6 +11,7 @@ https://www.maroontress.com/Editor/relnotes.html
 https://www.maroontress.com/Editor/resource.html
 https://www.maroontress.com/Emacs21+XIM/index.html
 https://www.maroontress.com/GitHub-Actions-and-Dungeons/index.html
+https://www.maroontress.com/GitHub-Actions-and-Dungeons/runner-image-versions.html
 https://www.maroontress.com/GitHub-Actions-and-Dungeons/ssh-agent-on-windows.html
 https://www.maroontress.com/HandMouse/index.html
 https://www.maroontress.com/Heap/index.html
@@ -130,7 +131,6 @@ https://www.maroontress.com/Sanctuary/r1/tutorial.html
 https://www.maroontress.com/Sanctuary/r2/download.html
 https://www.maroontress.com/Sanctuary/r2/dtd.html
 https://www.maroontress.com/Sanctuary/r2/reference.html
-https://www.maroontress.com/Sanctuary/r2/relnotes.html
 https://www.maroontress.com/Sanctuary/r2/s1/com_example_Integer0.html
 https://www.maroontress.com/Sanctuary/r2/s1/com_example_Integer1.html
 https://www.maroontress.com/Sanctuary/r2/s1/com_example_Integer2.html
